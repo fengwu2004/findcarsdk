@@ -1,0 +1,120 @@
+/*地图版块css*/
+/*重置css*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, lengend, input, button, textarea, select, p, blockquote, th, td { margin:0; padding: 0;}
+html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 { -webkit-text-size-adjust: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+img { border: 0 none; vertical-align: top; }
+li { list-style-type: none; }
+caption, th { text-align: left; }
+h1, h2, h3, h4, h5, h6 { font-size: 100%;font-weight:400;}
+body, input, button, textarea, select { font-size: 12px;font-family:"Microsoft Yahei",微软雅黑,Arial,Helvetica;}
+input,textarea{border:0;}
+button { cursor: pointer; }
+em, cite { font-style: normal; }
+body {line-height: 1.17; -webkit-text-size-adjust: none;-webkit-touch-callout: none;-webkit-user-select: none;}
+a { color: #2c2c2c; text-decoration: none; }
+a:link {text-decoration: none; }
+:focus { outline: none; }
+.clearfixed:after { content: "."; clear: both; display: block; height: 0; overflow: hidden; }
+.clearfixed { zoom: 1; display: block; }
+*{-webkit-text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -o-text-size-adjust: none; text-size-adjust: none;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
+::-webkit-scrollbar {width:0; height:0;}  /*滚动条样式*/
+::-ms-clear {display:none;}
+::-ms-reveal {display:none;}
+input::-webkit-input-placeholder{color:#999;}
+.none{display:none!important;}
+
+html{height:100%;width:100%;-webkit-tap-highlight-color:transparent;}  /*去除点击页面中元素时出现的阴影*/
+.wrap{color:#2c2c2c;}
+body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
+.ellipsis{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;}
+
+
+/*地图层*/
+.svg_frame{position:absolute;left:0;top:0px;bottom:0;width:100%;overflow:hidden;z-index:0;}
+.svg_box{height:100%;background:url(../images/reseau.png) repeat;background-size:50px auto}
+.svg_box .nodata{position:absolute;top:100px;left:0;width:100%;text-align:center;font-size:16px;color:#666;line-height:24px;}
+.svg_box .nodata a{color:#e63174}
+.arr_follow{position:absolute;top:100px;left:100px;z-index:0;}
+
+.gTxt{font-size:12px;}
+.gTxt span{position:absolute;font-size:12px;margin-top:-7px;white-space:nowrap;text-shadow: 1px 1px 0px rgba(255,255,255,.8);}
+.cls_txt{opacity:0;-webkit-transition:opacity 1s;-webkit-transform-origin:0 0;}
+.cls_txt1{opacity:1;}
+.cls_txt_circle{padding-left:12px;background:url(../images/ic_textpoint_blue@2x.png) no-repeat 0 50%;background-size:8px 8px}
+.se_point{position:absolute;z-index:2;top:40px;left:40px;width:70px;height:24px;margin:-36px 0 0 -35px;line-height:24px;background:#333;color:#fff;border-radius:3px;text-align:center;}
+.se_point span{position:absolute;top:24px;left:50%;margin-left:-8px;border:6px solid transparent; border-top-color: #333; width: 0; height: 0; }
+.se_point i{font-style:normal;}
+.svg_park ._area_parking *{fill:#0f0;}
+.svg_park .parking_disable *{fill:red;}
+.g_mark *{fill:rgba(255,0,0,.6)!important;}
+.follow_box{position:absolute;width:27px;height:27px;margin:-13px 0 0 -13px;z-index:5}
+.follow_box img{-webkit-transform:rotate(-90deg)}
+
+.sear_mark{position:absolute;left:0;top:0;z-index:2}
+.arrow{position:absolute;width:7px;height:10px;background:url(../images/maps/arrow.png) no-repeat 50% 50%;background-size:7px auto;}
+.path_tip{position:absolute;background:#e84738;color:#fff;font-size:14px;width:96px;line-height:24px;text-align:center;border-radius:5px;z-index:2;border: 1px solid #fff;}
+.path_arrow{position:relative;z-index:2}
+.nav_mark{position:relative;z-index:2}
+
+.noNavi {} 
+
+
+.cls_txt_circle {
+    padding-left: 10px;
+    background: url(../images/ic_textpoint_blue@2x.png) no-repeat 0 50%;
+    background-size: 8px 8px;
+}
+
+#line img {
+    width: 6px;
+    height: 4px;
+}
+
+/*放大缩小样式*/
+.scale_btn {
+    position: fixed;
+    right: 1rem;
+    bottom: 14%;
+    z-index: 20;
+}
+.scale_btn div {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+.scale_btn div img {
+    width: 100%;
+    height: 100%;
+}
+
+/*动态点雷达波功能*/
+.pbox {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid #0087ff;
+    background: #0087ff;
+    left: -40px;
+    top: -40px;
+}
+
+.pcontent {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+.repbox {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+
