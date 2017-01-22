@@ -12,8 +12,10 @@ define(function (require, exports, module) {
     var Maputils = require('./maputils');
     var oMapUtils = new Maputils();
     //载入手势
-    var Hamm = require('./hamm');
-    var hammObj = new Hamm();
+    /*var Hamm = require('./hamm');
+    var hammObj = new Hamm();*/
+
+    var hammObj = require('./hamm');
     //载入unit
     var ObjectUnits = require('./units');
     var Unit = ObjectUnits.Unit;
@@ -247,9 +249,14 @@ define(function (require, exports, module) {
                                 })
                             }
 
-                            hammObj.init();
+                            var domView = jsLib.getEle('#viewport');
+                            var domBind = jsLib.getEle('#svgBox');
+                            hammObj.scale = gV.scale = 0;
+                            hammObj.angle = gV.lastSvgAngle = 0;
+                            hammObj.init(domView);
                             if (!switchFloor) {    //切换楼层时就不用再次绑定
-                                hammObj.bindHammer();
+                                
+                                hammObj.bindTouch(domBind);
                                 // clickMap.init();    // 注册unit点击事件处理程序
                             }
 
@@ -572,9 +579,9 @@ define(function (require, exports, module) {
             if (state == 'big') {    //处理放大
                 if (oLine) oLine.innerHTML = '';
                 jsLib.move.easeIn([1, 1.2], 100, function (speed) {
-                    gV.scale = gV.scale * speed;
+                    hammObj.scale = gV.scale = gV.scale * speed;
                     if (gV.scale >= gV.ratio * 5) {
-                        gV.scale = gV.ratio * 5;
+                        hammObj.scale = gV.scale = gV.ratio * 5;
                     }
                     askValue();
                     hammObj.showMap(gV.scale, px, py);
@@ -585,9 +592,9 @@ define(function (require, exports, module) {
             } else if (state == 'small') {
                 if (oLine) oLine.innerHTML = '';
                 jsLib.move.easeIn([1, .8], 100, function (speed) {
-                    gV.scale = gV.scale * speed;
+                    hammObj.scale = gV.scale = gV.scale * speed;
                     if (gV.scale <= gV.ratio) {
-                        gV.scale = gV.ratio * .8;
+                        hammObj.scale = gV.scale = gV.ratio * .8;
                     }
                     askValue();
                     hammObj.showMap(gV.scale, px, py);
@@ -666,28 +673,7 @@ define(function (require, exports, module) {
                 errorFn && errorFn(str);
             }
         });
-        /*oUtils.RequestData.ajax(url, {
-            data: {'regionId': regionId, 'floorId': floorId},
-            fnSucc: function (str) {
-                str = str.replace(/\n/g, '');
-                var data = eval('(' + str + ')');
-                if (data != null) {
-                    if (data.code == "success") {
-                        var data = data.data;
-                        var aNewData = [];
-                        data.forEach(function(item) {
-                            var aSvgPos = oMapUtils.unitPosChangeToCenterPos(item);
-                            item.aSvgPos = aSvgPos;
-                            aNewData.push(item);
-                        });
-                        successFn && successFn(aNewData);
-                    }
-                }
-            },
-            fnFaild: function (str) {
-                errorFn && errorFn(str);
-            },
-        });*/
+        
     }
 
     //点移到屏幕中心点(地图也跟着走)
@@ -753,14 +739,14 @@ define(function (require, exports, module) {
         gV.height = gV.vb_h = parseFloat(view[3]) - gV.y; //svg原始 高度
         gV.widthLevel = gV.box_w / gV.width;
         gV.heightLevel = gV.box_h / gV.height;
-        gV.scale = gV.ratio = Math.min(gV.widthLevel, gV.heightLevel);
+        hammObj.scale = gV.scale = gV.ratio = Math.min(gV.widthLevel, gV.heightLevel);
 
         var px = gV.box_w / 2 - gV.vb_w / 2 * gV.scale; //需要偏移的量， 屏幕坐标系即svg缩放后的，屏幕中心点坐标 - svg中心点变换后的坐标
         var py = gV.box_h / 2 - gV.vb_h / 2 * gV.scale;
 
-        gV.lastPX = px;
-        gV.lastPY = py;
-        gV.lastSvgAngle = 0;
+        hammObj.lastPX = gV.lastPX = px;
+        hammObj.lastPY = gV.lastPY = py;
+        hammObj.angle = gV.lastSvgAngle = 0;
         hammObj.showMap(gV.scale, px, py);    //还原地图
 
         hammObj.handleDo();
@@ -900,6 +886,33 @@ define(function (require, exports, module) {
             });
 
     }
+
+    YFMap.prototype.askPointPos = function(startObj, endObj, bool, fn) {
+        function isGoOn(obj) {
+            if (typeof obj == 'object' && (!oMapUtils.isEmptyObject(startObj))) {
+                if (typeof obj.regionId === 'string' &&
+                    typeof obj.floorId === 'string' &&
+                    typeof obj.svgX === 'number' &&
+                    typeof obj.svgY === 'number') {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        for (var i = 0; i < 2; i++) {
+            if (!isGoOn(arguments[i])) return;
+        }
+
+        if (typeof arguments[2] !== 'boolean') return;
+
+        oMapUtils.askPosMore2(startObj, endObj, bool, fn);
+
+        return this;
+    };
 
 
 

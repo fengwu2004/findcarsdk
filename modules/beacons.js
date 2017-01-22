@@ -20,8 +20,6 @@ define(function (require, exports, module) {
     var unitObj = new Unit();
 
 
-
-
     var bnData = {    //蓝牙返回的接口
         bOpenBlueTooth: false,    //是否开启蓝牙
         iStartSvgPosX: 0,
@@ -94,7 +92,7 @@ define(function (require, exports, module) {
                     alert('getInfo()数据获取失败!');
                 }
             });
-        
+            
         };
 
         if (typeof gV.configure.wxAppId === 'string' && gV.configure.wxAppId !== '' &&
@@ -119,7 +117,19 @@ define(function (require, exports, module) {
                 timestamp: iTimestamp, // 必填，生成签名的时间戳
                 nonceStr: sNonceStr, // 必填，生成签名的随机串
                 signature: sSignature, // 必填，签名，见附录1
-                jsApiList: ['checkJsApi', 'getNetworkType', 'getLocation', 'startSearchBeacons', 'onSearchBeacons', 'stopSearchBeacons', 'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                jsApiList: [    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    'checkJsApi',
+                    'getNetworkType',
+                    'getLocation',
+                    'startSearchBeacons',
+                    'onSearchBeacons',
+                    'stopSearchBeacons',
+                    'onMenuShareAppMessage',
+                    'onMenuShareTimeline',
+                    'getNetworkType',
+                    'scanQRCode',
+                    'onMenuShareQZone'
+                ]
             });
         };
 
@@ -129,32 +139,78 @@ define(function (require, exports, module) {
                 complete: function (argv) {
                     // alert('startSearchBeacons:'+ JSON.stringify(argv));
                     if (argv) {
+                        // jsLib('#beaCount').html('startSearch: ' + argv.errMsg);
                         if (argv.errMsg == 'startSearchBeacons:ok') {
                             bnData.bOpenBlueTooth = true;    //全局 蓝牙开启了
 
                         } else {
                             errorFn && errorFn(argv);
                         };
-                    }
+                    };
                 }
             });
         };
 
         wx.ready(function () { // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-
             wx.onSearchBeacons({
                 complete: function (argv) {
-                    if (argv.beacons != null) {
+                    // jsLib('#beaCount').html(argv.beacons.length);
+                    if (argv.beacons.length !== 0) {
+
+                        
                         var beacons = argv.beacons;
+
                         var value = "";
                         for (var i = 0; i < beacons.length; i++) {
                             value += beacons[i].major + "-" + beacons[i].minor + ":" + beacons[i].rssi + ", ";
-                        }
-                        var beaconParas = JSON.stringify(argv.beacons);
+                        };
+
+                        var arrBeacons = argv.beacons.filter(function(obj, index) {
+
+                            if (obj.rssi != 0) {
+                                delete obj.uuid;
+                                // delete obj.accuracy;
+                                delete obj.heading;
+                                delete obj.proximity;
+                                return true;
+                            };
+                        });
+
+
+                        var rssi = [], arrBea = [];
+                        arrBeacons.forEach(function(obj) {
+                        	rssi.push(parseInt(obj.rssi));
+                        });
+                        rssi.sort(function(a, b) {
+                        	return b - a;
+                        });
+
+                        rssi = unique(rssi);
+
+                        rssi.forEach(function(num) {
+                        	for (var i = 0, len = arrBeacons.length; i < len; i += 1) {
+                        		if (arrBeacons[i].rssi == num) {
+                        			arrBea.push(arrBeacons[i]);
+                        			break;
+                        		};
+                        	};
+                        });
+
+                        var newArr;
+                        if (arrBea.length > 30) {
+                            newArr = arrBea.slice(0, 30);
+                        } else {
+                            newArr = arrBea;
+                        };
+
+
+                        // var beaconParas = JSON.stringify(argv.beacons);
+                        var beaconParas = JSON.stringify(newArr);
+                        // alert(JSON.stringify(beaconParas));
                         var domain = 'http://wx.indoorun.com';
                         var url = domain + '/locate/locating';
-                        // alert('aaaa');
 
+                        // alert('服务器前');
                         jsLib.ajax({
                             type: "post",
                             dataType: 'jsonp',
@@ -175,7 +231,6 @@ define(function (require, exports, module) {
                                 // console.log("before");
                             },
                             success: function (str) {
-                                // alert('bbbb');
                                 var data = str;
 
                                 var sx = data.x; //作为起点
@@ -191,128 +246,31 @@ define(function (require, exports, module) {
 
 
 
+                                // alert('服务器成功');
+
+
+
                             },
                             error: function (str) {
+                                errorFn && errorFn(str);
                             }
                         });
 
-                        /*oUtils.RequestData.ajax('/locate/locating', {
-                            method: 'post',
-                            data: {
-                                'beacons': beaconParas,
-                                'openId': oMap.mapValue.ticket,
-                                'gzId': 'ewr2342342',
-                                'regionId': gV.regionId,
-                                'floorId': gV.floorId,
-                                'OSType': oMap.mapValue.OSType
-                            },
-                            fnSucc: function (str) {
-                                str = str.replace(/\n/g, '');
-                                var data = eval('(' + str + ')');
-                                var sx = data.x; //作为起点
-                                var sy = data.y;
-                                var aClientPos = oMap.changeToClientPos(sx, sy);
-                                data.aClientPos = aClientPos;
-                                //存到全局去，我要用
-                                gV.bnData.bOpenBlueTooth = true;
-                                gV.bnData.data = data;
-                                //他人的回掉
-                                successFn && successFn(data);
+                        function unique(arr) {    //  commMethods.unique();
 
-                                //我个人的逻辑
-                                /!*gV.markSets.forEach(function(item, index) {
-                                 if (item.type == 1) {    // 1 代表是动态点(每秒动起来)
-                                 if (data.floorId == gV.floorId && data.regionId == gV.regionId) oMap.svgShowPoint(item.dom, [sx, sy], item.aOffsetPos);
-                                 }
-                                 });*!/
-                                /!*if (data != null) {
-                                 if (data.code == "success") {
-                                 //获取当前楼层的re, flo的id
-                                 bnData.regionId = data.regionId;
-                                 bnData.floorId = data.floorId;
-                                 // alert(gV.floorId +','+ data.floorId+','+(gV.floorId === data.floorId));
+                            var n = {}, r = []; // n 为hash表，r 为临时数组
 
-                                 bnData.bOpenBlueTooth = true;
-                                 bPointShow = true;
-                                 iBlueCount = 0; //置0 说明蓝牙还开启着呢
+                            for(var i = 0; i < arr.length; i++) {
 
-                                 if (gV.bStopBackstage) { //手指触发时先挂起
+                                if (!n[arr[i]])  {    // 如果hash表中没有当前项
 
-                                 // debug.log(JSON.stringify(data, null, 4));
-                                 var sFloorld = data.floorId;
-                                 var sx = data.x; //作为起点
-                                 var sy = data.y;
-                                 var aClientPos = oMap.changeToClientPos(sx, sy);
-                                 var iClientX = aClientPos[0];
-                                 var iClientY = aClientPos[1];
-                                 bnData.iStartSvgPosX = sx;
-                                 bnData.iStartSvgPosY = sy;
-                                 bnData.iStartClientPosX = iClientX;
-                                 bnData.iStartClientPosY = iClientY;
+                                    n[arr[i]] = true;    // 存入hash表
+                                    r.push(arr[i]);    // 把当前数组的当前项push到临时数组里面
+                                };
+                            };
 
-                                 if (oMap.isRemain(bnData)) { //动态点在当前楼层就显示否则不显示
-                                 // alert('bool' + oMap.isRemain(bnData));
-                                 oMap.svgShowPoint('pointImg', [sx, sy], 40, 40); //根据svg左边显示动态点
-                                 } else {
-                                 // document.querySelector('#pointImg').style.display = 'none';
-                                 // alert('动态点消失');
-                                 };
-
-
-                                 if (sFloorld != floorId) {
-                                 iFloorldCount ++;
-                                 if (iFloorldCount >= 4) {
-                                 floorId = sFloorld;
-                                 document.querySelector('#svgBox').innerHTML = '';
-                                 document.getElementById('g_txt').innerHTML = '';
-                                 scale = 0;
-                                 lastPX = 0;
-                                 lastPY = 0;
-                                 loadRegion();
-                                 Map.ManageClick.bClickBtn = !Map.ManageClick.bClickBtn;
-
-                                 //改按钮
-                                 debug.log(aFloors);
-                                 debug.log(aFloors[floorId]);
-                                 var oDefaultBtn = document.querySelector('#defaultBtn');
-                                 oDefaultBtn.innerHTML = aFloors[floorId];
-                                 }
-
-                                 } else {
-                                 iFloorldCount = 0;
-                                 }
-
-                                 //每秒重新画一次线
-                                 if (gV.oSelectUnit || gV.facilities.drawEndPoint) {
-                                 var aUnitPos = oMap.unitPosChangeToCenterPos(gV.oSelectUnit);
-                                 if (aUnitPos.length > 0 && gV.bGps) {
-
-                                 againDraw(sx, sy, aUnitPos[0], aUnitPos[1]);
-
-                                 //到达目的地是否退出导航
-
-                                 if (oMap.getDistance(sx, sy, aUnitPos[0], aUnitPos[1]) <= 80) {
-                                 document.querySelector('#upper_dd').style.display = 'block';
-                                 }
-
-                                 }
-                                 }
-
-                                 }
-
-
-                                 } else {
-                                 if (bOnce) {
-                                 bOnce = false;
-                                 var oUpperTip = document.querySelector('#upperTip');
-                                 oUpperTip.style.display = 'block';
-                                 oUpperTip.name = 'tip';
-                                 }
-                                 }
-                                 }*!/
-
-                            }
-                        });*/
+                            return r;
+                        }
                     }
                 }
             });
@@ -322,11 +280,13 @@ define(function (require, exports, module) {
                     startSearch();
                 }
             });
+
+
         });
 
         wx.error(function (res) { // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            // alert(JSON.stringify(res));
-            alert('进不去啊');
+            alert(JSON.stringify(res));
+            // alert('进不去啊');
         });
 
     };
@@ -336,6 +296,16 @@ define(function (require, exports, module) {
 
     module.exports = BeaconSignal;
 
+
+   /* function againDraw(iStartX, iStartY, iEndX, iEndY) {
+        //把线删掉
+        document.querySelector('#line').innerHTML = '';
+        if (gV.facilities.isPeopleType) {    //人型
+            oMap.askPosMore(gV.regionId, bnData.floorId, gV.floorDTMore.endObj.floorId, bnData.iStartSvgPosX, bnData.iStartSvgPosY, gV.floorDTMore.endObj.svgx, gV.floorDTMore.endObj.svgy, true);
+        } else {    //车型
+            oMap.askPosMore(gV.regionId, bnData.floorId, gV.floorDTMore.endObj.floorId, bnData.iStartSvgPosX, bnData.iStartSvgPosY, gV.floorDTMore.endObj.svgx, gV.floorDTMore.endObj.svgy);
+        }
+    };*/
 });
 
 

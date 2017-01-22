@@ -11,6 +11,8 @@ define(function (require, exports, module) {
     var oUtils = new Utils();
     // require('http://binnng.github.io/debug.js/build/debug.min.js');
 
+    // var ccc = 0;// 测试用的
+
     function MapFn() {
         this.mapValue = {    //存放地图的一些静态变量
             // regionId: this._getMapId().regionId,
@@ -374,30 +376,49 @@ define(function (require, exports, module) {
                     alert('阿欧,多坐标数据没有找到!' + str);
                 }
             });
-            /*oUtils.RequestData.ajax(url, {
-                fnSucc: function (str) {
-                    str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');
-                    // gV.floorInfo = data.data;
+            
+        },
 
+        //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层(外部接口)
+        askPosMore3: function (startObj, endObj, bool, fn) {
+            var url, strUrl;
+            strUrl = startObj.regionId + "&sFloorId=" + startObj.floorId + "&tFloorId=" + endObj.floorId + "&sx=" + startObj.svgX + "&sy=" + startObj.svgY + "&tx=" + endObj.svgX + "&ty=" + endObj.svgY;
+            bool == true ? url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + strUrl
+                : url = "http://wx.indoorun.com/wx/getMultiFloorNearestLines.html?regionId=" + strUrl;
+            gV.aFloors = [];
+            gV.aFloors.push(startObj.floorId);
+            gV.aFloors.push(endObj.floorId);
+            // console.log('url:' + url);
+            jsLib.ajax({
+                type: "get",
+                dataType: 'jsonp',
+                url: url, //添加自己的接口链接
+                timeOut: 10000,
+                data: {
+                    'appId': gV.configure.appId,
+                    'clientId': gV.configure.clientId,
+                    'sessionKey': gV.configure.sessionKey
+                },
+                before: function () {
+                    // console.log("before");
+
+                },
+                success: function (str) {
+                    var data = str;
                     if (data != null) {
                         if (data.code == "success") {
-                            //存到全局变量去
-                            gV.floorInfo = [];
-                            data.data.forEach(function (item) {
-                                gV.floorInfo.push(item);
-                            });
-
-                            var oLine = document.querySelector('#line');
-                            if (oLine) oLine.innerHTML = '';
-                            MapFn.prototype.isDrawLine(gV.floorInfo);
+                            
+                            fn && fn(data.data);
+                        } else {
+                            console.log(data.msg);
                         }
                     }
                 },
-                fnFaild: function (str) {
+                error: function (str) {
                     alert('阿欧,多坐标数据没有找到!' + str);
-                },
-            });*/
+                }
+            });
+            
         },
 
         //重新画线(点击楼层切换时，如果楼层进行了多楼层导航, 就会重新画线, 判断如果出发点和终点的楼层对应切换时的地图就自动画线)
@@ -417,11 +438,13 @@ define(function (require, exports, module) {
 
         //根据当前楼层来获取要不要划线和划哪部分线
         isDrawLine: function (aData) {
+            // ccc ++;
             aData.forEach(function (item, index, arr) {
                 var sFloorid = item.floorId;
                 if (gV.floorId === sFloorid) {
                     var aPos = item.pointList;
                     gV.aLineSvgPos = aPos;
+                    // jsLib('#beaCount').html(gV.aLineSvgPos[0].x + ',' + gV.aLineSvgPos[0].y + ',' + ccc);
                     var aClientPos = MapFn.prototype.changeToAllClientPos(gV.aLineSvgPos);
                     MapFn.prototype.draw('line', aClientPos, false);
                 }
