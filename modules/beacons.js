@@ -20,6 +20,8 @@ define(function (require, exports, module) {
     var unitObj = new Unit();
 
 
+
+
     var bnData = {    //蓝牙返回的接口
         bOpenBlueTooth: false,    //是否开启蓝牙
         iStartSvgPosX: 0,
