@@ -185,5 +185,7 @@ define(function (mapMD, blueTooth, comm) {
         }
     };
 
+    function FloorListControl() {}
+
     module.exports = FloorListControl;
 });
