@@ -2,7 +2,7 @@
  * Created by yan on 23/01/2017.
  */
 
-function FloorListControl(mapMD, blueTooth, comm) {
+define(function (mapMD, blueTooth, comm) {
 
     var oFloorCtx = jsLib('#floorCtx');    // 包含生成楼层的父Div块
 
@@ -183,7 +183,7 @@ function FloorListControl(mapMD, blueTooth, comm) {
         getOutInfo: function () {
             return outInfo;
         }
-    }
-}
+    };
 
-module.exports = FloorListControl;
+    module.exports = FloorListControl;
+});
