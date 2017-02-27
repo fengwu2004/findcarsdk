@@ -4,7 +4,9 @@
 
 define(function (require, exports, module) {
 
-    var FloorListControl = function(mapMD, comm, map) {
+
+
+    var FloorListControl = function(mapMD, blueTooth, comm, map) {
 
         var oFloorCtx = jsLib('#floorCtx');    // 包含生成楼层的父Div块
 
