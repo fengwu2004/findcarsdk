@@ -4,189 +4,188 @@
 
 define(function (mapMD, blueTooth, comm) {
 
-    var FloorListControl = function() {
+    var oFloorCtx = jsLib('#floorCtx');    // 包含生成楼层的父Div块
 
-        var oFloorCtx = jsLib('#floorCtx');    // 包含生成楼层的父Div块
+    var oCurrFloor = jsLib('#currName');    // 显示当前楼层的Div块
 
-        var oCurrFloor = jsLib('#currName');    // 显示当前楼层的Div块
+    var allFloorData = [];    // 所有楼层信息
 
-        var allFloorData = [];    // 所有楼层信息
+    var bSupportPlate = false;    // 是否支持车牌查找和查询所有空车位数据
 
-        var bSupportPlate = false;    // 是否支持车牌查找和查询所有空车位数据
+    var bSwitchFloor = true;    // 默认是自动切换楼层的
 
-        var bSwitchFloor = true;    // 默认是自动切换楼层的
+    var outInfo = [];    // 出口信息
 
-        var outInfo = [];    // 出口信息
+    // 自动生成楼层
+    function _createFloor(data) {
 
-        // 自动生成楼层
-        function _createFloor(data) {
+        var sHtml = '';
 
-            var sHtml = '';
+        data.forEach(function (obj, index) {
 
-            data.forEach(function (obj, index) {
+            sHtml += "<div class=\"lc_div2 lc_divcom\" id=" + '"' + obj.id + '"' + " title=" + '"' + obj.regionId + '"' + ">" + obj.name + " " +
+                "<span style=" + " 'opacity: 0' " + " class=" + "'lc_dot'" + ">●</span>" + "</div>";
+        });
 
-                sHtml += "<div class=\"lc_div2 lc_divcom\" id=" + '"' + obj.id + '"' + " title=" + '"' + obj.regionId + '"' + ">" + obj.name + " " +
-                    "<span style=" + " 'opacity: 0' " + " class=" + "'lc_dot'" + ">●</span>" + "</div>";
-            });
+        oFloorCtx.html(sHtml);
 
-            oFloorCtx.html(sHtml);
+        _changeStyle(data);
+    };
 
-            _changeStyle(data);
-        };
+    // 当前楼层被选中的样式
+    function _changeStyle(data) {
 
-        // 当前楼层被选中的样式
-        function _changeStyle(data) {
+        _autoChangeStyle();
+
+        _floorListen();
+    };
+
+    // 给自动生成的div添加tap事件
+    function _floorListen() {
+
+        oFloorCtx.find('div').tap(function () {
+            // 设置不自动切换
+            bSwitchFloor = false;
+
+            //切换楼层之前先保存
+            _switchFloor(this.id, this.title);
 
             _autoChangeStyle();
 
-            _floorListen();
-        };
+            comm.showOrHidddenDiv('floorCtx', false);
+        });
 
-        // 给自动生成的div添加tap事件
-        function _floorListen() {
+        //顶部当前楼层的tap事件
+        oCurrFloor.tap(function () {
 
-            oFloorCtx.find('div').tap(function () {
-                // 设置不自动切换
-                bSwitchFloor = false;
-
-                //切换楼层之前先保存
-                _switchFloor(this.id, this.title);
-
-                _autoChangeStyle();
+            if (oFloorCtx.toDom().style.display === 'block') {
 
                 comm.showOrHidddenDiv('floorCtx', false);
-            });
+            }
+            else {
 
-            //顶部当前楼层的tap事件
-            oCurrFloor.tap(function () {
+                comm.showOrHidddenDiv('floorCtx', true);
+            }
+        });
+    };
 
-                if (oFloorCtx.toDom().style.display === 'block') {
+    // 自动更改楼层样式
+    function _autoChangeStyle() {
 
-                    comm.showOrHidddenDiv('floorCtx', false);
-                }
-                else {
+        var oChild = oFloorCtx.find('div').elements;
 
-                    comm.showOrHidddenDiv('floorCtx', true);
-                }
-            });
-        };
+        var mapInfo = mapMD.getMapInfo();
 
-        // 自动更改楼层样式
-        function autoChangeStyle() {
+        var regionId = mapInfo.regionId;
 
-            var oChild = oFloorCtx.find('div').elements;
+        var floorId = mapInfo.floorId;    //从mapMD模块获取的
 
-            var mapInfo = mapMD.getMapInfo();
+        Array.prototype.slice.call(oChild).map(function (objDom) {
 
-            var regionId = mapInfo.regionId;
+            jsLib(objDom).removeClass('lc_div3 lc_divcom').addClass('lc_div2 lc_divcom');
 
-            var floorId = mapInfo.floorId;    //从mapMD模块获取的
+            return objDom;
 
-            Array.prototype.slice.call(oChild).map(function (objDom) {
+        }).forEach(function (objDom) {
 
-                jsLib(objDom).removeClass('lc_div3 lc_divcom').addClass('lc_div2 lc_divcom');
+            if (objDom.id === floorId && objDom.title === regionId) {
 
-                return objDom;
+                jsLib(objDom).removeClass('lc_div2 lc_divcom').addClass('lc_div3 lc_divcom');
 
-            }).forEach(function (objDom) {
+                oCurrFloor.html(objDom.innerHTML);
+            }
+        });
+    };
 
-                if (objDom.id === floorId && objDom.title === regionId) {
+    // 楼层切换
+    function _switchFloor(floorId, regionId) {
 
-                    jsLib(objDom).removeClass('lc_div2 lc_divcom').addClass('lc_div3 lc_divcom');
+        if ((floorId === undefined &&
+            regionId === undefined) || floorId === map.floorId) return;
 
-                    oCurrFloor.html(objDom.innerHTML);
-                }
-            });
-        };
+        map.load({
+            floorId: floorId,
+            regionId: regionId,
+            switchFloor: true
+        }, function succFn() {
 
-        // 楼层切换
-        function _switchFloor(floorId, regionId) {
+            mapMD.setMapInfo(floorId, regionId);
 
-            if ((floorId === undefined &&
-                regionId === undefined) || floorId === map.floorId) return;
+            map.reducedMap();
 
-            map.load({
-                floorId: floorId,
-                regionId: regionId,
-                switchFloor: true
-            }, function succFn() {
+            commMethods.dataLoadingCancel();
 
-                mapMD.setMapInfo(floorId, regionId);
+            commMethods.reuseCode();
 
-                map.reducedMap();
+        }, function beforeFn() {
 
-                commMethods.dataLoadingCancel();
+            commMethods.dataLoading('楼层切换中...');
+        });
+    };
 
-                commMethods.reuseCode();
-
-            }, function beforeFn() {
-
-                commMethods.dataLoading('楼层切换中...');
-            });
-        };
-
-        // 根据楼层floorId求出楼层名
-        function getFloorNameByFid(fId) {
-            var i, length;
-            for (i = 0, length = allFloorData.length; i < length; i += 1) {
-                if (fId === allFloorData[i].id) {
-                    return [allFloorData[i].name, allFloorData[i].regionId];
-                }
-                ;
+    // 根据楼层floorId求出楼层名
+    function getFloorNameByFid(fId) {
+        var i, length;
+        for (i = 0, length = allFloorData.length; i < length; i += 1) {
+            if (fId === allFloorData[i].id) {
+                return [allFloorData[i].name, allFloorData[i].regionId];
             }
             ;
-        };
-
-        // 以下对外抛出
-
-        return {    // 公有变量和方法
-            // 楼层逻辑
-            floorLogic: function () {
-                map.changeFloor(function (data) {    // 很多信息
-                    var floorList = data.floorList;    // 楼层信息
-                    allFloorData = [];    // 置空
-                    outInfo = data.outerExitList;    // 出口信息
-                    allFloorData = floorList;
-                    if (typeof data.dyRecognize === 'number' && data.dyRecognize === 1) {
-                        bSupportPlate = true;
-                    }
-                    ;
-
-                    _createFloor(floorList.reverse());
-                }, function (errordata) {    // 获取楼层信息失败的回掉函数
-                    console.log(errordata);
-                });
-            },
-
-            // 自动更改楼层样式
-            autoChangeStyle: autoChangeStyle,
-
-            // 是否支持车牌找车
-            isSupportPlate: function () {
-                return bSupportPlate;
-            },
-
-            // 根据楼层floorId求出楼层名
-            getFloorName: getFloorNameByFid,
-
-            // 设置楼层是否切换
-            setIsSwitchFloor: function (bool) {
-                bSwitchFloor = bool;
-            },
-
-            // 获取是否切换楼层
-            getIsSwitchFloor: function () {
-                return (function () {
-                    return bSwitchFloor;
-                })();
-            },
-
-            // 获取出口信息
-            getOutInfo: function () {
-                return outInfo;
-            }
-        };
+        }
+        ;
     };
+
+    // 以下对外抛出
+
+    return {    // 公有变量和方法
+        // 楼层逻辑
+        floorLogic: function () {
+            map.changeFloor(function (data) {    // 很多信息
+                var floorList = data.floorList;    // 楼层信息
+                allFloorData = [];    // 置空
+                outInfo = data.outerExitList;    // 出口信息
+                allFloorData = floorList;
+                if (typeof data.dyRecognize === 'number' && data.dyRecognize === 1) {
+                    bSupportPlate = true;
+                }
+                ;
+
+                _createFloor(floorList.reverse());
+            }, function (errordata) {    // 获取楼层信息失败的回掉函数
+                console.log(errordata);
+            });
+        },
+
+        // 自动更改楼层样式
+        autoChangeStyle: _autoChangeStyle,
+
+        // 是否支持车牌找车
+        isSupportPlate: function () {
+            return bSupportPlate;
+        },
+
+        // 根据楼层floorId求出楼层名
+        getFloorName: getFloorNameByFid,
+
+        // 设置楼层是否切换
+        setIsSwitchFloor: function (bool) {
+            bSwitchFloor = bool;
+        },
+
+        // 获取是否切换楼层
+        getIsSwitchFloor: function () {
+            return (function () {
+                return bSwitchFloor;
+            })();
+        },
+
+        // 获取出口信息
+        getOutInfo: function () {
+            return outInfo;
+        }
+    };
+
+    function FloorListControl() {}
 
     module.exports = FloorListControl;
 });
