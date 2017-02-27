@@ -2,11 +2,9 @@
  * Created by yan on 23/01/2017.
  */
 
-define(function (require, exports, module) {
+define(function (mapMD, blueTooth, comm) {
 
-
-
-    var FloorListControl = function(mapMD, blueTooth, comm) {
+    var FloorListControl = function() {
 
         var oFloorCtx = jsLib('#floorCtx');    // 包含生成楼层的父Div块
 
