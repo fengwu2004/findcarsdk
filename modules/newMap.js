@@ -6,15 +6,9 @@ define(function (require, exports, module) {
 
     var gv = require('./idrCoreManager');
 
-    require('./alloy_finger');
+    var hammObj = require('./hamm');
 
-    var hammObj = require('../sdk/modules/hamm');
-
-    var AlloyFinger = window.AlloyFinger;
-
-    var Matrix3 = require('./matrix3');
-
-    var Utils = require('../sdk/modules/utils');
+    var Utils = require('./utils');
 
     var oUtils = new Utils();
 
@@ -22,7 +16,7 @@ define(function (require, exports, module) {
 
     var unitObj = new Unit();
 
-    var Maputils = require('../sdk/modules/maputils');
+    var Maputils = require('./maputils');
 
     var oMapUtils = new Maputils();
 
