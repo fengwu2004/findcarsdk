@@ -77,7 +77,7 @@ define(function (require, exports, module) {
 
             success:function (data) {
 
-                createSVGMap(data);
+                createSVGMap(data, regionId, floorId);
             },
 
             error:function (data) {
@@ -87,7 +87,7 @@ define(function (require, exports, module) {
         });
     }
 
-    function addSvgMap(data) {
+    function addSvgMap(data, regionId, floorId) {
 
         var svg = data;
 
@@ -153,13 +153,13 @@ define(function (require, exports, module) {
         hammObj.handleDo();
     }
 
-    function createSVGMap(str) {
+    function createSVGMap(str, regionId, floorId) {
 
         removePreviousSVG();
 
         var svg = str.data;
 
-        addSvgMap(svg);
+        addSvgMap(svg, regionId, floorId);
     }
 
     function removePreviousSVG() {
