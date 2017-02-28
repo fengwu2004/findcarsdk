@@ -12,7 +12,7 @@ define(function (require, exports, module) {
 
     var oUtils = new Utils();
 
-    var Unit = Utils.Unit;
+    var Unit = oUtils.Unit;
 
     var unitObj = new Unit();
 
