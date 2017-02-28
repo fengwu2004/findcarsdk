@@ -10,6 +10,8 @@ define(function (require, exports, module) {
 
     var Utils = require('./utils');
 
+    var oUtils = new Utils();
+
     var ObjectUnits = require('./units');
 
     var Unit = ObjectUnits.Unit;
@@ -130,9 +132,9 @@ define(function (require, exports, module) {
 
         var domView = jsLib.getEle('#viewport');
 
-        hammObj.scale = gV.scale = 0;
+        hammObj.scale = 0;
 
-        hammObj.angle = gV.lastSvgAngle = 0;
+        hammObj.angle = 0;
 
         hammObj.init(domView);
 
