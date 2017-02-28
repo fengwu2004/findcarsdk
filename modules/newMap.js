@@ -145,10 +145,7 @@ define(function (require, exports, module) {
         //进行文字加载
         unitObj.getTxtList(regionId, floorId);
 
-        if (gV.bDynamicNag === false) {
-
-            oMapUtils.isAgainDraw(floorId);
-        };
+        oMapUtils.isAgainDraw(floorId);
 
         hammObj.handleDo();
     }
