@@ -10,9 +10,9 @@ define(function (require, exports, module) {
 
     var Utils = require('./utils');
 
-    var oUtils = new Utils();
+    var ObjectUnits = require('./units');
 
-    var Unit = oUtils.Unit;
+    var Unit = ObjectUnits.Unit;
 
     var unitObj = new Unit();
 
