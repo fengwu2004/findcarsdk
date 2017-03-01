@@ -22,6 +22,8 @@ define(function (require, exports, module) {
 
     var oMapUtils = new Maputils();
 
+    var networkManager = require('./idrNetworkManager');
+
     function idrmap() {
 
         this.af = null;
@@ -49,42 +51,17 @@ define(function (require, exports, module) {
 
         this.floorId = floorId;
 
-        var str = 'appId=' + gv.appId + '&clientId=' + gv.clientId + '&time=' + gv.time + '&sign=' + gv.sign;
+        networkManager.serverCallSvgMap(regionId, floorId,
 
-        var url = 'http://wx.indoorun.com/wx/getSvg.html';
-
-        jsLib.ajax({
-
-            type: "get",
-
-            dataType: 'jsonp',
-
-            url: url, //添加自己的接口链接
-
-            data: {
-                'regionId': regionId,
-                'floorId': floorId,
-                'appId': gv.appId,
-                'clientId': gv.clientId,
-                'sessionKey': gv.sessionKey
-            },
-
-            timeOut: 10000,
-
-            before:function () {
-
-            },
-
-            success:function (data) {
+            function (data) {
 
                 createSVGMap(data, regionId, floorId);
             },
-
-            error:function (data) {
+            function () {
 
                 alert('地图数据获取失败!' + data);
             }
-        });
+        )
     }
 
     function addSvgMap(data, regionId, floorId) {
