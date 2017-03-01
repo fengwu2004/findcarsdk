@@ -18,9 +18,9 @@ define(function (require, exports, module) {
         var data = {
             'regionId': regionId,
             'floorId': floorId,
-            'appId': gv.appId,
-            'clientId': gv.clientId,
-            'sessionKey': gv.sessionKey
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
         };
 
         jsLib.ajax({
