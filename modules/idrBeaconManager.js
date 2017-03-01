@@ -21,10 +21,6 @@ define(function (require, exports, module) {
         this.sSignature = '';
 
         this.onBeaconReceiveFunc = '';
-
-        this.errorFunc = '';
-
-        this.delegator = null;
     }
 
     idrBeaconMgr.prototype.init = function() {
@@ -148,7 +144,7 @@ define(function (require, exports, module) {
                 if (argv && argv.errMsg == 'startSearchBeacons:ok') {
 
 
-                };
+                }
             }
         });
     }

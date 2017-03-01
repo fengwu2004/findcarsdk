@@ -4,8 +4,6 @@
 
 define(function (require, exports, module) {
 
-    var gv = require('./idrCoreManager');
-
     var hammObj = require('./hamm');
 
     var Utils = require('./utils');
@@ -30,15 +28,7 @@ define(function (require, exports, module) {
 
     function idrMapControl() {
 
-        this.af = null;
-
         this.svgFrame = null;
-
-        this.svgMap = null;
-
-        this.units = [];
-
-        this.iniScale = 1;
 
         this.regionId = '';
 
@@ -76,7 +66,7 @@ define(function (require, exports, module) {
 
     idrMapControl.prototype.addFlootList = function () {
 
-        this.floorListControl = new idrFloorListControl()
+        this.floorListControl = new idrFloorListControl();
 
         var oSvgFrame = document.querySelector('#svgFrame');
 
@@ -110,7 +100,7 @@ define(function (require, exports, module) {
                 aPolygon[i].id = 'unit_' + i;
             }
 
-            for (var i = 0; i < aRect.length; i++) {
+            for (i = 0; i < aRect.length; i++) {
 
                 aRect[i].id = 'rect_' + i;
             }
@@ -175,13 +165,13 @@ define(function (require, exports, module) {
         }
         else {
 
-            var svgFrame = document.createElement('div');
+            svgFrame = document.createElement('div');
 
             svgFrame.id = 'svgFrame';
 
             svgFrame.className = 'svg_frame';
 
-            var svgBox = document.createElement('div');
+            svgBox = document.createElement('div');
 
             svgBox.id = 'svgBox';
 
@@ -194,7 +184,7 @@ define(function (require, exports, module) {
 
             gText.className = 'gTxt';
 
-            var lines = document.createElement('div');
+            lines = document.createElement('div');
 
             lines.id = 'line';
 
@@ -209,4 +199,4 @@ define(function (require, exports, module) {
     }
 
     module.exports = idrMapControl;
-})
+});
