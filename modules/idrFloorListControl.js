@@ -32,7 +32,7 @@ define(function (require, exports, module) {
 
         lc_div.id = "lc_div"
 
-        lc_div.className = "lc_dic"
+        lc_div.className = "lc_div"
 
         obj.map.appendChild(lc_div)
 
