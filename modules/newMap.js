@@ -193,6 +193,7 @@ define(function (require, exports, module) {
 
             var gText = document.createElement('div');
 
+
             gText.id = 'g_txt';
 
             gText.className = 'gTxt';
