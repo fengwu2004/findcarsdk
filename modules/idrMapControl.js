@@ -78,7 +78,9 @@ define(function (require, exports, module) {
 
         this.floorListControl = new idrFloorListControl()
 
-        this.floorListControl.init(this.svgFrame, this.regionData.floorList)
+        var oSvgFrame = document.querySelector('#svgFrame');
+
+        this.floorListControl.init(oSvgFrame, this.regionData.floorList)
     }
 
     function addSvgMap(data, regionId, floorId) {
