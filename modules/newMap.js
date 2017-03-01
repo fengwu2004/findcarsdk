@@ -179,10 +179,6 @@ define(function (require, exports, module) {
         }
         else  {
 
-            var oParent = document.createElement('div');
-
-            oParent.id = this.id;
-
             var svgFrame = document.createElement('div');
 
             svgFrame.id = 'svgFrame';
@@ -211,73 +207,8 @@ define(function (require, exports, module) {
 
             svgFrame.appendChild(lines);
 
-            oParent.appendChild(svgFrame);
-
-            document.body.appendChild(oParent);
+            document.body.appendChild(svgFrame);
         }
-    }
-
-    function addUnits(obj) {
-
-        var url = 'http://wx.indoorun.com/wx/getUnitsOfFloor.html';
-
-        jsLib.ajax({
-
-            type: "get",
-
-            dataType: 'jsonp',
-
-            url: url, //添加自己的接口链接
-
-            data: {
-                'regionId': obj.regionId,
-                'floorId': obj.floorId,
-                'appId': gv.appId,
-                'clientId': gv.clientId,
-                'sessionKey': gv.sessionKey
-            },
-
-            timeOut: 10000,
-
-            before: function () {
-
-            },
-            success: function (str) {
-
-                var data = str;
-
-                if (data != null) {
-
-                    obj.units = data.data;
-
-                    doAddUnits(obj);
-                }
-            },
-            error: function (str) {
-
-                alert('获取unit失败!' + str);
-            }
-        });
-    }
-
-    function doAddUnits(obj) {
-
-        var gtext = document.querySelector('#g_txt');
-
-        var html = '';
-
-        for (var i = 0; i < obj.units.length; ++i) {
-
-            var name = obj.units[i].name;
-
-            var left = 'left:' + obj.units[i].boundLeft + 'px;';
-
-            var top = 'top:' + obj.units[i].boundTop + 'px;';
-
-            html += '<span style="color:blue;' + left + top + '"' + '>' + name + '</span>';
-        }
-
-        gtext.innerHTML = html;
     }
 
     module.exports = idrmap;
