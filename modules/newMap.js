@@ -125,6 +125,8 @@ define(function (require, exports, module) {
         oMapUtils.isAgainDraw(floorId);
 
         hammObj.handleDo();
+
+        hammObj.bindTouch(oSvgBox);
     }
 
     function createSVGMap(str, regionId, floorId) {
