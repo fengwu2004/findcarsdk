@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 
         idrNetwork.serverCallRegionAllInfo(regionId, function (response) {
 
-            this.regionAllInfo = response
+            that.regionAllInfo = response
 
             if (typeof success === "function") {
 
