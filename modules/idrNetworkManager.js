@@ -39,7 +39,7 @@ define(function (require, exports, module) {
 
             },
 
-            success:function (data) {
+            success:function (response) {
 
                 if (response != null && response.code == "success") {
 
@@ -50,7 +50,7 @@ define(function (require, exports, module) {
                 }
             },
 
-            error:function (data) {
+            error:function (response) {
 
                 if (typeof failed === "function") {
 
