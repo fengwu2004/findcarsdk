@@ -131,7 +131,7 @@ define(function (require, exports, module) {
 
         removePreviousSVG();
 
-        var svg = str.data;
+        var svg = str;
 
         addSvgMap(svg, regionId, floorId);
     }
