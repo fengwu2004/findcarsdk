@@ -153,8 +153,6 @@ define(function (require, exports, module) {
         removePreviousSVG();
 
         addSvgMap(svg, regionId, floorId);
-
-
     }
 
     function removePreviousSVG() {
