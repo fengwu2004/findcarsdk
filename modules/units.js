@@ -36,9 +36,12 @@ define(function (require, exports, module) {
 
                 function (data) {
 
+                    var units = data;
+
                     UnitData.allUnits = [];
 
                     for (var i = 0; i < units.length; i++) {
+
                         UnitData.allUnits.push(units[i]);
                     };
 
