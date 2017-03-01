@@ -4,7 +4,7 @@
 
 define(function (require, exports, module) {
 
-    var gv = require('../../test/idrCoreManager');
+    var gv = require('idrCoreManager');
 
     var hammObj = require('./hamm');
 
@@ -24,6 +24,8 @@ define(function (require, exports, module) {
 
     var networkManager = require('./idrNetworkManager');
 
+    var idrFloorList = require('./idrFloorListControl');
+
     function idrmap() {
 
         this.af = null;
@@ -41,6 +43,8 @@ define(function (require, exports, module) {
         this.floorId = '';
 
         this.initAngle = 0;
+
+        this.regionData = null;
     }
 
     idrmap.prototype.loadMap = function (regionId, floorId) {
@@ -56,12 +60,19 @@ define(function (require, exports, module) {
             function (data) {
 
                 createSVGMap(data, regionId, floorId);
+
+                that.addFlootList();
             },
             function () {
 
                 alert('地图数据获取失败!' + data);
             }
         )
+    }
+    
+    idrmap.prototype.addFlootList = function () {
+
+
     }
 
     function addSvgMap(data, regionId, floorId) {
@@ -129,13 +140,13 @@ define(function (require, exports, module) {
         hammObj.bindTouch(oSvgBox);
     }
 
-    function createSVGMap(str, regionId, floorId) {
+    function createSVGMap(svg, regionId, floorId) {
 
         removePreviousSVG();
 
-        var svg = str;
-
         addSvgMap(svg, regionId, floorId);
+
+
     }
 
     function removePreviousSVG() {

@@ -13,7 +13,7 @@ define(function (require, exports, module) {
     var oMapUtils = new Maputils();
     //载入手势
     /*var Hamm = require('./hamm');
-    var hammObj = new Hamm();*/
+     var hammObj = new Hamm();*/
 
     var hammObj = require('./hamm');
     //载入unit
@@ -215,7 +215,7 @@ define(function (require, exports, module) {
                 },
                 success: function (str) {
                     /*str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');*/
+                     var data = eval('(' + str + ')');*/
                     var data = str;
                     if (data != null) {
                         if (data.code == "success") {
@@ -255,7 +255,7 @@ define(function (require, exports, module) {
                             hammObj.angle = gV.lastSvgAngle = 0;
                             hammObj.init(domView);
                             if (!switchFloor) {    //切换楼层时就不用再次绑定
-                                
+
                                 hammObj.bindTouch(domBind);
                                 // clickMap.init();    // 注册unit点击事件处理程序
                             }
@@ -361,7 +361,7 @@ define(function (require, exports, module) {
 
             var aClientPos = oMapUtils.changeToClientPos(obj.aSvgPos[0], obj.aSvgPos[1]);
             if (obj.floorId == gV.floorId) {
-                    dom.style.display = 'block';
+                dom.style.display = 'block';
             } else {
                 dom.style.display = 'none';
             }
@@ -673,7 +673,7 @@ define(function (require, exports, module) {
                 errorFn && errorFn(str);
             }
         });
-        
+
     }
 
     //点移到屏幕中心点(地图也跟着走)
@@ -865,25 +865,25 @@ define(function (require, exports, module) {
 
     YFMap.prototype.getRegion = function(fn, errorFn) {
         var url = 'http://wx.indoorun.com/wx/queryAppRegionList.html';
-            jsLib.ajax({
-                type: "get",
-                dataType: 'jsonp',
-                url: url, //添加自己的接口链接
-                data: {
-                    'appId': gV.configure.appId,
-                    'clientId': gV.configure.clientId,
-                    'sessionKey': gV.configure.sessionKey
-                },
-                timeOut: 10000,
-            
-                success: function (str) {
-                    fn && fn(str);
-                },
-                error: function (str) {
-                    errorFn && errorFn();
-                    alert('地图数据获取失败!' + str);
-                }
-            });
+        jsLib.ajax({
+            type: "get",
+            dataType: 'jsonp',
+            url: url, //添加自己的接口链接
+            data: {
+                'appId': gV.configure.appId,
+                'clientId': gV.configure.clientId,
+                'sessionKey': gV.configure.sessionKey
+            },
+            timeOut: 10000,
+
+            success: function (str) {
+                fn && fn(str);
+            },
+            error: function (str) {
+                errorFn && errorFn();
+                alert('地图数据获取失败!' + str);
+            }
+        });
 
     }
 
@@ -945,12 +945,12 @@ define(function (require, exports, module) {
                         oPoint && oUtils.HandleNode.setStyle3(oPoint, 'transform', value);
                     }
 
-                   /* value = 'translate(-50%' + ',-50%)' + ' ' + 'rotate(' + alpha + 'deg)';
-                    oUtils.HandleNode.setStyle3(obj, 'transform', value);*/
+                    /* value = 'translate(-50%' + ',-50%)' + ' ' + 'rotate(' + alpha + 'deg)';
+                     oUtils.HandleNode.setStyle3(obj, 'transform', value);*/
 
                     // oUtils.HandleNode.setStyle3(obj, 'transform', 'rotate(' + alpha + 'deg)');    //暂时不用rotate属性
                     /* var cosVal = Math.cos(this.value * Math.PI / 180),
-                         sinVal = Math.sin(this.value * Math.PI / 180);
+                     sinVal = Math.sin(this.value * Math.PI / 180);
                      var valTransform = 'matrix('+ cosVal.toFixed(6) +','+ sinVal.toFixed(6) +','+ (-1 * sinVal).toFixed(6) +','+ cosVal.toFixed(6) +',0,0)';
                      css3Transform(obj, valTransform);*/
                 }, false);
@@ -972,13 +972,8 @@ define(function (require, exports, module) {
 
     YFMap._methods.domRotate(true);
 
-
-
-
-
     //抛出载入地图类
     module.exports = YFMap;
-
 
     //雷达波(单例模式)
     var wave = (function() {
@@ -1066,53 +1061,5 @@ define(function (require, exports, module) {
             }
         };
     })();
-
-
-
-
-    /*//向服务器获取存储的动静态导航终点信息
-    function getSendEndInfo() {
-        var _this = this;
-        var url = 'http://wx.indoorun.com/chene/getCheLocation.html';
-        oUtils.RequestData.ajax(url, {
-            fnSucc: function (str) {
-                str = str.replace(/\n/g, '');
-                var data = eval('(' + str + ')');
-                if (data != null) {
-                    if (data.code == "success") {
-                        // alert("发送成功");
-                        //存终点数据
-                        var obj = data.data;
-                        //静态的终点
-                        gV.floorMore.endObj.svgx = gV.floorDTMore.endObj.svgx = obj.svgX;
-                        gV.floorMore.endObj.svgy = gV.floorDTMore.endObj.svgy = obj.svgY;
-                        gV.floorMore.endObj.regionId = gV.floorDTMore.endObj.regionId = obj.regionId;
-                        gV.floorMore.endObj.floorId = gV.floorDTMore.endObj.floorId = obj.floorId;
-                        gV.staticGps.endUnit = gV.floorMore.endObj.unit = gV.floorDTMore.endObj.unit = obj.unitId;
-
-                        //如果是静态直接显示点，动态就显示到这去的底部div
-                        if (oMapUtils.isRemain(gV.floorMore.endObj)) {
-                            oMapUtils.svgShowPoint('zhongdian', [gV.floorMore.endObj.svgx, gV.floorMore.endObj.svgy], 32, 32);
-                        }
-                        if (oMapUtils.isRemain(gV.floorDTMore.endObj)) {
-                            if (bnData.bOpenBlueTooth) {
-                                oMapUtils.svgShowPoint('zhongdian', [gV.floorDTMore.endObj.svgx, gV.floorDTMore.endObj.svgy], 32, 32);
-                                document.querySelector('#dtgps').style.display = 'block';
-                            }
-                        }
-                    }
-                }
-            },
-            fnFaild: function (str) {
-                alert('向服务器获取存储的动静态导航终点信息, 失败!' + str);
-            },
-        });
-    }*/
-
-
-
-
-
-
 
 });
