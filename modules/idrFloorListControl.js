@@ -28,15 +28,15 @@ define(function (require, exports, module) {
 
     function _createContainer(obj) {
 
-        var lc_div = jsLib.createElement("div")
+        var lc_div = document.createElement("div")
 
         lc_div.id = "lc_div"
 
         lc_div.class = "lc_dic"
 
-        map.appendChild(lc_div)
+        obj.map.appendChild(lc_div)
 
-        var currentNameDiv = jsLib.createElement("div")
+        var currentNameDiv = document.createElement("div")
 
         currentNameDiv.id = "currName"
 
@@ -44,7 +44,7 @@ define(function (require, exports, module) {
 
         lc_div.appendChild(currentNameDiv)
 
-        var title = jsLib.createElement("span")
+        var title = document.createElement("span")
 
         currentNameDiv.appendChild(title)
 
