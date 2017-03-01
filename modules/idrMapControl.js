@@ -4,7 +4,7 @@
 
 define(function (require, exports, module) {
 
-    var gv = require('idrCoreManager');
+    var gv = require('./idrCoreManager');
 
     var hammObj = require('./hamm');
 
@@ -24,9 +24,11 @@ define(function (require, exports, module) {
 
     var networkManager = require('./idrNetworkManager');
 
-    var idrFloorList = require('./idrFloorListControl');
+    var idrFloorListControl = require('./idrFloorListControl');
 
-    function idrmap() {
+    var idrDataMgr = require('./idrDataManager');
+
+    function idrMapControl() {
 
         this.af = null;
 
@@ -47,7 +49,9 @@ define(function (require, exports, module) {
         this.regionData = null;
     }
 
-    idrmap.prototype.loadMap = function (regionId, floorId) {
+    idrMapControl.prototype.loadMap = function (regionId, floorId) {
+
+        this.regionData = idrDataMgr.regionAllInfo;
 
         var that = this;
 
@@ -69,10 +73,16 @@ define(function (require, exports, module) {
             }
         )
     }
-    
-    idrmap.prototype.addFlootList = function () {
 
+    idrMapControl.prototype.addFlootList = function () {
 
+        this.floorListControl = new idrFloorListControl()
+
+        this.floorListControl.floorList = this.regionData.floorList
+
+        this.floorListControl.map = this.svgFrame
+
+        this.floorListControl.init()
     }
 
     function addSvgMap(data, regionId, floorId) {
@@ -108,11 +118,11 @@ define(function (require, exports, module) {
             }
         }
 
-        if(aUnit1) {
+        if (aUnit1) {
 
             var aR = aUnit1.getElementsByTagName('rect');
 
-            Array.prototype.forEach.call(aR, function(node, index, array) {
+            Array.prototype.forEach.call(aR, function (node, index, array) {
 
                 node.id = 'rect_' + index;
             })
@@ -167,7 +177,7 @@ define(function (require, exports, module) {
 
             lines.innerHTML = '';
         }
-        else  {
+        else {
 
             var svgFrame = document.createElement('div');
 
@@ -202,5 +212,5 @@ define(function (require, exports, module) {
         }
     }
 
-    module.exports = idrmap;
+    module.exports = idrMapControl;
 })

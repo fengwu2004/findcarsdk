@@ -4,7 +4,7 @@
 
 define(function (require, exports, module) {
 
-    function idrFloorList() {
+    function idrFloorListControl() {
 
         this.map = null
 
@@ -15,7 +15,7 @@ define(function (require, exports, module) {
         this.changeFloorFunc = null
     }
 
-    idrFloorList.prototype.init = function (map, floorList) {
+    idrFloorListControl.prototype.init = function (map, floorList) {
 
         this.map = map
 
@@ -51,6 +51,6 @@ define(function (require, exports, module) {
         title.innerText = obj.currentFloor.name
     }
 
-    module.exports = idrFloorList;
+    module.exports = idrFloorListControl;
 })
 

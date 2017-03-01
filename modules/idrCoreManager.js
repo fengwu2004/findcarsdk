@@ -13,8 +13,6 @@ define(function(require, exports, module) {
         this.loadSessionFailed = ''
     }
 
-    var coreManager = new idrCoreManager();
-
     idrCoreManager.prototype.init = function() {
 
         var that = this;
@@ -106,5 +104,7 @@ define(function(require, exports, module) {
         }
     }
 
-    module.exports = coreManager;
+    var idrCoreMgr = new idrCoreManager();
+
+    module.exports = idrCoreMgr;
 });
