@@ -52,9 +52,17 @@ define(function (require, exports, module) {
 
         var floorDivs = _createList(obj.floorList)
 
+        var lc_floorDiv = document.createElement("div")
+
+        lc_floorDiv.id = "floorDiv"
+
+        lc_floorDiv.className = "lc_color"
+
+        obj.map.appendChild(lc_floorDiv)
+
         floorDivs.forEach(function (item, index) {
 
-            lc_div.appendChild(item)
+            lc_floorDiv.appendChild(item)
         })
     }
 
