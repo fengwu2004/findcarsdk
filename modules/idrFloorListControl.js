@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         this.map.append(lc_div)
 
-        createFloorDiv(lc_div, this.currentFloor[0], this.floorList)
+        createFloorDiv(lc_div, this.currentFloor, this.floorList)
     }
     
     function create(ele, id, classname) {
