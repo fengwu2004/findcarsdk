@@ -49,7 +49,34 @@ define(function (require, exports, module) {
         currentNameDiv.appendChild(title)
 
         title.innerText = obj.currentFloor.name
+
+        var floorDivs = _createList(this.floorList)
+
+        floorDivs.forEach(function(obj, index) {
+
+            lc_div.appendChild(obj)
+        })
     }
+
+    function _createList(data) {
+
+        var divs = []
+
+        data.forEach(function(obj, index) {
+
+            var div = document.createElement('div')
+
+            div.id = obj.id
+
+            div.className = 'lc_div2 lc_divcom'
+
+            div.innerText = obj.name
+
+            divs.push(div)
+        });
+
+        return divs
+    };
 
     module.exports = idrFloorListControl;
 })
