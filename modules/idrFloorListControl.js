@@ -73,6 +73,16 @@ define(function (require, exports, module) {
             div.innerText = obj.name
 
             divs.push(div)
+
+            document.createElement('div')
+
+            div.id = obj.id
+
+            div.className = 'lc_div2 lc_divcom'
+
+            div.innerText = obj.name
+
+            divs.push(div)
         });
 
         return divs
