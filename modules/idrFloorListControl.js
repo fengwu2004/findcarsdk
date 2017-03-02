@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         this.map.append(lc_div)
 
-        createFloorDiv(lc_div, this.currentFloor, this.floorList)
+        createDiv(lc_div, this.currentFloor, this.floorList)
     }
     
     function create(ele, id, classname) {
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
         return div
     }
 
-    function floorDiv(currentFloor, floorList) {
+    function createFloorDiv(currentFloor, floorList) {
 
         var divs = []
 
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createFloorDiv(div, currentFloor, floorList) {
+    function createDiv(div, currentFloor, floorList) {
 
         var currentNameDiv = createCurrName(currentFloor)
 
@@ -99,7 +99,7 @@ define(function (require, exports, module) {
 
         var floorDiv = create('div', 'floorDiv', 'lc_outo')
 
-        var floorDivs = floorDiv(currentFloor, floorList)
+        var floorDivs = createFloorDiv(currentFloor, floorList)
 
         floorDivs.forEach(function (item, index) {
 
