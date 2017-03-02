@@ -35,7 +35,7 @@ define(function (require, exports, module) {
 
         this.div = lc_div
 
-        create(lc_div, this.currentFloor, this.locateFloor, this.floorList)
+        createFloorList(lc_div, this.currentFloor, this.locateFloor, this.floorList)
     }
     
     function create(ele, id, classname) {
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function create(div, currentFloor, locateFloor, floorList) {
+    function createFloorList(div, currentFloor, locateFloor, floorList) {
 
         var currentNameDiv = createCurrName(currentFloor)
 
