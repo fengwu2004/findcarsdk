@@ -103,7 +103,7 @@ define(function (require, exports, module) {
 
         floorDivs.forEach(function (item, index) {
 
-            floorDiv.appendChild(floorDivs)
+            floorDiv.appendChild(item)
         })
 
         div.appendChild(floorDiv)
