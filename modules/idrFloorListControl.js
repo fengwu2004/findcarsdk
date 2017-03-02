@@ -50,7 +50,7 @@ define(function (require, exports, module) {
 
         title.innerText = obj.currentFloor.name
 
-        var floorDivs = _createList(this.floorList)
+        var floorDivs = _createList(obj.floorList)
 
         floorDivs.forEach(function(obj, index) {
 
