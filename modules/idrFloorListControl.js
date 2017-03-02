@@ -76,7 +76,7 @@ define(function (require, exports, module) {
 
             divs.push(div)
 
-            document.createElement('div')
+            div = document.createElement('div')
 
             div.id = obj.id
 
