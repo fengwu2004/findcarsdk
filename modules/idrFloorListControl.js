@@ -86,7 +86,7 @@ define(function (require, exports, module) {
 
             div.appendChild(span)
 
-            if (currentFloor.id === item.id) {
+            if (currentFloor && currentFloor.id === item.id) {
 
                 div.className = 'lc_div3 lc_divcom'
             }
