@@ -55,6 +55,8 @@ define(function (require, exports, module) {
         for (var i = 0; i < floorDivs.length; ++i) {
 
             lc_div.appendChild(floorDivs[i])
+
+            console.log(i)
         }
     }
 
