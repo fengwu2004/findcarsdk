@@ -184,6 +184,15 @@ define(function(require, exports, module) {
         bClearLine: true,    // 是否清空线(默认清空线)
 
 
+        oMapUtils: null,
+
+        oHamm: {
+            moveBefore: false,
+            move: false,
+            moveAfter: false
+        }
+
+
     }
 
     module.exports = globalVar;

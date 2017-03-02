@@ -235,6 +235,15 @@
 			return this;
 		},
 
+        transform: function() {
+
+            for (var i = 0, len = this.elements.length; i < len; i += 1) {
+                jsLib.Transform(this.elements[i]);
+            };
+
+            return this.toDom();
+        },
+
         /*
          * 据父节点查找其子孩子
          * @param { String } 可以是标签名或.calss名
@@ -1730,6 +1739,7 @@
 			} else {
 				// window.move = new Move;
 				jsLib.move = new Move;
+				jsLib.move.form = ['ease', 'easeIn', 'ease2', 'easeOut', 'collision', 'elastic', 'linear', 'wave', 'opposite'];
 			}
 		}
 
@@ -1885,6 +1895,377 @@
 		})
 
 	})();
+
+    (function() {
+
+        var DEG_TO_RAD =  0.017453292519943295;
+
+        // 三维矩阵
+        var Matrix3D = function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+            this.elements = window.Float32Array ? new Float32Array(16) : [];
+            var te = this.elements;
+            te[0] = (n11 !== undefined) ? n11 : 1;
+            te[1] = n21 || 0;
+            te[2] = n31 || 0;
+            te[3] = n41 || 0;
+
+            te[4] = n12 || 0;
+            te[5] = (n22 !== undefined) ? n22 : 1;
+            te[6] = n32 || 0;
+            te[7] = n42 || 0;
+
+            te[8] = n13 || 0;
+            te[9] = n23 || 0;
+            te[10] = (n33 !== undefined) ? n33 : 1;
+            te[11] = n43 || 0;
+
+            te[12] = n14 || 0;
+            te[13] = n24 || 0;
+            te[14] = n34 || 0;
+            te[15] = (n44 !== undefined) ? n44 : 1;
+        };
+
+        Matrix3D.prototype = {
+            constructor: Matrix3D,
+
+            set: function(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
+                var te = this.elements;
+                te[0] = n11; te[4] = n12; te[8] = n13; te[12] = n14;
+                te[1] = n21; te[5] = n22; te[9] = n23; te[13] = n24;
+                te[2] = n31; te[6] = n32; te[10] = n33; te[14] = n34;
+                te[3] = n41; te[7] = n42; te[11] = n43; te[15] = n44;
+                return this;
+            },
+            identity: function() {
+                this.set(
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 1, 0,
+                    0, 0, 0, 1
+                );
+                return this;
+            },
+            appendTransform: function(x, y, z, scaleX, scaleY, scaleZ, rotateX, rotateY, rotateZ, skewX, skewY, originX, originY, originZ) {
+
+                var rx = rotateX * DEG_TO_RAD;
+                var cosx = this._rounded(Math.cos(rx));
+                var sinx = this._rounded(Math.sin(rx));
+                var ry = rotateY * DEG_TO_RAD;
+                var cosy = this._rounded(Math.cos(ry));
+                var siny = this._rounded(Math.sin(ry));
+                var rz = rotateZ * DEG_TO_RAD;
+                var cosz = this._rounded(Math.cos(rz * -1));
+                var sinz = this._rounded(Math.sin(rz * -1));
+
+                this.multiplyMatrices(this, this._arrayWrap([
+                    1, 0, 0, x,
+                    0, cosx, sinx, y,
+                    0, -sinx, cosx, z,
+                    0, 0, 0, 1
+                ]));
+
+                this.multiplyMatrices(this, this._arrayWrap([
+                    cosy, 0, siny, 0,
+                    0, 1, 0, 0,
+                    -siny, 0, cosy, 0,
+                    0, 0, 0, 1
+                ]));
+
+                this.multiplyMatrices(this, this._arrayWrap([
+                    cosz * scaleX, sinz * scaleY, 0, 0,
+                    -sinz * scaleX, cosz * scaleY, 0, 0,
+                    0, 0, 1 * scaleZ, 0,
+                    0, 0, 0, 1
+                ]));
+
+                if (skewX || skewY) {
+                    this.multiplyMatrices(this, this._arrayWrap([
+                        this._rounded(Math.cos(skewX * DEG_TO_RAD)), this._rounded(Math.sin(skewX * DEG_TO_RAD)), 0, 0,
+                        -1 * this._rounded(Math.sin(skewY * DEG_TO_RAD)), this._rounded(Math.cos(skewY * DEG_TO_RAD)), 0, 0,
+                        0, 0, 1, 0,
+                        0, 0, 0, 1
+                    ]));
+                };
+
+                if (originX || originY || originZ) {
+                    this.elements[12] -= originX * this.elements[0] + originY * this.elements[4] + originZ * this.elements[8];
+                    this.elements[13] -= originX * this.elements[1] + originY * this.elements[5] + originZ * this.elements[9];
+                    this.elements[14] -= originX * this.elements[2] + originY * this.elements[6] + originZ * this.elements[10];
+                };
+
+                return this;
+            },
+            // 矩阵相乘
+            multiplyMatrices: function(a, be) {
+                var ae = a.elements;
+                var te = this.elements;
+
+                var a11 = ae[0], a12 = ae[4], a13 = ae[8], a14 = ae[12];
+                var a21 = ae[1], a22 = ae[5], a23 = ae[9], a24 = ae[13];
+                var a31 = ae[2], a32 = ae[6], a33 = ae[10], a34 = ae[14];
+                var a41 = ae[3], a42 = ae[7], a43 = ae[11], a44 = ae[15];
+
+                var b11 = be[0], b12 = be[1], b13 = be[2], b14 = be[3];
+                var b21 = be[4], b22 = be[5], b23 = be[6], b24 = be[7];
+                var b31 = be[8], b32 = be[9], b33 = be[10], b34 = be[11];
+                var b41 = be[12], b42 = be[13], b43 = be[14], b44 = be[15];
+
+                te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
+                te[4] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
+                te[8] = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
+                te[12] = a11 * b14 + a12 * b24 + a13 * b34 + a14 * b44;
+
+                te[1] = a21 * b11 + a22 * b21 + a23 * b31 + a24 * b41;
+                te[5] = a21 * b12 + a22 * b22 + a23 * b32 + a24 * b42;
+                te[9] = a21 * b13 + a22 * b23 + a23 * b33 + a24 * b43;
+                te[13] = a21 * b14 + a22 * b24 + a23 * b34 + a24 * b44;
+
+                te[2] = a31 * b11 + a32 * b21 + a33 * b31 + a34 * b41;
+                te[6] = a31 * b12 + a32 * b22 + a33 * b32 + a34 * b42;
+                te[10] = a31 * b13 + a32 * b23 + a33 * b33 + a34 * b43;
+                te[14] = a31 * b14 + a32 * b24 + a33 * b34 + a34 * b44;
+
+                te[3] = a41 * b11 + a42 * b21 + a43 * b31 + a44 * b41;
+                te[7] = a41 * b12 + a42 * b22 + a43 * b32 + a44 * b42;
+                te[11] = a41 * b13 + a42 * b23 + a43 * b33 + a44 * b43;
+                te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
+
+                return this;
+            },
+            // 解决角度为90的整数倍导致Math.cos得到极小的数，其实是0。导致不渲染
+            _rounded: function(value, i) {
+                i = Math.pow(10, i || 15);
+                return Math.round(value * i) / i;
+            },
+            _arrayWrap: function(arr) {
+                return window.Float32Array ? new Float32Array(arr) : arr;
+            }
+        };
+
+        // 主入口函数
+        function Transform(obj, notPerspective) {
+            var observeProps = ['translateX', 'translateY', 'translateZ', 'scaleX', 'scaleY', 'scaleZ', 'rotateX', 'rotateY', 'rotateZ', 'skewX', 'skewY', 'originX', 'originY', 'originZ'],
+                objIsElement = isElement(obj);
+            if (!notPerspective) {
+                observeProps.push('perspective');
+            };
+
+            obj.matrix3d = new Matrix3D();
+            observe(
+                obj,
+                observeProps,
+                function() {
+                    var mtx = obj.matrix3d.identity().appendTransform(obj.translateX, obj.translateY, obj.translateZ, obj.scaleX, obj.scaleY, obj.scaleZ, obj.rotateX, obj.rotateY, obj.rotateZ, obj.skewX, obj.skewY, obj.originX, obj.originY, obj.originZ);
+                    var transform = (notPerspective ? '' : 'perspective(' + obj.perspective + 'px) ') + 'matrix3d(' + Array.prototype.slice.call(mtx.elements).join(',') + ')';
+                    if (objIsElement) {
+                        obj.style.transform = obj.style.msTransform = obj.style.OTransform = obj.style.MozTransform = obj.style.webkitTransform = transform;
+                    } else {
+                        obj.transform = transform;
+                    };
+                });
+
+            if (!notPerspective) {
+                obj.perspective = 500;    // 景深默认值
+            };
+            obj.scaleX = obj.scaleY = obj.scaleZ = 1;
+            obj.translateX = obj.translateY = obj.translateZ = obj.rotateX = obj.rotateY = obj.rotateZ = obj.skewX = obj.skewY = obj.originX = obj.originY = obj.originZ = 0;
+        };
+
+        // 工具函数
+        function isElement(obj) {
+            return (
+                typeof HTMLElement === 'object' ? obj instanceof HTMLElement : //DOM2
+                    obj && typeof obj === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string'
+            );
+        };
+
+        function observe(target, props, callback) {
+            for (var i = 0, len = props.length; i < len; i += 1) {
+                var prop = props[i];
+                watch(target, prop, callback);
+            };
+        };
+
+        // 每一次改变那15个属性中的任意一个,都会执行回调
+        function watch(target, prop, callback) {
+            Object.defineProperty(target, prop, {
+                get: function() {
+                    return this['_' + prop];
+                },
+                set: function(value) {
+                    if (value !== this['_' + prop]) {
+                        this['_' + prop] = value;
+                        callback();
+                    };
+                }
+            });
+        };
+
+        // 抛出去
+        jsLib.Transform = Transform;
+    })();
+
+    ; (function () {
+        var observe = function (target, arr, callback) {
+            var _observe = function (target, arr, callback) {    // target: 监听对象, arr: 监听对象的属性列表, callback: 回调函数
+                if (!target.$observer) target.$observer = this;    // 给target监听对象添加$observer属性,值为_observe实例
+                var $observer = target.$observer;    // 把实例赋值给$observer变量
+                var eventPropArr = [];    // 事件属性列表
+                if (observe.isArray(target)) {    // 监听对象如果是数组
+                    if (target.length === 0) {
+                        target.$observeProps = {};
+                        target.$observeProps.$observerPath = "#";
+                    }
+                    $observer.mock(target);
+
+                };
+                for (var prop in target) {    // 遍历监听对象属性(含原型上的属性)
+                    if (target.hasOwnProperty(prop)) {    // 只对对象自身的属性感兴趣(不要原型上的)
+                        if (callback) {    // 如果用户传了三个参数的话
+                            if (observe.isArray(arr) && observe.isInArray(arr, prop)) {
+                                eventPropArr.push(prop);
+                                $observer.watch(target, prop);
+                            } else if (observe.isString(arr) && prop == arr) {
+                                eventPropArr.push(prop);
+                                $observer.watch(target, prop);
+                            }
+                        } else {
+                            eventPropArr.push(prop);    // 添加target的属性到eventPropArr数组
+                            $observer.watch(target, prop);
+                        };
+                    };
+                };
+                $observer.target = target;    // 给$observer对象添加target属性
+                if (!$observer.propertyChangedHandler) $observer.propertyChangedHandler = [];    // 给$observer对象添加属性propertyChangedHandler,值为空数组
+                var propChanged = callback ? callback : arr;    // propChanged存储回调函数
+                $observer.propertyChangedHandler.push({ all: !callback, propChanged: propChanged, eventPropArr: eventPropArr });    // 给target.$observer对象(其实就是this实例啦)属性propertyChangedHandler数组添加一个对象
+            }
+            _observe.prototype = {
+                "onPropertyChanged": function (prop, value, oldValue, target, path) {    // prop: 属性, value: 设置的新值, oldValue: 上一次属性的值, target: 监听对象, path: 路径
+                    if (value !== oldValue && this.propertyChangedHandler) {    // prop的新旧值不同且实例的propertyChangedHandler属性为真值
+                        var rootName = observe._getRootName(prop, path);    // root名字
+                        for (var i = 0, len = this.propertyChangedHandler.length; i < len; i++) {    // 循环遍历
+                            var handler = this.propertyChangedHandler[i];    // 数组成员
+                            if (handler.all || observe.isInArray(handler.eventPropArr, rootName) || rootName.indexOf("Array-") === 0) {
+                                handler.propChanged.call(this.target, prop, value, oldValue, path);    // 用户观察属性的回调函数
+                            };
+                        };
+                    };
+                    if (prop.indexOf("Array-") !== 0 && typeof value === "object") {    // prop字符串不包含'Array-'且value是array或者object
+                        this.watch(target, prop, target.$observeProps.$observerPath);    // 属性为对象或者数组,再次对其属性进行监听
+                    };
+                },
+                "mock": function (target) {
+                    var self = this;
+                    observe.methods.forEach(function (item) {
+                        target[item] = function () {
+                            var old = Array.prototype.slice.call(this, 0);
+                            var result = Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
+                            if (new RegExp("\\b" + item + "\\b").test(observe.triggerStr)) {
+                                for (var cprop in this) {
+                                    if (this.hasOwnProperty(cprop) && !observe.isFunction(this[cprop])) {
+                                        self.watch(this, cprop, this.$observeProps.$observerPath);
+                                    }
+                                }
+                                //todo
+                                self.onPropertyChanged("Array-" + item, this, old, this, this.$observeProps.$observerPath);
+                            }
+                            return result;
+                        };
+                        target['real'+item.substring(0,1).toUpperCase()+item.substring(1)] = function () {
+                            return Array.prototype[item].apply(this, Array.prototype.slice.call(arguments));
+                        };
+                    });
+                },
+                "watch": function (target, prop, path) {    // target: 监听对象, prop: 监听对象的属性, path: 暂定
+                    if (prop === "$observeProps" || prop === "$observer") return;    // 如果监听对象的属性等于$observeProps, $observer这2个属性中的任何一个,就return掉了
+                    if (observe.isFunction(target[prop])) return;    // 如果监听对象的属性类型是函数,也return掉
+                    if (!target.$observeProps) target.$observeProps = {};    // 给target监听对象添加$observeProps属性,值为空对象
+                    if (path !== undefined) {
+                        target.$observeProps.$observerPath = path;
+                    } else {
+                        target.$observeProps.$observerPath = "#";    // 给target对象中的$observeProps对象添加$observerPath属性,值为'#'
+                    };
+                    var self = this;    // self存个实例
+                    var currentValue = target.$observeProps[prop] = target[prop];    // 给target.$observeProps对象添加属性和值,并把值赋给currentValue变量
+                    Object.defineProperty(target, prop, {    // 给target对象的属性添加set, get方法
+                        get: function () {
+                            return this.$observeProps[prop];    // 返回 target.$observeProps属性的值
+                        },
+                        set: function (value) {
+                            var old = this.$observeProps[prop];    // 存一下属性值
+                            this.$observeProps[prop] = value;    // 设置新的属性值
+                            self.onPropertyChanged(prop, value, old, this, target.$observeProps.$observerPath);    // 设置值时,触发实例onPropertyChanged方法
+                        }
+                    });
+                    if (typeof currentValue == "object") {    // 如果属性值是array或者object
+                        if (observe.isArray(currentValue)) {
+                            this.mock(currentValue);
+                            if (currentValue.length === 0) {
+                                if (!currentValue.$observeProps) currentValue.$observeProps = {};
+                                if (path !== undefined) {
+                                    currentValue.$observeProps.$observerPath = path;
+                                } else {
+                                    currentValue.$observeProps.$observerPath = "#";
+                                }
+                            }
+                        }
+                        for (var cprop in currentValue) {
+                            if (currentValue.hasOwnProperty(cprop)) {
+                                this.watch(currentValue, cprop, target.$observeProps.$observerPath + "-" + prop);
+                            }
+                        }
+                    }
+                }
+            }
+            return new _observe(target, arr, callback);
+        }
+        observe.methods = ["concat", "copyWithin", "entries", "every", "fill", "filter", "find", "findIndex", "forEach", "includes", "indexOf", "join", "keys", "lastIndexOf", "map", "pop", "push", "reduce", "reduceRight", "reverse", "shift", "slice", "some", "sort", "splice", "toLocaleString", "toString", "unshift", "values", "size"]
+        observe.triggerStr = ["concat", "copyWithin", "fill", "pop", "push", "reverse", "shift", "sort", "splice", "unshift", "size"].join(",")
+        observe.isArray = function (obj) {    // 判断参数obj是否为数组
+            return Object.prototype.toString.call(obj) === '[object Array]';
+        }
+        observe.isString = function (obj) {
+            return typeof obj === "string";
+        }
+        observe.isInArray = function (arr, item) {
+            for (var i = arr.length; --i > -1;) {
+                if (item === arr[i]) return true;
+            };
+            return false;
+        }
+        observe.isFunction = function (obj) {    // 判断参数obj是否为函数
+            return Object.prototype.toString.call(obj) == '[object Function]';
+        }
+        observe._getRootName = function (prop, path) {
+            if (path === "#") {
+                return prop;
+            }
+            return path.split("-")[1];    // 分割成数组取数组第二个元素
+        }
+
+        observe.add = function (obj, prop) {
+            var $observer = obj.$observer;
+            $observer.watch(obj, prop);
+        }
+
+        observe.set = function(obj, prop,value,exec) {
+            if(!exec){
+                obj[prop] = value;
+            }
+            var $observer = obj.$observer;
+            $observer.watch(obj, prop);
+            if(exec){
+                obj[prop] = value;
+            }
+        }
+
+        Array.prototype.size = function (length) {
+            this.length = length;
+        }
+
+        jsLib.observe = observe;
+    })();
 
 
     /************** 上面一些方法(插件)扩展到JSLibrary原型上    结束 **************/

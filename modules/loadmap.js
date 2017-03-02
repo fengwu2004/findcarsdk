@@ -11,6 +11,7 @@ define(function (require, exports, module) {
     //载入地图工具
     var Maputils = require('./maputils');
     var oMapUtils = new Maputils();
+    gV.oMapUtils = oMapUtils;
     //载入手势
     /*var Hamm = require('./hamm');
     var hammObj = new Hamm();*/
@@ -31,7 +32,9 @@ define(function (require, exports, module) {
     require('./JSLibrary');
 
     // 地图功能YFMap类
-    function YFMap() {}
+    function YFMap() {
+        this.objPos = {};
+    }
 
 
     //配置地图
@@ -141,9 +144,7 @@ define(function (require, exports, module) {
                     loadBeforeFn = item;    // 载入地图之前的回掉函数
                 };
             }
-
         });
-
 
         // 2. 判断body中是否还有id为svgFrame的div块,如果有则把内容清空,否则第一次自动创建
         var oSvgFrameDom = document.querySelector('#svgFrame');
@@ -214,8 +215,6 @@ define(function (require, exports, module) {
                     typeof loadBeforeFn == 'function' && loadBeforeFn();
                 },
                 success: function (str) {
-                    /*str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');*/
                     var data = str;
                     if (data != null) {
                         if (data.code == "success") {
@@ -255,11 +254,8 @@ define(function (require, exports, module) {
                             hammObj.angle = gV.lastSvgAngle = 0;
                             hammObj.init(domView);
                             if (!switchFloor) {    //切换楼层时就不用再次绑定
-                                
                                 hammObj.bindTouch(domBind);
-                                // clickMap.init();    // 注册unit点击事件处理程序
-                            }
-
+                            };
                             oUtils.HandleNode.setStyle(oSvgFrame, {'display': 'block'});
                             oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
 
@@ -269,24 +265,270 @@ define(function (require, exports, module) {
                             //重新画线(点击楼层切换时，如果楼层进行了多楼层导航, 就会重新画线)
                             // oMapUtils.isAgainDraw(floorId);
                             // 因为动态划线，本身自己每秒划线一次,所以不必拖动完再次划线
-                            if (gV.bDynamicNag === false) {
+                            /*if (gV.bDynamicNag === false) {
                                 oMapUtils.isAgainDraw(floorId);
-                            };
+                            };*/
+                            gV.oMapUtils.isAgainDraw2();
                             hammObj.handleDo();
+
+                            // 数据加工
+                            /*var arr = [
+                                {
+                                    "x" : 549.161,
+                                    "y" : 414.8757,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 813.4804,
+                                    "y" : 69.08282,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 757.9165,
+                                    "y" : 74.94586,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 732.2166,
+                                    "y" : 84.30328,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 686.394,
+                                    "y" : 79.8374,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 633.9069,
+                                    "y" : 82.6012,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 573.6699,
+                                    "y" : 77.1582,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 494.4404,
+                                    "y" : 85.68048,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 424.9466,
+                                    "y" : 82.32971,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 365.2746,
+                                    "y" : 90.78101,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 313.7683,
+                                    "y" : 80.15967,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 260.8001,
+                                    "y" : 92.18933,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 204.6711,
+                                    "y" : 84.15808,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 161.4388,
+                                    "y" : 84.31494,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 116.1757,
+                                    "y" : 92.19928,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 107.5271,
+                                    "y" : 120.0233,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 110.2292,
+                                    "y" : 155.5262,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 106.7068,
+                                    "y" : 177.6701,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 101.6777,
+                                    "y" : 210.113,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 98.16329,
+                                    "y" : 234.3152,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 132.622,
+                                    "y" : 227.4994,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 163.5004,
+                                    "y" : 226.8727,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 189.715,
+                                    "y" : 217.5134,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 220.6102,
+                                    "y" : 221.5188,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 244.8091,
+                                    "y" : 224.0044,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 284.4201,
+                                    "y" : 218.7139,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 311.1662,
+                                    "y" : 213.9849,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 338.9753,
+                                    "y" : 218.5161,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 373.4657,
+                                    "y" : 220.4496,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 410.5164,
+                                    "y" : 218.7712,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 452.7213,
+                                    "y" : 219.1328,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 486.2123,
+                                    "y" : 229.3049,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 534.0636,
+                                    "y" : 225.5286,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 572.692,
+                                    "y" : 233.1086,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 614.8315,
+                                    "y" : 215.4567,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 630.8236,
+                                    "y" : 225.6923,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 684.8305,
+                                    "y" : 216.2321,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 733.728,
+                                    "y" : 217.0841,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 700.2968,
+                                    "y" : 223.3815,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 686.1971,
+                                    "y" : 167.3328,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 676.7128,
+                                    "y" : 106.6352,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 712.1766,
+                                    "y" : 93.12497,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 729.6922,
+                                    "y" : 97.69354,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 769.3331,
+                                    "y" : 100.6378,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 796.0138,
+                                    "y" : 77.89523,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 812.0134,
+                                    "y" : 90.18945,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 831.0992,
+                                    "y" : 101.9578,
+                                    "floorId" : "14428254382890016"
+                                },
+                                {
+                                    "x" : 843.5129,
+                                    "y" : 118.8972,
+                                    "floorId" : "14428254382890016"
+                                }
+                            ];
+                            arr.forEach(function(obj, index) {
+                                var aClientPos = gV.oMapUtils.changeToClientPos(obj.x, obj.y);
+                                var aSvgPos = [obj.x, obj.y];
+                                obj.aClientPos = aClientPos;
+                                obj.aSvgPos = aSvgPos;
+                            });
+                            console.log(arr);
+                            jsLib('#tt').html(JSON.stringify(arr));*/
 
                             //地图载入完成回掉
                             if (oSvgBox.innerHTM !== '') {
                                 loadSucc && loadSucc();
-                            }
-
-
-                            //服务器如果有数据就把终点取出来
-                            // oMapUtils.getSendEndInfo();
-                            // getSendEndInfo();
-
-
-                        }
-                    }
+                            };
+                        };
+                    };
                 },
                 error: function (str) {
                     alert('地图数据获取失败!' + str);
@@ -300,6 +542,7 @@ define(function (require, exports, module) {
 
     //在地图标记点(动态点, 起点, 终点, 或者自定义的dom节点)
     YFMap.prototype.addMark = function (obj) {
+        var self = this;
 
         var isArray = function (obj) {
             return Object.prototype.toString.call(obj) === '[object Array]';
@@ -367,13 +610,56 @@ define(function (require, exports, module) {
             }
             dom.style.position = 'absolute';
             dom.style.zIndex = '10';
-            dom.style.left = aClientPos[0] - obj.aOffsetPos[0] + 'px';
-            dom.style.top = aClientPos[1] - obj.aOffsetPos[1] + 'px';
+            var clientX = aClientPos[0] - obj.aOffsetPos[0],
+                clientY = aClientPos[1] - obj.aOffsetPos[1],
+                aPos = [clientX, clientY];
+
+            // aniLoop(dom, id, aPos);
+
+            dom.style.left = clientX + 'px';
+            dom.style.top = clientY + 'px';
 
             obj.dom = dom;
 
             hammObj.addMark(obj);
         }
+
+        // 根据id存一下上一次的坐标
+        function getPos(id, aPos) {
+            self.objPos.hasOwnProperty(id) ? self.objPos[id] = aPos : self.objPos[id] = aPos;
+        };
+
+        // 运动
+        function aniLoop(dom, id, aPos) {
+            var left, top;
+            if (typeof self.objPos[id] === 'undefined') {
+                left = aPos[0];
+                top = aPos[1];
+                dom.style.left = left + 'px';
+                dom.style.top = top + 'px';
+            } else {
+                left = aPos[0] - self.objPos[id][0];
+                top = aPos[1] - self.objPos[id][1];
+                if (left == 0 && top == 0) {
+                    dom.style.left = aPos[0] + 'px';
+                    dom.style.top = aPos[1] + 'px';
+                } else {
+                    var stop = jsLib.move['ease']([0, 1], 300, function(v){
+                        requestAnimationFrame(change(dom, v, left, top, aPos[0], aPos[1]));
+                    }, function() {
+                        console.log('结束');
+                    });
+                };
+            };
+            getPos(id, aPos);
+        };
+
+        function change(dom, v, left, top, x, y) {
+            return function() {
+                if (left != 0) dom.style.left = x + v * left + 'px';
+                if (top != 0) dom.style.top = y + v * top + 'px';
+            };
+        };
 
         return this;
     }
@@ -477,9 +763,9 @@ define(function (require, exports, module) {
     }
 
     //地图画线(包含静态, 动态, 人型, 车型, 动静态导航)
-    YFMap.prototype.navigate = function (startObj, endObj, bool, fn) {
+    YFMap.prototype.navigate = function (startObj, endObj, bool, distance, fn) {
 
-        function isGoOn(obj) {
+       /* function isGoOn(obj) {
             if (typeof obj == 'object' && (!oMapUtils.isEmptyObject(startObj))) {
                 if (typeof obj.regionId === 'string' &&
                     typeof obj.floorId === 'string' &&
@@ -498,9 +784,10 @@ define(function (require, exports, module) {
             if (!isGoOn(arguments[i])) return;
         }
 
-        if (typeof arguments[2] !== 'boolean') return;
+        if (typeof arguments[2] !== 'boolean') return;*/
 
-        oMapUtils.askPosMore2(startObj, endObj, bool, fn);
+        this.cancelNavigate()
+        oMapUtils.askPosMore2(startObj, endObj, bool, distance, fn);
 
         return this;
     }
@@ -522,6 +809,8 @@ define(function (require, exports, module) {
         //清空线
         var oLine = document.querySelector('#line');
         if (oLine) oLine.innerHTML = '';
+
+        gV.oMapUtils.clearLine();
     }
 
     //地图放大缩小功能
@@ -623,10 +912,11 @@ define(function (require, exports, module) {
             function otherThing() {
                 //重新画线(点击楼层切换时，如果楼层进行了多楼层导航, 就会重新画线)
                 // 因为动态划线，本身自己每秒划线一次,所以不必拖动完再次划线
-                if (gV.bDynamicNag === false) {
+                /*if (gV.bDynamicNag === false) {
                     oMapUtils.isAgainDraw(_this.floorId);
-                };
+                };*/
                 // oMapUtils.isAgainDraw(_this.floorId);
+                oMapUtils.isAgainDraw2();
             }
         };
     }
@@ -705,9 +995,10 @@ define(function (require, exports, module) {
             //重新画线(点击楼层切换时，如果楼层进行了多楼层导航, 就会重新画线)
             // oMapUtils.isAgainDraw(this.floorId);
             // 因为动态划线，本身自己每秒划线一次,所以不必拖动完再次划线
-            if (gV.bDynamicNag === false) {
+            /*if (gV.bDynamicNag === false) {
                 oMapUtils.isAgainDraw(this.floorId);
-            };
+            };*/
+            oMapUtils.isAgainDraw2();
         }
 
     }
@@ -797,7 +1088,6 @@ define(function (require, exports, module) {
 
 
     }
-
 
     //雷达波
     YFMap.prototype.wave = function(id, arr, rot) {
@@ -914,8 +1204,6 @@ define(function (require, exports, module) {
         return this;
     };
 
-
-
     //一些方法挂载到_methods对象上, 对象字面量
     YFMap._methods = {
         //是否是数组  YFMap._methods.isArray(arr)
@@ -972,13 +1260,8 @@ define(function (require, exports, module) {
 
     YFMap._methods.domRotate(true);
 
-
-
-
-
     //抛出载入地图类
     module.exports = YFMap;
-
 
     //雷达波(单例模式)
     var wave = (function() {
@@ -1066,53 +1349,5 @@ define(function (require, exports, module) {
             }
         };
     })();
-
-
-
-
-    /*//向服务器获取存储的动静态导航终点信息
-    function getSendEndInfo() {
-        var _this = this;
-        var url = 'http://wx.indoorun.com/chene/getCheLocation.html';
-        oUtils.RequestData.ajax(url, {
-            fnSucc: function (str) {
-                str = str.replace(/\n/g, '');
-                var data = eval('(' + str + ')');
-                if (data != null) {
-                    if (data.code == "success") {
-                        // alert("发送成功");
-                        //存终点数据
-                        var obj = data.data;
-                        //静态的终点
-                        gV.floorMore.endObj.svgx = gV.floorDTMore.endObj.svgx = obj.svgX;
-                        gV.floorMore.endObj.svgy = gV.floorDTMore.endObj.svgy = obj.svgY;
-                        gV.floorMore.endObj.regionId = gV.floorDTMore.endObj.regionId = obj.regionId;
-                        gV.floorMore.endObj.floorId = gV.floorDTMore.endObj.floorId = obj.floorId;
-                        gV.staticGps.endUnit = gV.floorMore.endObj.unit = gV.floorDTMore.endObj.unit = obj.unitId;
-
-                        //如果是静态直接显示点，动态就显示到这去的底部div
-                        if (oMapUtils.isRemain(gV.floorMore.endObj)) {
-                            oMapUtils.svgShowPoint('zhongdian', [gV.floorMore.endObj.svgx, gV.floorMore.endObj.svgy], 32, 32);
-                        }
-                        if (oMapUtils.isRemain(gV.floorDTMore.endObj)) {
-                            if (bnData.bOpenBlueTooth) {
-                                oMapUtils.svgShowPoint('zhongdian', [gV.floorDTMore.endObj.svgx, gV.floorDTMore.endObj.svgy], 32, 32);
-                                document.querySelector('#dtgps').style.display = 'block';
-                            }
-                        }
-                    }
-                }
-            },
-            fnFaild: function (str) {
-                alert('向服务器获取存储的动静态导航终点信息, 失败!' + str);
-            },
-        });
-    }*/
-
-
-
-
-
-
 
 });
