@@ -58,7 +58,7 @@ define(function (require, exports, module) {
 
         lc_floorDiv.className = "lc_color"
 
-        obj.map.appendChild(lc_floorDiv)
+        lc_div.appendChild(lc_floorDiv)
 
         floorDivs.forEach(function (item, index) {
 
