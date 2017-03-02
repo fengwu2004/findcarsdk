@@ -52,9 +52,9 @@ define(function (require, exports, module) {
 
         var floorDivs = _createList(obj.floorList)
 
-        floorDivs.forEach(function(obj, index) {
+        floorDivs.forEach(function(item, index) {
 
-            lc_div.appendChild(obj)
+            lc_div.appendChild(item)
         })
     }
 
