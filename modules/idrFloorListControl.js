@@ -37,6 +37,18 @@ define(function (require, exports, module) {
 
         createFloorList(lc_div, this.currentFloor, this.locateFloor, this.floorList)
     }
+
+    idrFloorListControl.prototype.setCurrentFloor = function (floor) {
+
+        this.currentFloor = floor
+
+        this.refreshDisplay()
+    }
+
+    idrFloorListControl.prototype.refreshDisplay = function () {
+
+        
+    }
     
     function create(ele, id, classname) {
 
@@ -145,7 +157,7 @@ define(function (require, exports, module) {
         floorDiv.find('div').tap(function () {
 
             console.log(this.id)
-        });
+        })
     }
 
     module.exports = idrFloorListControl;
