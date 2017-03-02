@@ -78,6 +78,8 @@ define(function (require, exports, module) {
 
             dot.style.opacity = 0
 
+            dot.innerText = '●'
+
             div.appendChild(dot)
 
             divs.push(div)
