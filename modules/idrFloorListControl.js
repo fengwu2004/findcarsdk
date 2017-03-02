@@ -4,6 +4,8 @@
 
 define(function (require, exports, module) {
 
+    var commMethods = require('./idrCommonMethod')
+
     function idrFloorListControl() {
 
         this.map = null
@@ -14,7 +16,7 @@ define(function (require, exports, module) {
 
         this.locateFloor = null
 
-        this.changeFloorFunc = null
+        this.div = null
     }
 
     idrFloorListControl.prototype.init = function (map, floorList) {
@@ -31,7 +33,9 @@ define(function (require, exports, module) {
 
         this.map.append(lc_div)
 
-        createDiv(lc_div, this.currentFloor, this.floorList)
+        this.div = lc_div
+
+        create(lc_div, this.currentFloor, this.locateFloor, this.floorList)
     }
     
     function create(ele, id, classname) {
@@ -98,7 +102,7 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createDiv(div, currentFloor, locateFloor, floorList) {
+    function create(div, currentFloor, locateFloor, floorList) {
 
         var currentNameDiv = createCurrName(currentFloor)
 
@@ -114,6 +118,34 @@ define(function (require, exports, module) {
         })
 
         div.appendChild(floorDiv)
+
+        commMethods.showOrHidddenDiv('floorDiv', false)
+
+        addTaps();
+    }
+
+    function addTaps() {
+
+        var floorDiv = jsLib("#floorDiv")
+
+        var currentNameDiv = jsLib("#currName")
+
+        currentNameDiv.tap(function () {
+
+            if (floorDiv.toDom().style.display === 'block') {
+
+                commMethods.showOrHidddenDiv('floorDiv', false)
+            }
+            else {
+
+                commMethods.showOrHidddenDiv('floorDiv', true)
+            }
+        })
+
+        floorDiv.find('div').tap(function () {
+
+            console.log(this.id)
+        });
     }
 
     module.exports = idrFloorListControl;
