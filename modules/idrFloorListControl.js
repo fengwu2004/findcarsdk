@@ -62,7 +62,7 @@ define(function (require, exports, module) {
 
         var divs = []
 
-        data.forEach(function(data, index) {
+        data.forEach(function(obj, index) {
 
             var div = document.createElement('div')
 
