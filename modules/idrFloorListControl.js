@@ -134,7 +134,7 @@ define(function (require, exports, module) {
 
             if (floorDiv.toDom().style.display === 'block') {
 
-                commMethods.showOrHidddenDiv('floorDiv', false)
+                commMethods.showOrHidddenDiv('floorDiv', false);
             }
             else {
 
