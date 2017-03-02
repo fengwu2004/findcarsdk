@@ -12,6 +12,8 @@ define(function (require, exports, module) {
 
         this.currentFloor = null
 
+        this.locateFloor = null
+
         this.changeFloorFunc = null
     }
 
@@ -62,7 +64,7 @@ define(function (require, exports, module) {
         return div
     }
 
-    function createFloorDiv(currentFloor, floorList) {
+    function createFloorDiv(currentFloor, locateFloor, floorList) {
 
         var divs = []
 
@@ -82,9 +84,12 @@ define(function (require, exports, module) {
 
             if (currentFloor.id === item.id) {
 
-                span.style.opacity = 1
-
                 div.className = 'lc_div3 lc_divcom'
+            }
+
+            if (locateFloor.id === item.id) {
+
+                span.style.opacity = 0.5
             }
 
             divs.push(div)
@@ -93,7 +98,7 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createDiv(div, currentFloor, floorList) {
+    function createDiv(div, currentFloor, locateFloor, floorList) {
 
         var currentNameDiv = createCurrName(currentFloor)
 
@@ -101,7 +106,7 @@ define(function (require, exports, module) {
 
         var floorDiv = create('div', 'floorDiv', 'lc_outo')
 
-        var floorDivs = createFloorDiv(currentFloor, floorList)
+        var floorDivs = createFloorDiv(currentFloor, locateFloor, floorList)
 
         floorDivs.forEach(function (item, index) {
 
