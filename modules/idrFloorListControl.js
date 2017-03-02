@@ -52,12 +52,10 @@ define(function (require, exports, module) {
 
         var floorDivs = _createList(obj.floorList)
 
-        for (var i = 0; i < floorDivs.length; ++i) {
+        floorDivs.forEach(function (item, index) {
 
-            lc_div.appendChild(floorDivs[i])
-
-            console.log(i)
-        }
+            lc_div.appendChild(item)
+        })
     }
 
     function _createList(data) {
@@ -74,15 +72,13 @@ define(function (require, exports, module) {
 
             div.innerText = obj.name
 
-            divs.push(div)
+            var dot = document.createElement('span')
 
-            div = document.createElement('div')
+            dot.className = 'lc_dot'
 
-            div.id = obj.id
+            dot.style.opacity = 0
 
-            div.className = 'lc_div2 lc_divcom'
-
-            div.innerText = obj.name
+            div.appendChild(dot)
 
             divs.push(div)
         });
