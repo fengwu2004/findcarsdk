@@ -23,78 +23,91 @@ define(function (require, exports, module) {
 
         this.currentFloor = this.floorList[0]
 
-        _createContainer(this)
+        var that = this
+
+        var lc_div = create('div', 'lc_div', 'lc_div')
+
+        this.map.append(lc_div)
+
+        createFloorDiv(lc_div, this.currentFloor[0], this.floorList)
+    }
+    
+    function create(ele, id, classname) {
+
+        var div = document.createElement(ele)
+
+        if (id !== null) {
+
+            div.id = id
+        }
+
+        if (classname !== null) {
+
+            div.className = classname
+        }
+
+        return div
     }
 
-    function _createContainer(obj) {
+    function createCurrName(currentFloor) {
 
-        var lc_div = document.createElement("div")
-
-        lc_div.id = "lc_div"
-
-        lc_div.className = "lc_div"
-
-        obj.map.appendChild(lc_div)
-
-        var currentNameDiv = document.createElement("div")
-
-        currentNameDiv.id = "currName"
-
-        currentNameDiv.className = "lc_div1 lc_divcom"
-
-        lc_div.appendChild(currentNameDiv)
+        var div = create('div', 'currName', 'lc_div1 lc_divcom')
 
         var title = document.createElement("span")
 
-        currentNameDiv.appendChild(title)
+        title.innerText = currentFloor.name
 
-        title.innerText = obj.currentFloor.name
+        div.appendChild(title)
 
-        var floorDivs = _createList(obj.floorList)
-
-        var lc_floorDiv = document.createElement("div")
-
-        lc_floorDiv.id = "floorDiv"
-
-        lc_floorDiv.className = "lc_color"
-
-        lc_div.appendChild(lc_floorDiv)
-
-        floorDivs.forEach(function (item, index) {
-
-            lc_floorDiv.appendChild(item)
-        })
+        return div
     }
 
-    function _createList(data) {
+    function floorDiv(currentFloor, floorList) {
 
         var divs = []
 
-        data.forEach(function(obj, index) {
+        floorList.forEach(function (item, index) {
 
-            var div = document.createElement('div')
+            var div = create('div', item.id, 'lc_div2 lc_divcom')
 
-            div.id = obj.id
+            div.innerText = item.name
 
-            div.className = 'lc_div2 lc_divcom'
+            var span = create('span', null, 'lc_dot')
 
-            div.innerText = obj.name
+            span.innerText = '●'
 
-            var dot = document.createElement('span')
+            div.appendChild(span)
 
-            dot.className = 'lc_dot'
+            if (currentFloor.id === item.id) {
 
-            dot.style.opacity = 0
+                span.style.opacity = 1
 
-            dot.innerText = '●'
-
-            div.appendChild(dot)
+                div.className == 'lc_div3 lc_divcom'
+            }
 
             divs.push(div)
-        });
+        })
 
         return divs
-    };
+    }
+
+    function createFloorDiv(div, currentFloor, floorList) {
+
+        var currentNameDiv = createCurrName(currentFloor)
+
+        div.appendChild(currentNameDiv)
+
+        var floorDiv = create('div', 'floorDiv', 'lc_outo')
+
+        var floorDivs = floorDiv(currentFloor, floorList)
+
+        floorDivs.forEach(function (item, index) {
+
+            floorDiv.appendChild(floorDivs)
+        })
+
+        div.appendChild(floorDiv)
+    }
 
     module.exports = idrFloorListControl;
 })
