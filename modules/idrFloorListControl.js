@@ -84,7 +84,7 @@ define(function (require, exports, module) {
 
                 span.style.opacity = 1
 
-                div.className == 'lc_div3 lc_divcom'
+                div.className = 'lc_div3 lc_divcom'
             }
 
             divs.push(div)
