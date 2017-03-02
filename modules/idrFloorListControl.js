@@ -91,7 +91,7 @@ define(function (require, exports, module) {
                 div.className = 'lc_div3 lc_divcom'
             }
 
-            if (locateFloor.id === item.id) {
+            if (locateFloor && locateFloor.id === item.id) {
 
                 span.style.opacity = 0.5
             }
