@@ -76,6 +76,8 @@ define(function (require, exports, module) {
 
             span.innerText = '●'
 
+            span.style.opacity = 0
+
             div.appendChild(span)
 
             if (currentFloor.id === item.id) {
