@@ -170,9 +170,9 @@ define(function (require, exports, module) {
             if (typeof self.onChangeFloor == 'function') {
 
                 self.onChangeFloor(this.id)
-
-                self.setCurrentFloor(this.id)
             }
+
+            self.setCurrentFloor(this.id)
         })
     }
 
