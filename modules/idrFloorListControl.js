@@ -69,7 +69,7 @@ define(function (require, exports, module) {
 
         div.appendChild(title)
 
-        return div
+        return [div, title]
     }
 
     function createFloorDiv(currentFloor, locateFloor, floorList) {
@@ -108,9 +108,11 @@ define(function (require, exports, module) {
 
     function createFloorList(self, currentFloor, locateFloor, floorList) {
 
-        self.currentNameDiv = createCurrName(currentFloor)
+        var temp = createCurrName(currentFloor)
 
-        self.title = jsLib('#currName').find('span')
+        self.currentNameDiv = temp[0]
+
+        self.title = temp[1]
 
         self.floorDiv = create('div', 'floorDiv', 'lc_outo')
 
