@@ -140,7 +140,7 @@ define(function (require, exports, module) {
 
         currentNameDiv.tap(function () {
 
-            if (self.floorDiv.toDom().style.display === 'block') {
+            if (floorDiv.toDom().style.display === 'block') {
 
                 commMethods.showOrHidddenDiv('floorDiv', false);
             }
