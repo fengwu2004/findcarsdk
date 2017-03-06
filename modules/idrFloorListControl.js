@@ -189,8 +189,6 @@ define(function (require, exports, module) {
 
             init: function(map, floorList) {
 
-                mapDiv = map
-
                 floorList = floorList
 
                 currentFloor = floorList[0]
@@ -199,7 +197,7 @@ define(function (require, exports, module) {
 
                 mainDiv = create('div', 'lc_div', 'lc_div')
 
-                self.map.apply(mainDiv)
+                map.apply(mainDiv)
 
                 createFloorList(currentFloor, locateFloor, floorList)
             },
