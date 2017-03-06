@@ -76,8 +76,6 @@ define(function (require, exports, module) {
 
         var floorList = []
 
-        var mapDiv = null
-
         var currentFloor = null
 
         var locateFloor = null
@@ -91,6 +89,8 @@ define(function (require, exports, module) {
         var floorDiv = null
 
         var onChangeFloor = null
+
+        var locaIndex = 0
 
         function findFloorById(floorId){
 
@@ -185,7 +185,9 @@ define(function (require, exports, module) {
             })
         }
 
-        console.log('sdfjsldfjlsdf')
+        console.log('sdfjsldfjlsdf++++ %d', locaIndex)
+
+        locaIndex += 1
 
         md.init = function(map, floorList_) {
 
