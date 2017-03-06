@@ -134,7 +134,11 @@ define(function (require, exports, module) {
 
     function addTaps(self) {
 
-        self.currentNameDiv.tap(function () {
+        var floorDiv = jsLib("#floorDiv")
+
+        var currentNameDiv = jsLib("#currName")
+
+        currentNameDiv.tap(function () {
 
             if (self.floorDiv.toDom().style.display === 'block') {
 
@@ -146,7 +150,7 @@ define(function (require, exports, module) {
             }
         })
 
-        self.floorDiv.find('div').tap(function () {
+        floorDiv.floorDiv.find('div').tap(function () {
 
             commMethods.showOrHidddenDiv('floorDiv', false);
 
