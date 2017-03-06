@@ -150,7 +150,7 @@ define(function (require, exports, module) {
             }
         })
 
-        floorDiv.floorDiv.find('div').tap(function () {
+        floorDiv.find('div').tap(function () {
 
             commMethods.showOrHidddenDiv('floorDiv', false);
 
