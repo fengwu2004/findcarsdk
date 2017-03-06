@@ -19,6 +19,23 @@ define(function (require, exports, module) {
         return [div, title]
     }
 
+    function create(ele, id, classname) {
+
+        var div = document.createElement(ele)
+
+        if (id !== null) {
+
+            div.id = id
+        }
+
+        if (classname !== null) {
+
+            div.className = classname
+        }
+
+        return div
+    }
+
     function createFloorDiv(currentFloor, locateFloor, floorList) {
 
         var divs = []
@@ -88,23 +105,6 @@ define(function (require, exports, module) {
             })
 
             return result
-        }
-
-        function create(ele, id, classname) {
-
-            var div = document.createElement(ele)
-
-            if (id !== null) {
-
-                div.id = id
-            }
-
-            if (classname !== null) {
-
-                div.className = classname
-            }
-
-            return div
         }
 
         function createFloorList(currentFloor, locateFloor, floorList) {
@@ -187,9 +187,9 @@ define(function (require, exports, module) {
 
         return {
 
-            init: function(map, floorList) {
+            init: function(map, floorList_) {
 
-                floorList = floorList
+                floorList = floorList_
 
                 currentFloor = floorList[0]
 
