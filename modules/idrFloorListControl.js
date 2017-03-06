@@ -30,9 +30,22 @@ define(function (require, exports, module) {
         createFloorList(this, this.currentFloor, this.locateFloor, this.floorList)
     }
 
-    idrFloorListControl.prototype.setCurrentFloor = function (floor) {
+    idrFloorListControl.prototype.findFloorById = function (floorId) {
 
-        this.currentFloor = floor
+        this.floorList.forEach(function(item, index) {
+
+            if (item.id === floorId) {
+
+                return item;
+            }
+        })
+
+        return null
+    }
+
+    idrFloorListControl.prototype.setCurrentFloor = function (floorId) {
+
+        this.currentFloor = this.findFloorById(floorId)
 
         this.refreshDisplay()
     }
@@ -157,6 +170,8 @@ define(function (require, exports, module) {
             if (typeof self.onChangeFloor == 'function') {
 
                 self.onChangeFloor(this.id)
+
+                self.setCurrentFloor(this.id)
             }
         })
     }
