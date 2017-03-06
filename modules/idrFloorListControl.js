@@ -32,15 +32,19 @@ define(function (require, exports, module) {
 
     idrFloorListControl.prototype.findFloorById = function (floorId) {
 
+        var result = null
+
         this.floorList.forEach(function(item, index) {
 
             if (item.id === floorId) {
 
-                return item;
+                result = item
+
+                return false
             }
         })
 
-        return null
+        return result
     }
 
     idrFloorListControl.prototype.setCurrentFloor = function (floorId) {
