@@ -6,99 +6,13 @@ define(function (require, exports, module) {
 
     var commMethods = require('./idrCommonMethod')
 
-    function idrFloorListControl() {
-
-        this.onChangeFloor = null
-    }
-
-    idrFloorListControl.prototype.init = function (map, floorList) {
-
-        this.map = map
-
-        this.floorList = floorList
-
-        this.locateFloor = null
-
-        this.currentFloor = this.floorList[0]
-
-        var lc_div = create('div', 'lc_div', 'lc_div')
-
-        this.map.append(lc_div)
-
-        this.div = lc_div
-
-        createFloorList(this, this.currentFloor, this.locateFloor, this.floorList)
-    }
-
-    idrFloorListControl.prototype.findFloorById = function (floorId) {
-
-        var result = null
-
-        this.floorList.forEach(function(item, index) {
-
-            if (item.id === floorId) {
-
-                result = item
-
-                return false
-            }
-        })
-
-        return result
-    }
-
-    idrFloorListControl.prototype.setCurrentFloor = function (floorId) {
-
-        this.currentFloor = this.findFloorById(floorId)
-
-        this.refreshDisplay()
-    }
-
-    idrFloorListControl.prototype.refreshDisplay = function () {
-
-        this.title.innerText = this.currentFloor.name
-
-        var divs = Array.prototype.slice.call(this.floorDiv.children)
-
-        var self = this
-
-        divs.forEach(function(div, index) {
-
-            if (div.id === self.currentFloor.id) {
-
-                div.className = 'lc_div3 lc_divcom'
-            }
-            else  {
-
-                div.className = 'lc_div2 lc_divcom'
-            }
-        })
-    }
-    
-    function create(ele, id, classname) {
-
-        var div = document.createElement(ele)
-
-        if (id !== null) {
-
-            div.id = id
-        }
-
-        if (classname !== null) {
-
-            div.className = classname
-        }
-
-        return div
-    }
-
-    function createCurrName(currentFloor) {
+    function createCurrName(floor) {
 
         var div = create('div', 'currName', 'lc_div1 lc_divcom')
 
         var title = document.createElement("span")
 
-        title.innerText = currentFloor.name
+        title.innerText = floor.name
 
         div.appendChild(title)
 
@@ -139,63 +53,171 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createFloorList(self, currentFloor, locateFloor, floorList) {
+    var idrFloorListUi = (function() {
 
-        var temp = createCurrName(currentFloor)
+        var floorList = []
 
-        self.currentNameDiv = temp[0]
+        var mapDiv = null
 
-        self.title = temp[1]
+        var currentFloor = null
 
-        self.floorDiv = create('div', 'floorDiv', 'lc_outo')
+        var locateFloor = null
 
-        var floorDivs = createFloorDiv(currentFloor, locateFloor, floorList)
+        var mainDiv = null
 
-        floorDivs.forEach(function (item, index) {
+        var titleDiv = null
 
-            self.floorDiv .appendChild(item)
-        })
+        var currentNameDiv = null
 
-        self.div.appendChild(self.currentNameDiv)
+        var floorDiv = null
 
-        self.div.appendChild(self.floorDiv)
+        var onChangeFloor = null
 
-        commMethods.showOrHidddenDiv('floorDiv', false)
+        function findFloorById(floorId){
 
-        addTaps(self);
-    }
+            var result = null
 
-    function addTaps(self) {
+            floorList.forEach(function(floor, index) {
 
-        var floorDiv = jsLib("#floorDiv")
+                if (floor.id == floorId) {
 
-        var currentNameDiv = jsLib("#currName")
+                    result = floor
 
-        currentNameDiv.tap(function () {
+                    return false
+                }
+            })
 
-            if (floorDiv.toDom().style.display === 'block') {
+            return result
+        }
+
+        function create(ele, id, classname) {
+
+            var div = document.createElement(ele)
+
+            if (id !== null) {
+
+                div.id = id
+            }
+
+            if (classname !== null) {
+
+                div.className = classname
+            }
+
+            return div
+        }
+
+        function createFloorList(currentFloor, locateFloor, floorList) {
+
+            var temp = createCurrName(currentFloor)
+
+            currentNameDiv = temp[0]
+
+            titleDiv = temp[1]
+
+            floorDiv = create('div', 'floorDiv', 'lc_outo')
+
+            var floorDivs = createFloorDiv(currentFloor, locateFloor, floorList)
+
+            floorDivs.forEach(function (item, index) {
+
+                floorDiv.appendChild(item)
+            })
+
+            mainDiv.appendChild(currentNameDiv)
+
+            mainDiv.appendChild(floorDiv)
+
+            commMethods.showOrHidddenDiv('floorDiv', false)
+
+            addTaps(self);
+        }
+
+        function refreshDisplay() {
+
+            titleDiv.innerText = currentFloor.name
+
+            var divs = Array.prototype.slice.call(floorDiv.children)
+
+            divs.forEach(function(div, index) {
+
+                if (div.id === currentFloor.id) {
+
+                    div.className = 'lc_div3 lc_divcom'
+                }
+                else  {
+
+                    div.className = 'lc_div2 lc_divcom'
+                }
+            })
+        }
+
+        function addTaps() {
+
+            var floorDiv = jsLib("#floorDiv")
+
+            var currentNameDiv = jsLib("#currName")
+
+            currentNameDiv.tap(function () {
+
+                if (floorDiv.toDom().style.display === 'block') {
+
+                    commMethods.showOrHidddenDiv('floorDiv', false);
+                }
+                else {
+
+                    commMethods.showOrHidddenDiv('floorDiv', true)
+                }
+            })
+
+            floorDiv.find('div').tap(function () {
 
                 commMethods.showOrHidddenDiv('floorDiv', false);
+
+                if (typeof onChangeFloor == 'function') {
+
+                    onChangeFloor(this.id)
+                }
+
+                setCurrentFloor(this.id)
+            })
+        }
+
+        console.log('sdfjsldfjlsdf')
+
+        return {
+
+            init: function(map, floorList) {
+
+                mapDiv = map
+
+                floorList = floorList
+
+                currentFloor = floorList[0]
+
+                locateFloor = floorList[0]
+
+                mainDiv = create('div', 'lc_div', 'lc_div')
+
+                self.map.apply(mainDiv)
+
+                createFloorList(currentFloor, locateFloor, floorList)
+            },
+
+            setCurrentFloor: function(floorId) {
+
+                currentFloor = findFloorById(floorId)
+
+                refreshDisplay()
+            },
+
+            setChangeFloorFunc : function(callBack) {
+
+                onChangeFloor = callBack
             }
-            else {
+        }
+    }())
 
-                commMethods.showOrHidddenDiv('floorDiv', true)
-            }
-        })
-
-        floorDiv.find('div').tap(function () {
-
-            commMethods.showOrHidddenDiv('floorDiv', false);
-
-            if (typeof self.onChangeFloor == 'function') {
-
-                self.onChangeFloor(this.id)
-            }
-
-            self.setCurrentFloor(this.id)
-        })
-    }
-
-    module.exports = idrFloorListControl;
+    module.exports = idrFloorListUi;
 })
 
