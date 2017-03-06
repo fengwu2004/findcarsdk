@@ -185,10 +185,6 @@ define(function (require, exports, module) {
             })
         }
 
-        console.log('sdfjsldfjlsdf++' + locaIndex)
-
-        locaIndex += 1
-
         this.init = function(map, floorList_) {
 
             floorList = floorList_
