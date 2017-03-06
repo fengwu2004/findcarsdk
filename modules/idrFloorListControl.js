@@ -70,9 +70,9 @@ define(function (require, exports, module) {
         return divs
     }
 
-    var idrFloorListUi = (function() {
+    function idrFloorListUi() {
 
-        var md = {}
+        var self = this
 
         var floorList = []
 
@@ -92,7 +92,7 @@ define(function (require, exports, module) {
 
         var locaIndex = 0
 
-        function findFloorById(floorId){
+        var findFloorById = function(floorId){
 
             var result = null
 
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
             return result
         }
 
-        function createFloorList(currentFloor, locateFloor, floorList) {
+        var createFloorList = function(currentFloor, locateFloor, floorList) {
 
             var temp = createCurrName(currentFloor)
 
@@ -135,7 +135,7 @@ define(function (require, exports, module) {
             addTaps(self);
         }
 
-        function refreshDisplay() {
+        var refreshDisplay = function() {
 
             titleDiv.innerText = currentFloor.name
 
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
             })
         }
 
-        function addTaps() {
+        var addTaps = function() {
 
             var floorDiv = jsLib("#floorDiv")
 
@@ -189,7 +189,7 @@ define(function (require, exports, module) {
 
         locaIndex += 1
 
-        md.init = function(map, floorList_) {
+        this.init = function(map, floorList_) {
 
             floorList = floorList_
 
@@ -204,20 +204,18 @@ define(function (require, exports, module) {
             createFloorList(currentFloor, locateFloor, floorList)
         }
 
-        md.setCurrentFloor = function(floorId) {
+        this.setCurrentFloor = function(floorId) {
 
             currentFloor = findFloorById(floorId)
 
             refreshDisplay()
         }
 
-        md.setChangeFloorFunc = function(callBack) {
+        this.setChangeFloorFunc = function(callBack) {
 
             onChangeFloor = callBack
         }
-
-        return md
-    }())
+    }
 
     module.exports = idrFloorListUi;
 })
