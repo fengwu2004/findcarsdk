@@ -58,11 +58,11 @@ define(function (require, exports, module) {
 
         this.title.innerText = this.currentFloor.name
 
-        var floorDiv = jsLib("#floorDiv")
+        var divs = Array.prototype.slice.call(jsLib("#floorDiv").toDom().children);
 
         var self = this
 
-        floorDiv.find('div').forEach(function(div, index) {
+        divs.forEach(function(div, index) {
 
             if (div.id === self.currentFloor.id) {
 
