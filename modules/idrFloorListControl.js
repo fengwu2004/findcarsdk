@@ -57,6 +57,22 @@ define(function (require, exports, module) {
     idrFloorListControl.prototype.refreshDisplay = function () {
 
         this.title.innerText = this.currentFloor.name
+
+        var floorDiv = jsLib("#floorDiv")
+
+        var self = this
+
+        floorDiv.find('div').forEach(function(div, index) {
+
+            if (div.id === self.currentFloor.id) {
+
+                div.className = 'lc_div3 lc_divcom'
+            }
+            else  {
+
+                div.className = 'lc_div2 lc_divcom'
+            }
+        })
     }
     
     function create(ele, id, classname) {
