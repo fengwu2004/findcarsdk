@@ -8,15 +8,7 @@ define(function (require, exports, module) {
 
     function idrFloorListControl() {
 
-        this.map = null
-
-        this.floorList = Array()
-
-        this.currentFloor = null
-
-        this.locateFloor = null
-
-        this.div = null
+        this.onChangeFloor = null
     }
 
     idrFloorListControl.prototype.init = function (map, floorList) {
@@ -25,9 +17,9 @@ define(function (require, exports, module) {
 
         this.floorList = floorList
 
-        this.currentFloor = this.floorList[0]
+        this.locateFloor = null
 
-        var that = this
+        this.currentFloor = this.floorList[0]
 
         var lc_div = create('div', 'lc_div', 'lc_div')
 
@@ -35,7 +27,7 @@ define(function (require, exports, module) {
 
         this.div = lc_div
 
-        createFloorList(lc_div, this.currentFloor, this.locateFloor, this.floorList)
+        createFloorList(this, lc_div, this.currentFloor, this.locateFloor, this.floorList)
     }
 
     idrFloorListControl.prototype.setCurrentFloor = function (floor) {
@@ -84,11 +76,11 @@ define(function (require, exports, module) {
 
         var divs = []
 
-        floorList.forEach(function (item, index) {
+        floorList.forEach(function (floor, index) {
 
-            var div = create('div', item.id, 'lc_div2 lc_divcom')
+            var div = create('div', floor.id, 'lc_div2 lc_divcom')
 
-            div.innerText = item.name
+            div.innerText = floor.name
 
             var span = create('span', null, 'lc_dot')
 
@@ -98,12 +90,12 @@ define(function (require, exports, module) {
 
             div.appendChild(span)
 
-            if (currentFloor && currentFloor.id === item.id) {
+            if (currentFloor && currentFloor.id === floor.id) {
 
                 div.className = 'lc_div3 lc_divcom'
             }
 
-            if (locateFloor && locateFloor.id === item.id) {
+            if (locateFloor && locateFloor.id === floor.id) {
 
                 span.style.opacity = 0.5
             }
@@ -114,7 +106,7 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createFloorList(div, currentFloor, locateFloor, floorList) {
+    function createFloorList(self, div, currentFloor, locateFloor, floorList) {
 
         var currentNameDiv = createCurrName(currentFloor)
 
@@ -133,10 +125,10 @@ define(function (require, exports, module) {
 
         commMethods.showOrHidddenDiv('floorDiv', false)
 
-        addTaps();
+        addTaps(self);
     }
 
-    function addTaps() {
+    function addTaps(self) {
 
         var floorDiv = jsLib("#floorDiv")
 
@@ -156,7 +148,12 @@ define(function (require, exports, module) {
 
         floorDiv.find('div').tap(function () {
 
-            console.log(this.id)
+            commMethods.showOrHidddenDiv('floorDiv', false);
+
+            if (typeof self.onChangeFloor == 'function') {
+
+                self.onChangeFloor(this.id)
+            }
         })
     }
 
