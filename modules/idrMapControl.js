@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
     idrMapControl.prototype.addFlootList = function () {
 
-        this.floorListControl = idrFloorListControl;
+        this.floorListControl = new idrFloorListControl();
 
         var oSvgFrame = document.querySelector('#svgFrame');
 
