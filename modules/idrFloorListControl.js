@@ -130,6 +130,7 @@ define(function (require, exports, module) {
 
     function addTaps(self) {
 
+
         var floorDiv = jsLib("#floorDiv")
 
         var currentNameDiv = jsLib("#currName")
