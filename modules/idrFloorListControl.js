@@ -197,7 +197,7 @@ define(function (require, exports, module) {
 
                 mainDiv = create('div', 'lc_div', 'lc_div')
 
-                map.apply(mainDiv)
+                map.appendChild(mainDiv)
 
                 createFloorList(currentFloor, locateFloor, floorList)
             },
