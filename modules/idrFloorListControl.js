@@ -185,7 +185,7 @@ define(function (require, exports, module) {
             })
         }
 
-        console.log('sdfjsldfjlsdf++++ %d', locaIndex)
+        console.log('sdfjsldfjlsdf++' + locaIndex)
 
         locaIndex += 1
 
