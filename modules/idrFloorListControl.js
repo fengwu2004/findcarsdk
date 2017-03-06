@@ -58,7 +58,7 @@ define(function (require, exports, module) {
 
         this.title.innerText = this.currentFloor.name
 
-        var divs = Array.prototype.slice.call(jsLib("#floorDiv").toDom().children);
+        var divs = this.floorDiv.element.children
 
         var self = this
 
