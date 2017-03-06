@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
         this.div = lc_div
 
-        createFloorList(this, lc_div, this.currentFloor, this.locateFloor, this.floorList)
+        createFloorList(this, this.currentFloor, this.locateFloor, this.floorList)
     }
 
     idrFloorListControl.prototype.setCurrentFloor = function (floor) {
@@ -39,7 +39,7 @@ define(function (require, exports, module) {
 
     idrFloorListControl.prototype.refreshDisplay = function () {
 
-        
+        this.title.innerText = this.currentFloor.name
     }
     
     function create(ele, id, classname) {
@@ -106,22 +106,24 @@ define(function (require, exports, module) {
         return divs
     }
 
-    function createFloorList(self, div, currentFloor, locateFloor, floorList) {
+    function createFloorList(self, currentFloor, locateFloor, floorList) {
 
-        var currentNameDiv = createCurrName(currentFloor)
+        self.currentNameDiv = createCurrName(currentFloor)
 
-        div.appendChild(currentNameDiv)
+        self.title = jsLib('#currName').find('span')
 
-        var floorDiv = create('div', 'floorDiv', 'lc_outo')
+        self.floorDiv = create('div', 'floorDiv', 'lc_outo')
 
         var floorDivs = createFloorDiv(currentFloor, locateFloor, floorList)
 
         floorDivs.forEach(function (item, index) {
 
-            floorDiv.appendChild(item)
+            self.floorDiv .appendChild(item)
         })
 
-        div.appendChild(floorDiv)
+        self.div.appendChild(self.currentNameDiv)
+
+        self.div.appendChild(self.floorDiv)
 
         commMethods.showOrHidddenDiv('floorDiv', false)
 
@@ -130,14 +132,9 @@ define(function (require, exports, module) {
 
     function addTaps(self) {
 
+        self.currentNameDiv.tap(function () {
 
-        var floorDiv = jsLib("#floorDiv")
-
-        var currentNameDiv = jsLib("#currName")
-
-        currentNameDiv.tap(function () {
-
-            if (floorDiv.toDom().style.display === 'block') {
+            if (self.floorDiv.toDom().style.display === 'block') {
 
                 commMethods.showOrHidddenDiv('floorDiv', false);
             }
@@ -147,7 +144,7 @@ define(function (require, exports, module) {
             }
         })
 
-        floorDiv.find('div').tap(function () {
+        self.floorDiv.find('div').tap(function () {
 
             commMethods.showOrHidddenDiv('floorDiv', false);
 
