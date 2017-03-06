@@ -72,6 +72,8 @@ define(function (require, exports, module) {
 
     var idrFloorListUi = (function() {
 
+        var md = {}
+
         var floorList = []
 
         var mapDiv = null
@@ -179,41 +181,40 @@ define(function (require, exports, module) {
                     onChangeFloor(this.id)
                 }
 
-                setCurrentFloor(this.id)
+                md.setCurrentFloor(this.id)
             })
         }
 
         console.log('sdfjsldfjlsdf')
 
-        return {
+        md.init = function(map, floorList_) {
 
-            init: function(map, floorList_) {
+            floorList = floorList_
 
-                floorList = floorList_
+            currentFloor = floorList[0]
 
-                currentFloor = floorList[0]
+            locateFloor = floorList[0]
 
-                locateFloor = floorList[0]
+            mainDiv = create('div', 'lc_div', 'lc_div')
 
-                mainDiv = create('div', 'lc_div', 'lc_div')
+            map.appendChild(mainDiv)
 
-                map.appendChild(mainDiv)
-
-                createFloorList(currentFloor, locateFloor, floorList)
-            },
-
-            setCurrentFloor: function(floorId) {
-
-                currentFloor = findFloorById(floorId)
-
-                refreshDisplay()
-            },
-
-            setChangeFloorFunc : function(callBack) {
-
-                onChangeFloor = callBack
-            }
+            createFloorList(currentFloor, locateFloor, floorList)
         }
+
+        md.setCurrentFloor = function(floorId) {
+
+            currentFloor = findFloorById(floorId)
+
+            refreshDisplay()
+        }
+
+        md.setChangeFloorFunc = function(callBack) {
+
+            onChangeFloor = callBack
+        }
+
+        return md
     }())
 
     module.exports = idrFloorListUi;
