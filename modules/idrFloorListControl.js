@@ -58,7 +58,7 @@ define(function (require, exports, module) {
 
         this.title.innerText = this.currentFloor.name
 
-        var divs = this.floorDiv.elements
+        var divs = this.floorDiv.children()
 
         var self = this
 
