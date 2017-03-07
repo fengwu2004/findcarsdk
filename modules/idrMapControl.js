@@ -200,25 +200,23 @@ define(function (require, exports, module) {
 
         var createPosIndicator = function(id, src) {
 
-            var dom = null
+             function createDom() {
 
-            function createDom() {
+                var dom = document.createElement('div')
 
-                dom = document.createElement('div');
+                dom.id = id
 
-                dom.id = id;
+                var oImg = document.createElement('img')
 
-                var oImg = document.createElement('img');
+                oImg.src = src
 
-                oImg.src = src;
+                oImg.style.width = '60px'
 
-                oImg.style.width = '60px';
+                oImg.style.height = '60px'
 
-                oImg.style.height = '60px';
+                dom.appendChild(oImg)
 
-                dom.appendChild(oImg);
-
-                _svgFrame.appendChild(dom);
+                _svgFrame.appendChild(dom)
 
                 return dom
             }
