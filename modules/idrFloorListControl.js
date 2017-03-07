@@ -181,7 +181,7 @@ define(function (require, exports, module) {
                     onChangeFloor(this.id)
                 }
 
-                md.setCurrentFloor(this.id)
+                self.setCurrentFloor(this.id)
             })
         }
 
