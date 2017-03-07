@@ -216,7 +216,7 @@ define(function (require, exports, module) {
 
                 dom.appendChild(oImg)
 
-                _svgFrame.appendChild(dom)
+                 document.body.appendChild(dom)
 
                 return dom
             }
