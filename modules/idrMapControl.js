@@ -24,8 +24,6 @@ define(function (require, exports, module) {
 
     var idrFloorListControl = require('./idrFloorListControl');
 
-    var ccc = require('./idrFloorListControl');
-
     var idrDataMgr = require('./idrDataManager');
 
     function idrMapControl() {
