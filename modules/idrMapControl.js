@@ -221,6 +221,8 @@ define(function (require, exports, module) {
                 dom.appendChild(oImg);
 
                 _svgFrame.appendChild(dom);
+
+                return dom
             }
 
             _posIndicator = new idrIndicator()
