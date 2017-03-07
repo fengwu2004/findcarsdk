@@ -27,6 +27,8 @@ define(function (require, exports, module) {
 
             _dom.style.height = 50 + 'px'
 
+            _dom.style.background = '#45afd7'
+
             wave()
         }
     }
