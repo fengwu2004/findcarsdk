@@ -798,7 +798,6 @@ define(function (require, exports, module) {
 
     }
 
-
     //雷达波
     YFMap.prototype.wave = function(id, arr, rot) {
         if (id !== 'point' && ({}).toString.call(arr) !== '[object Array]') return;

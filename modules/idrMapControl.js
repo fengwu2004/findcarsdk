@@ -22,6 +22,8 @@ define(function (require, exports, module) {
 
     var networkManager = require('./idrNetworkManager');
 
+    var idrIndicator = require('./idrIndicator')
+
     var idrFloorListControl = require('./idrFloorListControl');
 
     var idrDataMgr = require('./idrDataManager');
@@ -39,6 +41,10 @@ define(function (require, exports, module) {
         var _regionData = null
 
         var _floorListControl = null
+
+        var _posIndicator = null
+
+        var _loadMapSuccessFun = null
 
         var addFloorList = function() {
 
@@ -181,10 +187,60 @@ define(function (require, exports, module) {
 
                 addFloorList()
 
+                if (_loadMapSuccessFun) {
+
+                    _loadMapSuccessFun()
+                }
+
             }, function() {
 
                 alert('地图数据获取失败!' + data);
             })
+        }
+
+        var createPosIndicator = function(id, src) {
+
+            var dom = null
+
+            function createDom() {
+
+                dom = document.createElement('div');
+
+                dom.id = id;
+
+                dom.style.display = 'none';
+
+                var oImg = document.createElement('img');
+
+                oImg.src = src;
+
+                oImg.style.width = '60px';
+
+                oImg.style.height = '60px';
+
+                dom.appendChild(oImg);
+
+                _svgFrame.appendChild(dom);
+            }
+
+            _posIndicator = new idrIndicator()
+
+            _posIndicator.setDom(createDom())
+        }
+
+        this.setCurrPos = function(x, y) {
+
+            if (!_posIndicator) {
+
+                createPosIndicator('indicator', 'http://wx.indoorun.com/indoorun/common/cheneapp/images/point.png')
+            }
+
+            _posIndicator.setPos(x, y)
+        }
+
+        this.setLoadMapFinishCallback = function(callBack) {
+
+            _loadMapSuccessFun = callBack
         }
     }
 

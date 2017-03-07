@@ -74,29 +74,29 @@ define(function (require, exports, module) {
 
         var self = this
 
-        var floorList = []
+        var _floorList = []
 
-        var currentFloor = null
+        var _currentFloor = null
 
-        var locateFloor = null
+        var _locateFloor = null
 
-        var mainDiv = null
+        var _mainDiv = null
 
-        var titleDiv = null
+        var _titleDiv = null
 
-        var currentNameDiv = null
+        var _currentNameDiv = null
 
-        var floorDiv = null
+        var _floorDiv = null
+
+        var _currPos = null
 
         var onChangeFloor = null
-
-        var locaIndex = 0
 
         var findFloorById = function(floorId){
 
             var result = null
 
-            floorList.forEach(function(floor, index) {
+            _floorList.forEach(function(floor, index) {
 
                 if (floor.id == floorId) {
 
@@ -113,22 +113,22 @@ define(function (require, exports, module) {
 
             var temp = createCurrName(currentFloor)
 
-            currentNameDiv = temp[0]
+            _currentNameDiv = temp[0]
 
-            titleDiv = temp[1]
+            _titleDiv = temp[1]
 
-            floorDiv = create('div', 'floorDiv', 'lc_outo')
+            _floorDiv = create('div', 'floorDiv', 'lc_outo')
 
             var floorDivs = createFloorDiv(currentFloor, locateFloor, floorList)
 
             floorDivs.forEach(function (item, index) {
 
-                floorDiv.appendChild(item)
+                _floorDiv.appendChild(item)
             })
 
-            mainDiv.appendChild(currentNameDiv)
+            _mainDiv.appendChild(_currentNameDiv)
 
-            mainDiv.appendChild(floorDiv)
+            _mainDiv.appendChild(_floorDiv)
 
             commMethods.showOrHidddenDiv('floorDiv', false)
 
@@ -137,13 +137,13 @@ define(function (require, exports, module) {
 
         var refreshDisplay = function() {
 
-            titleDiv.innerText = currentFloor.name
+            _titleDiv.innerText = _currentFloor.name
 
-            var divs = Array.prototype.slice.call(floorDiv.children)
+            var divs = Array.prototype.slice.call(_floorDiv.children)
 
             divs.forEach(function(div, index) {
 
-                if (div.id === currentFloor.id) {
+                if (div.id === _currentFloor.id) {
 
                     div.className = 'lc_div3 lc_divcom'
                 }
@@ -187,22 +187,22 @@ define(function (require, exports, module) {
 
         this.init = function(map, floorList_) {
 
-            floorList = floorList_
+            _floorList = floorList_
 
-            currentFloor = floorList[0]
+            _currentFloor = _floorList[0]
 
-            locateFloor = floorList[0]
+            _locateFloor = _floorList[0]
 
-            mainDiv = create('div', 'lc_div', 'lc_div')
+            _mainDiv = create('div', 'lc_div', 'lc_div')
 
-            map.appendChild(mainDiv)
+            map.appendChild(_mainDiv)
 
-            createFloorList(currentFloor, locateFloor, floorList)
+            createFloorList(_currentFloor, _locateFloor, _floorList)
         }
-
+        
         this.setCurrentFloor = function(floorId) {
 
-            currentFloor = findFloorById(floorId)
+            _currentFloor = findFloorById(floorId)
 
             refreshDisplay()
         }
