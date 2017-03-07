@@ -23,6 +23,8 @@ define(function (require, exports, module) {
 
             _dom.style.top = 50 + 'px'
 
+            _dom.style.position = 'absolute'
+
             wave()
         }
     }
