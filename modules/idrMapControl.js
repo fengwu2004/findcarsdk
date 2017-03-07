@@ -208,8 +208,6 @@ define(function (require, exports, module) {
 
                 dom.id = id;
 
-                dom.style.display = 'none';
-
                 var oImg = document.createElement('img');
 
                 oImg.src = src;
