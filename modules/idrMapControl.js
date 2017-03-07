@@ -36,8 +36,6 @@ define(function (require, exports, module) {
 
         var _floorId = null
 
-        var _initAngle = 0
-
         var _regionData = null
 
         var _floorListControl = null
@@ -46,9 +44,7 @@ define(function (require, exports, module) {
 
             _floorListControl = new idrFloorListControl();
 
-            var oSvgFrame = document.querySelector('#svgFrame');
-
-            _floorListControl.init(oSvgFrame, _regionData.floorList)
+            _floorListControl.init(_svgFrame, _regionData['floorList'])
         }
 
         var addSvgMap = function(data, regionId, floorId) {
@@ -56,8 +52,6 @@ define(function (require, exports, module) {
             var svg = data;
 
             var oSvgBox = document.querySelector('#svgBox');
-
-            var oSvgFrame = document.querySelector('#svgFrame');
 
             oSvgBox.innerHTML = svg;
 
@@ -102,7 +96,7 @@ define(function (require, exports, module) {
 
             hammObj.init(domView);
 
-            oUtils.HandleNode.setStyle(oSvgFrame, {'display': 'block'});
+            oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
 
             oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
 
@@ -125,9 +119,7 @@ define(function (require, exports, module) {
 
         var removePreviousSVG = function () {
 
-            var svgFrame = document.querySelector('#svgFrame');
-
-            if (svgFrame) {
+            if (_svgFrame) {
 
                 var svgBox = document.querySelector('#svgBox');
 
@@ -143,11 +135,11 @@ define(function (require, exports, module) {
             }
             else {
 
-                svgFrame = document.createElement('div');
+                _svgFrame = document.createElement('div');
 
-                svgFrame.id = 'svgFrame';
+                _svgFrame.id = 'svgFrame';
 
-                svgFrame.className = 'svg_frame';
+                _svgFrame.className = 'svg_frame';
 
                 svgBox = document.createElement('div');
 
@@ -157,7 +149,6 @@ define(function (require, exports, module) {
 
                 var gText = document.createElement('div');
 
-
                 gText.id = 'g_txt';
 
                 gText.className = 'gTxt';
@@ -166,13 +157,13 @@ define(function (require, exports, module) {
 
                 lines.id = 'line';
 
-                svgFrame.appendChild(svgBox);
+                _svgFrame.appendChild(svgBox);
 
-                svgFrame.appendChild(gText);
+                _svgFrame.appendChild(gText);
 
-                svgFrame.appendChild(lines);
+                _svgFrame.appendChild(lines);
 
-                document.body.appendChild(svgFrame);
+                document.body.appendChild(_svgFrame);
             }
         }
 
