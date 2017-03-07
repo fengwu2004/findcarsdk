@@ -34,6 +34,8 @@ define(function (require, exports, module) {
 
         var _svgFrame = null
 
+        var _mapViewPort = null
+
         var _regionId = null
 
         var _floorId = null
@@ -96,13 +98,13 @@ define(function (require, exports, module) {
                 })
             }
 
-            var domView = jsLib.getEle('#viewport');
+            _mapViewPort = jsLib.getEle('#viewport');
 
             hammObj.scale = 0;
 
             hammObj.angle = 0;
 
-            hammObj.init(domView);
+            hammObj.init(_mapViewPort);
 
             oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
 
@@ -218,7 +220,7 @@ define(function (require, exports, module) {
 
                 dom.appendChild(oImg)
 
-                _svgFrame.appendChild(dom)
+                _mapViewPort.appendChild(dom)
 
                 return dom
             }
