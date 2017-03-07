@@ -46,6 +46,8 @@ define(function (require, exports, module) {
 
         var _loadMapSuccessFun = null
 
+        var _svgBox = null
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -127,13 +129,13 @@ define(function (require, exports, module) {
 
             if (_svgFrame) {
 
-                var svgBox = document.querySelector('#svgBox');
+                _svgBox = document.querySelector('#svgBox');
 
                 var gtext = document.querySelector('#g_txt');
 
                 var lines = document.querySelector('#line');
 
-                svgBox.innerHTML = '';
+                _svgBox.innerHTML = '';
 
                 gtext.innerHTML = '';
 
@@ -147,11 +149,11 @@ define(function (require, exports, module) {
 
                 _svgFrame.className = 'svg_frame';
 
-                svgBox = document.createElement('div');
+                _svgBox = document.createElement('div');
 
-                svgBox.id = 'svgBox';
+                _svgBox.id = 'svgBox';
 
-                svgBox.className = 'svg_box';
+                _svgBox.className = 'svg_box';
 
                 var gText = document.createElement('div');
 
@@ -163,7 +165,7 @@ define(function (require, exports, module) {
 
                 lines.id = 'line';
 
-                _svgFrame.appendChild(svgBox);
+                _svgFrame.appendChild(_svgBox);
 
                 _svgFrame.appendChild(gText);
 
@@ -200,7 +202,7 @@ define(function (require, exports, module) {
 
         var createPosIndicator = function(id, src) {
 
-             function createDom() {
+            function createDom() {
 
                 var dom = document.createElement('div')
 
@@ -216,7 +218,7 @@ define(function (require, exports, module) {
 
                 dom.appendChild(oImg)
 
-                 document.body.appendChild(dom)
+                _svgBox.appendChild(dom)
 
                 return dom
             }
