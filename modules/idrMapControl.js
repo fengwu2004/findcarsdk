@@ -220,7 +220,7 @@ define(function (require, exports, module) {
 
                 dom.appendChild(oImg)
 
-                _mapViewPort.appendChild(dom)
+                _svgFrame.appendChild(dom)
 
                 return dom
             }
