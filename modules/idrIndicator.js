@@ -19,9 +19,9 @@ define(function (require, exports, module) {
 
         this.setPos = function(x, y) {
 
-            _dom.style.left = x
+            _dom.style.left = x + 'px'
 
-            _dom.style.top = y
+            _dom.style.top = y + 'px'
 
             wave()
         }
