@@ -239,7 +239,16 @@ define(function (require, exports, module) {
 
             var trans = _mapViewPort.getAttribute('transform')
 
+            transFunc(trans)
+
             _posIndicator.setPos(x, y, trans)
+        }
+
+        function transFunc(value) {
+
+            var temp = value.substring(7, value.length - 1)
+
+            console.log(temp)
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
