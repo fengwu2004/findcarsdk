@@ -23,12 +23,14 @@ define(function (require, exports, module) {
 
         this.setPos = function(x, y, mt) {
 
-            if (matrix3.invert(mt, mt) == null) {
+            var temp = matrix3.create()
+
+            if (matrix3.invert(temp, mt) == null) {
 
                 return
             }
 
-            var v = xmath.pointTransform(x, y, mt)
+            var v = xmath.pointTransform(x, y, temp)
 
             _dom.style.left = v[0] + 'px'
 
