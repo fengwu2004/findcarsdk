@@ -27,9 +27,9 @@ define(function (require, exports, module) {
 
             var v = xmath.pointTransform(x, y, mt)
 
-            _dom.style.left = v[0] + 'px'
+            _dom.style.left = v[0] - 30 + 'px'
 
-            _dom.style.top = v[1] + 'px'
+            _dom.style.top = v[1] - 30 + 'px'
 
             _dom.style.position = 'absolute'
 
