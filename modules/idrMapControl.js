@@ -281,7 +281,7 @@ define(function (require, exports, module) {
 
             var mt = matrix3.create()
 
-            matrix3.set(mt, valueT[0], valueT[1], 0, valueT[2], valueT[3], 0, valueT[4], valueT[5], valueT[1])
+            matrix3.set(mt, valueT[0], valueT[1], 0, valueT[2], valueT[3], 0, valueT[4], valueT[5], 1)
 
             return mt
         }

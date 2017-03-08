@@ -30,7 +30,7 @@ define(function (require, exports, module) {
                 return
             }
 
-            var v = xmath.pointTransform(x, y, temp)
+            var v = xmath.pointTransform(x, y, mt)
 
             _dom.style.left = v[0] + 'px'
 
