@@ -23,6 +23,8 @@ define(function (require, exports, module) {
 
         this.setPos = function(x, y, mt) {
 
+            console.log(mt)
+
             var v = xmath.pointTransform(x, y, mt)
 
             _dom.style.left = v[0] + 'px'
