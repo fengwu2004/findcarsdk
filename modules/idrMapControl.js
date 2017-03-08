@@ -286,8 +286,6 @@ define(function (require, exports, module) {
             return value
         }
 
-
-
         this.setLoadMapFinishCallback = function(callBack) {
 
             _loadMapSuccessFun = callBack
