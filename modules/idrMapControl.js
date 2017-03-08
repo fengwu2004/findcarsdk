@@ -226,7 +226,7 @@ define(function (require, exports, module) {
 
                 oImg.style.height = '60px'
 
-                oImg.style.backgroundColor = '00ff00'
+                dom.style.backgroundColor = 'red'
 
                 dom.appendChild(oImg)
 
