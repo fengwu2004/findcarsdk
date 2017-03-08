@@ -17,7 +17,7 @@ define(function (require, exports, module) {
             _dom = dom
         }
 
-        this.setPos = function(x, y) {
+        this.setPos = function(x, y, trans) {
 
             _dom.style.left = 50 + 'px'
 
