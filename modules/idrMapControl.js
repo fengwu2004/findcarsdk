@@ -260,7 +260,7 @@ define(function (require, exports, module) {
 
             if (_posTimer == null) {
 
-                _posTimer = setInterval(updatepos, 300)
+                // _posTimer = setInterval(updatepos, 300)
             }
         }
 
