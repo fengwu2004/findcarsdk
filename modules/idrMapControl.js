@@ -283,7 +283,7 @@ define(function (require, exports, module) {
 
             matrix3.set(mt, value[0], value[1], 0, value[2], value[3], 0, value[4], value[5], value[1])
 
-            return value
+            return mt
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
