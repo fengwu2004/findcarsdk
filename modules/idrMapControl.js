@@ -241,7 +241,7 @@ define(function (require, exports, module) {
 
             var mt = matrixFromString(trans)
 
-            _posIndicator.setPos(x, y, trans)
+            _posIndicator.setPos(x, y, mt)
         }
 
         function matrixFromString(value) {
