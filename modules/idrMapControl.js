@@ -18,6 +18,8 @@ define(function (require, exports, module) {
 
     var Maputils = require('./maputils');
 
+    var matrix3 = require('./matrix3')
+
     var oMapUtils = new Maputils();
 
     var networkManager = require('./idrNetworkManager');
@@ -31,6 +33,12 @@ define(function (require, exports, module) {
     function idrMapControl() {
 
         var self = this
+
+        var _x = 0
+
+        var _y = 0
+
+        var _posTimer = null
 
         var _svgFrame = null
 
@@ -230,18 +238,39 @@ define(function (require, exports, module) {
             _posIndicator.setDom(createDom())
         }
 
-        this.setCurrPos = function(x, y) {
+        this.setCurrPos = function(x, y, show) {
+
+            _x = x
+
+            _y = y
 
             if (!_posIndicator) {
 
                 createPosIndicator('indicator', 'http://wx.indoorun.com/indoorun/common/cheneapp/images/point.png')
             }
 
+            if (!show) {
+
+                clearInterval(_posTimer)
+
+                _posTimer = null
+
+                return
+            }
+
+            if (_posTimer == null) {
+
+                _posTimer = setInterval(updatepos, 30)
+            }
+        }
+
+        var updatepos = function() {
+
             var trans = _mapViewPort.getAttribute('transform')
 
             var mt = matrixFromString(trans)
 
-            _posIndicator.setPos(x, y, mt)
+            _posIndicator.setPos(_x, _y, mt)
         }
 
         function matrixFromString(value) {
@@ -250,10 +279,14 @@ define(function (require, exports, module) {
 
             var value = temp.split(',')
 
-            console.log(value)
+            var mt = matrix3.create()
+
+            matrix3.set(mt, value[0], value[1], 0, value[2], value[3], 0, value[4], value[5], value[1])
 
             return value
         }
+
+
 
         this.setLoadMapFinishCallback = function(callBack) {
 

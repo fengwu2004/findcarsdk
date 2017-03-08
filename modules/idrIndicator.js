@@ -21,11 +21,7 @@ define(function (require, exports, module) {
             _dom = dom
         }
 
-        this.setPos = function(x, y, trans) {
-
-            var mt = matrix3.create()
-
-            matrix3.set(mt, trans[0], trans[1], 0, trans[2], trans[3], 0, trans[4], trans[5], trans[1])
+        this.setPos = function(x, y, mt) {
 
             matrix3.invert(mt, mt)
 
