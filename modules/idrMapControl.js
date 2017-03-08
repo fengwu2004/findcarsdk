@@ -226,6 +226,8 @@ define(function (require, exports, module) {
 
                 oImg.style.height = '60px'
 
+                oImg.style.backgroundColor = '00ff00'
+
                 dom.appendChild(oImg)
 
                 _svgFrame.appendChild(dom)
