@@ -237,7 +237,9 @@ define(function (require, exports, module) {
                 createPosIndicator('indicator', 'http://wx.indoorun.com/indoorun/common/cheneapp/images/point.png')
             }
 
-            _posIndicator.setPos(x, y, _mapViewPort.style.transform)
+            var trans = _mapViewPort.getAttribute('transform')
+
+            _posIndicator.setPos(x, y, trans)
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
