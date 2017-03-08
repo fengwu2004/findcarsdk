@@ -277,11 +277,11 @@ define(function (require, exports, module) {
 
             var temp = value.substring(7, value.length - 1)
 
-            var value = temp.split(',')
+            var valueT = temp.split(',')
 
             var mt = matrix3.create()
 
-            matrix3.set(mt, value[0], value[1], 0, value[2], value[3], 0, value[4], value[5], 1)
+            matrix3.set(mt, valueT[0], valueT[1], 0, valueT[2], valueT[3], 0, valueT[4], valueT[5], 1)
 
             return mt
         }
