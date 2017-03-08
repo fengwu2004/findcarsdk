@@ -54,7 +54,9 @@ define(function (require, exports, module) {
 
                 var ry = x * mt[1] + y * mt[4] + mt[7]
 
-                return [rx, ry]
+                var rw = x * mt[2] + y * mt[5] + mt[8]
+
+                return [rx/rw, ry/rw]
             }
         }
 
