@@ -251,6 +251,8 @@ define(function (require, exports, module) {
             var value = Array.prototype.slice.call(temp)
 
             console.log(value)
+
+            return value
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
