@@ -23,7 +23,10 @@ define(function (require, exports, module) {
 
         this.setPos = function(x, y, mt) {
 
-            matrix3.invert(mt, mt)
+            if (matrix3.invert(mt, mt) == null) {
+
+                return
+            }
 
             var v = xmath.pointTransform(x, y, mt)
 
