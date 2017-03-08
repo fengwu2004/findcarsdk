@@ -248,7 +248,7 @@ define(function (require, exports, module) {
 
             var temp = value.substring(7, value.length - 1)
 
-            var value = Array.prototype.slice.call(temp)
+            var value = temp.split(',')
 
             console.log(value)
 
