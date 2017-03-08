@@ -239,16 +239,18 @@ define(function (require, exports, module) {
 
             var trans = _mapViewPort.getAttribute('transform')
 
-            transFunc(trans)
+            var mt = matrixFromString(trans)
 
             _posIndicator.setPos(x, y, trans)
         }
 
-        function transFunc(value) {
+        function matrixFromString(value) {
 
             var temp = value.substring(7, value.length - 1)
 
-            console.log(temp)
+            var value = Array.prototype.slice.call(temp)
+
+            console.log(value)
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
