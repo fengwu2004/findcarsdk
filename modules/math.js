@@ -46,6 +46,15 @@ define(function (require, exports, module) {
                 var out = Matrix3.create()
 
                 Matrix3.multiply(out, ms, m)
+            },
+
+            pointTransform: function(x, y, mt) {
+
+                var rx = x * mt[0] + y * mt[3] + mt[6]
+
+                var ry = x * mt[1] + y * mt[4] + mt[7]
+
+                return [rx, ry]
             }
         }
 

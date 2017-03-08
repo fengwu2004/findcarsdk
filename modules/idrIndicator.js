@@ -2,6 +2,10 @@
  * Created by yan on 07/03/2017.
  */
 define(function (require, exports, module) {
+
+    var matrix3 = require('./matrix3')
+
+    var xmath = require('./math')
     
     function idrIndicator() {
 
@@ -19,9 +23,17 @@ define(function (require, exports, module) {
 
         this.setPos = function(x, y, trans) {
 
-            _dom.style.left = 50 + 'px'
+            var mt = matrix3.create()
 
-            _dom.style.top = 50 + 'px'
+            matrix3.set(mt, trans[0], trans[1], 0, trans[2], trans[3], 0, trans[4], trans[5], trans[1])
+
+            matrix3.invert(mt, mt)
+
+            var v = xmath.pointTransform(x, y, mt)
+
+            _dom.style.left = v[0] + 'px'
+
+            _dom.style.top = v[1] + 'px'
 
             _dom.style.position = 'absolute'
 
