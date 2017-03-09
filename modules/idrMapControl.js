@@ -58,6 +58,8 @@ define(function (require, exports, module) {
 
         var _svgBox = null
 
+        var _svgPath = null
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -271,6 +273,25 @@ define(function (require, exports, module) {
             var mt = matrixFromString(trans)
 
             _posIndicator.setPos(_x, _y, mt)
+        }
+
+        this.showPath = function(paths) {
+
+            if (_svgPath == null) {
+
+                _svgPath = document.createElementNS('http://www.w3.org/2000/svg','polygon')
+
+                _mapViewPort.appendChild(_svgPath)
+            }
+
+            var res = []
+
+            for (var i = 0; i < paths.length; i++) {
+
+                res.push(paths[i][0] + ', ' + paths[i][1])
+            }
+
+            _svgPath.attribute('points', res)
         }
 
         function matrixFromString(value) {
