@@ -279,7 +279,13 @@ define(function (require, exports, module) {
 
             if (_svgPath == null) {
 
-                _svgPath = document.createElementNS('http://www.w3.org/2000/svg','polygon')
+                _svgPath = document.createElementNS('http://www.w3.org/2000/svg','polyline')
+
+                _svgPath.style.fill = 'none'
+
+                _svgPath.style.stroke = 'black'
+
+                _svgPath.style.strokeWidth = 3
 
                 _mapViewPort.appendChild(_svgPath)
             }
@@ -291,7 +297,7 @@ define(function (require, exports, module) {
                 res.push(paths[i][0] + ', ' + paths[i][1])
             }
 
-            _svgPath.attribute('points', res)
+            _svgPath.setAttribute('points', res)
         }
 
         function matrixFromString(value) {
