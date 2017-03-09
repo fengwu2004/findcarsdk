@@ -283,19 +283,21 @@ define(function (require, exports, module) {
 
                 _svgPath.style.fill = 'none'
 
-                _svgPath.style.stroke = 'black'
+                _svgPath.style.stroke = 'blue'
 
                 _svgPath.style.strokeWidth = 3
 
                 _mapViewPort.appendChild(_svgPath)
             }
 
-            var res = []
+            var res = ''
 
-            for (var i = 0; i < paths.length; i++) {
+            for (var i = 0; i < paths.length - 1; i++) {
 
-                res.push(paths[i][0] + ', ' + paths[i][1])
+                res += paths[i][0] + ', ' + paths[i][1] + ', '
             }
+
+            res += paths[paths.length - 1][0] + ', ' + paths[paths.length - 1][1]
 
             _svgPath.setAttribute('points', res)
         }
