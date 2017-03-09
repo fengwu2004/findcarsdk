@@ -30,6 +30,8 @@ define(function (require, exports, module) {
 
     var idrDataMgr = require('./idrDataManager');
 
+    var networkInstance = require('./idrNetworkManager')
+
     function idrMapControl() {
 
         var self = this
@@ -59,6 +61,12 @@ define(function (require, exports, module) {
         var _svgBox = null
 
         var _svgPath = null
+
+        var _units = []
+
+        var _unitDivs = []
+
+        var _currentTm = null
 
         var addFloorList = function() {
 
@@ -121,13 +129,47 @@ define(function (require, exports, module) {
             oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
 
             //进行文字加载
-            unitObj.getTxtList(regionId, floorId);
+            getAllUnits()
 
             oMapUtils.isAgainDraw(floorId);
 
             hammObj.handleDo();
 
             hammObj.bindTouch(oSvgBox);
+        }
+
+        var addUnits = function() {
+
+            for (var i = 0; i < _units.length; ++i) {
+
+                var unit = _units[i]
+
+                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','text')
+
+                unitSvg.innerHTML = unit.name
+
+                _unitDivs.push(unitSvg)
+
+                _mapViewPort.appendChild(unitSvg)
+            }
+        }
+
+        var getAllUnits = function() {
+
+            networkInstance.serverCallUnits(_regionId, _floorId,
+
+                function (data) {
+
+                    _units = data;
+
+                    addUnits()
+                },
+
+                function () {
+
+                    alert('获取unit失败!' + str);
+                }
+            )
         }
 
         var createSVGMap = function(svg, regionId, floorId) {
@@ -262,17 +304,49 @@ define(function (require, exports, module) {
 
             if (_posTimer == null) {
 
-                _posTimer = setInterval(updatepos, 15)
+                _posTimer = setInterval(updateDisplay, 1000/60)
             }
         }
 
-        var updatepos = function() {
+        var updateDisplay = function() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
             var mt = matrixFromString(trans)
 
             _posIndicator.setPos(_x, _y, mt)
+
+            if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
+
+                if (_unitDivs.length > 0) {
+
+                    _currentTm = mt
+
+                    updateUnitAngleAndScale(mt)
+                }
+            }
+        }
+
+        var updateUnitAngleAndScale = function(m) {
+
+            var tm = matrix3.clone(m)
+
+            tm[6] = 0
+
+            tm[7] = 0
+
+            matrix3.invert(tm, tm)
+
+            _unitDivs.forEach(function(unitSvg, index) {
+
+                var unit = _units[index]
+
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
+
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
+
+                unitSvg.setAttribute('transform', matrixToString(tm, x, y))
+            })
         }
 
         this.showPath = function(paths) {
@@ -283,9 +357,9 @@ define(function (require, exports, module) {
 
                 _svgPath.style.fill = 'none'
 
-                _svgPath.style.stroke = 'blue'
+                _svgPath.style.stroke = 'red'
 
-                _svgPath.style.strokeWidth = 3
+                _svgPath.style.strokeWidth = 4
 
                 _mapViewPort.appendChild(_svgPath)
             }
@@ -313,6 +387,11 @@ define(function (require, exports, module) {
             matrix3.set(mt, valueT[0], valueT[1], 0, valueT[2], valueT[3], 0, valueT[4], valueT[5], 1)
 
             return mt
+        }
+
+        function matrixToString(value, x, y) {
+
+            return 'matrix(' + value[0] + ',' + value[1] + ',' + value[3] + ',' + value[4] + ',' + x + ',' + y + ')'
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
