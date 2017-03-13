@@ -34,8 +34,6 @@ define(function (require, exports, module) {
 
     function idrMapControl() {
 
-        var self = this
-
         var _x = 0
 
         var _y = 0
