@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
     function filterbeacons(beacons) {
 
-        var newBeacons = new Array();
+        var newBeacons = []
 
         for (var i = 0; i < beacons.length; ++i) {
 

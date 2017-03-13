@@ -131,8 +131,6 @@ define(function (require, exports, module) {
             //进行文字加载
             getAllUnits()
 
-            oMapUtils.isAgainDraw(floorId);
-
             hammObj.handleDo();
 
             hammObj.bindTouch(oSvgBox);
