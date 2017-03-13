@@ -32,7 +32,7 @@ define(function (require, exports, module) {
 
     var networkInstance = require('./idrNetworkManager')
 
-    function idrMapControl() {
+    function idrMapView() {
 
         var _x = 0
 
@@ -396,5 +396,5 @@ define(function (require, exports, module) {
         }
     }
 
-    module.exports = idrMapControl;
+    module.exports = idrMapView;
 });
