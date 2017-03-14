@@ -299,7 +299,7 @@ define(function (require, exports, module) {
 
                 if (matrix[pa][pc] != null) {
 
-                    len = sa + sc + matrix[pa][pc].getLength();
+                    len = sa + sc + matrix[pa][pc].length;
 
                     start = pa;
                     end = pc;
