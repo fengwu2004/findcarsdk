@@ -15,29 +15,19 @@ define(function (require, exports, module) {
 
 	var FloorPath = require('./FloorPath')
 
+    var jsonData = require('./RegionPath.json')
+
+    var obj = JSON.parse(jsonData);
+
     function PathSearch(data) {
 
         var IGNOREDES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
 
-        var floorPath;// 楼层路径数据
+        var floorPath = data.getFloorPath();// 楼层路径数据
 
-        var footPath;// 人行贯通路径数据
+        var footPath = data.getFootPath();// 人行贯通路径数据
 
-        var carPath;// 车行贯通路径数据
-
-        /**
-         * 设置数据信息
-         *
-         * @param data数据信息
-         */
-        function setData(data) {
-
-            floorPath = data.getFloorPath();
-
-            footPath = data.getFootPath();
-
-            carPath = data.getCarPath();
-        }
+        var carPath = data.getCarPath();// 车行贯通路径数据
 
         /**
          * 搜索从f1层p1点到f2层p2点的最短路径（完整信息）
@@ -50,7 +40,7 @@ define(function (require, exports, module) {
          * @param brief简略信息，若有可减少计算量，若为null则自动计算
          * @return 最短路径结果集
          */
-        this.search = function(f1, p1, f2, p2, type, brief) {
+        var search = function(f1, p1, f2, p2, type, brief) {
 
             var result = null;
 
