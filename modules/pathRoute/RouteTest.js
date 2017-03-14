@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         var pathResult = {};
 
-        pathResult.distance = result.getDistance();
+        pathResult.distance = result.distance;
 
         var array = [];
 
