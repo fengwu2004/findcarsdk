@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 
                 result = new PathResult();
 
-                result.setDistance(brief.distance);
+                result.distance = brief.distance;
 
                 var paths = [];
 
