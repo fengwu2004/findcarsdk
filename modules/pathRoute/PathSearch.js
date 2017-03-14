@@ -79,7 +79,7 @@ define(function (require, exports, module) {
 
                             fp.setTypeId(positions[pro].getUnitTypeId());
 
-                            paths.add(fp);
+                            paths.push(fp);
                         }
 
                         pro = b;
@@ -89,11 +89,11 @@ define(function (require, exports, module) {
 
                     fp.setTypeId(positions[a].getUnitTypeId());
 
-                    paths.add(fp);
+                    paths.push(fp);
 
                     paths.reverse()
                 } else {
-                    paths.add(searchFloorPathSimple(brief));
+                    paths.push(searchFloorPathSimple(brief));
                 }
                 result.setPaths(paths);
             }
