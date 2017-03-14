@@ -14,7 +14,7 @@ define(function (require, exports, module) {
         function findNearestLine(p, lines) {
 
             var index = 0;
-            var minDes = MaxFl;
+            var minDes = Number.MAX_VALUE;
             for (var i = lines.length - 1; i >= 0; i--) {
 
                 var des = p2lDes(p, lines[i]).getDistance();
