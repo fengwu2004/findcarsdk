@@ -15,10 +15,6 @@ define(function (require, exports, module) {
 
 	var FloorPath = require('./FloorPath')
 
-    var jsonData = require('./RegionPath.json')
-
-    var obj = JSON.parse(jsonData);
-
     function PathSearch(data) {
 
         var IGNOREDES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
