@@ -3,6 +3,8 @@ define(function (require, exports, module) {
 
     var PositionDistance = require('./PositionDistance')
 
+    var Position = require('./Position')
+
     var PathUtil = (function() {
 
         /**
