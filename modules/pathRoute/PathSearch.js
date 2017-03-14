@@ -68,9 +68,9 @@ define(function (require, exports, module) {
 
                     paths.add(searchFloorPath(searchBrief(f2, positions[b].getPos(), p2, type, true)));
 
-                    while (a != matrix[a][b].getProIndex()) {
+                    while (a != matrix[a][b].proIndex) {
 
-                        b = matrix[a][b].getProIndex();
+                        b = matrix[a][b].proIndex;
 
                         if (positions[b].getFloorIndex() == positions[pro].getFloorIndex()) {
 
@@ -160,9 +160,9 @@ define(function (require, exports, module) {
 
             list.push(positions[b]);
 
-            while (b != matrix[a][b].getProIndex()) {
+            while (b != matrix[a][b].proIndex) {
 
-                b = matrix[a][b].getProIndex();
+                b = matrix[a][b].proIndex;
 
                 list.push(positions[b]);
             }
