@@ -19,11 +19,11 @@ define(function (require, exports, module) {
 
         var IGNOREDES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
 
-        var floorPath = data['floorPath'];// 楼层路径数据
+        var floorPath = data.floorPath;// 楼层路径数据
 
-        var footPath = data['footPath'];// 人行贯通路径数据
+        var footPath = data.footPath;// 人行贯通路径数据
 
-        var carPath = data['carPath'];// 车行贯通路径数据
+        var carPath = data.carPath;// 车行贯通路径数据
 
         /**
          * 搜索从f1层p1点到f2层p2点的最短路径（完整信息）
