@@ -243,11 +243,11 @@ define(function (require, exports, module) {
 
             var length = 0;
 
-            var positions = floorPath[f].getPositions();
+            var positions = floorPath[f].positions;
 
-            var lines = floorPath[f].getLines();
+            var lines = floorPath[f].lines;
 
-            var matrix = floorPath[f].getMatrix();
+            var matrix = floorPath[f].matrix;
 
             var l1 = PathUtil.findNearestLine(p1, lines);
 
@@ -277,13 +277,13 @@ define(function (require, exports, module) {
 
             if (l1 != l2) {
 
-                var pa = PathUtil.findPositionIndex(lines[l1].getEndPointOne(), positions);
+                var pa = PathUtil.findPositionIndex(lines[l1].endPointOne, positions);
 
-                var pb = PathUtil.findPositionIndex(lines[l1].getEndPointTwo(), positions);
+                var pb = PathUtil.findPositionIndex(lines[l1].endPointTwo, positions);
 
-                var pc = PathUtil.findPositionIndex(lines[l2].getEndPointOne(), positions);
+                var pc = PathUtil.findPositionIndex(lines[l2].endPointOne, positions);
 
-                var pd = PathUtil.findPositionIndex(lines[l2].getEndPointTwo(), positions);
+                var pd = PathUtil.findPositionIndex(lines[l2].endPointTwo, positions);
 
                 var sa = PathUtil.p2pDes(ps, positions[pa]);
 
