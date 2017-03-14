@@ -201,7 +201,7 @@ define(function (require, exports, module) {
                             var pb1 = searchBrief(f1, p1, positions[a].getPos(), type, true);
                             var pb2 = searchBrief(f2, positions[b].getPos(), p2, type, true);
                             if (pb1 != null && pb2 != null) {
-                                var len = pb1.getDistance() + pb2.getDistance() + matrix[a][b].getLength();
+                                var len = pb1.getDistance() + pb2.getDistance() + matrix[a][b].length;
                                 if (len < length) {
                                     length = len;
                                     start = a;
@@ -305,18 +305,18 @@ define(function (require, exports, module) {
                     end = pc;
                 }
 
-                if (matrix[pa][pd] != null && sa + sd + matrix[pa][pd].getLength() < len) {
-                    len = sa + sd + matrix[pa][pd].getLength();
+                if (matrix[pa][pd] != null && sa + sd + matrix[pa][pd].length < len) {
+                    len = sa + sd + matrix[pa][pd].length;
                     start = pa;
                     end = pd;
                 }
-                if (matrix[pb][pc] != null && sb + sc + matrix[pb][pc].getLength() < len) {
-                    len = sb + sc + matrix[pb][pc].getLength();
+                if (matrix[pb][pc] != null && sb + sc + matrix[pb][pc].length < len) {
+                    len = sb + sc + matrix[pb][pc].length;
                     start = pb;
                     end = pc;
                 }
-                if (matrix[pb][pd] != null && sb + sd + matrix[pb][pd].getLength() < len) {
-                    len = sb + sd + matrix[pb][pd].getLength();
+                if (matrix[pb][pd] != null && sb + sd + matrix[pb][pd].length < len) {
+                    len = sb + sd + matrix[pb][pd].length;
                     start = pb;
                     end = pd;
                 }
