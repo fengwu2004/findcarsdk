@@ -36,7 +36,7 @@ define(function (require, exports, module) {
          * @param brief简略信息，若有可减少计算量，若为null则自动计算
          * @return 最短路径结果集
          */
-        var search = function(f1, p1, f2, p2, type, brief) {
+        this.search = function(f1, p1, f2, p2, type, brief) {
 
             var result = null;
 
