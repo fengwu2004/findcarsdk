@@ -151,9 +151,9 @@ define(function (require, exports, module) {
          */
         function searchFloorPath(f, a, b, list) {
 
-            var positions = floorPath[f].getPositions();
+            var positions = floorPath[f].positions;
 
-            var matrix = floorPath[f].getMatrix();
+            var matrix = floorPath[f].matrix;
 
             if (a == -1)
                 return;
