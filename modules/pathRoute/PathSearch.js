@@ -223,12 +223,12 @@ define(function (require, exports, module) {
             var e = PathUtil.p2lDes(p2, lines[l2]);
 
             if (s.getDistance() > IGNOREDES) {
-                length += s.getDistance();
+                length += s.distance;
                 result.p1 = p1;
             }
 
             if (e.getDistance() > IGNOREDES) {
-                length += e.getDistance();
+                length += e.distance;
                 result.p2 = p2;
             }
 
