@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         var path = result.paths[0]
 
-        var pos = path.positions
+        var pos = path.position
 
         pos.forEach(function(item, index) {
 
