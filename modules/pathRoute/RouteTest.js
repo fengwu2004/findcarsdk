@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
         var result = router.search(0, p1, 0, p2, false, null)
 
-        var pathResult = null;
+        var pathResult = {};
 
         pathResult.distance = result.getDistance();
 
