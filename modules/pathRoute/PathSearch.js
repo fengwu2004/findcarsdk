@@ -110,9 +110,9 @@ define(function (require, exports, module) {
 
             var fp = new FloorPath();
 
-            fp.setFloorIndex(f);
+            fp.floorIndex = f;
 
-            fp.setDistance(brief.getDistance());
+            fp.distance = brief.getDistance();
 
             var list = [];
 
@@ -130,7 +130,7 @@ define(function (require, exports, module) {
 
             list.reverse();
 
-            fp.setPosition(list);
+            fp.position = list;
 
             return fp;
         }
