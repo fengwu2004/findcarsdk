@@ -95,24 +95,18 @@ define(function (require, exports, module) {
                 } else {
                     paths.push(searchFloorPathSimple(brief));
                 }
-                result.setPaths(paths);
+                result.paths = paths;
             }
             return result;
         }
 
-        /**
-         * 同楼层路线搜索，根据简略信息补全完整信息
-         *
-         * @param brief简略信息
-         * @return 完整路径搜索结果
-         */
         function searchFloorPathSimple(brief) {
 
-            var f = brief.getF();
+            var f = brief.f;
 
-            var a = brief.getA();
+            var a = brief.a
 
-            var b = brief.getB();
+            var b = brief.b
 
             var fp = new FloorPath();
 
@@ -122,17 +116,17 @@ define(function (require, exports, module) {
 
             var list = [];
 
-            if (brief.getP2() != null)
-                list.push(brief.getP2());
-            if (brief.getPe() != null)
-                list.push(brief.getPe());
+            if (brief.p2 != null)
+                list.push(brief.p2);
+            if (brief.pe != null)
+                list.push(brief.p2);
 
             searchFloorPath(f, a, b, list);
 
-            if (brief.getPs() != null)
-                list.push(brief.getPs());
-            if (brief.getP1() != null)
-                list.push(brief.getP1());
+            if (brief.ps != null)
+                list.push(brief.ps);
+            if (brief.p1 != null)
+                list.push(brief.p1);
 
             list.reverse();
 
@@ -141,14 +135,6 @@ define(function (require, exports, module) {
             return fp;
         }
 
-        /**
-         * 同楼层路径搜索，搜索结果存储到list中
-         *
-         * @param f楼层
-         * @param a矩阵起点下标
-         * @param b矩阵终点下标
-         * @param list存储路径点的集合
-         */
         function searchFloorPath(f, a, b, list) {
 
             var positions = floorPath[f].positions;
@@ -168,17 +154,6 @@ define(function (require, exports, module) {
             }
         }
 
-        /**
-         * 跨楼层搜索从f1层p1点到f2层p2点的最短路径（简略信息）
-         *
-         * @param f1起点楼层下标
-         * @param p1起点坐标
-         * @param f2终点楼层下标
-         * @param p2终点坐标
-         * @param type贯通类型，0人行，1车行
-         * @param absolutely绝对，true时强制使用跨楼层模式搜索，false时f1、f2相同会自动切换到同楼层搜索模式
-         * @return 最短路径结果集（简略）
-         */
         function searchBrief(f1, p1, f2, p2, type, absolutely) {
 
             if (f1 == f2 && !absolutely)
@@ -186,7 +161,7 @@ define(function (require, exports, module) {
 
             var result = new PathBrief();
 
-            result.setF(-1);
+            result.f = -1;
 
             var length = Number.MAX_VALUE;
             var structure = type == 0 ? footPath : carPath;
@@ -213,33 +188,23 @@ define(function (require, exports, module) {
             }
             if (start == -1)
                 return null;
-            result.setA(start);
-            result.setB(end);
+            result.a = start;
+            result.b = end;
             var pb1 = searchBrief(f1, p1, positions[start].getPos(), type, true);
             var pb2 = searchBrief(f2, positions[end].getPos(), p2, type, true);
-            result.setP1(pb1.getP1());
-            result.setPs(pb1.getPs());
-            result.setP2(pb2.getP2());
-            result.setPe(pb2.getPe());
-            result.setDistance(length);
+            result.p1 = pb1.p1;
+            result.ps = pb1.ps;
+            result.p2 = pb2.p2;
+            result.pe = pb2.pe;
+            result.distance = length;
             return result;
         }
 
-        /**
-         * 同楼层搜索f层从p1点到p2点的最短路径（简略信息）
-         *
-         * @param f楼层下标
-         * @param p1起点坐标
-         * @param p2终点坐标
-         * @param type贯通类型，0人行，1车行
-         * @param absolutely绝对，true时强制使用同楼层模式搜索，false时若无解会自动切换到跨楼层搜索模式
-         * @return 最短路径结果集（简略）
-         */
         function searchBrief(f, p1, p2, type, absolutely) {
 
             var result = new PathBrief();
 
-            result.setF(f);
+            result.f = f;
 
             var length = 0;
 
@@ -259,21 +224,21 @@ define(function (require, exports, module) {
 
             if (s.getDistance() > IGNOREDES) {
                 length += s.getDistance();
-                result.setP1(p1);
+                result.p1 = p1;
             }
 
             if (e.getDistance() > IGNOREDES) {
                 length += e.getDistance();
-                result.setP2(p2);
+                result.p2 = p2;
             }
 
             var ps = s.getPosition();
 
             var pe = e.getPosition();
 
-            result.setPs(ps);
+            result.ps = ps;
 
-            result.setPe(pe);
+            result.pe = pe;
 
             if (l1 != l2) {
 
@@ -321,20 +286,20 @@ define(function (require, exports, module) {
                     end = pd;
                 }
                 if (start != -1) {
-                    result.setA(start);
-                    result.setB(end);
+                    result.a = start;
+                    result.b = end;
                     if (PathUtil.p2pDes(ps, positions[start]) < 1)
-                        result.setPs(null);
+                        result.ps = null;
                     if (PathUtil.p2pDes(pe, positions[end]) < 1)
-                        result.setPe(null);
+                        result.pe = null;
                     length += len;
                 } else
                     return absolutely ? null : searchBrief(f, p1, f, p2, type, true);
             } else {
-                result.setA(-1);
+                result.a = -1;
                 length += PathUtil.p2pDes(ps, pe);
             }
-            result.setDistance(length);
+            result.distance = length;
             return result;
         }
     }
