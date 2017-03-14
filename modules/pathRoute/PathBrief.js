@@ -79,7 +79,7 @@ define(function (require, exports, module) {
 
         this.getB = function() {
 
-            _b;
+            return _b;
         }
 
         this.setB = function(b) {
