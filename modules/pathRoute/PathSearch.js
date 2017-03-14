@@ -60,9 +60,9 @@ define(function (require, exports, module) {
 
                     var structure = type == 0 ? footPath : carPath;
 
-                    var positions = structure.getPositions();
+                    var positions = structure.positions;
 
-                    var matrix = structure.getMatrix();
+                    var matrix = structure.matrix;
 
                     var pro = b;
 
