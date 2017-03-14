@@ -46,17 +46,17 @@ define(function (require, exports, module) {
 
                 result = new PathResult();
 
-                result.setDistance(brief.getDistance());
+                result.setDistance(brief.distance);
 
                 var paths = [];
 
-                var f = brief.getF();
+                var f = brief.f;
 
                 if (f == -1) {
 
-                    var a = brief.getA();
+                    var a = brief.a;
 
-                    var b = brief.getB();
+                    var b = brief.b;
 
                     var structure = type == 0 ? footPath : carPath;
 
