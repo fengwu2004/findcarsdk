@@ -86,8 +86,8 @@ define(function (require, exports, module) {
          */
         function p2lDes (p, l) {
 
-            return dop2lDes(p.getX(), p.getY(), l.getEndPointOne().getX(), l.getEndPointOne().getY(),
-                l.getEndPointTwo().getX(), l.getEndPointTwo().getY());
+            return dop2lDes(p.x, p.y, l.endPointOne.x, l.endPointOne.y,
+                l.endPointTwo.x, l.endPointTwo.y);
         }
 
         /**
