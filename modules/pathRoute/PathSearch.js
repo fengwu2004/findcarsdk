@@ -232,9 +232,9 @@ define(function (require, exports, module) {
                 result.p2 = p2;
             }
 
-            var ps = s.getPosition();
+            var ps = s.position;
 
-            var pe = e.getPosition();
+            var pe = e.position;
 
             result.ps = ps;
 
