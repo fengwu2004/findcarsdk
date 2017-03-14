@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 
             var result = null;
 
-            if(brief == null)brief = searchBrief(f1, p1, f2, p2, type, false);
+            if(brief == null)brief = searchBriefDiff(f1, p1, f2, p2, type, false);
 
             if (brief != null) {
 
@@ -66,7 +66,7 @@ define(function (require, exports, module) {
 
                     var pro = b;
 
-                    paths.add(searchFloorPath(searchBrief(f2, positions[b].getPos(), p2, type, true)));
+                    paths.add(searchFloorPath(searchBriefSame(f2, positions[b].getPos(), p2, type, true)));
 
                     while (a != matrix[a][b].proIndex) {
 
@@ -74,10 +74,10 @@ define(function (require, exports, module) {
 
                         if (positions[b].getFloorIndex() == positions[pro].getFloorIndex()) {
 
-                            var fp = searchFloorPath(searchBrief(positions[b].getFloorIndex(), positions[b].getPos(),
+                            var fp = searchFloorPath(searchBriefSame(positions[b].getFloorIndex(), positions[b].getPos(),
                                 positions[pro].getPos(), type, true));
 
-                            fp.setTypeId(positions[pro].getUnitTypeId());
+                            fp.typeId = positions[pro].getUnitTypeId();
 
                             paths.push(fp);
                         }
@@ -85,9 +85,9 @@ define(function (require, exports, module) {
                         pro = b;
                     }
 
-                    var fp = searchFloorPath(searchBrief(f1, p1, positions[a].getPos(), type, true));
+                    var fp = searchFloorPath(searchBriefSame(f1, p1, positions[a].getPos(), type, true));
 
-                    fp.setTypeId(positions[a].getUnitTypeId());
+                    fp.typeId = positions[a].getUnitTypeId();
 
                     paths.push(fp);
 
@@ -154,10 +154,10 @@ define(function (require, exports, module) {
             }
         }
 
-        function searchBrief(f1, p1, f2, p2, type, absolutely) {
+        function searchBriefDiff(f1, p1, f2, p2, type, absolutely) {
 
             if (f1 == f2 && !absolutely)
-                return searchBrief(f1, p1, p2, type, true);
+                return searchBriefSame(f1, p1, p2, type, true);
 
             var result = new PathBrief();
 
@@ -173,8 +173,8 @@ define(function (require, exports, module) {
                 if (positions[a].getFloorIndex() == f1)
                     for (var b = 0; b < n; b++) {
                         if (positions[b].getFloorIndex() == f2 && matrix[a][b] != null) {
-                            var pb1 = searchBrief(f1, p1, positions[a].getPos(), type, true);
-                            var pb2 = searchBrief(f2, positions[b].getPos(), p2, type, true);
+                            var pb1 = searchBriefSame(f1, p1, positions[a].getPos(), type, true);
+                            var pb2 = searchBriefSame(f2, positions[b].getPos(), p2, type, true);
                             if (pb1 != null && pb2 != null) {
                                 var len = pb1.getDistance() + pb2.getDistance() + matrix[a][b].length;
                                 if (len < length) {
@@ -190,8 +190,8 @@ define(function (require, exports, module) {
                 return null;
             result.a = start;
             result.b = end;
-            var pb1 = searchBrief(f1, p1, positions[start].getPos(), type, true);
-            var pb2 = searchBrief(f2, positions[end].getPos(), p2, type, true);
+            var pb1 = searchBriefSame(f1, p1, positions[start].getPos(), type, true);
+            var pb2 = searchBriefSame(f2, positions[end].getPos(), p2, type, true);
             result.p1 = pb1.p1;
             result.ps = pb1.ps;
             result.p2 = pb2.p2;
@@ -200,7 +200,7 @@ define(function (require, exports, module) {
             return result;
         }
 
-        function searchBrief(f, p1, p2, type, absolutely) {
+        function searchBriefSame(f, p1, p2, type, absolutely) {
 
             var result = new PathBrief();
 
