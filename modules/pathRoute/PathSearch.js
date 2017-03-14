@@ -112,7 +112,7 @@ define(function (require, exports, module) {
 
             fp.floorIndex = f;
 
-            fp.distance = brief.getDistance();
+            fp.distance = brief.distance;
 
             var list = [];
 
