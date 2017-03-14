@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 
         var result = router.search(0, p1, 0, p2, false, null)
 
-        var poss = result.paths[0].floorPath[0].position
+        var poss = result.paths[0].FloorPath[0].position
 
         poss.forEach(function(item, index) {
 
