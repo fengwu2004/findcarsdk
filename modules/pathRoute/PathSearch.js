@@ -15,6 +15,8 @@ define(function (require, exports, module) {
 
 	var FloorPath = require('./FloorPath')
 
+    var Position = require('./Position')
+
     function PathSearch(data) {
 
         var IGNOREDES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
@@ -144,13 +146,25 @@ define(function (require, exports, module) {
             if (a == -1)
                 return;
 
-            list.push(positions[b]);
+            var p = new Position()
+
+            p.x = positions[b].x
+
+            p.y = positions[b].y
+
+            list.push(p);
 
             while (b != matrix[a][b].proIndex) {
 
                 b = matrix[a][b].proIndex;
 
-                list.push(positions[b]);
+                p = new Position()
+
+                p.x = positions[b].x
+
+                p.y = positions[b].y
+
+                list.push(p);
             }
         }
 
