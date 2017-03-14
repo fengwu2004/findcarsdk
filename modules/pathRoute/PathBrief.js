@@ -29,12 +29,12 @@ define(function (require, exports, module) {
 
         this.getP2 = function() {
 
-            return p2;
+            return _p2;
         }
 
         this.setP2 = function(p2) {
 
-            this.p2 = p2;
+            _p2 = p2;
         }
 
         this.getPs = function() {
