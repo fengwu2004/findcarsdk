@@ -141,7 +141,7 @@ define(function (require, exports, module) {
 
             var result = new PositionDistance();
             var p = new Position();
-            p.setX(px);
+            p.x = px;
             p.setY(py);
             result.setPosition(p);
             result.setDistance(Math.sqrt((x - px) * (x - px) + (y - py) * (y - py)));
