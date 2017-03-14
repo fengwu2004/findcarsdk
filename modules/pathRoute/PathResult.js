@@ -8,29 +8,9 @@ define(function (require, exports, module) {
 
     function PathResult() {
 
-        var _paths;//每段路径数据
-        var _distance;//全路径的总距离
+        this.paths = null;//每段路径数据
 
-        this.getPaths = function() {
-
-            return _paths;
-        }
-
-        this.setPaths = function(paths) {
-
-            _paths = paths;
-        }
-
-        this.getDistance = function() {
-
-            return _distance;
-        }
-
-        this.setDistance = function(distance) {
-
-            _distance = distance;
-        }
-
+        this.distance = 0;//全路径的总距离
     }
 
     module.exports = PathResult

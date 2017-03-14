@@ -27,6 +27,40 @@ define(function (require, exports, module) {
 
         var result = router.search(0, p1, 0, p2, false, null)
 
+        var pathResult = null;
+
+        pathResult.distance = result.getDistance();
+
+        var array = [];
+
+        // for (var i = 0; i < result.paths.size(); ++i) {
+        //
+        //     var floorPath = null;
+        //
+        //     floorPath.floorIndex = result.paths[i].floorIndex;
+        //
+        //     var floorId = [_region getFloorId:floorPath.floorIndex];
+        //
+        //     floorPath.typeId = result.paths[i].typeId;
+        //
+        //     floorPath.distance = result.paths[i].distance;
+        //
+        //     NSMutableArray *positions = [NSMutableArray array];
+        //
+        //     for (int j = 0; j < result.paths[i].position.size(); ++j) {
+        //
+        //         IDRPosition *pos = [[IDRPosition alloc] initWithX:result.paths[i].position[j].x Y:result.paths[i].position[j].y floor:floorId];
+        //
+        //         [positions addObject:pos];
+        //     }
+        //
+        //     floorPath.positions = positions;
+        //
+        //     [array addObject:floorPath];
+        // }
+        //
+        // pathResult.floorPath = [array copy];
+
         console.log(result)
     }())
 
