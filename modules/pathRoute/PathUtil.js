@@ -36,6 +36,26 @@ define(function (require, exports, module) {
          * @param positions点集（有序）
          * @return pos在positions中的下标，若找不到返回-1
          */
+
+         function compareTo(left, right) {
+
+            if (left.x < right.x) {
+                return -1;
+            }
+            else if (left.x > right.x) {
+                return 1;
+            }
+            else if (left.y < right.y) {
+                return -1;
+            }
+            else if (left.y > right.y) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+
         function findPositionIndex(pos, positions) {
 
             var left = 0;
@@ -48,7 +68,7 @@ define(function (require, exports, module) {
 
                 mid = (left + right) >> 1;
 
-                var t = pos.compareTo(positions[mid]);
+                var t = compareTo(pos, positions[mid]);
 
                 if (t < 0) {
                     right = mid - 1;
