@@ -93,7 +93,7 @@ define(function (require, exports, module) {
 
                     paths.reverse()
                 } else {
-                    paths.add(searchFloorPath(brief));
+                    paths.add(searchFloorPathSimple(brief));
                 }
                 result.setPaths(paths);
             }
@@ -106,7 +106,7 @@ define(function (require, exports, module) {
          * @param brief简略信息
          * @return 完整路径搜索结果
          */
-        function searchFloorPath(brief) {
+        function searchFloorPathSimple(brief) {
 
             var f = brief.getF();
 
