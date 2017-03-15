@@ -7,6 +7,8 @@ define(function (require, exports, module) {
 
     var RegionPath = require('./pathRoute/idrRegionPathData')
 
+    var Position = require('./pathRoute/Position')
+
     function idrRouter(regionId, floorList) {
 
         var _regionId = regionId
@@ -53,9 +55,17 @@ define(function (require, exports, module) {
 
             var _eIndex = getFloorIndex(end.floorId)
 
-            var s = {x:start.x, y:start.y}
+            var s = new Position
 
-            var e = {x:end.x, y:end.y}
+            s.x = start.x
+
+            s.y = start.y
+
+            var e = new Position
+
+            e.x = end.x
+
+            e.y = end.y
 
             var result = _pathSearch.search(_sIndex, s, _eIndex, e, car, null)
 
