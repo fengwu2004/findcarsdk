@@ -53,7 +53,11 @@ define(function (require, exports, module) {
 
             var _eIndex = getFloorIndex(end.floorId)
 
-            var result = _pathSearch.search(_sIndex, start, _eIndex, end, car, null)
+            var s = {x:start.x, y:start.y}
+
+            var e = {x:end.x, y:end.y}
+
+            var result = _pathSearch.search(_sIndex, s, _eIndex, e, car, null)
 
             for (var i = 0; i < result.paths.length; ++i) {
 
