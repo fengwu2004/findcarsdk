@@ -73,6 +73,8 @@ define(function (require, exports, module) {
 
                 var floorId = getFloorId(result.paths[i].floorIndex)
 
+                result.paths[i].floorId = floorId
+
                 for (var j = 0; j < result.paths[i].position.length; ++j) {
 
                     result.paths[i].position[j].floorId = floorId
