@@ -11,7 +11,7 @@ define(function (require, exports, module) {
 
         var p2 = {x:770, y:269, floorId:'14428254382890016'}
 
-        var router = new idrRouter(regionId, floorList)
+        var router = new idrRouter(null, null)
 
         var carNavi = false
 
