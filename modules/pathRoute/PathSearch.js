@@ -87,7 +87,7 @@ define(function (require, exports, module) {
                         pro = b;
                     }
 
-                    var fp = searchFloorPath(searchBriefSame(f1, p1, positions[a].pos, type, true));
+                    var fp = searchFloorPathSimple(searchBriefSame(f1, p1, positions[a].pos, type, true));
 
                     fp.typeId = positions[a].getUnitTypeId();
 
