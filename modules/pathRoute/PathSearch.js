@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
                     var pro = b;
 
-                    paths.add(searchFloorPath(searchBriefSame(f2, positions[b].getPos(), p2, type, true)));
+                    paths.add(searchFloorPath(searchBriefSame(f2, positions[b].pos, p2, type, true)));
 
                     while (a != matrix[a][b].proIndex) {
 
@@ -76,8 +76,8 @@ define(function (require, exports, module) {
 
                         if (positions[b].getFloorIndex() == positions[pro].getFloorIndex()) {
 
-                            var fp = searchFloorPath(searchBriefSame(positions[b].getFloorIndex(), positions[b].getPos(),
-                                positions[pro].getPos(), type, true));
+                            var fp = searchFloorPath(searchBriefSame(positions[b].getFloorIndex(), positions[b].pos,
+                                positions[pro].pos, type, true));
 
                             fp.typeId = positions[pro].getUnitTypeId();
 
@@ -87,7 +87,7 @@ define(function (require, exports, module) {
                         pro = b;
                     }
 
-                    var fp = searchFloorPath(searchBriefSame(f1, p1, positions[a].getPos(), type, true));
+                    var fp = searchFloorPath(searchBriefSame(f1, p1, positions[a].pos, type, true));
 
                     fp.typeId = positions[a].getUnitTypeId();
 
