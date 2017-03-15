@@ -36,7 +36,7 @@ define(function (require, exports, module) {
          * @param p2终点坐标
          * @param type贯通类型，0人行，1车行
          * @param brief简略信息，若有可减少计算量，若为null则自动计算
-         * @return 最短路径结果集
+         * @return PathResult
          */
         this.search = function(f1, p1, f2, p2, type, brief) {
 
@@ -94,9 +94,12 @@ define(function (require, exports, module) {
                     paths.push(fp);
 
                     paths.reverse()
-                } else {
+                }
+                else {
+
                     paths.push(searchFloorPathSimple(brief));
                 }
+
                 result.paths = paths;
             }
             return result;

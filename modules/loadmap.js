@@ -709,7 +709,6 @@ define(function (require, exports, module) {
                 oMapUtils.isAgainDraw(this.floorId);
             };
         }
-
     }
 
     //把屏幕上的坐标转换成地图svg坐标
