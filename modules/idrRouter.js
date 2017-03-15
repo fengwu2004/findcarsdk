@@ -57,9 +57,11 @@ define(function (require, exports, module) {
 
             for (var i = 0; i < result.paths.length; ++i) {
 
+                var floorId = getFloorId(result.paths[i].floorIndex)
+
                 for (var j = 0; j < result.paths[i].position.length; ++j) {
 
-                    result.paths[i].position[j].floorId = getFloorId(result.paths[i].position[j].floorIndex)
+                    result.paths[i].position[j].floorId = floorId
                 }
             }
 
