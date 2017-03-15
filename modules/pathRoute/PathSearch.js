@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
                     var pro = b;
 
-                    paths.add(searchFloorPathSimple(searchBriefSame(f2, positions[b].pos, p2, type, true)));
+                    paths.push(searchFloorPathSimple(searchBriefSame(f2, positions[b].pos, p2, type, true)));
 
                     while (a != matrix[a][b].proIndex) {
 
