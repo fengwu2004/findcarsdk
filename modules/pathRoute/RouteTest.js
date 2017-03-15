@@ -9,6 +9,7 @@ define(function (require, exports, module) {
 
         var p1 = {x:15, y:155, floorId:'14557583851000004'}
 
+
         var p2 = {x:770, y:269, floorId:'14428254382890016'}
 
         var floorList = [
@@ -52,7 +53,7 @@ define(function (require, exports, module) {
                 ],
                 "modifyTime":1489144483000,
                 "regionId":"14428254382730015"
-            }
+            }]
 
         var router = new idrRouter('14428254382730015', floorList)
 
