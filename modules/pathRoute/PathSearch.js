@@ -79,7 +79,7 @@ define(function (require, exports, module) {
                             var fp = searchFloorPathSimple(searchBriefSame(positions[b].getFloorIndex(), positions[b].pos,
                                 positions[pro].pos, type, true));
 
-                            fp.typeId = positions[pro].getUnitTypeId();
+                            fp.typeId = positions[pro].unitTypeId;
 
                             paths.push(fp);
                         }
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
 
                     var fp = searchFloorPathSimple(searchBriefSame(f1, p1, positions[a].pos, type, true));
 
-                    fp.typeId = positions[a].getUnitTypeId();
+                    fp.typeId = positions[a].unitTypeId;
 
                     paths.push(fp);
 
