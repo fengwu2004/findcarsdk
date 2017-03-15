@@ -182,18 +182,18 @@ define(function (require, exports, module) {
 
             var length = Number.MAX_VALUE;
             var structure = type == 0 ? footPath : carPath;
-            var positions = structure.getPositions();
-            var matrix = structure.getMatrix();
+            var positions = structure.positions;
+            var matrix = structure.matrix;
             var n = positions.length;
             var start = -1, end = -1;
             for (var a = 0; a < n; a++) {
                 if (positions[a].getFloorIndex() == f1)
                     for (var b = 0; b < n; b++) {
                         if (positions[b].getFloorIndex() == f2 && matrix[a][b] != null) {
-                            var pb1 = searchBriefSame(f1, p1, positions[a].getPos(), type, true);
-                            var pb2 = searchBriefSame(f2, positions[b].getPos(), p2, type, true);
+                            var pb1 = searchBriefSame(f1, p1, positions[a].pos, type, true);
+                            var pb2 = searchBriefSame(f2, positions[b].pos, p2, type, true);
                             if (pb1 != null && pb2 != null) {
-                                var len = pb1.getDistance() + pb2.getDistance() + matrix[a][b].length;
+                                var len = pb1.distance + pb2.distance + matrix[a][b].length;
                                 if (len < length) {
                                     length = len;
                                     start = a;
@@ -207,8 +207,8 @@ define(function (require, exports, module) {
                 return null;
             result.a = start;
             result.b = end;
-            var pb1 = searchBriefSame(f1, p1, positions[start].getPos(), type, true);
-            var pb2 = searchBriefSame(f2, positions[end].getPos(), p2, type, true);
+            var pb1 = searchBriefSame(f1, p1, positions[start].pos, type, true);
+            var pb2 = searchBriefSame(f2, positions[end].pos, p2, type, true);
             result.p1 = pb1.p1;
             result.ps = pb1.ps;
             result.p2 = pb2.p2;
