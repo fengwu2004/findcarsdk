@@ -17,28 +17,28 @@ define(function (require, exports, module) {
 
         function getFloorIndex(floorId) {
 
-            for (var i = 0; i < _floorList.length; ++i) {
+            // for (var i = 0; i < _floorList.length; ++i) {
+            //
+            //     if (_floorList[i].id === floorId) {
+            //
+            //         return _floorList[i].floorIndex
+            //     }
+            // }
 
-                if (_floorList[i].id === floorId) {
-
-                    return _floorList[i].floorIndex
-                }
-            }
-
-            return -1
+            return 0
         }
 
         function getFloorId(floorIndex) {
 
-            for (var i = 0; i < _floorList.length; ++i) {
+            // for (var i = 0; i < _floorList.length; ++i) {
+            //
+            //     if (_floorList[i].floorIndex === floorIndex) {
+            //
+            //         return _floorList[i].id
+            //     }
+            // }
 
-                if (_floorList[i].floorIndex === floorIndex) {
-
-                    return _floorList[i].id
-                }
-            }
-
-            return null
+            return '14428254382890016'
         }
 
         /**
