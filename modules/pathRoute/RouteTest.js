@@ -16,6 +16,8 @@ define(function (require, exports, module) {
         var carNavi = false
 
         var result = router.routerPath(p1, p2, carNavi)
+
+        console.log(result)
     }()
 
     module.exports = RouteTest
