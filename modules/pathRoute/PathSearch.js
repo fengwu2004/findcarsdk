@@ -311,7 +311,7 @@ define(function (require, exports, module) {
                         result.pe = null;
                     length += len;
                 } else
-                    return absolutely ? null : searchBrief(f, p1, f, p2, type, true);
+                    return absolutely ? null : searchBriefDiff(f, p1, f, p2, type, true);
             } else {
                 result.a = -1;
                 length += PathUtil.p2pDes(ps, pe);
