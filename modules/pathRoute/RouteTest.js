@@ -52,7 +52,6 @@ define(function (require, exports, module) {
                 ],
                 "modifyTime":1489144483000,
                 "regionId":"14428254382730015"
-
             }
 
         var router = new idrRouter('14428254382730015', floorList)
