@@ -19,28 +19,28 @@ define(function (require, exports, module) {
 
         function getFloorIndex(floorId) {
 
-            // for (var i = 0; i < _floorList.length; ++i) {
-            //
-            //     if (_floorList[i].id === floorId) {
-            //
-            //         return _floorList[i].floorIndex
-            //     }
-            // }
+            for (var i = 0; i < _floorList.length; ++i) {
 
-            return 0
+                if (_floorList[i].id === floorId) {
+
+                    return _floorList[i].floorIndex
+                }
+            }
+
+            return -1
         }
 
         function getFloorId(floorIndex) {
 
-            // for (var i = 0; i < _floorList.length; ++i) {
-            //
-            //     if (_floorList[i].floorIndex === floorIndex) {
-            //
-            //         return _floorList[i].id
-            //     }
-            // }
+            for (var i = 0; i < _floorList.length; ++i) {
 
-            return '14428254382890016'
+                if (_floorList[i].floorIndex === floorIndex) {
+
+                    return _floorList[i].id
+                }
+            }
+
+            return null
         }
 
         /**
