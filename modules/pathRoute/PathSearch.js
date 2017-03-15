@@ -124,7 +124,7 @@ define(function (require, exports, module) {
             if (brief.p2 != null)
                 list.push(brief.p2);
             if (brief.pe != null)
-                list.push(brief.p2);
+                list.push(brief.pe);
 
             searchFloorPath(f, a, b, list);
 
