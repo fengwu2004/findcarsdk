@@ -187,9 +187,9 @@ define(function (require, exports, module) {
             var n = positions.length;
             var start = -1, end = -1;
             for (var a = 0; a < n; a++) {
-                if (positions[a].getFloorIndex() == f1)
+                if (positions[a].floorIndex == f1)
                     for (var b = 0; b < n; b++) {
-                        if (positions[b].getFloorIndex() == f2 && matrix[a][b] != null) {
+                        if (positions[b].floorIndex == f2 && matrix[a][b] != null) {
                             var pb1 = searchBriefSame(f1, p1, positions[a].pos, type, true);
                             var pb2 = searchBriefSame(f2, positions[b].pos, p2, type, true);
                             if (pb1 != null && pb2 != null) {
