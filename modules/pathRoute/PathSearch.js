@@ -76,7 +76,7 @@ define(function (require, exports, module) {
 
                         if (positions[b].getFloorIndex() == positions[pro].getFloorIndex()) {
 
-                            var fp = searchFloorPath(searchBriefSame(positions[b].getFloorIndex(), positions[b].pos,
+                            var fp = searchFloorPathSimple(searchBriefSame(positions[b].getFloorIndex(), positions[b].pos,
                                 positions[pro].pos, type, true));
 
                             fp.typeId = positions[pro].getUnitTypeId();
