@@ -90,13 +90,16 @@ define(function (require, exports, module) {
 
         function updateLine(parentNode, postionList) {
 
-            parentNode.removeChild(pathElement);
+            if (pathElement.parentNode.isEqualNode(parentNode)) {
 
-            for (var i = angleDom.length - 1; i >= 0; i--) {
+                parentNode.removeChild(pathElement);
 
-                var test = angleDom[i];
+                for (var i = angleDom.length - 1; i >= 0; i--) {
 
-                parentNode.removeChild(test);
+                    var test = angleDom[i];
+
+                    parentNode.removeChild(test);
+                }
             }
 
             var path = getLineObject(postionList);
