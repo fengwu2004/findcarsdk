@@ -56,11 +56,11 @@ define(function (require, exports, module) {
             parentNode.appendChild(locationDom);
 
             var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            waveDom.innerHTML = "<image id=Loacating xlink:href=img_locator_wave.png x=0 y=0 height=50px width=50px></image>";
+            waveDom.innerHTML = "<image id=Loacating xlink:href=../sdk/modules/IDRIndicator/img_locator_wave.png x=0 y=0 height=50px width=50px></image>";
             waveDom = waveDom.childNodes[0];
 
             var positionDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            positionDom.innerHTML = "<image id=LocatingBase xlink:href=img_di_point.png x=20 y=20 height=10px width=10px></image>";
+            positionDom.innerHTML = "<image id=LocatingBase xlink:href=../sdk/modules/IDRIndicator/img_di_point.png x=20 y=20 height=10px width=10px></image>";
             positionDom = positionDom.childNodes[0];
 
             locationDom.appendChild(waveDom);
