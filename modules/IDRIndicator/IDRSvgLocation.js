@@ -24,7 +24,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "./IDRSvgLocation.css";
+        css.href = "../sdk/modules/IDRIndicator/IDRSvgLocation.css";
 
         var header = document.querySelector("head");
 

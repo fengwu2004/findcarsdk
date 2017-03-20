@@ -9,7 +9,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "./IDRSvgPolyLine.css";
+        css.href = "../sdk/modules/IDRSvgPath/IDRSvgPolyLine.css";
 
         var header = document.querySelector("head");
 
