@@ -32,6 +32,10 @@ define(function (require, exports, module) {
 
     var networkInstance = require('./idrNetworkManager')
 
+    var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
+
+    var _idrPath = IDRPath()
+
     function idrMapView() {
 
         var _x = 0
@@ -65,6 +69,8 @@ define(function (require, exports, module) {
         var _unitDivs = []
 
         var _currentTm = null
+
+        var _idrPath = new
 
         var addFloorList = function() {
 
@@ -347,29 +353,7 @@ define(function (require, exports, module) {
 
         this.showPath = function(paths) {
 
-            if (_svgPath == null) {
-
-                _svgPath = document.createElementNS('http://www.w3.org/2000/svg','polyline')
-
-                _svgPath.style.fill = 'none'
-
-                _svgPath.style.stroke = 'red'
-
-                _svgPath.style.strokeWidth = 4
-
-                _mapViewPort.appendChild(_svgPath)
-            }
-
-            var res = ''
-
-            for (var i = 0; i < paths.length - 1; i++) {
-
-                res += paths[i][0] + ', ' + paths[i][1] + ', '
-            }
-
-            res += paths[paths.length - 1][0] + ', ' + paths[paths.length - 1][1]
-
-            _svgPath.setAttribute('points', res)
+            _idrPath.updateLine(_mapViewPort, paths)
         }
 
         function matrixFromString(value) {
