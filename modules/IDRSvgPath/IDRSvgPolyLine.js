@@ -90,7 +90,7 @@ define(function (require, exports, module) {
 
         function updateLine(parentNode, postionList) {
 
-            if (pathElement.parentNode.isEqualNode(parentNode)) {
+            if (pathElement !== undefined && pathElement.parentNode.isEqualNode(parentNode)) {
 
                 parentNode.removeChild(pathElement);
 
