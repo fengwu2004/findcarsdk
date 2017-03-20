@@ -70,8 +70,6 @@ define(function (require, exports, module) {
 
         var _currentTm = null
 
-        var _idrPath = new
-
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
