@@ -36,6 +36,10 @@ define(function (require, exports, module) {
 
     var _idrPath = IDRPath()
 
+    var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
+
+    var _idrIndicator = IDRIndicator()
+
     function idrMapView() {
 
         var _x = 0
@@ -254,58 +258,13 @@ define(function (require, exports, module) {
             })
         }
 
-        var createPosIndicator = function(id, src) {
-
-            function createDom() {
-
-                var dom = document.createElement('div')
-
-                dom.id = id
-
-                var oImg = document.createElement('img')
-
-                oImg.src = src
-
-                oImg.style.width = '60px'
-
-                oImg.style.height = '60px'
-
-                dom.appendChild(oImg)
-
-                _svgFrame.appendChild(dom)
-
-                return dom
-            }
-
-            _posIndicator = new idrIndicator()
-
-            _posIndicator.setDom(createDom())
-        }
-
         this.setCurrPos = function(x, y, show) {
 
             _x = x
 
             _y = y
 
-            if (!_posIndicator) {
-
-                createPosIndicator('indicator', 'http://wx.indoorun.com/indoorun/common/cheneapp/images/point.png')
-            }
-
-            if (!show) {
-
-                clearInterval(_posTimer)
-
-                _posTimer = null
-
-                return
-            }
-
-            if (_posTimer == null) {
-
-                _posTimer = setInterval(updateDisplay, 1000/60)
-            }
+            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_x, y:_y})
         }
 
         var updateDisplay = function() {
