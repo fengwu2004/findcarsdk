@@ -352,6 +352,7 @@ define(function (require, exports, module) {
         this.showPath = function(paths) {
 
             _idrPath.updateLine(_mapViewPort, paths)
+
         }
 
         function matrixFromString(value) {
