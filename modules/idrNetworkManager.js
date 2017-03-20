@@ -141,5 +141,63 @@ define(function (require, exports, module) {
         });
     }
 
+    idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
+
+        var domain = 'http://wx.indoorun.com';
+
+        var url = domain + '/locate/locating';
+
+        var data = {
+            'beacons': beacons,
+            'gzId': 'ewr2342342',
+            'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+            'OSType': 'iPhone',
+            'regionId': regionId,
+            'floorId': floorId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        // console.log(data);
+
+        jsLib.ajax({
+
+            type:'post',
+
+            dataType: 'jsonp',
+
+            url: url, //添加自己的接口链接
+
+            data: data,
+
+            timeOut: 100000,
+
+            before: function () {
+
+                // console.log("before");
+            },
+
+            success: function (obj) {
+
+                if (obj.code !== 'failed') {
+
+                    if (typeof success === 'function') {
+
+                        success(obj)
+                    }
+                }
+            },
+
+            error: function (str) {
+
+                if (typeof failed === 'function') {
+
+                    failed(str)
+                }
+            }
+        });
+    }
+
     module.exports = networkInstance;
 });

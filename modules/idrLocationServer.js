@@ -9,125 +9,86 @@ define(function (require, exports, module) {
 
     var BeaconMgr = require('./idrBeaconManager');
 
+    var networkInstance = require('./idrNetworkManager')
+
     function idrLocateServer() {
 
-        this.floorId = '';
+        var _floorId = ''
 
-        this.regionId = '';
+        var _regionId = ''
 
-        this.x = 0;
+        var _x = 0
 
-        this.y = 0;
+        var _y = 0
 
-        this.onLocateSuccess = null;
+        var _onLocateSuccess = null
 
-        this.onLocateFailed = null;
-    }
+        var _onLocateFailed = null
 
-    function filterbeacons(beacons) {
+        var _beaconsMgr = new BeaconMgr()
 
-        var newBeacons = []
+        _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
 
-        for (var i = 0; i < beacons.length; ++i) {
+        _onLocateSuccess = onLocateSuccess;
 
-            var beacon = beacons[i];
+        var filterbeacons = function(beacons) {
 
-            if (beacon.rssi != 0) {
+            var newBeacons = []
 
-                var val = {
-                            'accuracy':beacon.accuracy,
-                            'major':beacon.major,
-                            'minor':beacon.minor,
-                            'rssi':beacon.rssi
-                          };
+            for (var i = 0; i < beacons.length; ++i) {
 
-                newBeacons.push(val);
-            }
-        }
+                var beacon = beacons[i];
 
-        return newBeacons;
-    }
+                if (beacon.rssi != 0) {
 
-    idrLocateServer.prototype.start = function (regionId, floorId, onLocateSuccess) {
+                    var val = {
+                        'accuracy':beacon.accuracy,
+                        'major':beacon.major,
+                        'minor':beacon.minor,
+                        'rssi':beacon.rssi
+                    };
 
-        this.beaconsMgr = new BeaconMgr();
-
-        this.beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons;
-
-        this.onLocateSuccess = onLocateSuccess;
-
-        this.beaconsMgr.init();
-
-        this.beaconsMgr.delegator = this;
-
-        var that = this;
-
-        function onReceiveBeacons(beacons) {
-
-            var newBeacons = filterbeacons(beacons);
-
-            var beaconParas = JSON.stringify(newBeacons);
-
-            onServerLocate(beaconParas);
-        }
-
-        function onServerLocate(beacons) {
-
-            var domain = 'http://wx.indoorun.com';
-
-            var url = domain + '/locate/locating';
-
-            var data = {
-                'beacons': beacons,
-                'gzId': 'ewr2342342',
-                'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-                'OSType': 'iPhone',
-                'regionId': that.regionId,
-                'floorId': that.floorId,
-                'appId': gv.appId,
-                'clientId': gv.clientId,
-                'sessionKey': gv.sessionKey
-            };
-
-            // console.log(data);
-
-            jsLib.ajax({
-
-                type:'post',
-
-                dataType: 'jsonp',
-
-                url: url, //添加自己的接口链接
-
-                data: data,
-
-                timeOut: 100000,
-
-                before: function () {
-                    // console.log("before");
-                },
-
-                success: function (obj) {
-
-                    if (obj.code !== 'failed') {
-
-                        that.x = obj.x;
-
-                        that.y = obj.y;
-
-                        that.floorId = obj.floorId;
-
-                        that.regionId = obj.regionId;
-
-                        that.onLocateSuccess(that.x + ', ' + that.y);
-                    }
-                },
-
-                error: function (str) {
-
-
+                    newBeacons.push(val);
                 }
-            });
+            }
+
+            return newBeacons;
+        }
+
+        var onReceiveBeacons = function(beacons) {
+
+            var newBeacons = filterbeacons(beacons)
+
+            var beaconParas = JSON.stringify(newBeacons)
+
+            onServerLocate(beaconParas)
+        }
+
+        var onServerLocate = function(beacons) {
+
+            networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
+
+                _x = data.x;
+
+                _y = data.y;
+
+                _floorId = data.floorId;
+
+                _regionId = data.regionId;
+
+                _onLocateSuccess(_x + ', ' + _y);
+            }, null)
+        }
+
+        this.start = function (regionId, floorId, onLocateSuccess) {
+
+            _beaconsMgr.init();
+
+            _beaconsMgr.delegator = this;
+
+            var that = this;
+
+            onReceiveBeacons()
         }
     }
 
