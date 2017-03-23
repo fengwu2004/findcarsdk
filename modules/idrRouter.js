@@ -5,17 +5,23 @@ define(function (require, exports, module) {
 
     var PathSearch = require('./pathRoute/PathSearch')
 
-    var RegionPath = require('./pathRoute/idrRegionPathData')
-
     var Position = require('./pathRoute/Position')
 
-    function idrRouter(regionId, floorList) {
+    var idrNetworkInstance = require('./idrNetworkManager')
+
+    function idrRouter(regionId, floorList, clientId, appId, sessionKey) {
+
+        var _clientId = clientId
+
+        var _appId = appId
+
+        var _sessionKey = sessionKey
 
         var _regionId = regionId
 
         var _floorList = floorList
 
-        var _pathSearch = new PathSearch(RegionPath)
+        var _pathSearch = null
 
         function getFloorIndex(floorId) {
 
@@ -49,7 +55,29 @@ define(function (require, exports, module) {
          * @param car 是否车行
          * @return PathResult
          */
-        this.routerPath = function(start, end, car) {
+        this.routerPath = function(start, end, car, successFunc) {
+
+            if (_pathSearch == null) {
+
+                serverCallRegionPath(_regionId, function(data) {
+
+                    _pathSearch = new PathSearch(data)
+
+                    var result = doRouter(start, end, car)
+
+                    successFunc(result)
+
+                }, null);
+            }
+            else  {
+
+                var result = doRouter(start, end, car)
+
+                successFunc(result)
+            }
+        }
+
+        function doRouter(start, end, car) {
 
             var _sIndex = getFloorIndex(start.floorId)
 
@@ -82,6 +110,83 @@ define(function (require, exports, module) {
             }
 
             return result
+        }
+
+        zip.workerScriptsPath = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/zip/'
+
+        function unzipBlob(blob, callback) {
+
+            var blobreader = new zip.Data64URIReader(blob)
+
+            zip.createReader(blobreader, function(zipReader) {
+
+                zipReader.getEntries(function(entries) {
+
+                    entries[0].getData(new zip.BlobWriter("text/plain"), function(data) {
+
+                        zipReader.close();
+
+                        var reader = new FileReader();
+
+                        reader.onload = function() {
+
+                            var jobj = JSON.parse(reader.result)
+
+                            callback(jobj)
+                        }
+
+                        reader.readAsText(data);
+                    });
+                });
+            }, onerror);
+        }
+
+        function serverCallRegionPath(regionId, success, failed) {
+
+            var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?'
+
+            var data = {
+                'regionId': regionId,
+                'appId': _appId,
+                'clientId': _clientId,
+                'sessionKey': _sessionKey
+            };
+
+            jsLib.ajax({
+
+                type: "get",
+
+                dataType: 'jsonp',
+
+                url: url, //添加自己的接口链接
+
+                data: data,
+
+                timeOut: 10000,
+
+                before:function () {
+
+                },
+
+                success:function (response) {
+
+                    if (response != null && response.code == "success") {
+
+                        if (typeof success === "function") {
+
+                            success(response.data);
+                        }
+                    }
+                },
+
+                error:function (response) {
+
+                    if (typeof failed === "function") {
+
+                        failed(response);
+                    }
+                }
+            });
         }
     }
 
