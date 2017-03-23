@@ -61,11 +61,14 @@ define(function (require, exports, module) {
 
                 serverCallRegionPath(_regionId, function(data) {
 
-                    _pathSearch = new PathSearch(data)
+                    unzipBlob(data, function(jobj) {
 
-                    var result = doRouter(start, end, car)
+                        _pathSearch = new PathSearch(jobj)
 
-                    successFunc(result)
+                        var result = doRouter(start, end, car)
+
+                        successFunc(result)
+                    })
 
                 }, null);
             }
