@@ -61,14 +61,17 @@ define(function (require, exports, module) {
 
         var carNavi = false
 
-        var result = router.routerPath(p1, p2, carNavi)
+        router.routerPath(p1, p2, carNavi, function(result) {
 
-        for (var i = 0; i < result.paths[0].position.length; ++i) {
+            for (var i = 0; i < result.paths[0].position.length; ++i) {
 
-            console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
-        }
+                console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
+            }
 
-        console.log(result)
+            console.log(result)
+        })
+
+
     }()
 
     module.exports = RouteTest
