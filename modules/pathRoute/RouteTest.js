@@ -5,6 +5,8 @@ define(function (require, exports, module) {
 
     var idrRouter = require('../idrRouter')
 
+    var gv = require('../globalvalue')
+
     var RouteTest = function() {
 
         var p1 = {x:15, y:155, floorId:'14557583851000004'}
@@ -55,7 +57,7 @@ define(function (require, exports, module) {
                 "regionId":"14428254382730015"
             }]
 
-        var router = new idrRouter('14428254382730015', floorList)
+        var router = new idrRouter('14428254382730015', floorList, gv.configure.clientId, gv.configure.appId, gv.configure.sessionKey)
 
         var carNavi = false
 
