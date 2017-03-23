@@ -86,8 +86,6 @@ define(function (require, exports, module) {
 
             _beaconsMgr.delegator = this;
 
-            var that = this;
-
             onReceiveBeacons()
         }
     }

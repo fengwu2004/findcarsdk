@@ -11,6 +11,54 @@ define(function (require, exports, module) {
 
     }
 
+    idrNetworkManager.prototype.serverCallRegionPath = function(regionId, success, failed) {
+
+        var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?regionId=14428254382730015'
+
+        var data = {
+            'regionId': regionId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        jsLib.ajax({
+
+            type: "get",
+
+            dataType: 'jsonp',
+
+            url: url, //添加自己的接口链接
+
+            data: data,
+
+            timeOut: 10000,
+
+            before:function () {
+
+            },
+
+            success:function (response) {
+
+                if (response != null && response.code == "success") {
+
+                    if (typeof success === "function") {
+
+                        success(response.data);
+                    }
+                }
+            },
+
+            error:function (response) {
+
+                if (typeof failed === "function") {
+
+                    failed(response);
+                }
+            }
+        });
+    }
+
     idrNetworkManager.prototype.serverCallSvgMap = function (regionId, floorId, success, failed) {
 
         var url = 'http://wx.indoorun.com/wx/getSvg.html';
