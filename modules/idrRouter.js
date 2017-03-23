@@ -115,7 +115,7 @@ define(function (require, exports, module) {
             return result
         }
 
-        zip.workerScriptsPath = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/zip/'
+        zip.workerScriptsPath = './zip/'
 
         function unzipBlob(blob, callback) {
 
