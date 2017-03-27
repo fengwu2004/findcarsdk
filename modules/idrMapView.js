@@ -326,7 +326,7 @@ define(function (require, exports, module) {
 
             if (_idrIndicator) {
 
-                _idrIndicator.updateScale(mdecompose.s)
+                _idrIndicator.updateScale(1.0/mdecompose.s)
             }
 
             // if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
