@@ -17,7 +17,7 @@ define(function (require, exports, module) {
 
         var scale = 1.0; //比例尺
 
-        var defaultLineWidth = 16.0; //路径线宽度
+        var defaultLineWidth = 12.0; //路径线宽度
 
         var defaulDotWidth = 2 * Math.sqrt(2); //路线箭头的大小
 
