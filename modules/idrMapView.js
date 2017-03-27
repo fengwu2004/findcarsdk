@@ -74,6 +74,8 @@ define(function (require, exports, module) {
 
         var _currentTm = null
 
+        var _mapScale = 1
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -326,7 +328,18 @@ define(function (require, exports, module) {
 
             if (_idrIndicator) {
 
-                _idrIndicator.updateScale(1/mdecompose.s)
+                if (_mapScale !== mdecompose.s) {
+
+                    _idrIndicator.updateScale(1/mdecompose.s)
+                }
+            }
+
+            if (_idrPath) {
+
+                if (_mapScale !== mdecompose.s) {
+
+                    _idrPath.updateScale(1/mdecompose.s)
+                }
             }
 
             // if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
@@ -338,6 +351,8 @@ define(function (require, exports, module) {
             //         updateUnitAngleAndScale(mt)
             //     }
             // }
+
+            _mapScale = mdecompose.s
         }
 
         var updateUnitAngleAndScale = function(m) {
@@ -365,7 +380,6 @@ define(function (require, exports, module) {
         this.showPath = function(paths) {
 
             _idrPath.updateLine(_mapViewPort, paths)
-
         }
 
         function matrixFromString(value) {

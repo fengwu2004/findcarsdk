@@ -340,6 +340,7 @@ define(function (require, exports, module) {
             addScale: addScale,
             subScale: subScale,
             addLine: addLine,
+            updateScale: updateScale,
             updateLine: updateLine,
             getLineObject: getLineObject,
             getPolyLineObject: getPolyLineObject,
