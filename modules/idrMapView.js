@@ -274,15 +274,59 @@ define(function (require, exports, module) {
             _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_x, y:_y})
         }
 
+        function getTransform(transformList) {
+
+            if (transformList.length != 6) {
+                return false;
+            }
+
+            var a = transformList[0];
+            var b = transformList[1];
+
+            var c = transformList[2];
+            var d = transformList[3];
+
+            var tx = transformList[4];
+            var ty = transformList[5];
+
+            var sx = Math.sqrt(a * a + b * b);
+
+            var cosA = a / sx;
+            var sinA = c / sx;
+
+            var a1 = Math.asin(sinA) / Math.PI * 180;
+            var a2 = Math.acos(cosA) / Math.PI * 180;
+
+            var a = a1 > 0 ? a1 : a2;
+
+            return {
+                a: a,
+                s: sx,
+                tx: tx,
+                ty: ty
+            }
+        }
+
+        var getTransArray = function(value) {
+
+            var temp = value.substring(7, value.length - 1)
+
+            var valueT = temp.split(',')
+
+            return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
+        }
+
         var updateDisplay = function() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
-            var mt = matrixFromString(trans)
+            var mt = getTransArray(trans)
 
-            if (_posIndicator) {
+            var mdecompose = getTransform(mt)
 
-                _posIndicator.setPos(_x, _y, mt)
+            if (_idrIndicator) {
+
+                _idrIndicator.updateScale(mdecompose.s)
             }
 
             if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
