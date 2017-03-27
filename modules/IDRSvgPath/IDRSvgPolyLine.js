@@ -56,7 +56,7 @@ define(function (require, exports, module) {
 		/*=====================更新比例尺===========================*/
         function updateScale(scale) {
 
-            if (!pathElement) {
+            if (pathElement === undefined) {
 
                 return
             }
