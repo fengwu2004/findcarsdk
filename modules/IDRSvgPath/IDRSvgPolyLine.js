@@ -102,11 +102,11 @@ define(function (require, exports, module) {
                 }
             }
 
-            var path = getLineObject(postionList);
+            pathElement = getLineObject(postionList);
 
             angleDom = getPolyLineObject(postionList);
 
-            parentNode.appendChild(path);
+            parentNode.appendChild(pathElement);
 
             for (var i = 0; i < angleDom.length - 1; i++) {
 
