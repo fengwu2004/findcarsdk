@@ -252,12 +252,12 @@ define(function (require, exports, module) {
 
                 addFloorList()
 
+                setDisplayTimer()
+
                 if (_loadMapSuccessFun) {
 
                     _loadMapSuccessFun()
                 }
-
-
 
             }, function() {
 
