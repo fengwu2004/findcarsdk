@@ -56,7 +56,7 @@ define(function (require, exports, module) {
 		/*=====================更新比例尺===========================*/
         function updateScale(scale) {
 
-            pathElement.style["stroke-width"] = 16 * scale;
+            pathElement.style["stroke-width"] = defaultLineWidth * scale;
 
             defaulDotWidth = 2 * Math.sqrt(2) * scale;
 
