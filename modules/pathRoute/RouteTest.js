@@ -5,7 +5,7 @@ define(function (require, exports, module) {
 
     var idrRouter = require('../idrRouter')
 
-    var gv = require('../globalvalue')
+    // var gv = require('../globalvalue')
 
     var gv = require('../idrCoreManager')
 
