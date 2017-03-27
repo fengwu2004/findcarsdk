@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 
         var _y = 0
 
-        var _posTimer = null
+        var _refreshTimer = null
 
         var _svgFrame = null
 
@@ -233,6 +233,11 @@ define(function (require, exports, module) {
             }
         }
 
+        var setDisplayTimer = function() {
+
+            _refreshTimer = setInterval(updateDisplay, 100)
+        }
+
         this.loadMap = function(regionId, floorId) {
 
             _regionData = idrDataMgr.regionAllInfo
@@ -251,6 +256,8 @@ define(function (require, exports, module) {
 
                     _loadMapSuccessFun()
                 }
+
+
 
             }, function() {
 
@@ -273,7 +280,10 @@ define(function (require, exports, module) {
 
             var mt = matrixFromString(trans)
 
-            _posIndicator.setPos(_x, _y, mt)
+            if (_posIndicator) {
+
+                _posIndicator.setPos(_x, _y, mt)
+            }
 
             if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
 

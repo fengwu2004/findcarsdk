@@ -175,6 +175,13 @@ define(function (require, exports, module) {
                             success(response.data);
                         }
                     }
+                    else  {
+
+                        if (typeof failed === "function") {
+
+                            failed(response);
+                        }
+                    }
                 },
 
                 error:function (response) {
