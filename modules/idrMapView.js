@@ -329,15 +329,15 @@ define(function (require, exports, module) {
                 _idrIndicator.updateScale(mdecompose.s)
             }
 
-            if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
-
-                if (_unitDivs.length > 0) {
-
-                    _currentTm = mt
-
-                    updateUnitAngleAndScale(mt)
-                }
-            }
+            // if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
+            //
+            //     if (_unitDivs.length > 0) {
+            //
+            //         _currentTm = mt
+            //
+            //         updateUnitAngleAndScale(mt)
+            //     }
+            // }
         }
 
         var updateUnitAngleAndScale = function(m) {
