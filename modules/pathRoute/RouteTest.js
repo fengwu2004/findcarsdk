@@ -61,15 +61,20 @@ define(function (require, exports, module) {
 
         var carNavi = false
 
-        router.routerPath(p1, p2, carNavi, function(result) {
+        router.init(function() {
 
-            for (var i = 0; i < result.paths[0].position.length; ++i) {
-
-                console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
-            }
-
-            console.log(result)
+            console.log('加载成功')
         })
+
+        // router.routerPath(p1, p2, carNavi, function(result) {
+        //
+        //     for (var i = 0; i < result.paths[0].position.length; ++i) {
+        //
+        //         console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
+        //     }
+        //
+        //     console.log(result)
+        // })
 
 
     }()
