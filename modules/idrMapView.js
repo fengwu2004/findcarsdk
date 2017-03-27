@@ -152,6 +152,14 @@ define(function (require, exports, module) {
 
                 var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','text')
 
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
+
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
+
+                var trans = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + x + ',' + y + ')'
+
+                unitSvg.setAttribute('transform', trans)
+
                 unitSvg.innerHTML = unit.name
 
                 _unitDivs.push(unitSvg)
