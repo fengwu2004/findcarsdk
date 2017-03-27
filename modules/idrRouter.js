@@ -7,8 +7,6 @@ define(function (require, exports, module) {
 
     var Position = require('./pathRoute/Position')
 
-    var idrNetworkInstance = require('./idrNetworkManager')
-
     function idrRouter(regionId, floorList, clientId, appId, sessionKey) {
 
         var _clientId = clientId
@@ -48,6 +46,23 @@ define(function (require, exports, module) {
 
             return null
         }
+        
+        this.init = function(successFunc) {
+
+            serverCallRegionPath(_regionId, function(data) {
+
+                unzipBlob(data, function(jobj) {
+
+                    _pathSearch = new PathSearch(jobj)
+
+                    if (successFunc) {
+
+                        successFunc()
+                    }
+                })
+
+            }, null);
+        }
 
         /**
          * @param start 起点
@@ -55,29 +70,9 @@ define(function (require, exports, module) {
          * @param car 是否车行
          * @return PathResult
          */
-        this.routerPath = function(start, end, car, successFunc) {
+        this.routerPath = function(start, end, car) {
 
-            if (_pathSearch == null) {
-
-                serverCallRegionPath(_regionId, function(data) {
-
-                    unzipBlob(data, function(jobj) {
-
-                        _pathSearch = new PathSearch(jobj)
-
-                        var result = doRouter(start, end, car)
-
-                        successFunc(result)
-                    })
-
-                }, null);
-            }
-            else  {
-
-                var result = doRouter(start, end, car)
-
-                successFunc(result)
-            }
+            return doRouter(start, end, car)
         }
 
         function doRouter(start, end, car) {
