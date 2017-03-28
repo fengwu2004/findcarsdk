@@ -144,6 +144,10 @@ define(function (require, exports, module) {
 
                 unitSvg.innerHTML = unit.name
 
+                _unitDivs.push(unitSvg)
+
+                _mapViewPort.appendChild(unitSvg)
+
                 var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
 
                 var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
@@ -151,10 +155,6 @@ define(function (require, exports, module) {
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
                 unitSvg.setAttribute('transform', trans)
-
-                _unitDivs.push(unitSvg)
-
-                _mapViewPort.appendChild(unitSvg)
             }
         }
 
