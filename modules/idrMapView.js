@@ -323,9 +323,9 @@ define(function (require, exports, module) {
 
                 var unit = _units[index]
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.25 * unitSvg.offsetWidth
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.25 * unitSvg.offsetHeight
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
 
