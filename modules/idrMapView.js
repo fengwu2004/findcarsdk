@@ -354,7 +354,7 @@ define(function (require, exports, module) {
 
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
 
-                updateUnitAngleAndScale(mdecompose.s, _mapRotate)
+                updateUnitAngleAndScale(1/mdecompose.s, -1 * _mapRotate)
             }
 
             _mapScale = mdecompose.s
