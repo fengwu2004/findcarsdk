@@ -148,17 +148,19 @@ define(function (require, exports, module) {
 
                 _mapViewPort.appendChild(unitSvg)
 
-                unit.x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
+                var center = [0.5 * (unit['boundLeft']+ unit['boundRight']), 0.5 * (unit['boundTop'] + unit['boundBottom'])]
 
-                unit.y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
+                unit.x = center[0] - 0.5 * unitSvg.offsetWidth
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
+                unit.y = center[1] - 0.5 * unitSvg.offsetHeight
+
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + center[0] + ',' + center[1] + ')'
 
                 var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
 
-                p.setAttribute('cx', 0.5 * (unit['boundLeft']+ unit['boundRight']))
+                p.setAttribute('cx', center[0])
 
-                p.setAttribute('cy', 0.5 * (unit['boundTop'] + unit['boundBottom']))
+                p.setAttribute('cy', center[1])
 
                 p.setAttribute('r', 2)
 
