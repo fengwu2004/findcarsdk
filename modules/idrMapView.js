@@ -14,17 +14,11 @@ define(function (require, exports, module) {
 
     var Unit = ObjectUnits.Unit;
 
-    var unitObj = new Unit();
-
     var Maputils = require('./maputils');
 
     var matrix3 = require('./matrix3')
 
-    var oMapUtils = new Maputils();
-
     var networkManager = require('./idrNetworkManager');
-
-    var idrIndicator = require('./idrIndicator')
 
     var idrFloorListControl = require('./idrFloorListControl');
 
@@ -42,9 +36,11 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
-        var _x = 0
+        var _currentPos = null
 
-        var _y = 0
+        var _regionId = null
+
+        var _currentFloorId = null
 
         var _refreshTimer = null
 
@@ -52,27 +48,17 @@ define(function (require, exports, module) {
 
         var _mapViewPort = null
 
-        var _regionId = null
-
-        var _floorId = null
-
         var _regionData = null
 
         var _floorListControl = null
-
-        var _posIndicator = null
 
         var _loadMapSuccessFun = null
 
         var _svgBox = null
 
-        var _svgPath = null
-
         var _units = []
 
         var _unitDivs = []
-
-        var _currentTm = null
 
         var _mapScale = 1
 
@@ -156,9 +142,9 @@ define(function (require, exports, module) {
 
                 var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','text')
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * (unit['boundRight'] - unit['boundLeft'])
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * (unit['boundBottom'] - unit['boundTop'])
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
@@ -252,42 +238,6 @@ define(function (require, exports, module) {
             _refreshTimer = setInterval(updateDisplay, 100)
         }
 
-        this.loadMap = function(regionId, floorId) {
-
-            _regionData = idrDataMgr.regionAllInfo
-
-            _regionId = regionId
-
-            _floorId = floorId
-
-            networkManager.serverCallSvgMap(_regionId, _floorId, function(data) {
-
-                createSVGMap(data, _regionId, _floorId)
-
-                addFloorList()
-
-                setDisplayTimer()
-
-                if (_loadMapSuccessFun) {
-
-                    _loadMapSuccessFun()
-                }
-
-            }, function() {
-
-                alert('地图数据获取失败!' + data);
-            })
-        }
-
-        this.setCurrPos = function(x, y, show) {
-
-            _x = x
-
-            _y = y
-
-            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_x, y:_y})
-        }
-
         function getTransform(transformList) {
 
             if (transformList.length != 6) {
@@ -375,9 +325,9 @@ define(function (require, exports, module) {
 
                 var unit = _units[index]
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * (unit['boundRight'] - unit['boundLeft'])
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * (unit['boundBottom'] - unit['boundTop'])
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
 
@@ -390,22 +340,38 @@ define(function (require, exports, module) {
             _idrPath.updateLine(_mapViewPort, paths)
         }
 
-        function matrixFromString(value) {
+        this.loadMap = function(regionId, floorId) {
 
-            var temp = value.substring(7, value.length - 1)
+            _regionData = idrDataMgr.regionAllInfo
 
-            var valueT = temp.split(',')
+            _regionId = regionId
 
-            var mt = matrix3.create()
+            _floorId = floorId
 
-            matrix3.set(mt, valueT[0], valueT[1], 0, valueT[2], valueT[3], 0, valueT[4], valueT[5], 1)
+            networkManager.serverCallSvgMap(_regionId, _floorId, function(data) {
 
-            return mt
+                createSVGMap(data, _regionId, _floorId)
+
+                addFloorList()
+
+                setDisplayTimer()
+
+                if (_loadMapSuccessFun) {
+
+                    _loadMapSuccessFun()
+                }
+
+            }, function() {
+
+                alert('地图数据获取失败!' + data);
+            })
         }
 
-        function matrixToString(value, x, y) {
+        this.setCurrPos = function(pos, show) {
 
-            return 'matrix(' + value[0] + ',' + value[1] + ',' + value[3] + ',' + value[4] + ',' + x + ',' + y + ')'
+            _currentPos = pos
+
+            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
         }
 
         this.setLoadMapFinishCallback = function(callBack) {
