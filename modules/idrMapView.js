@@ -370,9 +370,9 @@ define(function (require, exports, module) {
 
             var a = scale * Math.cos(rotate)
 
-            var b = scale * Math.sin(rotate)
+            var b = -scale * Math.sin(rotate)
 
-            var c = -scale * Math.sin(rotate)
+            var c = scale * Math.sin(rotate)
 
             var d = scale * Math.cos(rotate)
 
