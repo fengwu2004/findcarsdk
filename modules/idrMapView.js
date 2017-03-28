@@ -148,11 +148,11 @@ define(function (require, exports, module) {
 
                 _mapViewPort.appendChild(unitSvg)
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
+                unit.x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
+                unit.y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
                 unitSvg.setAttribute('transform', trans)
             }
@@ -323,11 +323,7 @@ define(function (require, exports, module) {
 
                 var unit = _units[index]
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * unitSvg.offsetWidth
-
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * unitSvg.offsetHeight
-
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unit.x + ',' + unit.y + ')'
 
                 unitSvg.setAttribute('transform', m)
             })
