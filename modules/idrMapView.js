@@ -142,9 +142,9 @@ define(function (require, exports, module) {
 
                 var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','text')
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * (unit['boundRight'] - unit['boundLeft'])
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * (unit['boundBottom'] - unit['boundTop'])
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
@@ -325,9 +325,9 @@ define(function (require, exports, module) {
 
                 var unit = _units[index]
 
-                var x = 0.5 * (unit['boundLeft']+ unit['boundRight']) - 0.5 * (unit['boundRight'] - unit['boundLeft'])
+                var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
 
-                var y = 0.5 * (unit['boundTop'] + unit['boundBottom']) - 0.5 * (unit['boundBottom'] - unit['boundTop'])
+                var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
 
