@@ -308,8 +308,8 @@ define(function (require, exports, module) {
             var cosA = a / sx;
             var sinA = c / sx;
 
-            var a1 = Math.asin(sinA) / Math.PI * 180;
-            var a2 = Math.acos(cosA) / Math.PI * 180;
+            var a1 = Math.asin(sinA);
+            var a2 = Math.acos(cosA);
 
             var a = a1 > 0 ? a1 : a2;
 
@@ -356,7 +356,7 @@ define(function (require, exports, module) {
 
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
 
-                updateUnitAngleAndScale(_origScale * 1/mdecompose.s, _mapRotate * Math.PI/180)
+                updateUnitAngleAndScale(_origScale * 1/mdecompose.s, _mapRotate)
             }
 
             _mapScale = mdecompose.s
