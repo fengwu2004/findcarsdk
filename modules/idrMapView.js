@@ -150,11 +150,11 @@ define(function (require, exports, module) {
 
                 var center = [0.5 * (unit['boundLeft']+ unit['boundRight']), 0.5 * (unit['boundTop'] + unit['boundBottom'])]
 
-                unit.x = center[0] - 0.5 * unitSvg.offsetWidth
+                unit.x = center[0] - 0.25 * unitSvg.offsetWidth
 
-                unit.y = center[1] - 0.5 * unitSvg.offsetHeight
+                unit.y = center[1] + 0.25 * unitSvg.offsetHeight
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + center[0] + ',' + center[1] + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
                 var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
 
