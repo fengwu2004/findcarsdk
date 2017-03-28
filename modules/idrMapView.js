@@ -152,7 +152,7 @@ define(function (require, exports, module) {
 
                 unit.x = center[0] - 0.25 * unitSvg.offsetWidth
 
-                unit.y = center[1] + 0.25 * unitSvg.offsetHeight
+                unit.y = center[1]// + 0.25 * unitSvg.offsetHeight
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
