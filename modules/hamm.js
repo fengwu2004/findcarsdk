@@ -37,6 +37,15 @@ define(function (require, exports, module) {
     var bMoveAfter = false; // 外部要在地图结束写逻辑
     var moveFnAfter = null; // 外部要在地图结束的逻辑函数
 
+    /*var hammTimer = 0;
+    setInterval(function() {
+        hammTimer = hammTimer + 100;
+        if (hammTimer > 500 && Hamm.prototype.bHasUnitText() === false) {    // 显示文字
+            Hamm.prototype.handleAfter();
+        };
+    }, 100);*/
+
+
     //自定义的Hamm类
     function Hamm() {
         this.scale = gV.scale;
@@ -122,11 +131,11 @@ define(function (require, exports, module) {
 
         touchStart: function(ev) {
             ev.stopPropagation ? ev.stopPropagation() : ev.cancelBubble = true;
-            console.log('touchStart: ' + ev.touches.length);
+            // console.log('touchStart: ' + ev.touches.length);
             this._touch(ev);
 
             if (this.fingerCount == 1) {
-                console.log('handleBefore');
+                // console.log('handleBefore');
                 // this.handleBefore();
                 // hammTimer = 0;
             };
@@ -168,6 +177,9 @@ define(function (require, exports, module) {
                     gV.scale = gV.ratio * .8;
                 }
 
+                var scaleRule = 100 * gV.scale;
+                oMapUtils.calculationRule(scaleRule);
+
                 var dangle = this._getAngleOfTwoVector(this.startScreenX2 - this.startScreenX, this.startScreenY2 - this.startScreenY, this.finger1.screenX - this.finger0.screenX, this.finger1.screenY - this.finger0.screenY);
                 gV.lastSvgAngle = this.angle = this.startAngle + dangle;
 
@@ -178,12 +190,10 @@ define(function (require, exports, module) {
 
             if (this.fingerCount > 2) return;
 
-
-
             gV.lastPX = this.lastPX = this.startPX + dx;
             gV.lastPY = this.lastPY = this.startPY + dy;
 
-            console.log('handleDo');
+            // console.log('handleDo');
             if (this.bHasUnitText()) {
                 this.handleBefore();
             };
@@ -191,13 +201,12 @@ define(function (require, exports, module) {
             // this.drawLimit(gV.lastPX, gV.lastPY);
 
             requestAnimationFrame(this.showMap);
-
         },
 
         touchEnd: function(ev) {
             ev.stopPropagation ? ev.stopPropagation() : ev.cancelBubble = true;
 
-            console.log('touchEnd');
+            // console.log('touchEnd');
             //log("touchEnd," + JSON.stringify(ev));
             var count = this.fingerCount;
 
@@ -207,13 +216,13 @@ define(function (require, exports, module) {
 
             if(this.fingerCount == 0 && count > 0){
                 //手指完全离开屏幕，做其他事情，显示unit、导航线等
-                console.log('handleAfter');
+                // console.log('handleAfter');
                 this.handleAfter();
             };
 
             if(this.fingerCount == 1 && count > 0){
                 //手指完全离开屏幕，做其他事情，显示unit、导航线等
-                console.log('handleAfter');
+                // console.log('handleAfter');
                 this.handleAfter();
             };
             // hammTimer = 0;
@@ -239,7 +248,7 @@ define(function (require, exports, module) {
             transform = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + e + ',' + f + ')';
 
             // jsLib(this.domView).setStyle3("transform", transform);
-            this.domView.setAttribute('transform', transform);
+            this.domView.setAttribute('transform', transform)
         },
 
         _touch: function(ev) {
@@ -382,10 +391,8 @@ define(function (require, exports, module) {
             // oMapUtils.isAgainDraw(gV.floorId);    // 12-05 被我暂时关闭
             // 因为动态划线，本身自己每秒划线一次,所以不必拖动完再次划线
             if (gV.bDynamicNag === false) {
-                // oMapUtils.isAgainDraw(gV.floorId);
-                oMapUtils.isAgainDraw2();
+                oMapUtils.isAgainDraw(gV.floorId);
             };
-            gV.oMapUtils.isAgainDraw2();
 
             if (bMoveAfter) {
                 moveFnAfter();    //外部的逻辑

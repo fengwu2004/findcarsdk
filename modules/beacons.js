@@ -157,7 +157,6 @@ define(function (require, exports, module) {
                     // jsLib('#beaCount').html(argv.beacons.length);
                     if (argv.beacons.length !== 0) {
 
-                        
                         var beacons = argv.beacons;
 
                         var value = "";
@@ -175,7 +174,6 @@ define(function (require, exports, module) {
                                 return true;
                             };
                         });
-
 
                         var rssi = [], arrBea = [];
                         arrBeacons.forEach(function(obj) {
@@ -243,13 +241,7 @@ define(function (require, exports, module) {
                                 gV.bnData.data = data;
                                 //他人的回掉
                                 successFn && successFn(data);
-
-
-
                                 // alert('服务器成功');
-
-
-
                             },
                             error: function (str) {
                                 errorFn && errorFn(str);

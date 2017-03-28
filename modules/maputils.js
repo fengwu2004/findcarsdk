@@ -9,7 +9,10 @@ define(function (require, exports, module) {
     var gV = require('./globalvalue');
     var Utils = require('./utils');
     var oUtils = new Utils();
+    var IdrRouter = require('./idrRouter');
     // require('http://binnng.github.io/debug.js/build/debug.min.js');
+
+    // var ccc = 0;// 测试用的
 
     function MapFn() {
         this.mapValue = {    //存放地图的一些静态变量
@@ -19,13 +22,12 @@ define(function (require, exports, module) {
             ticket: 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
         };
 
-        this.preStartObj = {};    // 存上一个startObj起点
-        this.aPointList = [];    // 当前楼层的坐标集合
-        this.rePlanning = false;    // 路线重新规划中
-        this.allClientPos = [];    // 画线时所有的屏幕坐标
-        this.allSvgPos = [];    // 画线时所有的svg屏幕坐标
-        this.bSameStartObj = false;
-        this.allPointList = null;
+        // 比例尺参数
+        this.y = 22;    // canvas的高度
+
+        // idrRouter = null;
+        this.initIdrRouterOk = false;
+        idrRouter = null;
     };
 
 
@@ -243,73 +245,10 @@ define(function (require, exports, module) {
                     alert('阿欧,坐标数据没有找到!' + str);
                 }
             });
-
-        },
-
-        //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层
-        askPosMore: function (regionId, startFloorId, endFloorId, startSvgX, startSvgY, endSvgX, endSvgY, isPeopleType) {
-            if (isPeopleType) {
-                var url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + regionId + "&sFloorId=" + startFloorId + "&tFloorId=" + endFloorId + "&sx=" + startSvgX + "&sy=" + startSvgY + "&tx=" + endSvgX + "&ty=" + endSvgY;
-            } else {
-                var url = "http://wx.indoorun.com/wx/getMultiFloorNearestLines.html?regionId=" + regionId + "&sFloorId=" + startFloorId + "&tFloorId=" + endFloorId + "&sx=" + startSvgX + "&sy=" + startSvgY + "&tx=" + endSvgX + "&ty=" + endSvgY;
-            };
-            jsLib.ajax({
-                // type: "get",
-                dataType: 'jsonp',
-                url: url, //添加自己的接口链接
-                data: {'regionId': regionId, 'floorId': floorId},
-                timeOut: 10000,
-                before: function () {
-                    console.log("before");
-                },
-                success: function (str) {
-                    var data = str;
-                    if (data != null) {
-                        if (data.code == "success") {
-                            //存到全局变量去
-                            gV.floorMore.floorInfo = [];
-                            data.data.forEach(function (item) {
-                                gV.floorMore.floorInfo.push(item);
-                            });
-
-                            var oLine = document.querySelector('#line');
-                            if (oLine) oLine.innerHTML = '';
-                            MapFn.prototype.isDrawLine(gV.floorMore.floorInfo);
-                        }
-                    }
-                },
-                error: function (str) {
-                    alert('阿欧,多坐标数据没有找到!' + str);
-                }
-            });
-            /*oUtils.RequestData.ajax(url, {
-             fnSucc: function (str) {
-             str = str.replace(/\n/g, '');
-             var data = eval('(' + str + ')');
-             // gV.floorMore.floorInfo = data.data;
-
-             if (data != null) {
-             if (data.code == "success") {
-             //存到全局变量去
-             gV.floorMore.floorInfo = [];
-             data.data.forEach(function (item) {
-             gV.floorMore.floorInfo.push(item);
-             });
-
-             var oLine = document.querySelector('#line');
-             if (oLine) oLine.innerHTML = '';
-             MapFn.prototype.isDrawLine(gV.floorMore.floorInfo);
-             }
-             }
-             },
-             fnFaild: function (str) {
-             alert('阿欧,多坐标数据没有找到!' + str);
-             },
-             });*/
         },
 
         //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层(外部接口)
-        askPosMore22: function (startObj, endObj, bool, distance, fn) {
+        /*askPosMore2: function (startObj, endObj, bool, fn) {
             var url, strUrl;
             strUrl = startObj.regionId + "&sFloorId=" + startObj.floorId + "&tFloorId=" + endObj.floorId + "&sx=" + startObj.svgX + "&sy=" + startObj.svgY + "&tx=" + endObj.svgX + "&ty=" + endObj.svgY;
             bool == true ? url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + strUrl
@@ -330,7 +269,6 @@ define(function (require, exports, module) {
                 },
                 before: function () {
                     // console.log("before");
-
                 },
                 success: function (str) {
                     var data = str;
@@ -357,155 +295,120 @@ define(function (require, exports, module) {
                     alert('阿欧,多坐标数据没有找到!' + str);
                 }
             });
+        },*/
 
+        askPosMore2: function (startObj, endObj, bool, fn) {
+            var self = this;
+            var p1 = { x: startObj.svgX, y: startObj.svgY, floorId: startObj.floorId };
+            var p2 = { x: endObj.svgX, y: endObj.svgY, floorId: endObj.floorId };
+
+            if (!this.idrRouter) {    // 获取划线实例
+                this.initIdrRouter(function(idrRouter) {
+                    self.idrRouter = idrRouter;
+                    self.idrRouteFn(p1, p2, bool, fn, idrRouter);
+                });
+            } else {
+                self.idrRouteFn(p1, p2, bool, fn, this.idrRouter);
+            };
+        },
+
+        initIdrRouter: function(callback) {
+            var self = this;
+            var url = 'http://wx.indoorun.com/wx/getRegionInfo';
+            jsLib.ajax({
+                type: "get",
+                dataType: 'jsonp',
+                url: url, //添加自己的接口链接
+                data: {
+                    'regionId': gV.regionId,
+                    'appId': gV.configure.appId,
+                    'clientId': gV.configure.clientId,
+                    'sessionKey': gV.configure.sessionKey
+                },
+                timeOut: 10000,
+                before: function () {
+                    // console.log("before");
+                },
+                success: function (str) {
+                    var data = str;
+                    if (data != null) {
+                        if (data.code == "success") {
+                            gV.floorData.aAllFloor = data.data.floorList;
+                            self.idrRouter = new IdrRouter(gV.regionId, gV.floorData.aAllFloor, gV.configure.clientId, gV.configure.appId, gV.configure.sessionKey);
+                            self.idrRouter.init(function() {
+                                this.initIdrRouterOk = true;
+                            }, function(data) {
+                                this.initIdrRouterOk = false;
+                                alert(JSON.stringify(data));
+                            });
+                            callback && callback(self.idrRouter);
+                        };
+                    };
+                },
+                error: function (str) {
+                    errorFn && errorFn(str);
+                }
+            });
+        },
+
+        idrRouteFn: function(p1, p2, bool, fn, instance) {
+            var self = this;
+            if (!this.idrRouter) {    // 获取划线实例
+                this.initIdrRouter(function(idrRouter) {
+                    self.idrRouter = idrRouter;
+                    todo(idrRouter);
+                });
+            } else {
+                todo(this.idrRouter);
+            };
+
+            function todo(ins) {
+                /*ins.routerPath(p1, p2, bool, function(result) {
+                    //存到全局变量去
+                    gV.floorInfo = [];
+                    result.paths.forEach(function (item) {
+                        gV.floorInfo.push(item);
+                    });
+
+                    var oLine = document.querySelector('#line');
+                    if (oLine) oLine.innerHTML = '';
+                    MapFn.prototype.isDrawLine(gV.floorInfo);
+                    //执行第三方的逻辑
+                    fn && fn(gV.floorInfo, result.distance);
+                });*/
+
+                var result = ins.routerPath(p1, p2, bool);
+
+                //存到全局变量去
+                gV.floorInfo = [];
+                result.paths.forEach(function (item) {
+                    gV.floorInfo.push(item);
+                });
+
+                var oLine = document.querySelector('#line');
+                if (oLine) oLine.innerHTML = '';
+                MapFn.prototype.isDrawLine(gV.floorInfo);
+                //执行第三方的逻辑
+                fn && fn(gV.floorInfo, result.distance);
+            };
+
+        },
+
+        idrRouteResult: function(p1, p2, bool) {
+            var result = this.idrRouter.routerPath(p1, p2, bool);
+            return result.distance;
         },
 
         //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层(外部接口)
-        askPosMore2: function (startObj, endObj, bool, distance, outFn) {
-            var self = this,
-                bSameStartObj = this._isSameStartObj(startObj);
-            this.bSameStartObj = bSameStartObj = this.rePlanning ? false : bSameStartObj;
-
-            // startObj如果是不一样的话就请求服务器
-            if (!bSameStartObj) {
-                this._getMultiFloorNearestLines(startObj, endObj, bool, outFn, function(data) {
-                    self.allPointList = data;
-                    self.aPointList = self._getPointList(data, startObj.floorId);    // 获取当前楼层的svg集合坐标
-                    var aClientPos = MapFn.prototype.changeToAllClientPos(self.aPointList);    // 当前楼层的集合坐标转成client端
-                    self.allSvgPos = [];    // 清空svg集合线坐标
-                    self.draw('line', self.aPointList, false, true);    // 求出分割点svg坐标集合点
-                    // 清空线
-                    var oLine = document.querySelector('#line');
-                    if (oLine) oLine.innerHTML = '';
-                    // jsLib('#line').show();
-                    // self.draw('line', aClientPos, false);    // 重新画线
-                    self.reDraw(aClientPos);
-                    self.rePlanning = false;
-                });
-            } else {    // 一样的楼层就用当前楼层的集合坐标
-                if (this.allSvgPos.length > 0) {
-                    this._getMinimum(this.allSvgPos, startObj, distance, outFn);
-                };
-            };
-        },
-
-        // 清楚画线
-        clearLine: function() {
-            this.preStartObj = {};    // 存上一个startObj起点
-            this.aPointList = [];    // 当前楼层的坐标集合
-            this.rePlanning = false;    // 路线重新规划中
-            this.allClientPos = [];    // 画线时所有的屏幕坐标
-            this.allSvgPos = [];    // 画线时所有的svg屏幕坐标
-            this.bSameStartObj = false;
-            this.allPointList = null;
-        },
-
-        // 是否显示线(有多楼层的要显示)
-        isShowLine: function() {
-            var aPList = this._getPointList(this.allPointList, gV.floorId);    // 获取当前楼层的svg集合坐标
-            if (this.preStartObj.floorId != gV.floorId) {    // 定位点和当前楼层不一样
-                if (typeof aPList == 'undefined') {
-                    return {
-                        bDraw: false,
-                        aPList: null
-                    };
-                } else {
-                    return {
-                        bDraw: true,
-                        aPList: aPList
-                    };
-                };
-            } else {
-                return {
-                    bDraw: true,
-                    aPList: null
-                };
-            };
-        },
-
-        // 套一层画线
-        reDraw: function(aClientPos) {
-            var oLine = jsLib('#line'),
-                result = this.isShowLine();
-
-            if (result.bDraw == false && result.aPList == null) {
-                oLine.hide();
-            } else if (result.bDraw == true && result.aPList !== null) {
-                var acp = MapFn.prototype.changeToAllClientPos(result.aPList);
-                oLine.show();
-                oLine.html();
-                this.draw('line', acp, false);
-            } else if (result.bDraw == true && result.aPList == null) {
-                oLine.show();
-                this.draw('line', aClientPos, false);
-            };
-        },
-
-        // 根据动态点修改this.aPointList坐标集合, 然后画线
-        updatePointList: function(posObj) {
-            var obj = {}, result, aClientPos, oLine;
-            obj.x = posObj.svgX;
-            obj.y = posObj.svgY;
-
-            // 离那个点最近,就把哪个点含左边的点都删掉
-            if (typeof this.aPointList === 'object') {
-                this.aPointList.forEach(function(obj, index) {    // 求出每个分割点svg坐标的集合坐标和动态点的距离
-                    var x = obj.x,
-                        y = obj.y;
-                    obj.svgDis = this.getDistance(posObj.svgX, posObj.svgY, x, y);
-                }, this);
-            } else {
-                this.rePlanning = false;
-                return;
-            };
-
-            var flag = 0,
-                iMin = this.aPointList[0].svgDis;
-            this.aPointList.forEach(function(obj, index) {
-                if (iMin > obj.svgDis ) {
-                    iMin = obj.svgDis;
-                    flag = index;
-                };
-            });
-            this.aPointList = this.aPointList.slice(flag + 1);
-
-            // 一样的就不用添加了
-            result = this.aPointList.every(function(item, index, array){
-                if (item.x == posObj.svgX && item.y == posObj.svgY) {
-                    return false;
-                } else {
-                    return true;
-                };
-            });
-            if (result) this.aPointList.splice(0, 0, obj);
-
-            aClientPos = MapFn.prototype.changeToAllClientPos(this.aPointList);
-            aClientPos = aClientPos.filter(function(item){
-                return !(item.x !== item.x || item.y !== item.y);
-            });
-
-            // 重新渲染线
-            oLine = document.querySelector('#line');
-            if (oLine) oLine.innerHTML = '';
-            // 判断定位点和当前楼层是否一致，不一致的话看看是否是多楼层导航，否则不现实线
-
-            this.reDraw(aClientPos);
-        },
-
-        // startObj起点的floorId是否和上一次一样，不一样的话直接重新请求服务器,且赋值
-        _isSameStartObj: function(startObj) {
-            var bool = this.preStartObj.floorId == startObj.floorId ? true : false;
-            this.preStartObj = startObj;
-            return bool;
-        },
-
-        // 从服务器请求坐标
-        _getMultiFloorNearestLines: function(startObj, endObj, bool, outFn, insideFn) {
+        askPosMore3: function (startObj, endObj, bool, fn) {
             var url, strUrl;
             strUrl = startObj.regionId + "&sFloorId=" + startObj.floorId + "&tFloorId=" + endObj.floorId + "&sx=" + startObj.svgX + "&sy=" + startObj.svgY + "&tx=" + endObj.svgX + "&ty=" + endObj.svgY;
-            url = bool == true ? "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + strUrl
-                : "http://wx.indoorun.com/wx/getMultiFloorNearestLines.html?regionId=" + strUrl;
-
+            bool == true ? url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + strUrl
+                : url = "http://wx.indoorun.com/wx/getMultiFloorNearestLines.html?regionId=" + strUrl;
+            gV.aFloors = [];
+            gV.aFloors.push(startObj.floorId);
+            gV.aFloors.push(endObj.floorId);
+            // console.log('url:' + url);
             jsLib.ajax({
                 type: "get",
                 dataType: 'jsonp',
@@ -518,13 +421,14 @@ define(function (require, exports, module) {
                 },
                 before: function () {
                     // console.log("before");
+
                 },
                 success: function (str) {
                     var data = str;
                     if (data != null) {
                         if (data.code == "success") {
-                            insideFn && insideFn(data.data);    // 内部我自己使用的
-                            outFn && outFn(data.data);    // 外部接口方法
+                            
+                            fn && fn(data.data);
                         } else {
                             console.log(data.msg);
                         }
@@ -534,83 +438,22 @@ define(function (require, exports, module) {
                     alert('阿欧,多坐标数据没有找到!' + str);
                 }
             });
-        },
-
-        // 动态点(起点)坐标和svg集合坐标进行最短距离对比
-        _getMinimum: function(allSvgPos, startObj, distance, outFn) {
-            var startObjSvgX = startObj.svgX,
-                startObjSvgY = startObj.svgY,
-                posObj, dis;    // svg分割坐标离动态点最近的坐标, 最近坐标的距离
-            // var arrStartClientPos = this.changeToClientPos(startObjSvgX, startObjSvgY);
-
-            allSvgPos.forEach(function(obj, index) {    // 求出每个分割点svg坐标的集合坐标和动态点的距离
-                var x = obj.svgX,
-                    y = obj.svgY;
-                obj.svgDis = this.getDistance(startObjSvgX, startObjSvgY, x, y);
-            }, this);
-
-            // 求出最小值距离的对象,并且从最小值距离到集合末尾
-            var flag = 0,
-                iMin = this.allSvgPos[0].svgDis;
-            this.allSvgPos.forEach(function(obj, index) {
-                if (iMin > obj.svgDis ) {
-                    iMin = obj.svgDis;
-                    flag = index;
-                };
-            });
-
-            posObj = this.allSvgPos[flag];
-            dis = posObj.svgDis;
-
-            // 设置用户指定的偏离值
-            distance = distance ? distance : 20;
-
-            if (dis <= distance) {    // 小于1米
-                console.log('把动态点的坐标替换并修改allSvgPos集合');
-                this.allSvgPos = this.allSvgPos.slice(flag + 1);
-                if (this.allSvgPos.length == 0) this.rePlanning = true;
-                this.updatePointList(posObj);
-                var aClientPos = this.changeToClientPos(posObj.svgX, posObj.svgY);
-                posObj.aClientPos = aClientPos;
-                outFn && outFn(allSvgPos, posObj);
-            } else if(dis > distance) {
-                console.log('大于指定的偏离距离：重新规划路线');
-                var str = '大于指定的偏离距离：重新规划路线';
-                outFn && outFn(allSvgPos, str);
-                this.rePlanning = true;
-            } else {
-                console.log('这段怎么办？');
-            };
-        },
-
-        // 根据动态点的floorId求出楼层的集合坐标
-        _getPointList: function(data, floorId) {
-            if (Object.prototype.toString.call(data) !== '[object Array]') return;
-
-            var i = 0,
-                len = data.length;
-            for (; i < len; i ++) {
-                var obj = data[i];
-                if (obj.floorId == floorId && obj.fromFloorId == floorId && obj.toFloorId == floorId) {
-                    return obj.pointList;
-                };
-            };
+            
         },
 
         //重新画线(点击楼层切换时，如果楼层进行了多楼层导航, 就会重新画线, 判断如果出发点和终点的楼层对应切换时的地图就自动画线)
         isAgainDraw: function (floorId) {
             MapFn.prototype.isDrawLine(gV.floorInfo);
-        },
-
-        // 新的拖动完手势再次画线
-        isAgainDraw2: function () {
-            var aClientPos, oLine;
-            this.aPointList = this._getPointList(this.allPointList, gV.floorId);    // 获取当前楼层的svg集合坐标
-            aClientPos = MapFn.prototype.changeToAllClientPos(this.aPointList);
-
-            oLine = document.querySelector('#line');
-            if (oLine) oLine.innerHTML = '';
-            this.draw('line', aClientPos, false);
+            /*if (gV.aFloors.length > 0) {
+                gV.aFloors.forEach(function (item, index) {
+                    if (floorId == item) {    //说明当前楼层就是多楼层导航之一
+                        if (gV.aLineSvgPos.length > 0) {
+                            var aClientPos = MapFn.prototype.changeToAllClientPos(gV.aLineSvgPos);
+                            MapFn.prototype.draw('line', aClientPos, false);
+                        }
+                    }
+                })
+            }*/
         },
 
         //根据当前楼层来获取要不要划线和划哪部分线
@@ -619,12 +462,11 @@ define(function (require, exports, module) {
             aData.forEach(function (item, index, arr) {
                 var sFloorid = item.floorId;
                 if (gV.floorId === sFloorid) {
-                    var aPos = item.pointList;
+                    var aPos = item.position;
                     gV.aLineSvgPos = aPos;
                     // jsLib('#beaCount').html(gV.aLineSvgPos[0].x + ',' + gV.aLineSvgPos[0].y + ',' + ccc);
                     var aClientPos = MapFn.prototype.changeToAllClientPos(gV.aLineSvgPos);
-                    // MapFn.prototype.draw('line', aClientPos, false);
-                    this.draw('line', aClientPos, false);
+                    MapFn.prototype.draw('line', aClientPos, false);
                 }
             });
 
@@ -648,7 +490,8 @@ define(function (require, exports, module) {
          * @use var points = [{'x':300, 'y':500}, {'x':450, 'y':300}];  传点(客户端的点集合)然后调用
          Map.MapFn.draw('id', points);
          */
-        draw: function (id, objArr, boob, bGetSvgPos) { //参数 id获取元素 ，对象数组
+        draw: function (id, objArr, boob) { //参数 id获取元素 ，对象数组
+            // debug.log('开始划线');
             var obj = document.getElementById(id);
             if (!obj || objArr.length === 0) return;
 
@@ -657,8 +500,7 @@ define(function (require, exports, module) {
             var x2, y2; //紧接着x1,y1后的坐标
 
             var lastAvgle, //每次更新后的角度
-                interval; //间距
-            interval = bGetSvgPos ? 5 / gV.scale : 5;
+                interval = 5; //间距
 
             for (var i = 1; i < objArr.length; i++) {
                 x2 = objArr[i].x;
@@ -677,7 +519,8 @@ define(function (require, exports, module) {
                 var n = parseInt(dis / interval);
                 if (dis / interval - n >= 0.5) { //像素超过0.5就向上取整
                     n++;
-                };
+                }
+                ;
                 var dint = dis / n; //斜边平均化
 
                 var dx, dy;
@@ -685,7 +528,7 @@ define(function (require, exports, module) {
                     dx = Math.sqrt(dint * dint / (1 + k * k)); //求平均化得x
                     if (x2 < x1) {
                         dx = -dx;
-                    };
+                    }
                     dy = dx * k; //求平均化得y
                 } else {
                     dx = 0;
@@ -716,44 +559,16 @@ define(function (require, exports, module) {
                         } else {
                             fangle += 180;
                         }
-                    };
-                    if (bGetSvgPos){
-                        var objPos = {};
-                        objPos.svgX = x1;
-                        objPos.svgY = y1;
-                        objPos.angle = fangle;
-                        this.allSvgPos.push(objPos);
-                    } else {
-                        this.drawAr(obj, x1, y1, fangle, boob); //转折点的第一个点旋转值为fangle
-                    };
+                    }
+                    this.drawAr(obj, x1, y1, fangle, boob); //转折点的第一个点旋转值为fangle
 
-                    if (bGetSvgPos){
-                        for (var j = 1; j < n; j++) {
-                            var objPos = {};
-                            objPos.svgX = x1 + dx * j;
-                            objPos.svgY = y1 + dy * j;
-                            objPos.angle = angle;
-                            this.allSvgPos.push(objPos);
-                        };
-                    } else {
-                        for (var j = 1; j < n; j++) {
-                            this.drawAr(obj, x1 + dx * j, y1 + dy * j, angle, boob);
-                        };
-                    };
+                    for (var j = 1; j < n; j++) {
+                        this.drawAr(obj, x1 + dx * j, y1 + dy * j, angle, boob);
+                    }
                 } else {
-                    if (bGetSvgPos){
-                        for (var j = 0; j < n; j++) {
-                            var objPos = {};
-                            objPos.svgX = x1 + dx * j;
-                            objPos.svgY = y1 + dy * j;
-                            objPos.angle = angle;
-                            this.allSvgPos.push(objPos);
-                        };
-                    } else {
-                        for (var j = 0; j < n; j++) {
-                            this.drawAr(obj, x1 + dx * j, y1 + dy * j, angle, boob);
-                        }
-                    };
+                    for (var j = 0; j < n; j++) {
+                        this.drawAr(obj, x1 + dx * j, y1 + dy * j, angle, boob);
+                    }
                 }
 
                 lastAngle = angle; //更新角度
@@ -764,8 +579,6 @@ define(function (require, exports, module) {
 
         //画图片
         drawAr: function (obj, x, y, angle, boob) { //父元素obj, x:left, y:top ,角度 ,画图片还是线
-            var self = this;
-
             if (boob) {
                 var oDiv = document.createElement('div');
                 oDiv.style.background = '#f60';
@@ -802,5 +615,68 @@ define(function (require, exports, module) {
                 obj.appendChild(oImg);
             }
         },
+
+        // 比例尺
+        comparingRule: function() {
+            this.maxWidth = gV.box_w / 4;
+            this.minWidth = gV.box_w / 8;
+
+            // 创建canvas标签
+            var oSvgFrame = document.querySelector('#svgFrame');
+            var oCanvas = document.createElement('canvas');
+            oCanvas.id = 'comparingRule';
+            // oCanvas.setAttribute('width', (this.maxWidth + 10) + 'px');
+            oCanvas.setAttribute('width', gV.box_w + 'px');
+            oCanvas.setAttribute('height', this.y + 'px');
+            // oCanvas.style.background = 'red';
+            oCanvas.style.position = 'absolute';
+            oCanvas.style.bottom = '14%';
+            oCanvas.style.left = '4rem';
+            oCanvas.style.zIndex = 11;
+            oSvgFrame.appendChild(oCanvas);
+        },
+
+        calculationRule: function(x) {
+
+            // 计算显示多少米[1, 2, 5, 10, 20, 50, 100, 200, 500]
+            this.maxWidth = gV.box_w / 4;
+            this.minWidth = gV.box_w / 8;
+
+            var arrRule = [1, 2, 5, 10, 20, 50, 100, 200, 500];
+            var arrRulePx = arrRule.map(function(item, index) {
+                var scale = item / 10;
+                return scale * x;
+            });
+
+            var aFilterIndex = [];
+            arrRulePx.filter(function(item, index) {
+                if (this.minWidth < item && item < this.maxWidth) {
+                    aFilterIndex.push(index);
+                    return true;
+                };
+            }, this);
+
+            x = arrRulePx[aFilterIndex[0]];
+            var str = arrRule[aFilterIndex[0]];
+            if (typeof x === 'undefined' || typeof str === 'undefined') return;
+            var cx = document.querySelector("#comparingRule").getContext('2d');
+            cx.clearRect(0, 0, gV.box_w, this.y);
+            cx.beginPath();
+            cx.moveTo(2.5, this.y - 6.5);
+            cx.lineTo(2.5, this.y - 1.5);
+            cx.lineTo(x + .5, this.y - 1.5);
+            cx.lineTo(x + .5, this.y - 6.5);
+            cx.lineCap = 'butt';
+            cx.stroke();
+
+            cx.font = "1.5rem";
+            cx.fillText(str + 'm', this.y - 14.5, this.y - 10.5);
+        },
+
+        notShowRule: function() {
+            var cx = document.querySelector("#comparingRule").getContext('2d');
+            cx.clearRect(0, 0, gV.box_w, this.y);
+        }
     }
+
 });
