@@ -76,6 +76,8 @@ define(function (require, exports, module) {
 
         var _mapScale = 1
 
+        var _mapRotate = 0
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -350,28 +352,25 @@ define(function (require, exports, module) {
                 }
             }
 
-            // if (!_currentTm || !matrix3.equals(_currentTm, mt)) {
-            //
-            //     if (_unitDivs.length > 0) {
-            //
-            //         _currentTm = mt
-            //
-            //         updateUnitAngleAndScale(mt)
-            //     }
-            // }
+            if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
+
+                updateUnitAngleAndScale(mdecompose.s, _mapRotate)
+            }
 
             _mapScale = mdecompose.s
+
+            _mapRotate = mdecompose.a
         }
 
-        var updateUnitAngleAndScale = function(m) {
+        var updateUnitAngleAndScale = function(scale, rotate) {
 
-            var tm = matrix3.clone(m)
+            var a = scale * Math.cos(rotate)
 
-            tm[6] = 0
+            var b = scale * Math.sin(rotate)
 
-            tm[7] = 0
+            var c = -scale * Math.sin(rotate)
 
-            matrix3.invert(tm, tm)
+            var d = scale * Math.cos(rotate)
 
             _unitDivs.forEach(function(unitSvg, index) {
 
@@ -380,6 +379,8 @@ define(function (require, exports, module) {
                 var x = 0.5 * (unit['boundLeft']+ unit['boundRight'])
 
                 var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
+
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
 
                 unitSvg.setAttribute('transform', matrixToString(tm, x, y))
             })
