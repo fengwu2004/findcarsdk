@@ -291,6 +291,7 @@ define(function (require, exports, module) {
         function getTransform(transformList) {
 
             if (transformList.length != 6) {
+
                 return false;
             }
 
@@ -305,13 +306,7 @@ define(function (require, exports, module) {
 
             var sx = Math.sqrt(a * a + b * b);
 
-            var cosA = a / sx;
-            var sinA = c / sx;
-
-            var a1 = Math.asin(sinA);
-            var a2 = Math.acos(cosA);
-
-            var a = a1 > 0 ? a1 : a2;
+            var a = Math.atan2(c, d);
 
             return {
                 a: a,
