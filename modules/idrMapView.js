@@ -382,7 +382,7 @@ define(function (require, exports, module) {
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
 
-                unitSvg.setAttribute('transform', matrixToString(tm, x, y))
+                unitSvg.setAttribute('transform', m)
             })
         }
 
