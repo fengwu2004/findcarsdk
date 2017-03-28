@@ -78,6 +78,8 @@ define(function (require, exports, module) {
 
         var _mapRotate = 0
 
+        var _origScale = 0.5
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -158,7 +160,7 @@ define(function (require, exports, module) {
 
                 var y = 0.5 * (unit['boundTop'] + unit['boundBottom'])
 
-                var trans = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + x + ',' + y + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
                 unitSvg.setAttribute('transform', trans)
 
@@ -354,7 +356,7 @@ define(function (require, exports, module) {
 
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
 
-                updateUnitAngleAndScale(1/mdecompose.s, -1 * _mapRotate * Math.PI/180)
+                updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate * Math.PI/180)
             }
 
             _mapScale = mdecompose.s
