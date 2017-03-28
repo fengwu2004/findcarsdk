@@ -154,7 +154,7 @@ define(function (require, exports, module) {
 
                 unit.y = center[1] - 0.5 * unitSvg.offsetHeight
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + center[0] + ',' + center[1] + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
                 var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
 
