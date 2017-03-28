@@ -152,19 +152,19 @@ define(function (require, exports, module) {
 
                 unit.x = center[0] - 0.25 * unitSvg.offsetWidth
 
-                unit.y = center[1]// + 0.25 * unitSvg.offsetHeight
+                unit.y = center[1] + 0.25 * unitSvg.offsetHeight
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
-                var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-
-                p.setAttribute('cx', unit.x)
-
-                p.setAttribute('cy', unit.y)
-
-                p.setAttribute('r', 2)
-
-                _mapViewPort.appendChild(p)
+                // var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+                //
+                // p.setAttribute('cx', unit.x)
+                //
+                // p.setAttribute('cy', unit.y)
+                //
+                // p.setAttribute('r', 2)
+                //
+                // _mapViewPort.appendChild(p)
 
                 unitSvg.setAttribute('transform', trans)
             }
