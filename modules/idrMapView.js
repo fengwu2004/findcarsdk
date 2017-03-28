@@ -156,9 +156,9 @@ define(function (require, exports, module) {
 
                 var p = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
 
-                p.setAttribute('cx', unit.x)
+                p.setAttribute('cx', 0.5 * (unit['boundLeft']+ unit['boundRight']))
 
-                p.setAttribute('cy', unit.y)
+                p.setAttribute('cy', 0.5 * (unit['boundTop'] + unit['boundBottom']))
 
                 p.setAttribute('r', 2)
 
