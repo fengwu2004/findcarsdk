@@ -299,8 +299,6 @@ define(function (require, exports, module) {
                 }
             }
 
-            console.log(_mapRotate * 180/Math.PI)
-
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
 
                 updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
