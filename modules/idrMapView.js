@@ -162,7 +162,7 @@ define(function (require, exports, module) {
 
         var getAllUnits = function() {
 
-            networkInstance.serverCallUnits(_regionId, _floorId,
+            networkInstance.serverCallUnits(_regionId, _currentFloorId,
 
                 function (data) {
 
