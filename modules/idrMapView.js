@@ -337,7 +337,7 @@ define(function (require, exports, module) {
         }
 
         this.loadMap = function(regionId, floorId) {
-.
+
             _regionData = idrDataMgr.regionAllInfo
 
             _regionId = regionId
