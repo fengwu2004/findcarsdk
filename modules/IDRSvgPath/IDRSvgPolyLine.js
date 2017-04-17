@@ -118,7 +118,7 @@ define(function (require, exports, module) {
                 parentNode.appendChild(angleDom[i]);
             }
         }
-
+1
 		/*=====================初始化路线对象=======================*/
         function getLineObject(postionList) {
 

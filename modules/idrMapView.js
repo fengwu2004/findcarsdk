@@ -337,16 +337,16 @@ define(function (require, exports, module) {
         }
 
         this.loadMap = function(regionId, floorId) {
-
+.
             _regionData = idrDataMgr.regionAllInfo
 
             _regionId = regionId
 
-            _floorId = floorId
+            _currentFloorId = floorId
 
-            networkManager.serverCallSvgMap(_regionId, _floorId, function(data) {
+            networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
 
-                createSVGMap(data, _regionId, _floorId)
+                createSVGMap(data, _regionId, _currentFloorId)
 
                 addFloorList()
 
