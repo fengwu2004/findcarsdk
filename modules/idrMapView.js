@@ -424,7 +424,7 @@ define(function (require, exports, module) {
 
         var updateMapViewTrans = function(mt) {
 
-            var trans = 'matrix(' + mt[0] + ',' + mt[3] + ',' + mt[1] + ',' + mt[4] + ',' + mt[2] + ',' + mt[5] + ')'
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
             _mapViewPort.setAttribute('tansform', trans)
         }
