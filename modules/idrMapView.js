@@ -148,7 +148,7 @@ define(function (require, exports, module) {
 
             var p = vec2.add(p0, p0, p1)
 
-            rotate(evt.angle, p)
+            rotate(evt.angle * Math.PI/180, p)
 
             console.log(evt.angle)
         }
