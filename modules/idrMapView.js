@@ -386,7 +386,7 @@ define(function (require, exports, module) {
 
             var p = [100, 100]
 
-            addPoint(p)
+            addPoint(getSvgPos(p))
 
             rotate(Math.PI * 0.25, p)
 
@@ -468,9 +468,9 @@ define(function (require, exports, module) {
 
         var rotate = function(rad, anchor) {
 
-            // var p = getSvgPos(anchor)
+            var p = getSvgPos(anchor)
 
-            var p = anchor
+            // var p = anchor
 
             var mt = getMapViewMatrix()
 
