@@ -305,7 +305,7 @@ define(function (require, exports, module) {
 
             if (value == null) {
 
-                return null
+                return [1, 0, 0, 1, 0, 0]
             }
 
             var temp = value.substring(7, value.length - 1)
