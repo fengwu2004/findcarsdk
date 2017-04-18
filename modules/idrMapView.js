@@ -375,6 +375,8 @@ define(function (require, exports, module) {
 
             button.setAttribute('title', 'test')
 
+            button.innerText = 'ABCD'
+
             var div = document.getElementById('main')
 
             div.appendChild(button)
