@@ -370,6 +370,8 @@ define(function (require, exports, module) {
         function onTestClick() {
 
             scroll([100, 50])
+
+            console.log('onTestClick')
         }
         
         var addTestButton = function() {
