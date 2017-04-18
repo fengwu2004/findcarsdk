@@ -468,13 +468,15 @@ define(function (require, exports, module) {
 
         var rotate = function(rad, anchor) {
 
+            var p = getSvgPos(anchor)
+
             var mt = getMapViewMatrix()
 
-            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
 
             matrix2d.rotate(mt, mt, rad)
 
-            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
 
             updateMapViewTrans(mt)
         }
