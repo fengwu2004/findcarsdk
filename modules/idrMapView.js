@@ -468,9 +468,9 @@ define(function (require, exports, module) {
 
         var rotate = function(rad, anchor) {
 
-            var p = getSvgPos(anchor)
+            // var p = getSvgPos(anchor)
 
-            // var p = anchor
+            var p = anchor
 
             var mt = getMapViewMatrix()
 
