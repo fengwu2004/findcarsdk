@@ -137,11 +137,15 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
-            // var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
-            //
-            // var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
-            //
-            // var p = vec2.add(p0, p0, p1)
+            var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
+
+            var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+
+            var p = vec2.add(p0, p0, p1)
+
+            vec2.divide(p, p, vec2.fromValues(2, 2))
+
+            zoom(evt.scale, p)
         }
 
         function onRoate(evt) {
@@ -151,6 +155,8 @@ define(function (require, exports, module) {
             var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
 
             var p = vec2.add(p0, p0, p1)
+
+            vec2.divide(p, p, vec2.fromValues(2, 2))
 
             rotate(evt.angle * Math.PI/180, p)
 
