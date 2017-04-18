@@ -373,6 +373,8 @@ define(function (require, exports, module) {
 
             button.setAttribute('onclick', 'onTestClick()')
 
+            button.setAttribute('title', 'test')
+
             var div = document.getElementById('main')
 
             div.appendChild(button)
