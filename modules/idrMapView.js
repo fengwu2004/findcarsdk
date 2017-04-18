@@ -161,8 +161,6 @@ define(function (require, exports, module) {
             vec2.divide(p, p, vec2.fromValues(2, 2))
 
             rotate(evt.angle * Math.PI/180, p)
-
-            console.log(evt.angle)
         }
 
         function addGestures() {
