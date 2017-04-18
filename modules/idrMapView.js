@@ -386,7 +386,7 @@ define(function (require, exports, module) {
 
             var p = [0, 0]
 
-            addPoint(p)
+            addPoint(p * 0.25)
 
             rotate(Math.PI, p)
 
