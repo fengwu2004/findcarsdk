@@ -377,7 +377,7 @@ define(function (require, exports, module) {
 
             circle.setAttribute('r', '10')
 
-,            circle.setAttribute('fill', 'red')
+,           circle.setAttribute('fill', 'red')
 
             _mapViewPort.appendChild(circle)
         }
