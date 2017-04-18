@@ -141,7 +141,7 @@ define(function (require, exports, module) {
 
         function addGestures(oSvgBox) {
 
-            new window.AlloyFinger(_mapViewPort, {
+            new AlloyFinger(_mapViewPort, {
 
                 singleTap:onSingleTap,
 
