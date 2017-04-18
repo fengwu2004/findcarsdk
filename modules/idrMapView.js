@@ -384,7 +384,7 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            var p = [100, 50]
+            var p = [0, 0]
 
             addPoint(p)
 
