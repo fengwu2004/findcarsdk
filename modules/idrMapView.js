@@ -426,7 +426,7 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
-            _mapViewPort.setAttribute('tansform', trans)
+            _mapViewPort.setAttribute('transform', trans)
         }
 
         var zoom = function(scale, anchor) {
