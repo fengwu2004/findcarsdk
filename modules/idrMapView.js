@@ -18,8 +18,6 @@ define(function (require, exports, module) {
 
     var matrix2d = require('./mat2d')
 
-    var Alloy = require('./alloy_finger')
-
     var vec2 = require('./vec2')
 
     var networkManager = require('./idrNetworkManager');
@@ -143,7 +141,7 @@ define(function (require, exports, module) {
 
         function addGestures(oSvgBox) {
 
-            new Alloy(_mapViewPort, {
+            new AlloyFinger(_mapViewPort, {
 
                 singleTap:onSingleTap,
 
