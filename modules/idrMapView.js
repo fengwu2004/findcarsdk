@@ -474,11 +474,11 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
 
             matrix2d.rotate(mt, mt, rad)
 
-            matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
 
             updateMapViewTrans(mt)
         }
