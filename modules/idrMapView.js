@@ -152,19 +152,19 @@ define(function (require, exports, module) {
                 pinch:onPinch
             })
 
-            hammObj.scale = 0;
+            // hammObj.scale = 0;
+            //
+            // hammObj.angle = 0;
+            //
+            // hammObj.init(_mapViewPort);
 
-            hammObj.angle = 0;
-
-            hammObj.init(_mapViewPort);
-
-            oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
-
-            oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
-
-            hammObj.handleDo();
-
-            hammObj.bindTouch(oSvgBox);
+            // oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
+            //
+            // oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
+            //
+            // hammObj.handleDo();
+            //
+            // hammObj.bindTouch(oSvgBox);
         }
 
         var addUnits = function() {
