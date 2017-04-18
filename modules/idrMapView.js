@@ -118,11 +118,11 @@ define(function (require, exports, module) {
 
             _mapViewPort = jsLib.getEle('#viewport');
 
-            hammObj.scale = 0;
-
-            hammObj.angle = 0;
-
-            hammObj.init(_mapViewPort);
+            // hammObj.scale = 0;
+            //
+            // hammObj.angle = 0;
+            //
+            // hammObj.init(_mapViewPort);
 
             oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
 
@@ -131,9 +131,9 @@ define(function (require, exports, module) {
             //进行文字加载
             getAllUnits()
 
-            hammObj.handleDo();
-
-            hammObj.bindTouch(oSvgBox);
+            // hammObj.handleDo();
+            //
+            // hammObj.bindTouch(oSvgBox);
         }
 
         var addUnits = function() {
