@@ -377,16 +377,18 @@ define(function (require, exports, module) {
 
             circle.setAttribute('r', '10')
 
-           circle.setAttribute('fill', 'red')
+            circle.setAttribute('fill', 'red')
 
             _mapViewPort.appendChild(circle)
         }
 
         this.onTestClick = function() {
 
-            scroll([100, 50])
+            var p = [100, 50]
 
-            addPoint([100, 50])
+            addPoint(p)
+
+            rotate(0.5 * Math.PI, p)
 
             console.log('onTestClick')
         }
