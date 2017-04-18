@@ -386,7 +386,7 @@ define(function (require, exports, module) {
 
             var p = [100, 100]
 
-            addPoint(getSvgPos(p))
+            addPoint(p)
 
             rotate(Math.PI * 0.25, p)
 
