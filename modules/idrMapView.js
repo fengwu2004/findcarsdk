@@ -376,13 +376,15 @@ define(function (require, exports, module) {
 
             var button = document.createElement('button')
 
-            button.setAttribute('onclick', 'onTestClick()')
+            button.setAttribute('id', 'testButton')
 
             button.innerText = 'Button'
 
             var div = document.getElementById('main')
 
             div.appendChild(button)
+
+            button.tap(onTestClick)
         }
 
         var getMapViewMatrix = function() {
