@@ -303,6 +303,11 @@ define(function (require, exports, module) {
 
         var getTransArray = function(value) {
 
+            if (value == null) {
+
+                return null
+            }
+
             var temp = value.substring(7, value.length - 1)
 
             var valueT = temp.split(',')
