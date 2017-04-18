@@ -18,6 +18,8 @@ define(function (require, exports, module) {
 
     var matrix2d = require('./mat2d')
 
+    var Alloy = require('./alloy_finger')
+
     var vec2 = require('./vec2')
 
     var networkManager = require('./idrNetworkManager');
@@ -118,6 +120,38 @@ define(function (require, exports, module) {
 
             _mapViewPort = jsLib.getEle('#viewport');
 
+            addGestures(oSvgBox)
+
+            //进行文字加载
+            getAllUnits()
+        }
+
+        function onSingleTap(evt) {
+
+            console.log(evt)
+        }
+
+        function onPinch(evt) {
+
+            console.log(evt)
+        }
+
+        function onRoate(evt) {
+
+            console.log(evt)
+        }
+
+        function addGestures(oSvgBox) {
+
+            new Alloy(_mapViewPort, {
+
+                singleTap:onSingleTap,
+
+                rotate:onRoate,
+
+                pinch:onPinch
+            })
+
             hammObj.scale = 0;
 
             hammObj.angle = 0;
@@ -127,9 +161,6 @@ define(function (require, exports, module) {
             oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
 
             oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
-
-            //进行文字加载
-            getAllUnits()
 
             hammObj.handleDo();
 
