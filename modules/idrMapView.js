@@ -369,7 +369,7 @@ define(function (require, exports, module) {
 
         function addPoint(p) {
 
-            var circle = document.createElementNS('http://www.w3.org/2000/svg','text')
+            var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
 
             circle.setAttribute('cx', p[0].toString())
 
