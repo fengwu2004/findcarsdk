@@ -70,6 +70,8 @@ define(function (require, exports, module) {
 
         var _origScale = 0.5
 
+        var _gestures = null
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -141,9 +143,9 @@ define(function (require, exports, module) {
             console.log(evt)
         }
 
-        function addGestures(oSvgBox) {
+        function addGestures() {
 
-            new AlloyFinger(_mapViewPort, {
+            _gestures = new AlloyFinger(_mapViewPort, {
 
                 singleTap:onSingleTap,
 
@@ -151,20 +153,6 @@ define(function (require, exports, module) {
 
                 pinch:onPinch
             })
-
-            // hammObj.scale = 0;
-            //
-            // hammObj.angle = 0;
-            //
-            // hammObj.init(_mapViewPort);
-
-            // oUtils.HandleNode.setStyle(_svgFrame, {'display': 'block'});
-            //
-            // oUtils.HandleNode.setStyle(oSvgBox, {'visibility': 'visible'});
-            //
-            // hammObj.handleDo();
-            //
-            // hammObj.bindTouch(oSvgBox);
         }
 
         var addUnits = function() {
