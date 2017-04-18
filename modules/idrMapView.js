@@ -382,7 +382,7 @@ define(function (require, exports, module) {
             _mapViewPort.appendChild(circle)
         }
 
-        function onTestClick() {
+        this.onTestClick = function() {
 
             scroll([100, 50])
 
