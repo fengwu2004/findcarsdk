@@ -4,8 +4,6 @@
 
 define(function (require, exports, module) {
 
-    var hammObj = require('./hamm');
-
     require('./alloy_finger')
 
     var Utils = require('./utils');
@@ -135,12 +133,22 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
-            console.log(evt)
+            // var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
+            //
+            // var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+            //
+            // var p = vec2.add(p0, p0, p1)
         }
 
         function onRoate(evt) {
 
-            console.log(evt)
+            var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
+
+            var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+
+            var p = vec2.add(p0, p0, p1)
+
+            rotate(evt.rotate, p)
         }
 
         function addGestures() {
