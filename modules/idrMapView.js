@@ -142,9 +142,9 @@ define(function (require, exports, module) {
 
         function onRoate(evt) {
 
-            var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
+            var p0 = vec2.fromValues(evt.touches[0].offsetX, evt.touches[0].offsetY)
 
-            var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+            var p1 = vec2.fromValues(evt.touches[1].offsetX, evt.touches[1].offsetY)
 
             var p = vec2.add(p0, p0, p1)
 
