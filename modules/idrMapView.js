@@ -367,9 +367,9 @@ define(function (require, exports, module) {
             })
         }
 
-        function addPoiint(p) {
+        function addPoint(p) {
 
-            var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
+            var circle = document.createElementNS('http://www.w3.org/2000/svg','text')
 
             circle.setAttribute('cx', p[0].toString())
 
@@ -386,7 +386,7 @@ define(function (require, exports, module) {
 
             scroll([100, 50])
 
-            addPoiint([100, 50])
+            addPoint([100, 50])
 
             console.log('onTestClick')
         }
