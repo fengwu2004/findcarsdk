@@ -130,7 +130,7 @@ define(function (require, exports, module) {
 
             console.log(evt)
 
-            console.log(evt.touches[0].pageX, evt.touches[0].pageY)
+            console.log(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)
         }
 
         function onPinch(evt) {
