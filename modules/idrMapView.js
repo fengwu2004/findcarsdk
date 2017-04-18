@@ -6,6 +6,8 @@ define(function (require, exports, module) {
 
     var hammObj = require('./hamm');
 
+    require('./alloy_finger')
+
     var Utils = require('./utils');
 
     var oUtils = new Utils();
