@@ -378,9 +378,7 @@ define(function (require, exports, module) {
 
             button.setAttribute('onclick', 'onTestClick()')
 
-            button.setAttribute('title', 'test')
-
-            button.innerText = 'ABCD'
+            button.innerText = 'Button'
 
             var div = document.getElementById('main')
 
