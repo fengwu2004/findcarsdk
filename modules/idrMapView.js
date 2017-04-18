@@ -16,7 +16,9 @@ define(function (require, exports, module) {
 
     var Maputils = require('./maputils');
 
-    var matrix3 = require('./matrix3')
+    var matrix2d = require('./mat2d')
+
+    var vec2 = require('./vec2')
 
     var networkManager = require('./idrNetworkManager');
 
@@ -362,6 +364,87 @@ define(function (require, exports, module) {
                 alert('地图数据获取失败!' + data);
             })
         }
+
+        var getMapViewMatrix = function() {
+
+            var trans = _mapViewPort.getAttribute('transform')
+
+            var mt = getTransArray(trans)
+
+            return matrix2d.fromValues(mt[0], mt[1], mt[2], mt[3], mt[4], mt[5])
+        }
+        
+        var getMapPos = function(svgPos) {
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.invert(mt, mt)
+
+            var posIn2d = vec2.fromValues(svgPos[0], svgPos[1])
+
+            return vec2.transformMat2d(posIn2d, posIn2d, mt)
+        }
+        
+        var getSvgPos = function(mapPos) {
+
+            var mt = getMapViewMatrix()
+
+            var posIn2d = vec2.fromValues(mapPos[0], mapPos[1])
+
+            return vec2.transformMat2d(posIn2d, posIn2d, mt)
+        }
+
+        var updateMapViewTrans = function(mt) {
+
+            var trans = 'matrix(' + mt[0] + ',' + mt[3] + ',' + mt[1] + ',' + mt[4] + ',' + mt[2] + ',' + mt[5] + ')'
+
+            _mapViewPort.setAttribute('tansform', trans)
+        }
+
+        var zoom = function(scale, anchor) {
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
+
+            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
+
+            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
+
+            updateMapViewTrans(mt)
+        }
+        
+        var scroll = function(vec) {
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.translate(mt, mt, vec2.fromValues(vec[0], vec[1]))
+
+            updateMapViewTrans(mt)
+        }
+
+        var rotate = function(rad, anchor) {
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
+
+            matrix2d.rotate(mt, mt, rad)
+
+            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
+
+            updateMapViewTrans(mt)
+        }
+
+        this.getMapPos = getMapPos
+
+        this.getSvgPos = getSvgPos
+
+        this.zoom = zoom
+
+        this.scroll = scroll
+
+        this.rotate = rotate
 
         this.setCurrPos = function(pos, show) {
 
