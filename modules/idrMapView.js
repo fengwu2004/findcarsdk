@@ -388,7 +388,7 @@ define(function (require, exports, module) {
 
             addPoint(p)
 
-            rotate(Math.PI * 0.1, p)
+            rotate(Math.PI * 0.025, p)
 
             console.log('onTestClick')
         }
