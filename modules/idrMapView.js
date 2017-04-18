@@ -367,9 +367,26 @@ define(function (require, exports, module) {
             })
         }
 
+        function addPoiint(p) {
+
+            var circle = document.createElement('http://www.w3.org/2000/svg','circle')
+
+            circle.setAttribute('cx', p[0].toString())
+
+            circle.setAttribute('cy', p[1].toString())
+
+            circle.setAttribute('r', '10')
+
+,            circle.setAttribute('fill', 'red')
+
+            _mapViewPort.appendChild(circle)
+        }
+
         function onTestClick() {
 
             scroll([100, 50])
+
+            addPoiint([100, 50])
 
             console.log('onTestClick')
         }
@@ -387,10 +404,6 @@ define(function (require, exports, module) {
             var div = document.getElementById('main')
 
             div.appendChild(button)
-
-            // var b = jsLib("#testButton")
-            //
-            // b.tap(onTestClick)
         }
 
         var getMapViewMatrix = function() {
