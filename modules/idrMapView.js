@@ -359,10 +359,23 @@ define(function (require, exports, module) {
                     _loadMapSuccessFun()
                 }
 
+                addTestButton()
+
             }, function() {
 
                 alert('地图数据获取失败!' + data);
             })
+        }
+        
+        var addTestButton = function() {
+
+            var button = document.createElement('button')
+
+            button.setAttribute('onclick', 'onTestClick()')
+
+            var div = document.getElementById('main')
+
+            div.appendChild(button)
         }
 
         var getMapViewMatrix = function() {
