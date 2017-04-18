@@ -369,7 +369,7 @@ define(function (require, exports, module) {
 
         function addPoiint(p) {
 
-            var circle = document.createElement('http://www.w3.org/2000/svg','circle')
+            var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
 
             circle.setAttribute('cx', p[0].toString())
 
