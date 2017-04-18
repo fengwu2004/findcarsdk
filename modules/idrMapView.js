@@ -388,7 +388,7 @@ define(function (require, exports, module) {
 
             addPoint(p)
 
-            rotate(Math.PI * 0.025, p)
+            zoom(1.2, p)
 
             console.log('onTestClick')
         }
