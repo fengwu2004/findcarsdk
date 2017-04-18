@@ -366,6 +366,11 @@ define(function (require, exports, module) {
                 alert('地图数据获取失败!' + data);
             })
         }
+
+        function onTestClick() {
+
+            scroll([100, 50])
+        }
         
         var addTestButton = function() {
 
