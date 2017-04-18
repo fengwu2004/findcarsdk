@@ -384,7 +384,9 @@ define(function (require, exports, module) {
 
             div.appendChild(button)
 
-            button.tap(onTestClick)
+            var b = jsLib("#testButton")
+
+            b.tap(onTestClick)
         }
 
         var getMapViewMatrix = function() {
