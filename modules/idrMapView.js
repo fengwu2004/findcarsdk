@@ -132,7 +132,7 @@ define(function (require, exports, module) {
 
             console.log(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)
 
-            addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
+            // addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
         }
 
         function getTouchesCenter(evt) {
