@@ -160,7 +160,7 @@ define(function (require, exports, module) {
 
             vec2.divide(p, p, vec2.fromValues(2, 2))
 
-            // rotate(evt.angle * Math.PI/180, p)
+            rotate(evt.angle * Math.PI/180, p)
         }
 
         function addGestures() {
