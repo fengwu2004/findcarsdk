@@ -154,9 +154,9 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
-            // var p = getTouchesCenter(evt)
+            var p = getTouchesCenter(evt)
 
-            // zoom(evt.scale, p)
+            zoom(evt.scale, p)
 
             console.log(evt.scale)
         }
@@ -164,8 +164,6 @@ define(function (require, exports, module) {
         function onRoate(evt) {
 
             var p = getTouchesCenter(evt)
-
-            addPoint(p)
 
             rotate(evt.angle * Math.PI/180, p)
         }
