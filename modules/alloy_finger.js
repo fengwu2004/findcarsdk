@@ -153,7 +153,12 @@
                 if (preV.x !== null) {
                     if (this.pinchStartLen > 0) {
                         var temp = getLen(v) / this.pinchStartLen;
-                        evt.scale = temp/evt.scale;
+                        if (isNaN(evt.scale)) {
+                            evt.scale = temp;
+                        }
+                        else  {
+                            evt.scale = temp/evt.scale;
+                        }
                         this.pinch.dispatch(evt);
                     }
 
