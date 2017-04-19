@@ -135,7 +135,7 @@ define(function (require, exports, module) {
             addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
         }
 
-        function onPinch(evt) {
+        function getTouchesCenter(evt) {
 
             var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
 
@@ -144,6 +144,13 @@ define(function (require, exports, module) {
             var p = vec2.add(p0, p0, p1)
 
             vec2.divide(p, p, vec2.fromValues(2, 2))
+
+            return p
+        }
+
+        function onPinch(evt) {
+
+            var p = getTouchesCenter(evt)
 
             zoom(evt.scale, p)
 
@@ -152,13 +159,7 @@ define(function (require, exports, module) {
 
         function onRoate(evt) {
 
-            var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
-
-            var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
-
-            var p = vec2.add(p0, p0, p1)
-
-            vec2.divide(p, p, vec2.fromValues(2, 2))
+            var p = getTouchesCenter(evt)
 
             rotate(evt.angle * Math.PI/180, p)
         }
