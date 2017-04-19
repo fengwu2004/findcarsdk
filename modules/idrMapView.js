@@ -132,14 +132,18 @@ define(function (require, exports, module) {
 
             console.log(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)
 
-            // addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
+            addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
         }
 
         function getTouchesCenter(evt) {
 
             var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
 
+            addPoint(p0)
+
             var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+
+            addPoint(p1)
 
             var p = vec2.add(p0, p0, p1)
 
@@ -150,7 +154,7 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
-            var p = getTouchesCenter(evt)
+            // var p = getTouchesCenter(evt)
 
             // zoom(evt.scale, p)
 
@@ -160,8 +164,6 @@ define(function (require, exports, module) {
         function onRoate(evt) {
 
             var p = getTouchesCenter(evt)
-
-            addPoint(p)
 
             rotate(evt.angle * Math.PI/180, p)
         }
