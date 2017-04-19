@@ -132,7 +132,7 @@ define(function (require, exports, module) {
 
             console.log(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)
 
-            addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
+            // addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
         }
 
         function getTouchesCenter(evt) {
@@ -162,6 +162,8 @@ define(function (require, exports, module) {
         function onRoate(evt) {
 
             var p = getTouchesCenter(evt)
+
+            addPoint(p)
 
             rotate(evt.angle * Math.PI/180, p)
         }
