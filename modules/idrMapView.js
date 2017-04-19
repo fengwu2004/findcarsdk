@@ -168,6 +168,11 @@ define(function (require, exports, module) {
             rotate(evt.angle * Math.PI/180, p)
         }
 
+        function onPan(evt) {
+
+            scroll([evt.deltaX, evt.deltaY])
+        }
+
         function addGestures() {
 
             _gestures = new AlloyFinger(_mapViewPort, {
@@ -176,7 +181,9 @@ define(function (require, exports, module) {
 
                 rotate:onRoate,
 
-                pinch:onPinch
+                pinch:onPinch,
+
+                pressMove:onPan
             })
         }
 
