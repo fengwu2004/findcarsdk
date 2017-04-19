@@ -139,15 +139,13 @@ define(function (require, exports, module) {
 
             var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
 
-            addPoint(p0)
-
             var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
-
-            addPoint(p1)
 
             var p = vec2.add(p0, p0, p1)
 
             vec2.divide(p, p, vec2.fromValues(2, 2))
+
+            vec2.transformMat2d(p, p, getMapViewMatrix())
 
             return p
         }
