@@ -137,13 +137,11 @@ define(function (require, exports, module) {
 
         function getTouchesCenter(evt) {
 
-            var p0 = vec2.fromValues(evt.touches[0].pageX, evt.touches[0].pageY)
+            var x = (evt.touches[0].pageX + evt.touches[1].pageX)/2
 
-            var p1 = vec2.fromValues(evt.touches[1].pageX, evt.touches[1].pageY)
+            var y = (evt.touches[0].pageY + evt.touches[1].pageY)/2
 
-            var p = vec2.add(p0, p0, p1)
-
-            vec2.divide(p, p, vec2.fromValues(2, 2))
+            var p = vec2.fromValues(x, y)
 
             var im = matrix2d.create()
 
