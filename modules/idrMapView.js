@@ -145,7 +145,11 @@ define(function (require, exports, module) {
 
             vec2.divide(p, p, vec2.fromValues(2, 2))
 
-            vec2.transformMat2d(p, p, getMapViewMatrix())
+            var im = matrix2d.create()
+
+            im = matrix2d.invert(im, getMapViewMatrix())
+
+            vec2.transformMat2d(p, p, im)
 
             return p
         }
