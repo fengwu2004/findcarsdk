@@ -1,12 +1,14 @@
 define(function (require, exports, module) {
 
+    var resource = require('../IDRResourceDefine')
+
     function IDRMapMarker(pos) {
 
         this.position = pos
 
 		this.id = null
 
-        this.image = '../sdk/images/icon4.png'
+        this.image = resource.mapMarker
 
         this.className = 'IDRMapMarker'
 
@@ -46,6 +48,8 @@ define(function (require, exports, module) {
 
 		IDRMapMarker.call(this, pos)
 
+        this.image = resource.carMarker
+
         this.className = 'IDRCarMarker'
     }
     
@@ -53,12 +57,7 @@ define(function (require, exports, module) {
 
         IDRMapMarker.call(this, pos)
 
-        this.className = 'IDRFacMarker'
-    }
-    
-    function IDRTempMarker(pos) {
-
-        IDRMapMarker.call(this, pos)
+        this.image = resource.facMarker
 
         this.className = 'IDRFacMarker'
     }
@@ -67,6 +66,8 @@ define(function (require, exports, module) {
 
         IDRMapMarker.call(this, pos)
 
+        this.image = resource.startMarker
+
         this.className = 'IDRStartMarker'
     }
 
@@ -74,15 +75,15 @@ define(function (require, exports, module) {
 
         IDRMapMarker.call(this, pos)
 
+        this.image = resource.endMarker
+
         this.className = 'IDREndMarker'
     }
 
     module.exports = {
 		"IDRMapMarker":IDRMapMarker,
-		"IDRTempMarker":IDRTempMarker,
 		"IDRCarMarker":IDRCarMarker,
 		"IDRFacMarker":IDRFacMarker,
-		"IDRTempMarker":IDRTempMarker,
 		"IDRStartMarker":IDRStartMarker,
         "IDREndMarker":IDREndMarker}
 });
