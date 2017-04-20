@@ -422,11 +422,35 @@ define(function (require, exports, module) {
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
 
                 updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+
+                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             _mapScale = mdecompose.s
 
             _mapRotate = mdecompose.a
+        }
+
+        var updateUnitAngleAndScale = function(scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            var markers = _markers[_currentFloorId]
+
+            markers.forEach(function(unitSvg, index) {
+
+                var marker = markers[index]
+
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unit.x + ',' + unit.y + ')'
+
+                marker.setAttribute('transform', m)
+            })
         }
 
         var updateUnitAngleAndScale = function(scale, rotate) {
@@ -519,6 +543,10 @@ define(function (require, exports, module) {
             marker.id = marker.position.floorId + '_' + _markers[marker.position.floorId].length
 
             marker.addToSuperView(_mapViewPort)
+
+            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + marker.position.x + ',' + marker.position.y + ')'
+
+            marker.setAttribute('transform', trans)
 
             return marker
         }

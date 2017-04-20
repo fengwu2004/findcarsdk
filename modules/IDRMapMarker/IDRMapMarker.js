@@ -20,9 +20,9 @@ define(function (require, exports, module) {
 
             this.el.setAttribute('id', this.id);
 
-            this.el.setAttribute('x', this.position.x)
-
-            this.el.setAttribute('y', this.position.y)
+            // this.el.setAttribute('x', this.position.x)
+            //
+            // this.el.setAttribute('y', this.position.y)
 
             this.el.setAttribute('width', 60/2)
 
