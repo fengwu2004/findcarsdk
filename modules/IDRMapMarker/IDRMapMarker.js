@@ -28,12 +28,6 @@ define(function (require, exports, module) {
 
             div.setAttribute("id", _id);
 
-            div.style.position = 'absolute'
-
-            div.style.top = '100px'
-
-            div.style.left = '100px'
-
             var action = this.clickAction;
 
             div.addEventListener("click", function() {
