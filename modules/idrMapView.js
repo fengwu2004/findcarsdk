@@ -423,7 +423,7 @@ define(function (require, exports, module) {
 
                 updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
 
-                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+                // updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             _mapScale = mdecompose.s
@@ -431,7 +431,7 @@ define(function (require, exports, module) {
             _mapRotate = mdecompose.a
         }
 
-        var updateUnitAngleAndScale = function(scale, rotate) {
+        var updateMarkersAngleAndScale = function(scale, rotate) {
 
             var a = scale * Math.cos(rotate)
 
