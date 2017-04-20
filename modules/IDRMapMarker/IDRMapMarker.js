@@ -34,7 +34,7 @@ define(function (require, exports, module) {
 
             image.setAttribute('height', '100px')
 
-            image.setAttribute('xlink:href', 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/images/icon4.png')
+            image.setAttribute('xlink:href', '../sdk/images/icon4.png')
 
             parent.appendChild(image);
         }
