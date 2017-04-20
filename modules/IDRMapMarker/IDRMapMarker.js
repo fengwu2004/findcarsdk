@@ -28,9 +28,9 @@ define(function (require, exports, module) {
 
             image.setAttribute("id", this.id);
 
-            image.setAttribute('x', _position.x)
+            image.setAttribute('x', this.x)
 
-            image.setAttribute('y', _position.y)
+            image.setAttribute('y', this.y)
 
             image.setAttribute('xlink:href', '../../images/icon4.png')
 
