@@ -36,6 +36,8 @@ define(function (require, exports, module) {
 
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
 
+    var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
+
     var _idrIndicator = IDRIndicator()
 
     function idrMapView() {
@@ -506,13 +508,9 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            var p = [100, 100]
+            var marker = new IDRCarMarker(_mapViewPort, 'carmarker01')
 
-            addPoint(p)
-
-            zoom(1.2, p)
-
-            console.log('onTestClick')
+            addMarker(marker)
         }
         
         var addTestButton = function() {
@@ -641,6 +639,8 @@ define(function (require, exports, module) {
         this.rotate = rotate
 
         this.setCurrPos = setCurrentPos
+
+        this.addMark = addMarker
 
         this.setLoadMapFinishCallback = function(callBack) {
 
