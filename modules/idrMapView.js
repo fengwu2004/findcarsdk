@@ -495,7 +495,7 @@ define(function (require, exports, module) {
                 _markers[marker.position.floorId] = new Array()
             }
 
-            _markers[marker.position.floorId].addMarker(marker)
+            _markers[marker.position.floorId].push(marker)
 
             marker.id = marker.position.floorId + _markers[marker.position.floorId].length
 
