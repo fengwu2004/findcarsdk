@@ -497,7 +497,7 @@ define(function (require, exports, module) {
 
             _markers[marker.position.floorId].push(marker)
 
-            marker.id = marker.position.floorId + _markers[marker.position.floorId].length
+            marker.id = marker.position.floorId + '_' + _markers[marker.position.floorId].length
 
             marker.addToSuperView(_mapViewPort)
         }
