@@ -34,6 +34,8 @@ define(function (require, exports, module) {
 
     var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
 
+    var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
+
     var _idrIndicator = IDRIndicator()
 
     function idrMapView() {
@@ -69,6 +71,12 @@ define(function (require, exports, module) {
         var _origScale = 0.5
 
         var _gestures = null
+
+        var _markerClickCallBack = null
+
+        var _unitClickCallBack = null
+
+        var _mapClickedCallBack = null
 
         var addFloorList = function() {
 
@@ -126,13 +134,61 @@ define(function (require, exports, module) {
             getAllUnits()
         }
 
+        function getTouchCenter(p) {
+
+            var im = matrix2d.create()
+
+            im = matrix2d.invert(im, getMapViewMatrix())
+
+            vec2.transformMat2d(p, p, im)
+
+            return p
+        }
+
+        function getClickedMarker(p) {
+
+        }
+
+        function getClickedUnit(p) {
+
+        }
+
         function onSingleTap(evt) {
 
-            console.log(evt)
+            var p = getTouchCenter(vec2.fromValues(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY))
 
-            console.log(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)
+            var marker = getClickedMarker(p)
 
-            // addPoint([evt.changedTouches[0].pageX, evt.changedTouches[0].pageY])
+            if (marker !== null) {
+
+                if (_markerClickCallBack !== null) {
+
+                    if (_markerClickCallBack(marker)) {
+
+                        return
+                    }
+                }
+            }
+
+            var unit = getClickedUnit(p)
+
+            if (unit !== null) {
+
+                if (_unitClickCallBack !== null) {
+
+                    if (_unitClickCallBack(unit)) {
+
+                        return
+                    }
+
+
+                }
+            }
+
+            if (_mapClickedCallBack) {
+
+                _mapClickedCallBack(p)
+            }
         }
 
         function getTouchesCenter(evt) {
@@ -224,7 +280,7 @@ define(function (require, exports, module) {
                     addUnits()
                 },
 
-                function () {
+                function (str) {
 
                     alert('获取unit失败!' + str);
                 }
@@ -394,6 +450,11 @@ define(function (require, exports, module) {
             _idrPath.updateLine(_mapViewPort, paths)
         }
 
+        function changeFloor(floorId) {
+
+
+        }
+
         this.loadMap = function(regionId, floorId) {
 
             _regionData = idrDataMgr.regionAllInfo
@@ -421,6 +482,11 @@ define(function (require, exports, module) {
 
                 alert('地图数据获取失败!' + data);
             })
+        }
+
+        function addMarker(marker) {
+
+            marker.addToSuperView(_mapViewPort)
         }
 
         function addPoint(p) {
@@ -537,6 +603,33 @@ define(function (require, exports, module) {
             updateMapViewTrans(mt)
         }
 
+        function centerPos(mapPos) {
+
+
+        }
+        
+        function resetMap() {
+            
+        }
+        
+        function birdLook() {
+
+
+        }
+        
+        function setCurrentPos(pos, show) {
+
+            _currentPos = pos
+
+            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
+        }
+
+        this.centerPos = centerPos
+
+        this.resetMap = resetMap
+
+        this.birdLook = birdLook
+
         this.getMapPos = getMapPos
 
         this.getSvgPos = getSvgPos
@@ -547,12 +640,7 @@ define(function (require, exports, module) {
 
         this.rotate = rotate
 
-        this.setCurrPos = function(pos, show) {
-
-            _currentPos = pos
-
-            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
-        }
+        this.setCurrPos = setCurrentPos
 
         this.setLoadMapFinishCallback = function(callBack) {
 
