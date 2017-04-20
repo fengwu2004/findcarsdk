@@ -24,7 +24,7 @@ define(function (require, exports, module) {
 
             var image = document.createElementNS('http://www.w3.org/2000/svg','image')
 
-            image.setAttribute('id', this.id);
+            // image.setAttribute('id', this.id);
 
             image.setAttribute('x', this.position.x)
 
