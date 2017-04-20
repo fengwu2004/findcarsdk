@@ -508,7 +508,7 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            var marker = new IDRCarMarker(_mapViewPort, 'carmarker01')
+            var marker = new IDRCarMarker([100, 100], 'carmarker01')
 
             addMarker(marker)
         }
