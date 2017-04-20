@@ -18,13 +18,13 @@ define(function (require, exports, module) {
 
 		var _id = id
 
-        var _className = 'IDRMapMarker'
+        this.className = 'IDRMapMarker'
 
         this.addToSuperView = function(parent) {
 
             var div = document.createElement("div");
 
-            div.setAttribute("class", _className);
+            div.setAttribute("class", this.className);
 
             div.setAttribute("id", _id);
 
