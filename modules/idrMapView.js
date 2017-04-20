@@ -226,6 +226,8 @@ define(function (require, exports, module) {
 
             var p = getTouchesCenter(evt)
 
+            addPoint(p)
+
             zoom(evt.scale, p)
 
             console.log(evt.scale)
