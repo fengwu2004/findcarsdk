@@ -20,8 +20,8 @@
 	background-color: red;
 	position: absolute;
 	background-size: cover;
+    background-image: url("../../images/icon4.png");
 }
-background-image: url("../../images/icon4.png");
 
 .IDRFacMarker{
 
@@ -44,7 +44,7 @@ background-image: url("../../images/icon4.png");
 	background-color: red;
 	position: absolute;
 	background-size: cover;
-	background-image: url("../image/end.png");
+	background-image: url("../../images/end.png");
 }
 
 .IDRStartMarker{
@@ -56,7 +56,7 @@ background-image: url("../../images/icon4.png");
 	background-color: red;
 	position: absolute;
 	background-size: cover;
-	background-image: url("../image/end.png");
+	background-image: url("../../images/end.png");
 }
 
 .IDREndMarker{
@@ -67,5 +67,5 @@ background-image: url("../../images/icon4.png");
 	background-color: red;
 	position: absolute;
 	background-size: cover;
-	background-image: url("../image/end.png");
+	background-image: url("../../images/end.png");
 }
