@@ -30,6 +30,10 @@ define(function (require, exports, module) {
 
             image.setAttribute('y', this.position.y)
 
+            image.setAttribute('width', '50px')
+
+            image.setAttribute('height', '100px')
+
             image.setAttribute('xlink:href', 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/images/icon4.png')
 
             parent.appendChild(image);
