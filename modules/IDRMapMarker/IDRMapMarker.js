@@ -30,9 +30,9 @@ define(function (require, exports, module) {
 
             image.setAttribute('y', 20)
 
-            image.setAttribute('width', '150')
-
-            image.setAttribute('height', '46')
+            // image.setAttribute('width', '150')
+            //
+            // image.setAttribute('height', '46')
 
             image.href.baseVal = 'http://img.htmleaf.com/1506/logo.png'
             // image.setAttribute('xlink:href', 'http://img.htmleaf.com/1506/logo.png')
