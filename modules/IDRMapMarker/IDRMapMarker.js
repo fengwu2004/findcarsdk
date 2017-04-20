@@ -6,32 +6,34 @@ define(function (require, exports, module) {
 
 		this.id = null
 
+        this.image = '../sdk/images/icon4.png'
+
         this.className = 'IDRMapMarker'
 
-        this.image = null
+        this.el = null
 
         this.addToSuperView = function(parent) {
 
-            this.image = document.createElementNS('http://www.w3.org/2000/svg','image')
+            this.el = document.createElementNS('http://www.w3.org/2000/svg','image')
 
-            this.image.setAttribute('id', this.id);
+            this.el.setAttribute('id', this.id);
 
-            this.image.setAttribute('x', this.position.x)
+            this.el.setAttribute('x', this.position.x)
 
-            this.image.setAttribute('y', this.position.y)
+            this.el.setAttribute('y', this.position.y)
 
-            this.image.setAttribute('width', 60/2)
+            this.el.setAttribute('width', 60/2)
 
-            this.image.setAttribute('height', 80/2)
+            this.el.setAttribute('height', 80/2)
 
-            this.image.href.baseVal = '../sdk/images/icon4.png'
+            this.el.href.baseVal = this.image
 
-            parent.appendChild(this.image)
+            parent.appendChild(this.el)
         }
 
         this.removeFromSuperView = function() {
 
-            this.image.parentNode.removeChild(this.image)
+            this.el.parentNode.removeChild(this.el)
         }
 
         this.resetPosition = function(p) {

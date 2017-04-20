@@ -492,9 +492,9 @@ define(function (require, exports, module) {
 
             var temp = new Array()
 
-            for (var i = 0; i < _markers[marker.position.floorId].length; ++i) {
+            for (var i = 0; i < _markers[deleteMarker.position.floorId].length; ++i) {
 
-                var marker = _markers[marker.position.floorId][i]
+                var marker = _markers[deleteMarker.position.floorId][i]
 
                 if (marker.id !== deleteMarker.id) {
 
@@ -672,7 +672,9 @@ define(function (require, exports, module) {
 
         this.setCurrPos = setCurrentPos
 
-        this.addMark = addMarker
+        this.addMarker = addMarker
+
+        this.removeMarker = removeMarker
 
         this.setLoadMapFinishCallback = function(callBack) {
 
