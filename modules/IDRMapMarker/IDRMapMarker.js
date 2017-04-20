@@ -30,9 +30,9 @@ define(function (require, exports, module) {
 
             image.setAttribute('y', 20)
 
-            image.setAttribute('width', '100')
+            image.setAttribute('width', '60')
 
-            image.setAttribute('height', '20')
+            image.setAttribute('height', '80')
 
             image.href.baseVal = '../sdk/images/icon4.png'
 
