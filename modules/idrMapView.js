@@ -546,7 +546,7 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + marker.position.x + ',' + marker.position.y + ')'
 
-            marker.setAttribute('transform', trans)
+            marker.el.setAttribute('transform', trans)
 
             return marker
         }
