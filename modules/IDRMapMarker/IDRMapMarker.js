@@ -30,11 +30,11 @@ define(function (require, exports, module) {
 
             image.setAttribute('y', this.position.y)
 
-            image.setAttribute('width', '50px')
+            image.setAttribute('width', '50')
 
-            image.setAttribute('height', '100px')
+            image.setAttribute('height', '100')
 
-            image.setAttribute('xlink:href', '../sdk/images/icon4.png')
+            image.setAttribute('xlink:href', 'http://img.htmleaf.com/1506/logo.png')
 
             parent.appendChild(image);
         }
