@@ -80,6 +80,8 @@ define(function (require, exports, module) {
 
         var _mapClickedCallBack = null
 
+        var _markers = {}
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -488,6 +490,15 @@ define(function (require, exports, module) {
 
         function addMarker(marker) {
 
+            if (!_markers.hasOwnProperty(marker.position.floorId)) {
+
+                _markers[marker.position.floorId] = new Array()
+            }
+
+            _markers[marker.position.floorId].addMarker(marker)
+
+            marker.id = marker.position.floorId + _markers[marker.position.floorId].length
+
             marker.addToSuperView(_mapViewPort)
         }
 
@@ -508,7 +519,7 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            var marker = new IDRCarMarker([100, 100], 'carmarker01')
+            var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
 
             addMarker(marker)
         }

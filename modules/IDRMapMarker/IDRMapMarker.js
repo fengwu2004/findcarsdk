@@ -12,29 +12,29 @@ define(function (require, exports, module) {
 
     header.appendChild(css)
 
-	function IDRMapMarker(pos, id) {
+	function IDRMapMarker(pos) {
 
-        var _position = pos
+        this.position = pos
 
-		var _id = id
+		this.id = null
 
         this.className = 'IDRMapMarker'
 
         this.addToSuperView = function(parent) {
 
-            var div = document.createElement("div");
+            var image = document.createElementNS('http://www.w3.org/2000/svg','image')
 
-            div.setAttribute("class", this.className);
+            image.setAttribute("class", this.className);
 
-            div.setAttribute("id", _id);
+            image.setAttribute("id", this.id);
 
-            var action = this.clickAction;
+            image.setAttribute('x', _position.x)
 
-            div.addEventListener("click", function() {
-                action(this);
-            }, false);
+            image.setAttribute('y', _position.y)
 
-            parent.appendChild(div);
+            image.setAttribute('xlink:href', '../../images/icon4.png')
+
+            parent.appendChild(image);
         }
 
         this.removeFromSuperView = function() {
