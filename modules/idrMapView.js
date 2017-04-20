@@ -488,6 +488,25 @@ define(function (require, exports, module) {
             })
         }
 
+        function removeMarker(deleteMarker) {
+
+            var temp = new Array()
+
+            for (var i = 0; i < _markers[marker.position.floorId].length; ++i) {
+
+                var marker = _markers[marker.position.floorId][i]
+
+                if (marker.id !== deleteMarker.id) {
+
+                    temp.push(marker)
+                }
+            }
+
+            _markers[marker.position.floorId] = temp
+
+            marker.removeFromSuperView()
+        }
+
         function addMarker(marker) {
 
             if (!_markers.hasOwnProperty(marker.position.floorId)) {
@@ -500,6 +519,8 @@ define(function (require, exports, module) {
             marker.id = marker.position.floorId + '_' + _markers[marker.position.floorId].length
 
             marker.addToSuperView(_mapViewPort)
+
+            return marker
         }
 
         function addPoint(p) {

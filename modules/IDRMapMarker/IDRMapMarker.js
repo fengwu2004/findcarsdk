@@ -1,18 +1,6 @@
 define(function (require, exports, module) {
 
-    var css = document.createElement('link')
-
-    css.type = 'text/css';
-
-    css.rel = 'stylesheet';
-
-    css.href = "../sdk/modules/IDRMapMarker/IDRMapMarker.css";
-
-    var header = document.querySelector("head");
-
-    header.appendChild(css)
-
-	function IDRMapMarker(pos) {
+    function IDRMapMarker(pos) {
 
         this.position = pos
 
@@ -20,35 +8,30 @@ define(function (require, exports, module) {
 
         this.className = 'IDRMapMarker'
 
+        this.image = null
+
         this.addToSuperView = function(parent) {
 
-            var image = document.createElementNS('http://www.w3.org/2000/svg','image')
+            this.image = document.createElementNS('http://www.w3.org/2000/svg','image')
 
-            // image.setAttribute('id', this.id);
+            this.image.setAttribute('id', this.id);
 
-            image.setAttribute('x', 20)
+            this.image.setAttribute('x', this.position.x)
 
-            image.setAttribute('y', 20)
+            this.image.setAttribute('y', this.position.y)
 
-            image.setAttribute('width', 60/2)
+            this.image.setAttribute('width', 60/2)
 
-            image.setAttribute('height', 80/2)
+            this.image.setAttribute('height', 80/2)
 
-            image.href.baseVal = '../sdk/images/icon4.png'
+            this.image.href.baseVal = '../sdk/images/icon4.png'
 
-            parent.appendChild(image)
+            parent.appendChild(this.image)
         }
 
         this.removeFromSuperView = function() {
 
-            var selfElement = document.getElementById(this.id);
-
-            var parentElement = selfElement.parentNode;
-
-            if (parentElement) {
-
-                parentElement.removeChild(selfElement);
-            }
+            this.image.parentNode.removeChild(this.image)
         }
 
         this.resetPosition = function(p) {
@@ -57,37 +40,37 @@ define(function (require, exports, module) {
         }
     }
     
-    function IDRCarMarker(pos, id) {
+    function IDRCarMarker(pos) {
 
-		IDRMapMarker.call(this, pos, id)
+		IDRMapMarker.call(this, pos)
 
         this.className = 'IDRCarMarker'
     }
     
-    function IDRFacMarker(pos, id) {
+    function IDRFacMarker(pos) {
 
-        IDRMapMarker.call(this, pos, id)
+        IDRMapMarker.call(this, pos)
 
         this.className = 'IDRFacMarker'
     }
     
-    function IDRTempMarker(pos, id) {
+    function IDRTempMarker(pos) {
 
-        IDRMapMarker.call(this, pos, id)
+        IDRMapMarker.call(this, pos)
 
         this.className = 'IDRFacMarker'
     }
 
-    function IDRStartMarker(pos, id) {
+    function IDRStartMarker(pos) {
 
-        IDRMapMarker.call(this, pos, id)
+        IDRMapMarker.call(this, pos)
 
         this.className = 'IDRStartMarker'
     }
 
-    function IDREndMarker(pos, id) {
+    function IDREndMarker(pos) {
 
-        IDRMapMarker.call(this, pos, id)
+        IDRMapMarker.call(this, pos)
 
         this.className = 'IDREndMarker'
     }
