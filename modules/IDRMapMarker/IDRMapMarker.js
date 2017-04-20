@@ -34,9 +34,10 @@ define(function (require, exports, module) {
 
             image.setAttribute('height', '46')
 
-            image.setAttribute('xlink:href', 'http://img.htmleaf.com/1506/logo.png')
+            image.href = 'http://img.htmleaf.com/1506/logo.png'
+            // image.setAttribute('xlink:href', 'http://img.htmleaf.com/1506/logo.png')
 
-            parent.appendChild(image);
+            parent.appendChild(image)
         }
 
         this.removeFromSuperView = function() {
