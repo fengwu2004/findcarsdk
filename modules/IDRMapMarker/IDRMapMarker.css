@@ -20,7 +20,7 @@
 	background-color: red;
 	position: absolute;
 	background-size: cover;
-	background-image: url("../image/icon4.png");
+	background-image: url("../../images/icon4.png");
 }
 
 .IDRFacMarker{
@@ -32,7 +32,7 @@
 	background-color: red;
 	position: absolute;
 	background-size: cover;
-	background-image: url("../image/qi.png");
+	background-image: url("../../images/qi.png");
 }
 
 .IDRTempMarker{
