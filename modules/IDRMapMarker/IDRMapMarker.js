@@ -26,13 +26,13 @@ define(function (require, exports, module) {
 
             // image.setAttribute('id', this.id);
 
-            image.setAttribute('x', this.position.x)
+            image.setAttribute('x', 20)
 
-            image.setAttribute('y', this.position.y)
+            image.setAttribute('y', 20)
 
-            image.setAttribute('width', '50')
+            image.setAttribute('width', '150')
 
-            image.setAttribute('height', '100')
+            image.setAttribute('height', '46')
 
             image.setAttribute('xlink:href', 'http://img.htmleaf.com/1506/logo.png')
 
