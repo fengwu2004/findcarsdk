@@ -24,15 +24,13 @@ define(function (require, exports, module) {
 
             var image = document.createElementNS('http://www.w3.org/2000/svg','image')
 
-            image.setAttribute("class", this.className);
-
-            image.setAttribute("id", this.id);
+            image.setAttribute('id', this.id);
 
             image.setAttribute('x', this.position.x)
 
             image.setAttribute('y', this.position.y)
 
-            image.setAttribute('xlink:href', '../../images/icon4.png')
+            image.setAttribute('xlink:href', 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/images/icon4.png')
 
             parent.appendChild(image);
         }
