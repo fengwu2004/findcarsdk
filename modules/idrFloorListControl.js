@@ -187,11 +187,11 @@ define(function (require, exports, module) {
             })
         }
 
-        this.init = function(map, floorList_) {
+        this.init = function(map, floorList, currentFloor) {
 
-            _floorList = floorList_
+            _floorList = floorList
 
-            _currentFloor = _floorList[0]
+            _currentFloor = currentFloor
 
             _locateFloor = _floorList[0]
 
