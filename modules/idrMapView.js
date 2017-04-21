@@ -423,7 +423,7 @@ define(function (require, exports, module) {
 
                 updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
 
-                // updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             _mapScale = mdecompose.s
@@ -447,9 +447,9 @@ define(function (require, exports, module) {
 
                 var marker = markers[index]
 
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unit.x + ',' + unit.y + ')'
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + marker.position.x + ',' + marker.position.y + ')'
 
-                marker.setAttribute('transform', m)
+                marker.el.setAttribute('transform', m)
             })
         }
 
