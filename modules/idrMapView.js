@@ -90,6 +90,8 @@ define(function (require, exports, module) {
 
             _floorListControl = new idrFloorListControl();
 
+            _floorListControl.setChangeFloorFunc(this, changeFloor)
+
             _floorListControl.init(_svgFrame, _regionData['floorList'])
         }
 

@@ -90,7 +90,9 @@ define(function (require, exports, module) {
 
         var _currPos = null
 
-        var onChangeFloor = null
+        var _onChangeFloor = null
+
+        var _delegator = null
 
         var findFloorById = function(floorId){
 
@@ -176,9 +178,9 @@ define(function (require, exports, module) {
 
                 commMethods.showOrHidddenDiv('floorDiv', false);
 
-                if (typeof onChangeFloor == 'function') {
+                if (typeof _onChangeFloor == 'function') {
 
-                    onChangeFloor(this.id)
+                    _onChangeFloor.call(_delegator, this.id)
                 }
 
                 self.setCurrentFloor(this.id)
@@ -207,9 +209,11 @@ define(function (require, exports, module) {
             refreshDisplay()
         }
 
-        this.setChangeFloorFunc = function(callBack) {
+        this.setChangeFloorFunc = function(delegate, callBack) {
 
-            onChangeFloor = callBack
+            _onChangeFloor = callBack
+
+            _delegator = delegate
         }
     }
 
