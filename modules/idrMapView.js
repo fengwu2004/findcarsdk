@@ -226,9 +226,9 @@ define(function (require, exports, module) {
 
             var p = getTouchesCenter(evt)
 
-            zoom(evt.scale, p)
+            zoom(evt.myscale, p)
 
-            console.log(evt.scale)
+            console.log(evt.myscale)
         }
 
         function onRoate(evt) {
