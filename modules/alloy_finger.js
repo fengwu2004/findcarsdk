@@ -156,7 +156,7 @@
                         var b = getLen(preV);
                         var c = a/b;
                         console.log(c)
-                        evt.scale = a/b;
+                        evt.scale = c;
                         console.log(evt.scale)
                         this.pinch.dispatch(evt);
                     }
