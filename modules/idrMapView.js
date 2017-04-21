@@ -592,7 +592,7 @@ define(function (require, exports, module) {
 
         function onMarkerClick(ele) {
 
-            console.log(ele)
+            console.log(ele.srcElement.id)
         }
 
         function addPoint(p) {
