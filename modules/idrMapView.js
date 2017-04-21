@@ -226,8 +226,6 @@ define(function (require, exports, module) {
 
             var p = getTouchesCenter(evt)
 
-            addPoint(p)
-
             zoom(evt.scale, p)
 
             console.log(evt.scale)
@@ -652,9 +650,11 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
+            // var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
+            //
+            // addMarker(marker)
 
-            addMarker(marker)
+            zoom(2, [100, 100])
         }
         
         var test = function() {
