@@ -13,7 +13,9 @@ define(function (require, exports, module) {
         
         this.getFloorbyId = function(floorId) {
 
-            for (var floor in this.floorList) {
+            for (var i = 0; i < this.floorList.length; ++i) {
+
+                var floor = this.floorList[i]
 
                 if (floor.floorId === floorId) {
 
@@ -26,9 +28,11 @@ define(function (require, exports, module) {
         
         this.getFloorByName = function(floorName) {
 
-            for (var floor in this.floorList) {
+            for (var i = 0; i < this.floorList.length; ++i) {
 
-                if (floor.name === floorName) {
+                var floor = this.floorList[i]
+
+                if (floor.floorName === floorName) {
 
                     return floor
                 }
