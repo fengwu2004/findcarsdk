@@ -17,7 +17,7 @@ define(function (require, exports, module) {
 
                 var floor = this.floorList[i]
 
-                if (floor.floorId === floorId) {
+                if (floor.id === floorId) {
 
                     return floor
                 }
@@ -32,7 +32,7 @@ define(function (require, exports, module) {
 
                 var floor = this.floorList[i]
 
-                if (floor.floorName === floorName) {
+                if (floor.name === floorName) {
 
                     return floor
                 }
