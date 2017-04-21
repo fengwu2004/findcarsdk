@@ -518,10 +518,6 @@ define(function (require, exports, module) {
 
             _currentFloorId = floorId
 
-            addFloorList()
-
-            setDisplayTimer()
-
             retriveSvgDataAndShow()
         }
         
