@@ -155,7 +155,7 @@
                         var a = getLen(v);
                         var b = getLen(preV);
                         var c = 10;
-                        evt.scale = c;
+                        evt.scale = 20;
                         console.log('kakakak')
                         this.pinch.dispatch(evt);
                     }
