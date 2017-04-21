@@ -48,6 +48,7 @@ define(function (require, exports, module) {
             }
 
             locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            locationDom.setAttribute('id', 'SvgLocation')
              locationDom.setAttribute("x", position.x);
             locationDom.setAttribute("y", position.y);
             locationDom.setAttribute("x","50")
@@ -127,7 +128,6 @@ define(function (require, exports, module) {
 
             var loacatingDom = document.getElementById("Loacating");
             loacatingDom.style.transform = "scale(" + scale + ")";
-            loacatingDom.setAttribute('id', 'SvgLocation')
             loacatingDom.setAttribute("width", width);
             loacatingDom.setAttribute("height", width);
             loacatingDom.setAttribute("x", index);
