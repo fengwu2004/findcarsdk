@@ -48,10 +48,10 @@ define(function (require, exports, module) {
             }
 
             locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            locationDom.innerHTML = "<svg id=SvgLocation x=100 y=100 height=50px width=50px> </svg>";
-            locationDom = locationDom.childNodes[0];
-            locationDom.setAttribute("x", position.x);
+             locationDom.setAttribute("x", position.x);
             locationDom.setAttribute("y", position.y);
+            locationDom.setAttribute("x","50")
+            locationDom.setAttribute("y","50")
 
             parentNode.appendChild(locationDom);
 
