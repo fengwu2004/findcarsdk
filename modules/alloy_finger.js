@@ -152,11 +152,7 @@
 
                 if (preV.x !== null) {
                     if (this.pinchStartLen > 0) {
-                        var a = getLen(v);
-                        var b = getLen(preV);
-                        var c = 10;
-                        // evt.scale = 20;
-                        console.log('kakakak')
+                        evt.gradualscale = getLen(v)/getLen(preV);
                         this.pinch.dispatch(evt);
                     }
 
