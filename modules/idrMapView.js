@@ -654,7 +654,7 @@ define(function (require, exports, module) {
             //
             // addMarker(marker)
 
-            zoom(2, [100, 100])
+            zoom(1.2, [100, 100])
         }
         
         var test = function() {
