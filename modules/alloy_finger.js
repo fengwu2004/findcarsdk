@@ -155,9 +155,7 @@
                         var a = getLen(v);
                         var b = getLen(preV);
                         var c = 10;
-                        console.log(c)
                         evt.scale = c;
-                        console.log(evt.scale)
                         this.pinch.dispatch(evt);
                     }
 
