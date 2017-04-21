@@ -42,6 +42,10 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
+        this.maxScale = 1.0
+
+        this.minScale = 1.0
+
         var _currentPos = null
 
         var _regionId = null
@@ -479,13 +483,37 @@ define(function (require, exports, module) {
 
             _idrPath.updateLine(_mapViewPort, paths)
         }
+        
+        function retriveSvgDataAndShow() {
+
+            networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
+
+                createSVGMap(data, _regionId, _currentFloorId)
+
+                if (_loadMapSuccessFun) {
+
+                    _loadMapSuccessFun(_currentFloorId, _regionId)
+                }
+
+            }, function() {
+
+                alert('地图数据获取失败!' + data);
+            })
+        }
 
         function changeFloor(floorId) {
 
+            if (floorId === _currentFloorId) {
 
+                return
+            }
+
+            _currentFloorId = floorId
+
+            retriveSvgDataAndShow()
         }
 
-        this.loadMap = function(regionId, floorId) {
+        function loadMap(regionId, floorId) {
 
             _regionData = idrDataMgr.regionAllInfo
 
@@ -493,25 +521,11 @@ define(function (require, exports, module) {
 
             _currentFloorId = floorId
 
-            networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
+            addFloorList()
 
-                createSVGMap(data, _regionId, _currentFloorId)
+            setDisplayTimer()
 
-                addFloorList()
-
-                setDisplayTimer()
-
-                if (_loadMapSuccessFun) {
-
-                    _loadMapSuccessFun()
-                }
-
-                addTestButton()
-
-            }, function() {
-
-                alert('地图数据获取失败!' + data);
-            })
+            retriveSvgDataAndShow()
         }
 
         function removeMarker(deleteMarker) {
@@ -577,7 +591,7 @@ define(function (require, exports, module) {
             addMarker(marker)
         }
         
-        var addTestButton = function() {
+        var test = function() {
 
             var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
 
@@ -711,6 +725,10 @@ define(function (require, exports, module) {
         this.addMarker = addMarker
 
         this.removeMarker = removeMarker
+
+        this.loadMap = loadMap
+
+        this.changeFloor = changeFloor
 
         this.setLoadMapFinishCallback = function(callBack) {
 
