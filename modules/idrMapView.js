@@ -32,6 +32,8 @@ define(function (require, exports, module) {
 
     var _idrPath = IDRPath()
 
+    var IDRRegionEx = require('./idrRegionEx')
+
     var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
 
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
@@ -92,7 +94,9 @@ define(function (require, exports, module) {
 
             _floorListControl.setChangeFloorFunc(this, changeFloor)
 
-            _floorListControl.init(_svgFrame, _regionData['floorList'])
+            var floor = _regionData.getFloorbyId(_currentFloorId)
+
+            _floorListControl.init(_svgFrame, _regionData['floorList'], floor)
         }
 
         var addSvgMap = function(data, regionId, floorId) {
@@ -514,7 +518,7 @@ define(function (require, exports, module) {
 
         function loadMap(regionId, floorId) {
 
-            _regionData = idrDataMgr.regionAllInfo
+            _regionData = new IDRRegionEx(idrDataMgr.regionAllInfo)
 
             _regionId = regionId
 
