@@ -575,17 +575,21 @@ define(function (require, exports, module) {
         
         var addTestButton = function() {
 
-            var button = document.createElement('button')
+            var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
 
-            button.setAttribute('id', 'testButton')
+            addMarker(marker)
 
-            button.setAttribute('onclick', 'onTestClick()')
-
-            button.innerText = 'Button'
-
-            var div = document.getElementById('main')
-
-            div.appendChild(button)
+            // var button = document.createElement('button')
+            //
+            // button.setAttribute('id', 'testButton')
+            //
+            // button.setAttribute('onclick', 'onTestClick()')
+            //
+            // button.innerText = 'Button'
+            //
+            // var div = document.getElementById('main')
+            //
+            // div.appendChild(button)
         }
 
         var getMapViewMatrix = function() {
