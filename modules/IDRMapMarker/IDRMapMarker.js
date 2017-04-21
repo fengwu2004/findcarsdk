@@ -20,9 +20,9 @@ define(function (require, exports, module) {
 
             this.el.setAttribute('id', this.id);
 
-            this.el.setAttribute('width', 60)
+            this.el.setAttribute('width', 60 * 2)
 
-            this.el.setAttribute('height', 80)
+            this.el.setAttribute('height', 80 * 2)
 
             this.el.href.baseVal = this.image
 
