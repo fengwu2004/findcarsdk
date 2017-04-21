@@ -58,11 +58,13 @@ define(function (require, exports, module) {
 
             var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
+            waveDom.setAttribute('id', 'Locating')
             waveDom.setAttribute("x","50")
             waveDom.setAttribute("y","50")
 
             var positionDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             positionDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
+            positionDom.setAttribute('id', 'LocatingBase')
             positionDom.setAttribute("x","50")
             positionDom.setAttribute("y","50")
 
@@ -126,7 +128,7 @@ define(function (require, exports, module) {
             var width = 50 * scale + "px";
             var index = (50 - 50 * scale) / 2 + "px";
 
-            var loacatingDom = document.getElementById("Loacating");
+            var loacatingDom = document.getElementById("Locating");
             loacatingDom.style.transform = "scale(" + scale + ")";
             loacatingDom.setAttribute("width", width);
             loacatingDom.setAttribute("height", width);
