@@ -127,6 +127,7 @@ define(function (require, exports, module) {
 
             var loacatingDom = document.getElementById("Loacating");
             loacatingDom.style.transform = "scale(" + scale + ")";
+            loacatingDom.setAttribute('id', 'SvgLocation')
             loacatingDom.setAttribute("width", width);
             loacatingDom.setAttribute("height", width);
             loacatingDom.setAttribute("x", index);
