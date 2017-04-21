@@ -297,8 +297,6 @@ define(function (require, exports, module) {
 
                 unitSvg.style.opacity = 0
 
-                unitSvg.innerHTML = unit.name
-
                 _mapViewPort.appendChild(unitSvg)
 
                 unitSvg.addEventListener('click', onClickUnit, true)
