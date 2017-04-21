@@ -532,6 +532,8 @@ define(function (require, exports, module) {
             if (_floorListControl == null) {
 
                 addFloorList()
+
+                test()
             }
 
             if (_refreshTimer == null) {
@@ -583,7 +585,14 @@ define(function (require, exports, module) {
 
             marker.el.setAttribute('transform', trans)
 
+            marker.el.addEventListener('click', onMarkerClick, true)
+
             return marker
+        }
+
+        function onMarkerClick(ele) {
+
+            console.log(ele)
         }
 
         function addPoint(p) {
