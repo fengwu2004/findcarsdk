@@ -156,8 +156,8 @@
                         var b = getLen(preV);
                         var c = a/b;
                         console.log(c)
-                        evt.myscale = c;
-                        console.log(evt.myscale)
+                        evt.scale = c;
+                        console.log(evt.scale)
                         this.pinch.dispatch(evt);
                     }
 
