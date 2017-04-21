@@ -269,6 +269,8 @@ define(function (require, exports, module) {
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
+                unitSvg.setAttribute('transform-origin', '50% 50% 0')
+
                 unitSvg.setAttribute('transform', trans)
             }
         }
