@@ -299,22 +299,15 @@ define(function (require, exports, module) {
 
                 unitSvg.innerHTML = unit.name
 
-                _unitDivs.push(unitSvg)
-
                 _mapViewPort.appendChild(unitSvg)
 
-                var center = [0.5 * (unit['boundLeft']+ unit['boundRight']), 0.5 * (unit['boundTop'] + unit['boundBottom'])]
-
-                unit.x = center[0]
-
-                unit.y = center[1]
-
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
-
-                unitSvg.setAttribute('transform-origin', '50% 50% 0')
-
-                unitSvg.setAttribute('transform', trans)
+                unitSvg.addEventListener('click', onClickUnit, true)
             }
+        }
+        
+        function onClickUnit(ele) {
+
+            console.log(ele.srcElement.id)
         }
 
         var addUnits = function() {
