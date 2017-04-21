@@ -256,8 +256,8 @@ define(function (require, exports, module) {
                 pressMove:onPan
             })
         }
-
-        var addUnits = function() {
+        
+        function addUnitsText() {
 
             for (var i = 0; i < _units.length; ++i) {
 
@@ -283,6 +283,45 @@ define(function (require, exports, module) {
 
                 unitSvg.setAttribute('transform', trans)
             }
+        }
+
+        function addUnitClickRect() {
+
+            for (var i = 0; i < _units.length; ++i) {
+
+                var unit = _units[i]
+
+                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','rect')
+
+                unitSvg.id = unit.id
+
+                unitSvg.style.opacity = 0
+
+                unitSvg.innerHTML = unit.name
+
+                _unitDivs.push(unitSvg)
+
+                _mapViewPort.appendChild(unitSvg)
+
+                var center = [0.5 * (unit['boundLeft']+ unit['boundRight']), 0.5 * (unit['boundTop'] + unit['boundBottom'])]
+
+                unit.x = center[0]
+
+                unit.y = center[1]
+
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
+
+                unitSvg.setAttribute('transform-origin', '50% 50% 0')
+
+                unitSvg.setAttribute('transform', trans)
+            }
+        }
+
+        var addUnits = function() {
+
+            addUnitsText()
+            
+            addUnitClickRect()
         }
 
         var getAllUnits = function() {
