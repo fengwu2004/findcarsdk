@@ -490,10 +490,7 @@ define(function (require, exports, module) {
 
                 createSVGMap(data, _regionId, _currentFloorId)
 
-                if (_loadMapSuccessFun) {
-
-                    _loadMapSuccessFun(_currentFloorId, _regionId)
-                }
+                onLoadMapSuccess()
 
             }, function() {
 
@@ -526,6 +523,24 @@ define(function (require, exports, module) {
             setDisplayTimer()
 
             retriveSvgDataAndShow()
+        }
+        
+        function onLoadMapSuccess() {
+
+            if (_floorListControl == null) {
+
+                addFloorList()
+            }
+
+            if (_refreshTimer == null) {
+
+                setDisplayTimer()
+            }
+
+            if (_loadMapSuccessFun) {
+
+                _loadMapSuccessFun(_currentFloorId, _regionId)
+            }
         }
 
         function removeMarker(deleteMarker) {
