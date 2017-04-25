@@ -150,13 +150,12 @@ define(function (require, exports, module) {
 
             addGestures(oSvgBox)
 
-            //进行文字加载
             getAllUnits()
         }
         
         function onMapClick(evt) {
 
-            console.log(evt.currentTarget.id)
+            console.log(evt.clientX, evt.clientY)
         }
 
         function getTouchCenter(p) {
