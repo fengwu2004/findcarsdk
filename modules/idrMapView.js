@@ -737,9 +737,11 @@ define(function (require, exports, module) {
         
         var scroll = function(vec) {
 
+            var v = vec2.fromValues(vec[0], vec[1])
+
             var mt = getMapViewMatrix()
 
-            matrix2d.translate(mt, mt, vec2.fromValues(vec[0], vec[1]))
+            matrix2d.mytranslate (mt, mt, v)
 
             updateMapViewTrans(mt)
         }

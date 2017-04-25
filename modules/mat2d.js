@@ -276,6 +276,18 @@ mat2d.translate = function(out, a, v) {
     return out;
 };
 
+mat2d.mytranslate = function(out, a, v) {
+    var a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3], a4 = a[4], a5 = a[5],
+        v0 = v[0], v1 = v[1];
+    out[0] = a0;
+    out[1] = a1;
+    out[2] = a2;
+    out[3] = a3;
+    out[4] = v0 + a4;
+    out[5] = v1 + a5;
+    return out;
+};
+
 /**
  * Creates a matrix from a given angle
  * This is equivalent to (but much faster than):
