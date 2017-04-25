@@ -741,13 +741,7 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            var imt = matrix2d.create()
-
-            matrix2d.invert(imt, mt)
-
-            vec2.transformMat2d(v, v, imt)
-
-            matrix2d.translate(mt, mt, v)
+            matrix2d.mytranslate(mt, mt, v)
 
             updateMapViewTrans(mt)
         }
