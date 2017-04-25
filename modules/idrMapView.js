@@ -146,7 +146,7 @@ define(function (require, exports, module) {
 
             var map = document.getElementById('地图')
 
-            map.addEventListener('click', onMapClick, true)
+            map.addEventListener('click', onMapClick, false)
 
             addGestures(oSvgBox)
 
