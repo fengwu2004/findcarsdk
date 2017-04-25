@@ -660,9 +660,13 @@ define(function (require, exports, module) {
 
         this.onTestClick = function() {
 
-            // var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
-            //
-            // addMarker(marker)
+            var v = vec2.fromValues(100, 100)
+
+            var marker = new IDRCarMarker({x:v[0], y:v[1], floorId:_currentFloorId})
+
+            addMarker(marker)
+
+            centerPos(v)
         }
         
         var test = function() {
