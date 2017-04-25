@@ -271,7 +271,7 @@ define(function (require, exports, module) {
 
                 _mapViewPort.appendChild(unitSvg)
 
-                var center = [0.5 * (unit['boundLeft']+ unit['boundRight']), 0.5 * (unit['boundTop'] + unit['boundBottom'])]
+                var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
 
                 unit.x = center[0]
 
