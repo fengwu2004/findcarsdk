@@ -142,7 +142,9 @@ define(function (require, exports, module) {
             
             _mapViewPort = jsLib.getEle('#viewport');
 
-            _mapViewPort.addEventListener('click', onMapClick, true)
+            var map = document.getElementById('地图')
+
+            map.addEventListener('click', onMapClick, true)
 
             addGestures(oSvgBox)
 
