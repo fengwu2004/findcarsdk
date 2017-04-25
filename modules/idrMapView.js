@@ -747,7 +747,7 @@ define(function (require, exports, module) {
 
             v.transformMat2d(v, v, imt)
 
-            matrix2d.mytranslate(mt, mt, v)
+            matrix2d.translate(mt, mt, v)
 
             updateMapViewTrans(mt)
         }
