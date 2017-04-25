@@ -743,9 +743,9 @@ define(function (require, exports, module) {
 
             var imt = matrix2d.create()
 
-            mt.invert(imt, mt)
+            matrix2d.invert(imt, mt)
 
-            v.transformMat2d(v, v, imt)
+            vec2.transformMat2d(v, v, imt)
 
             matrix2d.translate(mt, mt, v)
 
