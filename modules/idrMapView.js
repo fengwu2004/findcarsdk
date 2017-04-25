@@ -663,27 +663,21 @@ define(function (require, exports, module) {
             // var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
             //
             // addMarker(marker)
-
-            zoom(1.2, [100, 100])
         }
         
         var test = function() {
 
-            var marker = new IDRCarMarker({x:100, y:100, floorId:_currentFloorId})
+            var button = document.createElement('button')
 
-            addMarker(marker)
+            button.setAttribute('id', 'testButton')
 
-            // var button = document.createElement('button')
-            //
-            // button.setAttribute('id', 'testButton')
-            //
-            // button.setAttribute('onclick', 'onTestClick()')
-            //
-            // button.innerText = 'Button'
-            //
-            // var div = document.getElementById('main')
-            //
-            // div.appendChild(button)
+            button.setAttribute('onclick', 'onTestClick()')
+
+            button.innerText = 'Button'
+
+            var div = document.getElementById('main')
+
+            div.appendChild(button)
         }
 
         var getMapViewMatrix = function() {
@@ -735,9 +729,9 @@ define(function (require, exports, module) {
             updateMapViewTrans(mt)
         }
         
-        var scroll = function(vec) {
+        var scroll = function(screenVec) {
 
-            var v = vec2.fromValues(vec[0], vec[1])
+            var v = vec2.fromValues(screenVec[0], screenVec[1])
 
             var mt = getMapViewMatrix()
 
@@ -763,7 +757,13 @@ define(function (require, exports, module) {
 
         function centerPos(mapPos) {
 
+            var center = vec2.fromValues(0.5 * window.screen.width, 0.5 * window.screen.height)
 
+            var pos = getSvgPos(mapPos)
+
+            var v = vec2.subtract(pos, center, pos)
+
+            scroll(v)
         }
         
         function resetMap() {
