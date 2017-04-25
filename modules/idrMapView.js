@@ -295,13 +295,13 @@ define(function (require, exports, module) {
 
                 unitSvg.id = unit.id
 
-                unitSvg.setAttribute('x', unit['boundLeft'])
+                unitSvg.setAttribute('x', unit.boundLeft)
 
-                unitSvg.setAttribute('y', unit['boundTop'])
+                unitSvg.setAttribute('y', unit.boundTop)
 
-                unitSvg.setAttribute('width', unit['boundRight'] - unit['boundLeft'])
+                unitSvg.setAttribute('width', unit.boundRight - unit.boundLeft)
 
-                unitSvg.setAttribute('height', unit['boundBottom'] - unit['boundTop'])
+                unitSvg.setAttribute('height', unit.boundBottom - unit.boundTop)
 
                 unitSvg.style.opacity = 0
 
