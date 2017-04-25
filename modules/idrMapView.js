@@ -317,13 +317,13 @@ define(function (require, exports, module) {
 
                 _mapViewPort.appendChild(unitSvg)
 
-                unitSvg.addEventListener('click', onClickUnit, true)
+                unitSvg.addEventListener('click', onUnitClick, true)
             }
         }
         
-        function onClickUnit(ele) {
+        function onUnitClick(ele) {
 
-            console.log(ele.srcElement.id)
+            console.log(ele.currentTarget.id)
         }
 
         var addUnits = function() {
@@ -640,7 +640,7 @@ define(function (require, exports, module) {
 
         function onMarkerClick(ele) {
 
-            console.log(ele.srcElement.id)
+            console.log(ele.currentTarget.id)
         }
 
         function addPoint(p) {
