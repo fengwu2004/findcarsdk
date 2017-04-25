@@ -139,13 +139,20 @@ define(function (require, exports, module) {
                     node.id = 'rect_' + index;
                 })
             }
-
+            
             _mapViewPort = jsLib.getEle('#viewport');
+
+            _mapViewPort.addEventListener('click', onMapClick, true)
 
             addGestures(oSvgBox)
 
             //进行文字加载
             getAllUnits()
+        }
+        
+        function onMapClick(ele) {
+
+            console.log(ele.id)
         }
 
         function getTouchCenter(p) {
