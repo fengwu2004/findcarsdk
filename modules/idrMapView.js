@@ -666,7 +666,7 @@ define(function (require, exports, module) {
 
             addMarker(marker)
 
-            centerPos(v)
+            // centerPos(v)
         }
         
         var test = function() {
