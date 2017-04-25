@@ -156,7 +156,7 @@ define(function (require, exports, module) {
         
         function onMapClick(evt) {
 
-            console.log(evt.target.id)
+            console.log(evt.currentTarget.id)
         }
 
         function getTouchCenter(p) {
