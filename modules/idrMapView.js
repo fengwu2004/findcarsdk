@@ -154,9 +154,9 @@ define(function (require, exports, module) {
             getAllUnits()
         }
         
-        function onMapClick(ele) {
+        function onMapClick(evt) {
 
-            console.log(ele.target.id)
+            console.log(evt.target.id)
         }
 
         function getTouchCenter(p) {
