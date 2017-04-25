@@ -761,7 +761,7 @@ define(function (require, exports, module) {
 
         function centerPos(mapPos) {
 
-            var center = vec2.fromValues(0.5 * window.screen.width, 0.5 * window.screen.height)
+            var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
 
             var pos = getSvgPos(mapPos)
 
