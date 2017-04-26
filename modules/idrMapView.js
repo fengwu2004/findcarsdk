@@ -255,7 +255,7 @@ define(function (require, exports, module) {
 
         function addGestures() {
 
-            _gestures = new AlloyFinger(_mapViewPort, {
+            _gestures = new AlloyFinger(_svgFrame, {
 
                 singleTap:onSingleTap,
 
