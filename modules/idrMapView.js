@@ -809,7 +809,7 @@ define(function (require, exports, module) {
 
             var v = vec2.create()
 
-            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
+            matrix2d.scale(mt, mt, vec2.fromValues(1/scale, 1/scale))
 
             matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight))
 
