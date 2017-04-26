@@ -116,7 +116,7 @@ define(function (require, exports, module) {
 
             for (var i = 0; i < angleDom.length - 1; i++) {
 
-                pathElement.appendChild(angleDom[i]);
+                rootElement.appendChild(angleDom[i]);
             }
         }
 1
