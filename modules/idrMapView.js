@@ -803,7 +803,7 @@ define(function (require, exports, module) {
 
             var mt = matrix2d.create()
 
-            mt = matrix2d.scale(mt, mt, vec2.fromValues(screenWidth/mapWidth, screenHeight/mapHeight))
+            mt = matrix2d.scale(mt, mt, vec2.fromValues(screenWidth/mapWidth, screenWidth/mapWidth))
 
             var v = vec2.create()
 
