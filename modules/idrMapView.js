@@ -813,7 +813,11 @@ define(function (require, exports, module) {
 
             mt = matrix2d.mytranslate(mt, mt, v)
 
+            _mapViewPort.setAttribute('transform-origin', '50% 50% 0')
+
             updateMapViewTrans(mt)
+
+            _mapViewPort.setAttribute('transform-origin', '0 0 0')
         }
         
         function birdLook() {
