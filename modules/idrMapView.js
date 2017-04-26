@@ -44,7 +44,7 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
-        var maxScale = 5.0
+        var maxScale = 2.0
 
         var minScale = 0.5
 
