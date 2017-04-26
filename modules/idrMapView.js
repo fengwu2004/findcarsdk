@@ -632,9 +632,9 @@ define(function (require, exports, module) {
 
             marker.addToSuperView(_mapViewPort)
 
-            var x = marker.position.x - 30
+            var x = marker.position.x - marker.el.clientWidth * 0.5//use bottom middle
 
-            var y = marker.position.x - 80
+            var y = marker.position.x - marker.el.clientHeight//use bottom middle
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
@@ -667,7 +667,9 @@ define(function (require, exports, module) {
             _mapViewPort.appendChild(circle)
         }
 
-        this.onTestClick = function() {
+        this.onTestClick = onTestClick
+
+        function onTestClick() {
 
             var v = vec2.fromValues(100, 100)
 
@@ -682,6 +684,8 @@ define(function (require, exports, module) {
             addMarker(marker)
 
             centerPos(center)
+
+            resetMap()
         }
         
         var test = function() {
@@ -776,7 +780,7 @@ define(function (require, exports, module) {
 
         function centerPos(mapPos) {
 
-            var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
+            var center = vec2.fromValues(0.5 * _svgFrame.clientWidth, 0.5 * _svgFrame.clientHeight)
 
             var pos = getSvgPos(mapPos)
 
@@ -786,7 +790,8 @@ define(function (require, exports, module) {
         }
         
         function resetMap() {
-            
+
+
         }
         
         function birdLook() {
