@@ -817,7 +817,7 @@ define(function (require, exports, module) {
 
             updateMapViewTrans(mt)
 
-            _mapViewPort.setAttribute('transform-origin', '0 0 0')
+            // _mapViewPort.setAttribute('transform-origin', '0 0 0')
         }
         
         function birdLook() {
