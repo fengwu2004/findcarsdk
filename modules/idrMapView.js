@@ -699,9 +699,9 @@ define(function (require, exports, module) {
                 factor = minScale/scale
             }
 
-            matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
+            // matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
 
-            var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] + ',' + mt[5] + ')'
+            var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] * factor + ',' + mt[5] * factor + ')'
 
             _mapViewPort.setAttribute('transform', trans)
         }
