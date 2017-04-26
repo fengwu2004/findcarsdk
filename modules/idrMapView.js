@@ -809,9 +809,9 @@ define(function (require, exports, module) {
 
             v = vec2.subtract(v, vec2.fromValues(screenWidth * 0.5, screenHeight * 0.5), vec2.fromValues(0.5 * mapWidth, 0.5 * mapHeight))
 
-            mt = matrix2d.mytranslate(mt, mt, v)
-
             mt = matrix2d.scale(mt, mt, vec2.fromValues(screenWidth/mapWidth, screenWidth/mapWidth))
+
+            mt = matrix2d.mytranslate(mt, mt, v)
 
             updateMapViewTrans(mt)
         }
