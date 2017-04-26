@@ -671,6 +671,12 @@ define(function (require, exports, module) {
 
             addMarker(marker)
 
+            var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
+
+            marker = new IDRCarMarker({x:center[0], y:center[1], floorId:_currentFloorId})
+
+            addMarker(marker)
+
             // centerPos(v)
         }
         
