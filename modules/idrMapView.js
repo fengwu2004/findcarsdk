@@ -155,7 +155,7 @@ define(function (require, exports, module) {
         
         function onMapClick(evt) {
 
-            console.log(evt.clientX, evt.clientY)
+            //console.log(evt.clientX, evt.clientY)
         }
 
         function getTouchCenter(p) {
@@ -192,7 +192,7 @@ define(function (require, exports, module) {
 
             zoom(evt.gradualscale, p)
 
-            console.log(evt.gradualscale)
+            //console.log(evt.gradualscale)
         }
 
         function onRoate(evt) {
@@ -280,7 +280,7 @@ define(function (require, exports, module) {
         
         function onUnitClick(ele) {
 
-            console.log(ele.currentTarget.id)
+            //console.log(ele.currentTarget.id)
         }
 
         var addUnits = function() {
@@ -600,7 +600,7 @@ define(function (require, exports, module) {
 
         function onMarkerClick(ele) {
 
-            console.log(ele.currentTarget.id)
+            //console.log(ele.currentTarget.id)
         }
 
         function addPoint(p) {
@@ -698,6 +698,8 @@ define(function (require, exports, module) {
 
                 factor = minScale/scale
             }
+
+            console.log(factor)
 
             // matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
 
