@@ -25,6 +25,8 @@ define(function (require, exports, module) {
 
         var pathElement; //路线Dom对象
 
+        var rootElement;
+
         var angleDom; //箭头集合
 
 		/*====================获取比例尺=============================*/
@@ -95,27 +97,26 @@ define(function (require, exports, module) {
 
         function updateLine(parentNode, postionList) {
 
-            if (pathElement !== undefined && pathElement.parentNode.isEqualNode(parentNode)) {
+            if (rootElement !== undefined && rootElement.parentNode.isEqualNode(parentNode)) {
 
-                parentNode.removeChild(pathElement);
-
-                for (var i = angleDom.length - 1; i >= 0; i--) {
-
-                    var test = angleDom[i];
-
-                    parentNode.removeChild(test);
-                }
+                parentNode.removeChild(rootElement);
             }
+
+            rootElement = document.createElementNS("http://www.w3.org/2000/svg", "h");
+
+            rootElement.setAttribute('id', 'rootPath')
 
             pathElement = getLineObject(postionList);
 
             angleDom = getPolyLineObject(postionList);
 
-            parentNode.appendChild(pathElement);
+            rootElement.appendChild(pathElement)
+
+            parentNode.appendChild(rootElement);
 
             for (var i = 0; i < angleDom.length - 1; i++) {
 
-                parentNode.appendChild(angleDom[i]);
+                pathElement.appendChild(angleDom[i]);
             }
         }
 1
@@ -136,7 +137,8 @@ define(function (require, exports, module) {
                 if (i == 0) {
 
                     pathStr = "M " + pos.x + " " + pos.y;
-                } else {
+                }
+                else {
 
                     pathStr = pathStr + " " + pos.x + " " + pos.y;
                 }

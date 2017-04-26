@@ -204,8 +204,6 @@ define(function (require, exports, module) {
 
                         return
                     }
-
-
                 }
             }
 
@@ -292,6 +290,18 @@ define(function (require, exports, module) {
                 unitSvg.setAttribute('transform-origin', '50% 50% 0')
 
                 unitSvg.setAttribute('transform', trans)
+            }
+        }
+        
+        function showRoutePath(paths) {
+
+            if (paths && paths.length > 0) {
+
+                _idrPath.updateLine(_mapViewPort, paths)
+            }
+            else  {
+
+                _idrPath.updateLine(_mapViewPort, paths)
             }
         }
 
@@ -463,20 +473,14 @@ define(function (require, exports, module) {
 
             var mdecompose = getTransform(mt)
 
-            if (_idrIndicator) {
+            if (_idrIndicator && _mapScale !== mdecompose.s) {
 
-                if (_mapScale !== mdecompose.s) {
-
-                    _idrIndicator.updateScale(1/mdecompose.s)
-                }
+                _idrIndicator.updateScale(1/mdecompose.s)
             }
 
-            if (_idrPath) {
+            if (_idrPath && _mapScale !== mdecompose.s) {
 
-                if (_mapScale !== mdecompose.s) {
-
-                    _idrPath.updateScale(1/mdecompose.s)
-                }
+                _idrPath.updateScale(1/mdecompose.s)
             }
 
             if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
