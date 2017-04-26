@@ -791,6 +791,8 @@ define(function (require, exports, module) {
 
         function resetMap() {
 
+            console.log('resetMap')
+
             var floor = _regionData.getFloorbyId(_currentFloorId)
 
             var mapHeight = floor.height
