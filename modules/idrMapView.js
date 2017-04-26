@@ -44,9 +44,9 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
-        this.maxScale = 1.0
+        var maxScale = 5.0
 
-        this.minScale = 1.0
+        var minScale = 0.5
 
         var _currentPos = null
 
@@ -370,7 +370,7 @@ define(function (require, exports, module) {
             _refreshTimer = setInterval(updateDisplay, 100)
         }
 
-        function getTransform(transformList) {
+        function deTransform(transformList) {
 
             if (transformList.length != 6) {
 
@@ -418,7 +418,7 @@ define(function (require, exports, module) {
 
             var mt = getTransArray(trans)
 
-            var mdecompose = getTransform(mt)
+            var mdecompose = deTransform(mt)
 
             if (_idrIndicator && _mapScale !== mdecompose.s) {
 
@@ -685,7 +685,21 @@ define(function (require, exports, module) {
 
         var updateMapViewTrans = function(mt) {
 
-            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
+            var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
+
+            var factor = 1
+
+            if (scale > maxScale) {
+
+                factor = maxScale/scale
+            }
+
+            if (scale < minScale) {
+
+                factor = scale/minScale
+            }
+
+            var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] + ',' + mt[5] + ')'
 
             _mapViewPort.setAttribute('transform', trans)
         }
