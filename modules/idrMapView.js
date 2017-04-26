@@ -295,14 +295,7 @@ define(function (require, exports, module) {
         
         function showRoutePath(paths) {
 
-            if (paths && paths.length > 0) {
-
-                _idrPath.updateLine(_mapViewPort, paths)
-            }
-            else  {
-
-                _idrPath.updateLine(_mapViewPort, paths)
-            }
+            _idrPath.updateLine(_mapViewPort, paths)
         }
 
         function addUnitClickRect() {
@@ -855,6 +848,8 @@ define(function (require, exports, module) {
         this.loadMap = loadMap
 
         this.changeFloor = changeFloor
+
+        this.showRootPath = showRoutePath
 
         this.setLoadMapFinishCallback = function(callBack) {
 

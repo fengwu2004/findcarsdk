@@ -100,6 +100,15 @@ define(function (require, exports, module) {
             if (rootElement !== undefined && rootElement.parentNode.isEqualNode(parentNode)) {
 
                 parentNode.removeChild(rootElement);
+
+                rootElement = null
+            }
+
+            if (!postionList && postionList.length <= 1) {
+
+                parentNode.removeChild(rootElement)
+
+                return;
             }
 
             rootElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
