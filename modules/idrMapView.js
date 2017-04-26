@@ -169,50 +169,6 @@ define(function (require, exports, module) {
             return p
         }
 
-        function getClickedMarker(p) {
-
-        }
-
-        function getClickedUnit(p) {
-
-        }
-
-        function onSingleTap(evt) {
-
-            var p = getTouchCenter(vec2.fromValues(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY))
-
-            var marker = getClickedMarker(p)
-
-            if (marker !== null) {
-
-                if (_markerClickCallBack !== null) {
-
-                    if (_markerClickCallBack(marker)) {
-
-                        return
-                    }
-                }
-            }
-
-            var unit = getClickedUnit(p)
-
-            if (unit !== null) {
-
-                if (_unitClickCallBack !== null) {
-
-                    if (_unitClickCallBack(unit)) {
-
-                        return
-                    }
-                }
-            }
-
-            if (_mapClickedCallBack) {
-
-                _mapClickedCallBack(p)
-            }
-        }
-
         function getTouchesCenter(evt) {
 
             var x = (evt.touches[0].pageX + evt.touches[1].pageX)/2
@@ -254,8 +210,6 @@ define(function (require, exports, module) {
         function addGestures() {
 
             _gestures = new AlloyFinger(_svgFrame, {
-
-                singleTap:onSingleTap,
 
                 rotate:onRoate,
 
