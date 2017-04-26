@@ -493,6 +493,13 @@ define(function (require, exports, module) {
 
         var updateMarkersAngleAndScale = function(scale, rotate) {
 
+            var markers = _markers[_currentFloorId]
+
+            if (markers == undefined) {
+
+                return
+            }
+
             var a = scale * Math.cos(rotate)
 
             var b = -scale * Math.sin(rotate)
@@ -500,8 +507,6 @@ define(function (require, exports, module) {
             var c = scale * Math.sin(rotate)
 
             var d = scale * Math.cos(rotate)
-
-            var markers = _markers[_currentFloorId]
 
             markers.forEach(function(unitSvg, index) {
 
