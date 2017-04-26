@@ -76,7 +76,7 @@ define(function (require, exports, module) {
 
         var _mapRotate = 0
 
-        var _origScale = 1
+        var _origScale = 0.5
 
         var _gestures = null
 
@@ -632,9 +632,13 @@ define(function (require, exports, module) {
 
             marker.addToSuperView(_mapViewPort)
 
-            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + marker.position.x + ',' + marker.position.y + ')'
+            var x = marker.position.x - 30
 
-            // marker.el.setAttribute('transform-origin', '50% 100% 0')
+            var y = marker.position.x - 80
+
+            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+
+            marker.el.setAttribute('transform-origin', '50% 100% 0')
 
             marker.el.setAttribute('transform', trans)
 
