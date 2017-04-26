@@ -805,7 +805,7 @@ define(function (require, exports, module) {
 
             var v = vec2.create()
 
-            v = vec2.subtract(v, vec2.fromValues(screenWidth * 0.5, screenHeight * 0.5), vec2.fromValues(0.5 * mapWidth, 0.5 * mapHeight))
+            v = vec2.subtract(v, vec2.fromValues(0.5 * mapWidth, 0.5 * mapHeight), vec2.fromValues(screenWidth * 0.5, screenHeight * 0.5))
 
             mt = matrix2d.mytranslate(mt, mt, v)
 
