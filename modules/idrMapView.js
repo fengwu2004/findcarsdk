@@ -696,7 +696,7 @@ define(function (require, exports, module) {
 
             if (scale < minScale) {
 
-                factor = scale/minScale
+                factor = minScale/scale
             }
 
             var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] + ',' + mt[5] + ')'
