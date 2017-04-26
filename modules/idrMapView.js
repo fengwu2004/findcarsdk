@@ -671,19 +671,19 @@ define(function (require, exports, module) {
 
         function onTestClick() {
 
-            var v = vec2.fromValues(100, 100)
-
-            var marker = new IDRCarMarker({x:v[0], y:v[1], floorId:_currentFloorId})
-
-            addMarker(marker)
-
-            var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
-
-            marker = new IDRCarMarker({x:center[0], y:center[1], floorId:_currentFloorId})
-
-            addMarker(marker)
-
-            centerPos(center)
+            // var v = vec2.fromValues(100, 100)
+            //
+            // var marker = new IDRCarMarker({x:v[0], y:v[1], floorId:_currentFloorId})
+            //
+            // addMarker(marker)
+            //
+            // var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
+            //
+            // marker = new IDRCarMarker({x:center[0], y:center[1], floorId:_currentFloorId})
+            //
+            // addMarker(marker)
+            //
+            // centerPos(center)
 
             resetMap()
         }
@@ -791,7 +791,17 @@ define(function (require, exports, module) {
         
         function resetMap() {
 
+            var floor = _regionData.getFloorbyId(_currentFloorId)
 
+            var mapHeight = floor.height
+
+            var mapWidth = floor.width
+
+            var screenHeight = _svgFrame.clientHeight
+
+            var screenWidth = _svgFrame.clientWidth
+
+            centerPos(vec2.fromValues(0.5 * mapWidth, 0.5 * mapHeight))
         }
         
         function birdLook() {
