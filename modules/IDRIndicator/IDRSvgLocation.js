@@ -47,9 +47,9 @@ define(function (require, exports, module) {
                 return;
             }
 
-            locationDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             locationDom.setAttribute('id', 'SvgLocation')
-             locationDom.setAttribute("x", position.x);
+            locationDom.setAttribute("x", position.x);
             locationDom.setAttribute("y", position.y);
             locationDom.setAttribute("x","50")
             locationDom.setAttribute("y","50")
