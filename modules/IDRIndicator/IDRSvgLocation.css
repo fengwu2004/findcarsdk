@@ -4,19 +4,8 @@
 	/*transform: scale(1.0);*/
 /*}*/
 
-#LocatingBase{
-	transform-origin: 50% 50% 0;
-	transform: scale(1.0);
-    width:10px;
-    height:10px;
-    x:20px;
-    y:20px;
-}
-
 #Loacating{
 	background-color: #0087ff;
-	width: 50px;
-	height: 50px;
 	border-radius: 25px;
 	margin: auto;
 	transform-origin: 50% 50% 0;
