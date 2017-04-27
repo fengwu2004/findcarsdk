@@ -7,6 +7,10 @@
 #LocatingBase{
 	transform-origin: 50% 50%;
 	transform: scale(1.0);
+    width:10px;
+    height:10px;
+    x:20px;
+    y:20px;
 }
 
 #Loacating{

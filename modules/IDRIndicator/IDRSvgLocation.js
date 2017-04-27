@@ -47,22 +47,20 @@ define(function (require, exports, module) {
                 return;
             }
 
-            locationDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             locationDom.setAttribute('id', 'SvgLocation')
+            waveDom.setAttribute("x", position.x);
+            waveDom.setAttribute("y", position.y);
 
             parentNode.appendChild(locationDom);
 
             var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
             waveDom.setAttribute('id', 'Locating')
-            waveDom.setAttribute("x", position.x);
-            waveDom.setAttribute("y", position.y);
 
             var positionDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             positionDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
             positionDom.setAttribute('id', 'LocatingBase')
-            positionDom.setAttribute("x", position.x);
-            positionDom.setAttribute("y", position.y);
 
             locationDom.appendChild(waveDom);
             locationDom.appendChild(positionDom);
