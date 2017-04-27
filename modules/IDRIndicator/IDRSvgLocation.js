@@ -31,7 +31,7 @@ define(function (require, exports, module) {
 
         var centerDom = null
 
-        var moveSpeed = 1
+        var moveSpeed = 2
 
         function creatSvgLocationDom(parentNode, position) {
 
