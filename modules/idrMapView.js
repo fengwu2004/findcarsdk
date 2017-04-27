@@ -195,14 +195,14 @@ define(function (require, exports, module) {
             console.log('pinch')
         }
 
-        function onRoate(evt) {
-
-            var p = getTouchesCenter(evt)
-
-            rotate(evt.angle * Math.PI/180, p)
-
-            console.log('rotate')
-        }
+        // function onRoate(evt) {
+        //
+        //     var p = getTouchesCenter(evt)
+        //
+        //     rotate(evt.angle * Math.PI/180, p)
+        //
+        //     console.log('rotate')
+        // }
 
         function onPan(evt) {
 
