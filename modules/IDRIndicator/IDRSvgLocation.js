@@ -7,21 +7,6 @@ define(function (require, exports, module) {
 
     var IDRSvgLocation = function() {
 
-		/*
-
-		 <svg id="SvgLocation" x="100" y="100" height="50px" width="50px">
-
-		 <image id="Loacating" xlink:href="img_locator_wave.png" x="0" y="0" height="50px" width="50px">
-		 </image>
-		 <image id="LoacatingBase" xlink:href="img_di_point.png" x="20" y="20" height="10px" width="10px">
-		 </image>
-
-		 <animate id="x" attributeName="x" to="60" begin="0s" dur="1s" fill="freeze" />
-		 <animate id="y" attributeName="y" to="60" begin="0s" dur="1s" fill="freeze" />
-
-		 </svg>
-		 */
-
         var css = document.createElement('link')
 
         css.type = 'text/css';
@@ -42,9 +27,13 @@ define(function (require, exports, module) {
 
         var rootDom = null
 
+        var waveDom = null
+
+        var centerDom = null
+
         function creatSvgLocationDom(parentNode, position) {
 
-            rootDom = document.getElementById("SvgLocation");
+            rootDom = document.getElementById("indicator");
 
             if (rootDom) {
 
@@ -64,22 +53,29 @@ define(function (require, exports, module) {
 
             parentNode.appendChild(rootDom);
 
-            var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
+            waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
-            waveDom.setAttribute('id', 'Locating')
+            waveDom.setAttribute('id', 'wave')
             waveDom.setAttribute('width', '50px')
             waveDom.setAttribute('height', '50px')
 
-            var point = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            point.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
-            point.setAttribute('id', 'LocatingBase')
-            point.setAttribute('x', '20px')
-            point.setAttribute('y', '20px')
-            point.setAttribute('width', '10px')
-            point.setAttribute('height', '10px')
+            centerDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
+            centerDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
+            centerDom.setAttribute('id', 'center')
+            centerDom.setAttribute('x', '20px')
+            centerDom.setAttribute('y', '20px')
+            centerDom.setAttribute('width', '10px')
+            centerDom.setAttribute('height', '10px')
 
             rootDom.appendChild(waveDom);
-            rootDom.appendChild(point);
+            rootDom.appendChild(centerDom);
+        }
+
+        function addWaveAnim() {
+
+            var anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+
+
         }
 
         function updateLocation(position) {
