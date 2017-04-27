@@ -1,6 +1,8 @@
 define(function (require, exports, module) {
 	"use strict";
 
+	var matrix2d = require('../mat2d')
+
     var IDRSvgLocation = function() {
 
 		/*
@@ -38,21 +40,22 @@ define(function (require, exports, module) {
 
         function creatSvgLocationDom(parentNode, position) {
 
-            var locationDom = document.getElementById("SvgLocation");
+            var rootDom = document.getElementById("SvgLocation");
 
-            if (locationDom) {
+            if (rootDom) {
 
                 updateLocation(position);
 
                 return;
             }
 
-            locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            locationDom.setAttribute('id', 'SvgLocation')
-            locationDom.setAttribute("x", position.x);
-            locationDom.setAttribute("y", position.y);
+            rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            rootDom.setAttribute('id', 'SvgLocation')
+            var mt = matrix2d.create()
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+            rootDom.setAttribute('transform', trans)
 
-            parentNode.appendChild(locationDom);
+            parentNode.appendChild(rootDom);
 
             var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
