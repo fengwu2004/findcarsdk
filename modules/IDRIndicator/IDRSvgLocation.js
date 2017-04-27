@@ -154,7 +154,7 @@ define(function (require, exports, module) {
 
             matrix2d.scale(mt, mt, vec2.fromValues(scale ,scale))
 
-            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + lastPosition.x + ',' + lastPosition.y + ')'
 
             rootDom.setAttribute('transform', trans)
         }
