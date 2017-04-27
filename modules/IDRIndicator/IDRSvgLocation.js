@@ -127,14 +127,14 @@ define(function (require, exports, module) {
 
             isAnimation = true;
 
-            setTimeout(function() {
-
-                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
-
-                rootDom.setAttribute('transform', trans)
-
-                isAnimation = false;
-            }, 1000);
+            // setTimeout(function() {
+            //
+            //     var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+            //
+            //     rootDom.setAttribute('transform', trans)
+            //
+            //     isAnimation = false;
+            // }, 1000);
         }
 
         var getTransArray = function(value) {
