@@ -49,8 +49,8 @@ define(function (require, exports, module) {
 
             locationDom = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             locationDom.setAttribute('id', 'SvgLocation')
-            waveDom.setAttribute("x", position.x);
-            waveDom.setAttribute("y", position.y);
+            locationDom.setAttribute("x", position.x);
+            locationDom.setAttribute("y", position.y);
 
             parentNode.appendChild(locationDom);
 
