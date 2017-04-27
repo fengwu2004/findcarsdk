@@ -87,41 +87,42 @@ define(function (require, exports, module) {
                 return;
             }
 
-            var locationDom = document.getElementById("SvgLocation");
+            var trans = rootDom.getAttribute('transform')
+
+            var mt = getTransArray(trans)
 
             if (!lastPosition) {
 
-                var xAnimationDom = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-                xAnimationDom.innerHTML = "<animate id=xAnimationDom attributeName=x begin=indefinite from=0 to=0 dur=1s repeatCount=indefinite/>";
-                xAnimationDom = xAnimationDom.childNodes[0];
+                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
 
-                var yAnimationDom = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-                yAnimationDom.innerHTML = "<animate id=yAnimationDom attributeName=y begin=indefinite from=0 to=0 dur=1s repeatCount=indefinite/>";
-                yAnimationDom = yAnimationDom.childNodes[0];
-
-                rootDom.appendChild(xAnimationDom);
-                rootDom.appendChild(yAnimationDom);
+                rootDom.setAttribute('transform', trans)
 
                 lastPosition = position;
+
+                return
             }
 
-            var xAnimationDom = document.getElementById("xAnimationDom");
-            var yAnimationDom = document.getElementById("yAnimationDom");
+            var anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
 
-            xAnimationDom.setAttribute("from", lastPosition.x);
-            xAnimationDom.setAttribute("to", position.x);
-            yAnimationDom.setAttribute("from", lastPosition.y);
-            yAnimationDom.setAttribute("to", position.y);
+            anim.setAttribute('id', 'move')
 
-            xAnimationDom.beginElement();
-            yAnimationDom.beginElement();
+            anim.setAttribute('attributeName', 'transform')
+
+            anim.setAttribute('begin', '0s')
+
+            anim.setAttribute('dur', '3s')
+
+            anim.setAttribute('type', 'translate')
+
+            anim.setAttribute('from', lastPosition.x + ' ' + lastPosition.y)
+
+            anim.setAttribute('from', position.x + ' ' + position.y)
+
+            rootDom.appendChild(anim)
 
             lastPosition = position;
 
             isAnimation = true;
-
-            var trans = rootDom.getAttribute('transform')
-            var mt = getTransArray(trans)
 
             setTimeout(function() {
 
@@ -131,7 +132,6 @@ define(function (require, exports, module) {
 
                 isAnimation = false;
             }, 1000);
-
         }
 
         var getTransArray = function(value) {
