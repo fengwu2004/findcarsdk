@@ -206,9 +206,9 @@ define(function (require, exports, module) {
 
         function onPan(evt) {
 
-            scroll([evt.deltaX, evt.deltaY])
-
-            console.log('pan')
+            // scroll([evt.deltaX, evt.deltaY])
+            //
+            // console.log('pan')
         }
 
         function addGestures() {
