@@ -689,29 +689,7 @@ define(function (require, exports, module) {
 
         var updateMapViewTrans = function(mt) {
 
-            var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
-
-            var factor = 1
-
-            if (scale > maxScale) {
-
-                factor = maxScale/scale
-            }
-
-            if (scale < minScale) {
-
-                factor = minScale/scale
-            }
-
-            console.log(factor)
-
-            // matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
-
-            var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] + ',' + mt[5] + ')'
-
-            console.log(mt[4], mt[5])
-
-            // var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
             _mapViewPort.setAttribute('transform', trans)
         }
@@ -720,11 +698,23 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            // var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
+            var lastScale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
+
+            var factor = scale
+
+            if (lastScale * scale > maxScale) {
+
+                factor = maxScale/lastScale
+            }
+
+            if (lastScale * scale < minScale) {
+
+                factor = minScale/lastScale
+            }
 
             matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
 
-            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
+            matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
 
             matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
 
