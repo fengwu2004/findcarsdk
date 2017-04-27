@@ -62,7 +62,7 @@ define(function (require, exports, module) {
             var positionDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             positionDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
             positionDom.setAttribute('id', 'LocatingBase')
-            positionDom.setAttribute('id', 'Locating')
+            positionDom.setAttribute("x", position.x);
             positionDom.setAttribute("y", position.y);
 
             locationDom.appendChild(waveDom);
