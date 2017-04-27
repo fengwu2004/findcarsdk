@@ -1,15 +1,15 @@
 
-#SvgLocation{
+.SvgLocation{
 	transform-origin: 50% 50%;
 	transform: scale(1.0);
 }
 
-#LocatingBase{
+.LocatingBase{
 	transform-origin: 50% 50%;
 	transform: scale(1.0);
 }
 
-#Loacating{
+.Loacating{
 	background-color: #0087ff;
 	width: 50px;
 	height: 50px;

@@ -787,8 +787,6 @@ define(function (require, exports, module) {
             _currentPos = pos
 
             _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
-
-            var v = document.getElementById('SvgLocation')
         }
 
         this.centerPos = centerPos
