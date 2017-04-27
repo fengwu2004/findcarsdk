@@ -53,6 +53,8 @@ define(function (require, exports, module) {
                 return;
             }
 
+            lastPosition = position
+
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
