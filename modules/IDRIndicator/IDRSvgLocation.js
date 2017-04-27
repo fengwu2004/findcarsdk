@@ -3,6 +3,8 @@ define(function (require, exports, module) {
 
 	var matrix2d = require('../mat2d')
 
+    var vec2 = require('../vec2')
+
     var IDRSvgLocation = function() {
 
 		/*
@@ -38,9 +40,11 @@ define(function (require, exports, module) {
 
         var isAnimation = false;
 
+        var rootDom = null
+
         function creatSvgLocationDom(parentNode, position) {
 
-            var rootDom = document.getElementById("SvgLocation");
+            rootDom = document.getElementById("SvgLocation");
 
             if (rootDom) {
 
@@ -123,23 +127,36 @@ define(function (require, exports, module) {
 
         }
 
+        var getTransArray = function(value) {
+
+            if (value == null) {
+
+                return [1, 0, 0, 1, 0, 0]
+            }
+
+            var temp = value.substring(7, value.length - 1)
+
+            var valueT = temp.split(',')
+
+            return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
+        }
+
         function updateScale(scale) {
 
-            var locationDom = document.getElementById("SvgLocation");
-            locationDom.style.transform = "scale(" + scale + ")";
+            if (rootDom == null) {
 
-            var width = 50 * scale + "px";
-            var index = (50 - 50 * scale) / 2 + "px";
+                return
+            }
 
-            var loacatingDom = document.getElementById("Locating");
-            loacatingDom.style.transform = "scale(" + scale + ")";
-            loacatingDom.setAttribute("width", width);
-            loacatingDom.setAttribute("height", width);
-            loacatingDom.setAttribute("x", index);
-            loacatingDom.setAttribute("y", index);
+            var trans = rootDom.getAttribute('transform')
 
-            var locatingBase = document.getElementById("LocatingBase");
-            locatingBase.style.transform = "scale(" + scale + ")";
+            var mt = getTransArray(trans)
+
+            matrix2d.scale(mt, mt, vec2.fromValues(scale ,scale))
+
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+
+            rootDom.setAttribute('transform', trans)
         }
 
         function updateShownState(show) {
