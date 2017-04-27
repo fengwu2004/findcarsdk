@@ -40,8 +40,6 @@ define(function (require, exports, module) {
 
     var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
 
-    var _idrIndicator = IDRIndicator()
-
     function idrMapView() {
 
         var maxScale = 1.5
@@ -87,6 +85,8 @@ define(function (require, exports, module) {
         var _mapClickedCallBack = null
 
         var _markers = {}
+
+        var _idrIndicator = null
 
         var addFloorList = function() {
 
@@ -773,6 +773,8 @@ define(function (require, exports, module) {
             _currentPos = pos
 
             if (_idrIndicator == null) {
+
+                _idrIndicator = IDRIndicator()
 
                 _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
             }
