@@ -118,7 +118,11 @@ define(function (require, exports, module) {
 
             anim.setAttribute('to', position.x + ' ' + position.y)
 
+            anim.setAttribute('fill', "freeze")
+
             anim.beginElement()
+
+            anim.end
 
             lastPosition = position;
         }
