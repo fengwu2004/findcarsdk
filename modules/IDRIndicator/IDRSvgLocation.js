@@ -57,6 +57,8 @@ define(function (require, exports, module) {
             var waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
             waveDom.setAttribute('id', 'Locating')
+            waveDom.setAttribute('width', '50px')
+            waveDom.setAttribute('height', '50px')
 
             var point = document.createElementNS("http://www.w3.org/2000/svg", "image");
             point.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
