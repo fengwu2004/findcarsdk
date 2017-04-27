@@ -192,7 +192,7 @@ define(function (require, exports, module) {
 
             zoom(evt.gradualscale, p)
 
-            //console.log(evt.gradualscale)
+            console.log('pinch')
         }
 
         function onRoate(evt) {
@@ -200,11 +200,15 @@ define(function (require, exports, module) {
             var p = getTouchesCenter(evt)
 
             rotate(evt.angle * Math.PI/180, p)
+
+            console.log('rotate')
         }
 
         function onPan(evt) {
 
             scroll([evt.deltaX, evt.deltaY])
+
+            console.log('pan')
         }
 
         function addGestures() {
