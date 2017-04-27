@@ -118,6 +118,8 @@ define(function (require, exports, module) {
 
             anim.setAttribute('to', position.x + ' ' + position.y)
 
+            anim.beginElement()
+
             lastPosition = position;
         }
 
