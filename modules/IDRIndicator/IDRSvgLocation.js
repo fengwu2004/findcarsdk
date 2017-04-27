@@ -155,9 +155,9 @@ define(function (require, exports, module) {
 
             var mt = getTransArray(trans)
 
-            matrix2d.scale(mt, mt, vec2.fromValues(scale ,scale))
+            // matrix2d.scale(mt, mt, vec2.fromValues(scale ,scale))
 
-            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
+            var trans = 'matrix(' + scale + ',' + mt[1] + ',' + mt[2] + ',' + scale + ',' + mt[4] + ',' + mt[5] + ')'
 
             rootDom.setAttribute('transform', trans)
         }
