@@ -53,8 +53,6 @@ define(function (require, exports, module) {
                 return;
             }
 
-            lastPosition = position
-
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
@@ -101,8 +99,8 @@ define(function (require, exports, module) {
                 yAnimationDom.innerHTML = "<animate id=yAnimationDom attributeName=y begin=indefinite from=0 to=0 dur=1s repeatCount=indefinite/>";
                 yAnimationDom = yAnimationDom.childNodes[0];
 
-                locationDom.appendChild(xAnimationDom);
-                locationDom.appendChild(yAnimationDom);
+                rootDom.appendChild(xAnimationDom);
+                rootDom.appendChild(yAnimationDom);
 
                 lastPosition = position;
             }
