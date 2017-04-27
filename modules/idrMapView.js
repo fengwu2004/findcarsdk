@@ -772,7 +772,14 @@ define(function (require, exports, module) {
 
             _currentPos = pos
 
-            _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
+            if (_idrIndicator == null) {
+
+                _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
+            }
+            else  {
+
+                _idrIndicator.updateLocation({x:_currentPos.x, y:_currentPos.y})
+            }
         }
 
         this.centerPos = centerPos
