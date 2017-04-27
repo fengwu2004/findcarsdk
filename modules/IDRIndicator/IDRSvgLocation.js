@@ -31,6 +31,8 @@ define(function (require, exports, module) {
 
         var centerDom = null
 
+        var moveSpeed = 1
+
         function creatSvgLocationDom(parentNode, position) {
 
             rootDom = document.getElementById("indicator");
@@ -90,15 +92,24 @@ define(function (require, exports, module) {
 
             var frames = window.requestAnimationFrame(onAnim)
 
-            var xOffsetX = (position.x - position.y)/60
-
-            var xOffsetY = (position.x - position.y)/60
-
             var count = 0
+
+            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/speeds
+
+            time = time * 60
+
+            if (time == 0) {
+
+                time = 1
+            }
+
+            var xOffsetX = (position.x - lastPosition.x)/time
+
+            var xOffsetY = (position.y - lastPosition.y)/time
             
             function onAnim() {
 
-                if (count > 60) {
+                if (count > time) {
 
                     window.cancelAnimationFrame(frames)
 
