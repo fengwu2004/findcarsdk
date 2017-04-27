@@ -620,21 +620,7 @@ define(function (require, exports, module) {
 
         function onTestClick() {
 
-            // var v = vec2.fromValues(100, 100)
-            //
-            // var marker = new IDRCarMarker({x:v[0], y:v[1], floorId:_currentFloorId})
-            //
-            // addMarker(marker)
-            //
-            // var center = vec2.fromValues(0.5 * document.body.clientWidth, 0.5 * document.body.clientHeight)
-            //
-            // marker = new IDRCarMarker({x:center[0], y:center[1], floorId:_currentFloorId})
-            //
-            // addMarker(marker)
-            //
-            // centerPos(center)
-
-            resetMap()
+            setCurrentPos({x:200, y:90}, true)
         }
         
         var test = function() {
