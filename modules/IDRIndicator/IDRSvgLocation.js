@@ -53,6 +53,8 @@ define(function (require, exports, module) {
                 return;
             }
 
+            lastPosition = position
+
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
@@ -102,7 +104,14 @@ define(function (require, exports, module) {
                 return
             }
 
-            var anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+            var anim = document.getElementById('move')
+
+            if (anim == null) {
+
+                anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+
+                rootDom.appendChild(anim)
+            }
 
             anim.setAttribute('id', 'move')
 
@@ -117,8 +126,6 @@ define(function (require, exports, module) {
             anim.setAttribute('from', lastPosition.x + ' ' + lastPosition.y)
 
             anim.setAttribute('from', position.x + ' ' + position.y)
-
-            rootDom.appendChild(anim)
 
             lastPosition = position;
 
