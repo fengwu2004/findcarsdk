@@ -90,11 +90,9 @@ define(function (require, exports, module) {
                 return
             }
 
-            var frames = window.requestAnimationFrame(onAnim)
-
             var count = 0
 
-            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/moveSpeed
+            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/(moveSpeed * 10)
 
             time = time * 60
 
@@ -106,6 +104,8 @@ define(function (require, exports, module) {
             var xOffsetX = (position.x - lastPosition.x)/time
 
             var xOffsetY = (position.y - lastPosition.y)/time
+
+            var frames = window.requestAnimationFrame(onAnim)
             
             function onAnim() {
 
