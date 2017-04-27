@@ -720,7 +720,7 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
+            // var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
 
             matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
 
