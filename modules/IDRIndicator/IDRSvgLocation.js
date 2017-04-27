@@ -71,8 +71,8 @@ define(function (require, exports, module) {
             point.setAttribute('width', '10px')
             point.setAttribute('height', '10px')
 
-            locationDom.appendChild(waveDom);
-            locationDom.appendChild(point);
+            rootDom.appendChild(waveDom);
+            rootDom.appendChild(point);
         }
 
         function updateLocation(position) {
