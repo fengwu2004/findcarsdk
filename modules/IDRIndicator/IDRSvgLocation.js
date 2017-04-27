@@ -71,13 +71,6 @@ define(function (require, exports, module) {
             rootDom.appendChild(centerDom);
         }
 
-        function addWaveAnim() {
-
-            var anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-
-
-        }
-
         function updateLocation(position) {
 
             var trans = rootDom.getAttribute('transform')
@@ -95,36 +88,41 @@ define(function (require, exports, module) {
                 return
             }
 
-            var anim = document.getElementById('move')
+            var frames = window.requestAnimationFrame(onAnim)
 
-            if (anim == null) {
+            var xOffsetX = (position.x - position.y)/60
 
-                anim = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+            var xOffsetY = (position.x - position.y)/60
 
-                rootDom.appendChild(anim)
+            var count = 0
+            
+            function onAnim() {
+
+                if (count > 60) {
+
+                    window.cancelAnimationFrame(frames)
+
+                    lastPosition = position;
+
+                    return
+                }
+
+                var trans = rootDom.getAttribute('transform')
+
+                var mt = getTransArray(trans)
+
+                mt[4] += xOffsetX
+
+                mt[5] += xOffsetY
+
+                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
+
+                rootDom.setAttribute('transform', trans)
+
+                ++count
+
+                frames = window.requestAnimationFrame(onAnim)
             }
-
-            anim.setAttribute('id', 'move')
-
-            anim.setAttribute('attributeName', 'transform')
-
-            anim.setAttribute('begin', '0s')
-
-            anim.setAttribute('dur', '3s')
-
-            anim.setAttribute('type', 'translate')
-
-            anim.setAttribute('from', lastPosition.x + ' ' + lastPosition.y)
-
-            anim.setAttribute('to', position.x + ' ' + position.y)
-
-            anim.setAttribute('fill', "freeze")
-
-            anim.beginElement()
-
-            anim.end
-
-            lastPosition = position;
         }
 
         var getTransArray = function(value) {
