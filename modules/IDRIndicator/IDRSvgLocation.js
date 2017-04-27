@@ -125,7 +125,7 @@ define(function (require, exports, module) {
 
             anim.setAttribute('from', lastPosition.x + ' ' + lastPosition.y)
 
-            anim.setAttribute('from', position.x + ' ' + position.y)
+            anim.setAttribute('to', position.x + ' ' + position.y)
 
             lastPosition = position;
 
