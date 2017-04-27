@@ -111,9 +111,9 @@ define(function (require, exports, module) {
 
                 var mt = getTransArray(trans)
 
-                mt[4] += xOffsetX
+                mt[4] = mt[4] + xOffsetX
 
-                mt[5] += xOffsetY
+                mt[5] = mt[5] + xOffsetY
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
