@@ -709,6 +709,8 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + mt[0] * factor + ',' + mt[1] * factor + ',' + mt[2] * factor + ',' + mt[3] * factor + ',' + mt[4] + ',' + mt[5] + ')'
 
+            console.log(mt[4], mt[5])
+
             // var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
             _mapViewPort.setAttribute('transform', trans)
@@ -717,6 +719,8 @@ define(function (require, exports, module) {
         var zoom = function(scale, anchor) {
 
             var mt = getMapViewMatrix()
+
+            var scale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
 
             matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
 
