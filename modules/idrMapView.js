@@ -177,11 +177,11 @@ define(function (require, exports, module) {
 
             var p = vec2.fromValues(x, y)
 
-            var im = matrix2d.create()
-
-            im = matrix2d.invert(im, getMapViewMatrix())
-
-            vec2.transformMat2d(p, p, im)
+            // var im = matrix2d.create()
+            //
+            // matrix2d.invert(im, getMapViewMatrix())
+            //
+            // vec2.transformMat2d(p, p, im)
 
             return p
         }
@@ -718,11 +718,11 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            // matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
 
             matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
 
-            // matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
+            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
 
             updateMapViewTrans(mt)
         }
