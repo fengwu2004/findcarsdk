@@ -58,12 +58,16 @@ define(function (require, exports, module) {
             waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
             waveDom.setAttribute('id', 'Locating')
 
-            var positionDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            positionDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
-            positionDom.setAttribute('id', 'LocatingBase')
+            var point = document.createElementNS("http://www.w3.org/2000/svg", "image");
+            point.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
+            point.setAttribute('id', 'LocatingBase')
+            point.setAttribute('x', '20px')
+            point.setAttribute('y', '20px')
+            point.setAttribute('width', '10px')
+            point.setAttribute('height', '10px')
 
             locationDom.appendChild(waveDom);
-            locationDom.appendChild(positionDom);
+            locationDom.appendChild(point);
         }
 
         function updateLocation(position) {
