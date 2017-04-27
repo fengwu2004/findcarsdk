@@ -120,9 +120,15 @@ define(function (require, exports, module) {
 
             isAnimation = true;
 
+            var trans = rootDom.getAttribute('transform')
+            var mt = getTransArray(trans)
+
             setTimeout(function() {
-                locationDom.setAttribute("x", position.x);
-                locationDom.setAttribute("y", position.y);
+
+                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+
+                rootDom.setAttribute('transform', trans)
+
                 isAnimation = false;
             }, 1000);
 
