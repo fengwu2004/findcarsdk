@@ -94,7 +94,7 @@ define(function (require, exports, module) {
 
             var count = 0
 
-            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/speeds
+            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/moveSpeed
 
             time = time * 60
 
