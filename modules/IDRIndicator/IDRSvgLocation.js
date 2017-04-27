@@ -60,7 +60,7 @@ define(function (require, exports, module) {
             var mt = matrix2d.create()
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
             rootDom.setAttribute('transform', trans)
-            rootDom.setAttribute('transform-orgin', '50% 50% 0')
+            rootDom.setAttribute('transform-origin', '50% 50% 0')
 
             parentNode.appendChild(rootDom);
 
