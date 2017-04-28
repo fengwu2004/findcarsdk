@@ -796,11 +796,17 @@ define(function (require, exports, module) {
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
+            scale = 1/scale
+
+            scale = Math.min(scale, maxScale)
+
+            scale = Math.max(scale, minScale)
+
             var mt = matrix2d.create()
 
-            matrix2d.scale(mt, mt, vec2.fromValues(1/scale, 1/scale))
+            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
 
-            matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight * 1/scale))
+            matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight * scale))
 
             updateMapViewTrans(mt)
 
