@@ -41,7 +41,7 @@ define(function (require, exports, module) {
 
             console.log("clicked");
 
-            that.rotateToDegree(defaultValue);
+            rotateToDegree(defaultValue);
         }
 
         function rotateToDegree(degree) {
