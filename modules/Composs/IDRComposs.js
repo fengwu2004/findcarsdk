@@ -34,6 +34,7 @@ define(function (require, exports, module) {
             },
 
             getValue: function() {
+
                 return defaultValue;
             },
 

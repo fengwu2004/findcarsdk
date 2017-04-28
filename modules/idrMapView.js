@@ -498,7 +498,13 @@ define(function (require, exports, module) {
                 return
             }
 
-            _composs = IDRComposs('main', 0)
+            var div = document.createElement('div')
+
+            div.setAttribute('id', 'composs')
+
+            document.getElementById('svgFrame').appendChild(div)
+
+            _composs = IDRComposs('composs', 0)
         }
 
         this.addComposs = addComposs
@@ -636,7 +642,7 @@ define(function (require, exports, module) {
 
         function onTestClick() {
 
-            setCurrentPos({x:200, y:90}, true)
+            addComposs()
         }
         
         var test = function() {
