@@ -31,7 +31,7 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
 
 
 /*地图层*/
-.svg_frame{position:absolute;left:0;top:20px;bottom:0;width:100%;overflow:hidden;z-index:0;}
+.svg_frame{position:absolute;left:0;top:0px;bottom:0;width:100%;overflow:hidden;z-index:0;}
 .svg_box{height:100%;background:url(../images/reseau.png) repeat;background-size:50px auto}
 .svg_box .nodata{position:absolute;top:100px;left:0;width:100%;text-align:center;font-size:16px;color:#666;line-height:24px;}
 .svg_box .nodata a{color:#e63174}

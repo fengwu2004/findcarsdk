@@ -12,12 +12,13 @@ define(function (require, exports, module) {
 
     header.appendChild(css)
 
-    var Composs = function(id, defaultDegree) {
+    var Composs = function(id, defaultDegree, map) {
 
         var defaultValue = defaultDegree;
         var composs = document.getElementById(id);
         var isAnimating = false;
         var timer;
+        var idrMap = map
 
         var currentValue = 0;
         var targetValue = 0;
@@ -109,7 +110,10 @@ define(function (require, exports, module) {
                 //地图重置回调函数
                 //测试代码 这里要修改
 
+                idrMap.resetMap()
+
                 if (isAnimating) {
+
                     return;
                 }
 

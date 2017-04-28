@@ -92,6 +92,8 @@ define(function (require, exports, module) {
 
         var _composs = null
 
+        var that = this
+
         var addFloorList = function() {
 
             _floorListControl = new idrFloorListControl();
@@ -504,10 +506,8 @@ define(function (require, exports, module) {
 
             document.getElementById('svgFrame').appendChild(div)
 
-            _composs = IDRComposs('composs', 0)
+            _composs = IDRComposs('composs', 0, that)
         }
-
-        this.addComposs = addComposs
 
         this.showPath = function(paths) {
 
@@ -837,6 +837,8 @@ define(function (require, exports, module) {
         this.changeFloor = changeFloor
 
         this.showRootPath = showRoutePath
+
+        this.addComposs = addComposs
 
         this.setLoadMapFinishCallback = function(callBack) {
 
