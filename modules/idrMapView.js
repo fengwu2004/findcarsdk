@@ -150,7 +150,20 @@ define(function (require, exports, module) {
 
             // _mapViewPort.addEventListener('click', onMapClick, false)
 
-            var map = document.getElementById('地图')
+            var map = document.getElementById('background')
+
+            if (!map) {
+
+                var floor = _regionData.getFloorbyId(_currentFloorId)
+
+                map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+
+                map.width = floor.width
+
+                map.height = floor.height
+
+                _mapViewPort.appendChild(map)
+            }
 
             map.addEventListener('click', onMapClick, false)
 
