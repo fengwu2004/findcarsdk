@@ -631,6 +631,10 @@ define(function (require, exports, module) {
 
             button.setAttribute('onclick', 'onTestClick()')
 
+            button.setAttribute('width', '100px')
+
+            button.setAttribute('height', '100px')
+
             button.innerText = 'Button'
 
             var div = document.getElementById('main')
