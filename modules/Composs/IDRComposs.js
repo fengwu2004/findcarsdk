@@ -26,6 +26,7 @@ define(function (require, exports, module) {
         var animationInterval = 1;
         composs.addEventListener('click', onCompossClick)
 
+        var that = this
         function onCompossClick() {
 
             //地图重置回调函数
@@ -40,14 +41,14 @@ define(function (require, exports, module) {
 
             console.log("clicked");
 
-            this.rotateToDegree(defaultValue);
+            that.rotateToDegree(defaultValue);
         }
 
         function rotateToDegree(degree) {
 
             targetValue = degree;
 
-            this.initFlag();
+            that.initFlag();
 
             timer = setInterval(this.rotate, animationInterval);
         }
