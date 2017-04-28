@@ -441,6 +441,11 @@ define(function (require, exports, module) {
                 updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
+            if (_composs) {
+
+                _composs.rotateToDegree(_mapRotate * 180/Math.PI)
+            }
+
             _mapScale = mdecompose.s
 
             _mapRotate = mdecompose.a
@@ -506,7 +511,7 @@ define(function (require, exports, module) {
 
             document.getElementById('svgFrame').appendChild(div)
 
-            _composs = IDRComposs('composs', 0, that)
+            _composs = new IDRComposs('composs', 0, that)
         }
 
         this.showPath = function(paths) {
