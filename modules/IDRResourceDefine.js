@@ -15,5 +15,7 @@ define(function (require, exports, module) {
 
     ImageUrlDefine.endMarker = '../sdk/images/end.png'
 
+    ImageUrlDefine.composs = '../sdk/images/resetMap.png'
+
     module.exports = ImageUrlDefine
 });
