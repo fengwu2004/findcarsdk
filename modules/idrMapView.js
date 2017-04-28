@@ -252,9 +252,9 @@ define(function (require, exports, module) {
 
                 var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
 
-                unit.x = center[0]
+                unitSvg.x = center[0]
 
-                unit.y = center[1]
+                unitSvg.y = center[1]
 
                 var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
 
@@ -503,9 +503,7 @@ define(function (require, exports, module) {
 
             _unitDivs.forEach(function(unitSvg, index) {
 
-                var unit = _units[index]
-
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unit.x + ',' + unit.y + ')'
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.x + ',' + unitSvg.y + ')'
 
                 unitSvg.setAttribute('transform', m)
             })
