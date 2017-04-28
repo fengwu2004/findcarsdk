@@ -1,10 +1,10 @@
 
 #composs{
 	position: absolute;
-	left: 100px;
-	top: 200px;
-	width: 100px;
-	height: 100px;
+	left: 50px;
+	top: 50px;
+	width: 50px;
+	height: 50px;
 	transform: rotate(0deg);
 	background-color: white;
 	background-size: cover;
