@@ -635,8 +635,6 @@ define(function (require, exports, module) {
 
             button.style.height = '100px'
 
-            button.setAttribute('height', '100px')
-
             button.innerText = 'Button'
 
             var div = document.getElementById('main')
