@@ -40,6 +40,8 @@ define(function (require, exports, module) {
 
     var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
 
+    var IDRComposs = require('./Composs/IDRComposs')
+
     function idrMapView() {
 
         var maxScale = 1.5
@@ -87,6 +89,8 @@ define(function (require, exports, module) {
         var _markers = {}
 
         var _idrIndicator = null
+
+        var _composs = null
 
         var addFloorList = function() {
 
@@ -486,6 +490,18 @@ define(function (require, exports, module) {
                 unitSvg.setAttribute('transform', m)
             })
         }
+        
+        function addComposs() {
+
+            if (_composs) {
+
+                return
+            }
+
+            _composs = IDRComposs('main', 0)
+        }
+
+        this.addComposs = addComposs
 
         this.showPath = function(paths) {
 
