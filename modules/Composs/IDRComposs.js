@@ -48,7 +48,7 @@ define(function (require, exports, module) {
 
             targetValue = degree;
 
-            that.initFlag();
+            initFlag();
 
             timer = setInterval(this.rotate, animationInterval);
         }
