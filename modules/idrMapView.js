@@ -252,11 +252,11 @@ define(function (require, exports, module) {
 
                 var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
 
-                unitSvg.x = center[0]
+                unitSvg.centerX = center[0]
 
-                unitSvg.y = center[1]
+                unitSvg.centerY = center[1]
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unitSvg.x + ',' + unitSvg.y + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
 
                 unitSvg.setAttribute('transform-origin', '50% 50% 0')
 
@@ -503,7 +503,7 @@ define(function (require, exports, module) {
 
             _unitDivs.forEach(function(unitSvg, index) {
 
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.x + ',' + unitSvg.y + ')'
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
 
                 unitSvg.setAttribute('transform', m)
             })
