@@ -10,12 +10,14 @@ define(function (require, exports, module) {
 
             this[key] = regionAllInfo[key]
         }
+
+        var that = this
         
         function getFloorbyId(floorId) {
 
-            for (var i = 0; i < this.floorList.length; ++i) {
+            for (var i = 0; i < that.floorList.length; ++i) {
 
-                var floor = this.floorList[i]
+                var floor = that.floorList[i]
 
                 if (floor.id === floorId) {
 
