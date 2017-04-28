@@ -90,10 +90,10 @@ define(function (require, exports, module) {
                 return
             }
 
-            beginMove()
+            beginMove(position)
         }
 
-        function beginMove() {
+        function beginMove(position) {
 
             var count = 0
 
