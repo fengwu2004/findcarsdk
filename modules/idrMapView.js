@@ -441,7 +441,7 @@ define(function (require, exports, module) {
                 updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
-            if (_composs) {
+            if (_composs || _mapRotate !== mdecompose.a) {
 
                 _composs.rotateToDegree(-1 * _mapRotate * 180/Math.PI)
             }
@@ -792,6 +792,10 @@ define(function (require, exports, module) {
             matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight * 1/scale))
 
             updateMapViewTrans(mt)
+
+            _mapRotate = null
+
+            updateDisplay()
         }
         
         function birdLook() {
