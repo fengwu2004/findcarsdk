@@ -11,7 +11,7 @@ define(function (require, exports, module) {
             this[key] = regionAllInfo[key]
         }
         
-        this.getFloorbyId = function(floorId) {
+        function getFloorbyId(floorId) {
 
             for (var i = 0; i < this.floorList.length; ++i) {
 
@@ -25,21 +25,32 @@ define(function (require, exports, module) {
 
             return null
         }
-        
-        this.getFloorByName = function(floorName) {
 
-            for (var i = 0; i < this.floorList.length; ++i) {
+        function getUnitById(floorId, unitId) {
 
-                var floor = this.floorList[i]
+            var floor = getFloorbyId(floorId)
 
-                if (floor.name === floorName) {
+            if (floor == null) {
 
-                    return floor
+                return null
+            }
+
+            for (var i = 0; i < floor.unitList.length; ++i) {
+
+                var unit = floor.unitList[i]
+
+                if (unit.id === unitId) {
+
+                    return unit
                 }
             }
 
             return null
         }
+        
+        this.getFloorbyId = getFloorbyId
+
+        this.getUnitById = getUnitById
     }
 
     module.exports = IDRRegionEx

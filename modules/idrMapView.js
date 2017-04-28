@@ -94,7 +94,7 @@ define(function (require, exports, module) {
 
         var that = this
 
-        var addFloorList = function() {
+        function addFloorList() {
 
             _floorListControl = new idrFloorListControl();
 
@@ -105,7 +105,7 @@ define(function (require, exports, module) {
             _floorListControl.init(_svgFrame, _regionData['floorList'], floor)
         }
 
-        var addSvgMap = function(data, regionId, floorId) {
+        var addSvgMap = function(data) {
 
             var svg = data;
 
@@ -283,9 +283,9 @@ define(function (require, exports, module) {
 
                 unitSvg.setAttribute('y', unit.boundTop)
 
-                unitSvg.setAttribute('width', unit.boundRight - unit.boundLeft)
+                unitSvg.setAttribute('width', (unit.boundRight - unit.boundLeft).toString())
 
-                unitSvg.setAttribute('height', unit.boundBottom - unit.boundTop)
+                unitSvg.setAttribute('height', (unit.boundBottom - unit.boundTop).toString())
 
                 unitSvg.style.opacity = 0
 
@@ -298,6 +298,19 @@ define(function (require, exports, module) {
         function onUnitClick(ele) {
 
             //console.log(ele.currentTarget.id)
+
+            var unit = _regionData.getUnitById(_currentFloorId, ele.currentTarget.id)
+
+            if (unit) {
+
+                var centerX = 0.5 * (parseFloat(unit.boundLeft) + parseFloat(unit.boundRight))
+
+                var centerY = 0.5 * (parseFloat(unit.boundTop) + parseFloat(unit.boundBottom))
+
+                var marker = new IDRCarMarker({x:centerX, y:centerY})
+
+                addMarker(marker)
+            }
         }
 
         var addUnits = function() {
@@ -464,7 +477,7 @@ define(function (require, exports, module) {
             _mapRotate = mdecompose.a
         }
 
-        var updateMarkersAngleAndScale = function(scale, rotate) {
+         function updateMarkersAngleAndScale(scale, rotate) {
 
             var markers = _markers[_currentFloorId]
 
@@ -491,7 +504,7 @@ define(function (require, exports, module) {
             })
         }
 
-        var updateUnitAngleAndScale = function(scale, rotate) {
+        function updateUnitAngleAndScale(scale, rotate) {
 
             var a = scale * Math.cos(rotate)
 
@@ -523,11 +536,6 @@ define(function (require, exports, module) {
             document.getElementById('svgFrame').appendChild(div)
 
             _composs = new IDRComposs('composs', 0, that)
-        }
-
-        this.showPath = function(paths) {
-
-            _idrPath.updateLine(_mapViewPort, paths)
         }
         
         function retriveSvgDataAndShow() {
