@@ -557,7 +557,7 @@ define(function (require, exports, module) {
 
                 addFloorList()
 
-                test()
+                addComposs()
             }
 
             if (_refreshTimer == null) {
