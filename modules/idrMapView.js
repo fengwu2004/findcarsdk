@@ -631,7 +631,9 @@ define(function (require, exports, module) {
 
             button.setAttribute('onclick', 'onTestClick()')
 
-            button.setAttribute('width', '100px')
+            button.style.width = '100px'
+
+            button.style.height = '100px'
 
             button.setAttribute('height', '100px')
 
