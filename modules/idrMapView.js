@@ -443,7 +443,7 @@ define(function (require, exports, module) {
 
             if (_composs) {
 
-                _composs.rotateToDegree(_mapRotate * 180/Math.PI)
+                _composs.rotateToDegree(-1 * _mapRotate * 180/Math.PI)
             }
 
             _mapScale = mdecompose.s
