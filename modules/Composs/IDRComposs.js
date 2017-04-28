@@ -24,6 +24,42 @@ define(function (require, exports, module) {
         var targetValue = 0;
         var flag = 1;
         var animationInterval = 1;
+        composs.addEventListener('click', onCompossClick)
+
+        function onCompossClick() {
+
+            //地图重置回调函数
+            //测试代码 这里要修改
+
+            idrMap.resetMap()
+
+            if (isAnimating) {
+
+                return;
+            }
+
+            console.log("clicked");
+
+            this.rotateToDegree(defaultValue);
+        }
+
+        function rotateToDegree(degree) {
+
+            targetValue = degree;
+
+            this.initFlag();
+
+            timer = setInterval(this.rotate, animationInterval);
+        }
+
+        function initFlag() {
+
+            if (targetValue >= currentValue) {
+                flag = 1;
+            } else {
+                flag = -1;
+            }
+        }
 
         return {
 			/*===================Public Method=============================*/
@@ -62,23 +98,9 @@ define(function (require, exports, module) {
             },
 
 			/*===================Rotate Composs By a Degree================*/
-            rotateToDegree: function(degree) {
 
-                targetValue = degree;
 
-                this.initFlag();
 
-                timer = setInterval(this.rotate, animationInterval);
-            },
-
-            initFlag: function() {
-
-                if (targetValue >= currentValue) {
-                    flag = 1;
-                } else {
-                    flag = -1;
-                }
-            },
 
 			/*=======================Rotate================================*/
             rotate: function() {
