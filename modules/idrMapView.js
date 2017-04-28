@@ -256,7 +256,7 @@ define(function (require, exports, module) {
 
                 unitSvg.y = center[1]
 
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unit.x + ',' + unit.y + ')'
+                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unitSvg.x + ',' + unitSvg.y + ')'
 
                 unitSvg.setAttribute('transform-origin', '50% 50% 0')
 
