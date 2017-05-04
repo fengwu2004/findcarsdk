@@ -572,7 +572,7 @@ define(function (require, exports, module) {
 
             updateMinScale()
 
-            _mapEvent.fireEvent(IDRMapEventType.onLoadMapSuccess, {floorId:_currentFloorId, regionId:_regionId})
+            _mapEvent.fireEvent(IDRMapEventType.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
 
         function addEventListener(type, fn) {
