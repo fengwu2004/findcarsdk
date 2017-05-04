@@ -9,7 +9,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "../sdk/modules/IDRSvgPath/IDRSvgPolyLine.css";
+        css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRSvgPath/IDRSvgPolyLine.css";
 
         var header = document.querySelector("head");
 

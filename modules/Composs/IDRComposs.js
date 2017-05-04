@@ -6,7 +6,7 @@ define(function (require, exports, module) {
 
     css.rel = 'stylesheet';
 
-    css.href = "../sdk/modules/Composs/IDRComposs.css";
+    css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/Composs/IDRComposs.css";
 
     var header = document.querySelector("head");
 
