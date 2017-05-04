@@ -563,6 +563,19 @@ define(function (require, exports, module) {
 
             retriveSvgDataAndShow()
         }
+        
+        function initRegion(regionId, successFunc) {
+
+            idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
+
+                _regionData = new IDRRegionEx(regionAllInfo)
+
+                _regionId = regionId
+
+                successFunc && successFunc(_regionData)
+
+            }, null)
+        }
 
         function loadMap(regionId, floorId) {
 
@@ -866,13 +879,13 @@ define(function (require, exports, module) {
 
         this.removeMarker = removeMarker
 
-        this.loadMap = loadMap
-
         this.changeFloor = changeFloor
 
         this.showRootPath = showRoutePath
 
         this.addComposs = addComposs
+
+        this.initRegion = initRegion
 
         this.setLoadMapFinishCallback = function(callBack) {
 

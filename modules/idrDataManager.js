@@ -21,7 +21,7 @@ define(function(require, exports, module) {
 
             if (typeof success === "function") {
 
-                success()
+                success(that.regionAllInfo)
             }
         }, failed)
     }

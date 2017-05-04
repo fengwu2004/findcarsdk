@@ -8,12 +8,10 @@ define(function(require, exports, module) {
     
     function idrCoreManager() {
 
-        this.loadSessionSuccess = ''
 
-        this.loadSessionFailed = ''
     }
 
-    idrCoreManager.prototype.init = function() {
+    idrCoreManager.prototype.init = function(initSuccessFunc, initFailedFunc) {
 
         var that = this;
 
@@ -38,20 +36,14 @@ define(function(require, exports, module) {
 
                 success: function (data) {
 
-                    succ && succ(data);
+                    success(data, initSuccessFunc, initFailedFunc);
                 },
                 error: function (str) {
 
-                    console.log(str);
+                    initFailedFunc && initFailedFunc(str)
                 }
             });
         })();
-
-
-        function succ(data) {
-
-            success(data, that.loadSessionSuccess, that.loadSessionFailed)
-        }
 
         function success(obj, succFn, errorFn) {
 
