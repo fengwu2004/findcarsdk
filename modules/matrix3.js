@@ -20,7 +20,7 @@
 
 define(function(require, exports, module) {
 
-var glMatrix = require("./../../test/common.js");
+    var glMatrix = require('../modules/test/common')
 
 /**
  * @class 3x3 Matrix
