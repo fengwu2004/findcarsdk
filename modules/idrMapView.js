@@ -36,6 +36,8 @@ define(function (require, exports, module) {
 
     var IDRMapEventModule = require('./idrMapEvent')
 
+    var IDRCoreManager = require('./idrCoreManager')
+
     var IDRMapEvent = IDRMapEventModule[0]
 
     function idrMapView() {
@@ -556,15 +558,18 @@ define(function (require, exports, module) {
         
         function initMap(regionId) {
 
-            idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
+            IDRCoreManager.init(function() {
 
-                _regionData = new IDRRegionEx(regionAllInfo)
+                idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
-                _regionId = regionId
+                    _regionData = new IDRRegionEx(regionAllInfo)
 
-                _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, regionAllInfo)
+                    _regionId = regionId
 
-            }, null)
+                    _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, regionAllInfo)
+
+                }, null)
+            })
         }
         
         function onLoadMapSuccess() {
