@@ -38,6 +38,8 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
+        this.eventTypes = IDRMapEventModule[1]
+
         var maxScale = 1.5
 
         var minScale = 0.5
@@ -570,7 +572,7 @@ define(function (require, exports, module) {
 
             updateMinScale()
 
-            _mapEvent.fireEvent(IDRMapEventType.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
+            _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
 
         function addEventListener(type, fn) {
@@ -891,8 +893,6 @@ define(function (require, exports, module) {
 
         this.fireEvent = fireEvent
     }
-
-    idrMapView.prototype.eventTypes = IDRMapEventModule[1]
 
     module.exports = idrMapView;
 });
