@@ -164,7 +164,7 @@ define(function (require, exports, module) {
         
         function onMapClick(evt) {
 
-            _mapEvent.fireEvent(that.eventTypes.onMapClick, {x:evt.clientX, y:evt.clientY})
+            _mapEvent.fireEvent(that.eventTypes.onMapClick, {x:evt.clientX, y:evt.clientY, floorId:_currentFloorId})
         }
 
         function getTouchCenter(p) {
