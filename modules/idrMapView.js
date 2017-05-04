@@ -677,7 +677,7 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onMarkerClick, marker)
         }
 
-        function addPoint(p) {
+        this.addPoint = function(p) {
 
             var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
 
