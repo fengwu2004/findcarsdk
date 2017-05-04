@@ -24,6 +24,8 @@ define(function (require, exports, module) {
 
     var IDRRegionEx = require('./idrRegionEx')
 
+    var IDRUnit = require('./idrUnit')
+
     var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
 
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
@@ -292,13 +294,18 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
-        var addUnits = function(data) {
+        var addUnits = function(unitsInfo) {
+
+            _units = []
+
+            for (var i = 0; i < unitsInfo.length; ++i) {
+
+                _units.push(new IDRUnit(unitsInfo[i]))
+            }
 
             var floor = _regionData.getFloorbyId(_currentFloorId)
 
-            floor.unitList = data
-
-            _units = data;
+            floor.unitList = _units
 
             addUnitsText()
             
