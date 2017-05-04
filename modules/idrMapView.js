@@ -292,7 +292,13 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
-        var addUnits = function() {
+        var addUnits = function(data) {
+
+            var floor = _regionData.getFloorbyId(_currentFloorId)
+
+            floor.unitList = data
+
+            _units = data;
 
             addUnitsText()
             
@@ -305,9 +311,7 @@ define(function (require, exports, module) {
 
                 function (data) {
 
-                    _units = data;
-
-                    addUnits()
+                    addUnits(data)
                 },
 
                 function (str) {
