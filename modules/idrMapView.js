@@ -36,11 +36,7 @@ define(function (require, exports, module) {
 
     var IDRMapEvent = IDRMapEventModule[0]
 
-    var IDRMapEventType = IDRMapEventModule[1]
-
     function idrMapView() {
-
-        this.eventTypes = IDRMapEventType
 
         var maxScale = 1.5
 
@@ -895,6 +891,8 @@ define(function (require, exports, module) {
 
         this.fireEvent = fireEvent
     }
+
+    idrMapView.prototype.eventTypes = IDRMapEventModule[1]
 
     module.exports = idrMapView;
 });
