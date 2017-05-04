@@ -633,13 +633,13 @@ define(function (require, exports, module) {
 
             marker.addToSuperView(_mapViewPort)
 
-            var x = marker.position.x// - marker.el.clientWidth * 0.5//use bottom middle
+            var x = marker.position.x - marker.image.width * 0.5//use bottom middle
 
-            var y = marker.position.y// - marker.el.clientHeight//use bottom middle
+            var y = marker.position.y - marker.image.height//use bottom middle
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
-            // marker.el.setAttribute('transform-origin', '50% 100% 0')
+            marker.el.setAttribute('transform-origin', '50% 100% 0')
 
             marker.el.setAttribute('transform', trans)
 
