@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 
     function idrMapView() {
 
-        this.eventType = IDRMapEventType
+        this.eventTypes = IDRMapEventType
 
         var maxScale = 1.5
 
