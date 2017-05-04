@@ -602,6 +602,8 @@ define(function (require, exports, module) {
                 setDisplayTimer()
             }
 
+            updateMinScale()
+
             if (_loadMapSuccessFun) {
 
                 _loadMapSuccessFun(_currentFloorId, _regionId)
@@ -800,6 +802,23 @@ define(function (require, exports, module) {
 
             scroll(v)
         }
+        
+        function updateMinScale() {
+
+            var floor = _regionData.getFloorbyId(_currentFloorId)
+
+            var mapHeight = floor.height
+
+            var mapWidth = floor.width
+
+            var screenHeight = _svgFrame.clientHeight
+
+            var screenWidth = _svgFrame.clientWidth
+
+            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
+
+            minScale = Math.min(scale, minScale)
+        }
 
         function resetMap() {
 
@@ -820,8 +839,6 @@ define(function (require, exports, module) {
             scale = 1/scale
 
             scale = Math.min(scale, maxScale)
-
-            scale = Math.max(scale, minScale)
 
             var mt = matrix2d.create()
 
