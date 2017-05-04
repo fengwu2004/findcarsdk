@@ -681,9 +681,9 @@ define(function (require, exports, module) {
 
             var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
 
-            circle.setAttribute('cx', p[0].toString())
+            circle.setAttribute('cx', p.x.toString())
 
-            circle.setAttribute('cy', p[1].toString())
+            circle.setAttribute('cy', p.y.toString())
 
             circle.setAttribute('r', '10')
 
