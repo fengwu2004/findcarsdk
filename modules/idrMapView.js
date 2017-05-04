@@ -164,7 +164,7 @@ define(function (require, exports, module) {
         
         function onMapClick(evt) {
 
-            _mapEvent.fireEvent(IDRMapEventType.onMapClick, {x:evt.clientX, y:evt.clientY})
+            _mapEvent.fireEvent(that.eventTypes.onMapClick, {x:evt.clientX, y:evt.clientY})
         }
 
         function getTouchCenter(p) {
@@ -289,7 +289,7 @@ define(function (require, exports, module) {
 
             var unit = _regionData.getUnitById(_currentFloorId, ele.currentTarget.id)
 
-            _mapEvent.fireEvent(IDRMapEventType.onUnitClick, unit)
+            _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
         var addUnits = function() {
@@ -663,7 +663,7 @@ define(function (require, exports, module) {
 
             var marker = findMarker(_currentFloorId, markerId)
 
-            _mapEvent.fireEvent(IDRMapEventType.onMarkerClick, marker)
+            _mapEvent.fireEvent(that.eventTypes.onMarkerClick, marker)
         }
 
         function addPoint(p) {
