@@ -5,7 +5,7 @@ define(function (require, exports, module){
 
     var idrMapEventTypes = {
 
-        onLoadMapSuccess:'onLoadMapSuccess',
+        onInitMapSuccess:'onInitMapSuccess',
 
         onFloorChangeSuccess:'onFloorChangeSuccess',
 

@@ -554,7 +554,7 @@ define(function (require, exports, module) {
             retriveSvgDataAndShow()
         }
         
-        function initRegion(regionId, successFunc) {
+        function initMap(regionId) {
 
             idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
@@ -562,7 +562,7 @@ define(function (require, exports, module) {
 
                 _regionId = regionId
 
-                successFunc && successFunc(_regionData)
+                _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, regionAllInfo)
 
             }, null)
         }
@@ -896,7 +896,7 @@ define(function (require, exports, module) {
 
         this.addComposs = addComposs
 
-        this.initRegion = initRegion
+        this.initMap = initMap
 
         this.addEventListener = addEventListener
 
