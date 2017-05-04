@@ -635,7 +635,7 @@ define(function (require, exports, module) {
 
             var x = marker.position.x - marker.el.clientWidth * 0.5//use bottom middle
 
-            var y = marker.position.x - marker.el.clientHeight//use bottom middle
+            var y = marker.position.y - marker.el.clientHeight//use bottom middle
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
