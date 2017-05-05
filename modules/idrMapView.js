@@ -739,7 +739,7 @@ define(function (require, exports, module) {
 
             var mt = getMapViewMatrix()
 
-            var posIn2d = vec2.fromValues(mapPos[0], mapPos[1])
+            var posIn2d = vec2.fromValues(mapPos.x, mapPos.y)
 
             return vec2.transformMat2d(posIn2d, posIn2d, mt)
         }
