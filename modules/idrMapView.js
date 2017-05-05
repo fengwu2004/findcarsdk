@@ -653,11 +653,17 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
-            marker.el.setAttribute('transform-origin', '50% 100% 0')
+            marker.el.style.transform = trans
 
-            marker.el.setAttribute('transform', trans)
+            marker.el.style.webkitTransform = trans
+
+            marker.el.style.transformOrigin = '50% 100% 0'
+
+            marker.el.style.webkitTransformOrigin = '50% 100% 0'
 
             marker.el.addEventListener('click', onMarkerClick, true)
+
+            console.log($('#' + marker.id).style)
 
             return marker
         }
