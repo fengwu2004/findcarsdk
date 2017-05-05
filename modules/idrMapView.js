@@ -92,7 +92,7 @@ define(function (require, exports, module) {
 
         function addFloorList() {
 
-            _floorListControl = new idrFloorListControl();
+            _floorListControl = new idrFloorListControl()
 
             _floorListControl.setChangeFloorFunc(this, changeFloor)
 
