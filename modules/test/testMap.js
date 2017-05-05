@@ -29,5 +29,5 @@ seajs.use([
         map.changeFloor(regionEx.floorList[0].id)
     })
 
-    map.initMap('2b497ada3b2711e4b60500163e0e2e6b', regionId)
+    map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
 });
