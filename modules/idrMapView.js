@@ -653,21 +653,21 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
-            // marker.el.style.transformOrigin =  '50% 100% 0'
-            // //
-            // marker.el.style.webkitTransformOrigin = '50% 100% 0'
+            marker.el.style.transformOrigin =  '50% 100% 0'
             //
-            // marker.el.style.transform = trans
+            marker.el.style.webkitTransformOrigin = '50% 100% 0'
+
+            marker.el.style.transform = trans
+
+            marker.el.style.webkitTransform = trans
+
+            // marker.el.setAttribute('transformOrigin', '50% 100% 0')
             //
-            // marker.el.style.webkitTransform = trans
-
-            marker.el.setAttribute('transformOrigin', '50% 100% 0')
-
-            marker.el.setAttribute('webkitTransformOrigin', '50% 100% 0')
-
-            marker.el.setAttribute('transform', trans)
-
-            marker.el.setAttribute('webkitTransform', trans)
+            // marker.el.setAttribute('webkitTransformOrigin', '50% 100% 0')
+            //
+            // marker.el.setAttribute('transform', trans)
+            //
+            // marker.el.setAttribute('webkitTransform', trans)
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
