@@ -572,7 +572,10 @@ define(function (require, exports, module) {
 
                     _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, regionAllInfo)
 
-                }, null)
+                }, function() {
+
+                    console.log('load region data failed')
+                })
             })
         }
         
