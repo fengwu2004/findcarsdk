@@ -657,7 +657,9 @@ define(function (require, exports, module) {
             //
             marker.el.style.webkitTransformOrigin = '50% 100% 0'
 
-            marker.el.setAttribute('transform', trans)
+            marker.el.style.transform = trans
+
+            marker.el.style.webkitTransform = trans
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
