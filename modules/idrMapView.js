@@ -385,7 +385,9 @@ define(function (require, exports, module) {
 
                 _svgFrame.appendChild(lines);
 
-                document.body.appendChild(_svgFrame);
+                var ele = document.getElementById(_containerId)
+
+                ele.appendChild(_svgFrame);
             }
         }
 
