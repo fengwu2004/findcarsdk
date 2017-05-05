@@ -663,8 +663,6 @@ define(function (require, exports, module) {
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
-            console.log($('#' + marker.id).style)
-
             return marker
         }
 
