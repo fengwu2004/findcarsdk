@@ -5,17 +5,17 @@ define(function (require, exports, module) {
 
     var ImageUrlDefine ={}
 
-    ImageUrlDefine.mapMarker = '/sdk/images/icon4.png'
+    ImageUrlDefine.mapMarker = '/indoorun/app/yanli/indoorun/sdk/images/icon4.png'
 
-    ImageUrlDefine.carMarker = '/sdk/images/icon4.png'
+    ImageUrlDefine.carMarker = '/indoorun/app/yanli/indoorun/sdk/images/icon4.png'
 
-    ImageUrlDefine.facMarker = '/sdk/images/qi.png'
+    ImageUrlDefine.facMarker = '/indoorun/app/yanli/indoorun/sdk/images/qi.png'
 
-    ImageUrlDefine.startMarker = '/sdk/images/start.png'
+    ImageUrlDefine.startMarker = '/indoorun/app/yanli/indoorun/sdk/images/start.png'
 
-    ImageUrlDefine.endMarker = '/sdk/images/end.png'
+    ImageUrlDefine.endMarker = '/indoorun/app/yanli/indoorun/sdk/images/end.png'
 
-    ImageUrlDefine.composs = '/sdk/images/resetMap.png'
+    ImageUrlDefine.composs = '/indoorun/app/yanli/indoorun/sdk/images/resetMap.png'
 
     module.exports = ImageUrlDefine
 });
