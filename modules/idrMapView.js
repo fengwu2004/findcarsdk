@@ -44,6 +44,8 @@ define(function (require, exports, module) {
 
         this.eventTypes = IDRMapEventModule[1]
 
+        this.regionEx = null
+
         var maxScale = 1.5
 
         var minScale = 0.5
@@ -61,8 +63,6 @@ define(function (require, exports, module) {
         var _svgFrame = null
 
         var _mapViewPort = null
-
-        var _regionData = null
 
         var _floorListControl = null
 
@@ -96,9 +96,9 @@ define(function (require, exports, module) {
 
             _floorListControl.setChangeFloorFunc(this, changeFloor)
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(_svgFrame, _regionData['floorList'], floor)
+            _floorListControl.init(_svgFrame, that.regionEx['floorList'], floor)
         }
 
         var addSvgMap = function(data) {
@@ -150,7 +150,7 @@ define(function (require, exports, module) {
 
             if (!map) {
 
-                var floor = _regionData.getFloorbyId(_currentFloorId)
+                var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
                 map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 
@@ -293,7 +293,7 @@ define(function (require, exports, module) {
         
         function onUnitClick(event) {
 
-            var unit = _regionData.getUnitById(_currentFloorId, event.currentTarget.id)
+            var unit = that.regionEx.getUnitById(_currentFloorId, event.currentTarget.id)
 
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
@@ -307,7 +307,7 @@ define(function (require, exports, module) {
                 _units.push(new IDRUnit(unitsInfo[i]))
             }
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             floor.unitList = _units
 
@@ -490,13 +490,13 @@ define(function (require, exports, module) {
 
             var d = scale * Math.cos(rotate)
 
-            markers.forEach(function(unitSvg, index) {
-
-                var marker = markers[index]
+            markers.forEach(function(marker) {
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + marker.position.x + ',' + marker.position.y + ')'
 
-                marker.el.setAttribute('transform', m)
+                marker.el.style.transform = m
+
+                marker.el.style.webkitTransform = m
             })
         }
 
@@ -510,7 +510,7 @@ define(function (require, exports, module) {
 
             var d = scale * Math.cos(rotate)
 
-            _unitDivs.forEach(function(unitSvg, index) {
+            _unitDivs.forEach(function(unitSvg) {
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
 
@@ -568,7 +568,7 @@ define(function (require, exports, module) {
 
                 idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
-                    _regionData = new IDRRegionEx(regionAllInfo)
+                    that.regionEx = new IDRRegionEx(regionAllInfo)
 
                     _regionId = regionId
 
@@ -817,7 +817,7 @@ define(function (require, exports, module) {
         
         function updateMinScale() {
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             var mapHeight = floor.height
 
@@ -836,7 +836,7 @@ define(function (require, exports, module) {
 
             console.log('resetMap')
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             var mapHeight = floor.height
 
