@@ -653,9 +653,9 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
-            // marker.el.setAttribute('transform-origin', '50% 100% 0')
+            marker.el.style.transform =  '50% 100% 0'
             //
-            // marker.el.style.webkitTransformOrigin = '50% 100% 0'
+            marker.el.style.webkitTransformOrigin = '50% 100% 0'
 
             marker.el.setAttribute('transform', trans)
 
