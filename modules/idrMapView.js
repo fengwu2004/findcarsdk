@@ -48,6 +48,8 @@ define(function (require, exports, module) {
 
         var minScale = 0.5
 
+        var _containerId = null
+
         var _currentPos = null
 
         var _regionId = null
@@ -289,9 +291,9 @@ define(function (require, exports, module) {
             }
         }
         
-        function onUnitClick(ele) {
+        function onUnitClick(event) {
 
-            var unit = _regionData.getUnitById(_currentFloorId, ele.currentTarget.id)
+            var unit = _regionData.getUnitById(_currentFloorId, event.currentTarget.id)
 
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
@@ -556,9 +558,11 @@ define(function (require, exports, module) {
             retriveSvgDataAndShow()
         }
         
-        function initMap(regionId) {
+        function initMap(appid, containerId, regionId) {
 
-            IDRCoreManager.init(function() {
+            _containerId = containerId
+
+            IDRCoreManager.init(appid, function() {
 
                 idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
@@ -638,9 +642,9 @@ define(function (require, exports, module) {
 
             marker.addToSuperView(_mapViewPort)
 
-            var x = marker.position.x - marker.el.width.baseVal.value * 0.5//use bottom middle
+            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
 
-            var y = marker.position.y - marker.el.height.baseVal.value//use bottom middle
+            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
             var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
@@ -673,9 +677,9 @@ define(function (require, exports, module) {
             return null
         }
 
-        function onMarkerClick(ele) {
+        function onMarkerClick(event) {
 
-            var markerId = ele.currentTarget.id
+            var markerId = event.currentTarget.id
 
             var marker = findMarker(_currentFloorId, markerId)
 

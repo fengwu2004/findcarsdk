@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 
     }
 
-    idrCoreManager.prototype.init = function(initSuccessFunc, initFailedFunc) {
+    idrCoreManager.prototype.init = function(appid, initSuccessFunc, initFailedFunc) {
 
         var that = this;
 
@@ -29,7 +29,7 @@ define(function(require, exports, module) {
 
                 data: {
 
-                    'appId': '2b497ada3b2711e4b60500163e0e2e6b'
+                    'appId': appid
                 },
 
                 timeOut: 10000,
