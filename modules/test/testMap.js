@@ -6,7 +6,7 @@ seajs.use([
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/idrMapView',
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRMapMarker/IDRMapMarker'], function (idrMapView, idrMapMarker) {
 
-    var regionId = '14768430475240022'
+    var regionId = '14639999225470024'
 
     var idrCarMarker = idrMapMarker['IDRCarMarker']
 
