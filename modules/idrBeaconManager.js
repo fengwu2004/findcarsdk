@@ -112,7 +112,7 @@ define(function (require, exports, module) {
 
                         var beacons = argv.beacons;
 
-                        if (count < 5) {
+                        if (count < 2) {
 
                             alert(onBeaconReceiveFunc)
 
