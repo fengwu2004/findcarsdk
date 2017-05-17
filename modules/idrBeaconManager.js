@@ -22,6 +22,8 @@ define(function (require, exports, module) {
 
         var onBeaconReceiveFunc = onReceiceFunc
 
+        var count = 0;
+
         var self = this
 
         this.init = function() {
@@ -110,7 +112,12 @@ define(function (require, exports, module) {
 
                         var beacons = argv.beacons;
 
-                        // alert(onBeaconReceiveFunc)
+                        if (count < 5) {
+
+                            alert(onBeaconReceiveFunc)
+
+                            count++
+                        }
 
                         if (onBeaconReceiveFunc) {
 
