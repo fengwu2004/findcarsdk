@@ -55,7 +55,7 @@ define(function (require, exports, module) {
             return newBeacons;
         }
 
-        var onReceiveBeacons = function(beacons) {
+        function onReceiveBeacons(beacons) {
 
             alert('接收到蓝牙')
 
