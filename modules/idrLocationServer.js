@@ -84,12 +84,7 @@ define(function (require, exports, module) {
 
             }, function(str) {
 
-                if (count < 2) {
-
-                    count++
-
-                    alert("失败")
-                }
+                alert("失败")
             })
         }
 
