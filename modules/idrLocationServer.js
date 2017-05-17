@@ -70,6 +70,8 @@ define(function (require, exports, module) {
 
             networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
 
+                alert("成功")
+
                 _x = data.x;
 
                 _y = data.y;
@@ -86,7 +88,7 @@ define(function (require, exports, module) {
 
                     count++
 
-                    alert(str)
+                    alert("失败")
                 }
             })
         }
