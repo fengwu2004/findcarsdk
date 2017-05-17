@@ -113,8 +113,6 @@ define(function (require, exports, module) {
 
                     if (obj.onBeaconReceiveFunc) {
 
-                        alert('开启蓝牙2');
-
                         obj.onBeaconReceiveFunc(beacons);
                     }
                 }
