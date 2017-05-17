@@ -260,6 +260,8 @@ define(function (require, exports, module) {
                     if (typeof success === 'function') {
 
                         success(obj)
+
+                        addDebug("成功")
                     }
                 }
             },
@@ -269,6 +271,8 @@ define(function (require, exports, module) {
                 if (typeof failed === 'function') {
 
                     failed(str)
+
+                    addDebug("失败")
                 }
             }
         });
