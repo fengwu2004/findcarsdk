@@ -111,6 +111,8 @@ define(function (require, exports, module) {
 
                     var beacons = argv.beacons;
 
+                    alert(obj)
+
                     if (obj.onBeaconReceiveFunc) {
 
                         obj.onBeaconReceiveFunc(beacons);
@@ -134,7 +136,6 @@ define(function (require, exports, module) {
     }
 
     function resetBeacons() {
-
 
         wx.startSearchBeacons({
 
