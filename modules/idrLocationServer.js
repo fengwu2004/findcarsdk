@@ -61,7 +61,7 @@ define(function (require, exports, module) {
 
             var beaconParas = JSON.stringify(newBeacons)
 
-            alert('接受到蓝牙')
+            alert('接收到蓝牙')
 
             onServerLocate(beaconParas)
         }

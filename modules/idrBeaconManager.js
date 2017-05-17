@@ -111,6 +111,8 @@ define(function (require, exports, module) {
 
                     var beacons = argv.beacons;
 
+                    alert('开启蓝牙2');
+
                     if (obj.onBeaconReceiveFunc) {
 
                         obj.onBeaconReceiveFunc(beacons);
