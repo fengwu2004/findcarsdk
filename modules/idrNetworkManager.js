@@ -189,6 +189,13 @@ define(function (require, exports, module) {
         });
     }
 
+    function addDebug(str) {
+
+        var label = document.getElementById('debug')
+
+        label.innerText = str
+    }
+
     idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
 
         var domain = 'http://wx.indoorun.com';
@@ -206,6 +213,8 @@ define(function (require, exports, module) {
             'clientId': coreManager.clientId,
             'sessionKey': coreManager.sessionKey
         };
+
+        addDebug('网络请求')
 
         // console.log(data);
 
