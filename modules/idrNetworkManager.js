@@ -251,7 +251,7 @@ define(function (require, exports, module) {
 
             success: function (obj) {
 
-                addDebug("成功")
+                addDebug(ShowTheObject(obj))
 
                 if (obj.code !== 'failed') {
 
