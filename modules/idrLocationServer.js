@@ -82,15 +82,11 @@ define(function (require, exports, module) {
 
         this.start = function (regionId, floorId, onLocateSuccess) {
 
-            alert('启动成功1');
-
             _onLocateSuccess = onLocateSuccess
 
             _beaconsMgr.init();
 
             _beaconsMgr.delegator = this;
-
-            // alert('启动成功1');
         }
     }
 
