@@ -232,10 +232,6 @@ define(function (require, exports, module) {
 
         count++
 
-        // addDebug('网络请求' + count.toString() + ShowTheObject(data))
-
-        // console.log(data);
-
         jsLib.ajax({
 
             type:'get',
