@@ -200,6 +200,18 @@ define(function (require, exports, module) {
         label.style.zIndex="2"
     }
 
+    function ShowTheObject(obj){
+
+        var des = "";
+
+        for(var name in obj){
+
+            des += name + ":" + obj[name] + ";";
+        }
+
+        return des
+    }
+
     idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
 
         var domain = 'http://wx.indoorun.com';
@@ -220,7 +232,7 @@ define(function (require, exports, module) {
 
         count++
 
-        addDebug('网络请求' + count.toString() + url)
+        addDebug('网络请求' + count.toString() + ShowTheObject(data))
 
         // console.log(data);
 
