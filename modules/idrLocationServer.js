@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
 
-        _onLocateSuccess = onLocateSuccess;
+        _onLocateSuccess = null;
 
         var filterbeacons = function(beacons) {
 
@@ -83,6 +83,8 @@ define(function (require, exports, module) {
         this.start = function (regionId, floorId, onLocateSuccess) {
 
             alert('启动成功1');
+
+            _onLocateSuccess = onLocateSuccess
 
             _beaconsMgr.init();
 
