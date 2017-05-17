@@ -12,8 +12,6 @@ define(function (require, exports, module) {
 
     function idrBeaconMgr(onReceiceFunc) {
 
-        alert(onReceiceFunc)
-
         var sAppId = '';
 
         var iTimestamp = '';
