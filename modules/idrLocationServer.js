@@ -21,6 +21,8 @@ define(function (require, exports, module) {
 
         var _y = 0
 
+        var count = 0
+
         var _onLocateSuccess = null
 
         var _onLocateFailed = null
@@ -65,6 +67,13 @@ define(function (require, exports, module) {
         }
 
         var onServerLocate = function(beacons) {
+
+            if (count < 1) {
+
+                count++
+
+                alert(beacons)
+            }
 
             networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
 
