@@ -85,6 +85,8 @@ define(function (require, exports, module) {
             _beaconsMgr.init();
 
             _beaconsMgr.delegator = this;
+
+            alert('启动成功1');
         }
     }
 
