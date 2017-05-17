@@ -85,8 +85,6 @@ define(function (require, exports, module) {
             _beaconsMgr.init();
 
             _beaconsMgr.delegator = this;
-
-            onReceiveBeacons()
         }
     }
 
