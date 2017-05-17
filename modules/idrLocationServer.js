@@ -25,9 +25,7 @@ define(function (require, exports, module) {
 
         var _onLocateFailed = null
 
-        var _beaconsMgr = new BeaconMgr()
-
-        _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
+        var _beaconsMgr = new BeaconMgr(onReceiveBeacons)
 
         _onLocateSuccess = null;
 

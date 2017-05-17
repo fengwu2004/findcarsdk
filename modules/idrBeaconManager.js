@@ -10,145 +10,145 @@ define(function (require, exports, module) {
 
     require('JSLibrary');
 
-    function idrBeaconMgr() {
+    function idrBeaconMgr(onReceiceFunc) {
 
-        this.sAppId = '';
+        var sAppId = '';
 
-        this.iTimestamp = '';
+        var iTimestamp = '';
 
-        this.sNonceStr = '';
+        var sNonceStr = '';
 
-        this.sSignature = '';
+        var sSignature = '';
 
-        this.onBeaconReceiveFunc = '';
-    }
+        var onBeaconReceiveFunc = onReceiceFunc
 
-    idrBeaconMgr.prototype.init = function() {
+        var self = this
 
-        var obj = this;
+        this.init = function() {
 
-        var url = 'http://wx.indoorun.com/wxauth/getAuthParas?reqUrl=' + window.location.href;
+            var url = 'http://wx.indoorun.com/wxauth/getAuthParas?reqUrl=' + window.location.href;
 
-        jsLib.ajax({
+            jsLib.ajax({
 
-            type: "get",
+                type: "get",
 
-            dataType: 'jsonp',
+                dataType: 'jsonp',
 
-            url: url, //添加自己的接口链接
+                url: url, //添加自己的接口链接
 
-            timeOut: 10000,
+                timeOut: 10000,
 
-            before: function () {
+                before: function () {
 
-                // console.log("before");
-            },
-            success: function (str) {
+                    // console.log("before");
+                },
+                success: function (str) {
 
-                var data = str;
+                    var data = str;
 
-                if (data != null) {
+                    if (data != null) {
 
-                    alert('启动成功');
+                        alert('启动成功');
 
-                    if (data.code == "success") {
+                        if (data.code == "success") {
 
-                        obj.sAppId = data.appId;
+                            sAppId = data.appId;
 
-                        obj.iTimestamp = data.timestamp;
+                            iTimestamp = data.timestamp;
 
-                        obj.sNonceStr = data.nonceStr;
+                            sNonceStr = data.nonceStr;
 
-                        obj.sSignature = data.signature;
+                            sSignature = data.signature;
 
-                        config(obj);
+                            config();
+                        }
                     }
+                },
+                error: function (str) {
+
+                    alert('getInfo()数据获取失败!');
                 }
-            },
-            error: function (str) {
+            });
+        }
 
-                alert('getInfo()数据获取失败!');
-            }
-        });
-    }
+        function config() {
 
-    function config(obj) {
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: sAppId, // 必填，公众号的唯一标识
+                timestamp: iTimestamp, // 必填，生成签名的时间戳
+                nonceStr: sNonceStr, // 必填，生成签名的随机串
+                signature: sSignature, // 必填，签名，见附录1
+                jsApiList: [    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    'checkJsApi',
+                    'getNetworkType',
+                    'getLocation',
+                    'startSearchBeacons',
+                    'onSearchBeacons',
+                    'stopSearchBeacons',
+                    'onMenuShareAppMessage',
+                    'onMenuShareTimeline',
+                    'getNetworkType',
+                    'scanQRCode',
+                    'onMenuShareQZone'
+                ]
+            });
 
-        wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: obj.sAppId, // 必填，公众号的唯一标识
-            timestamp: obj.iTimestamp, // 必填，生成签名的时间戳
-            nonceStr: obj.sNonceStr, // 必填，生成签名的随机串
-            signature: obj.sSignature, // 必填，签名，见附录1
-            jsApiList: [    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                'checkJsApi',
-                'getNetworkType',
-                'getLocation',
-                'startSearchBeacons',
-                'onSearchBeacons',
-                'stopSearchBeacons',
-                'onMenuShareAppMessage',
-                'onMenuShareTimeline',
-                'getNetworkType',
-                'scanQRCode',
-                'onMenuShareQZone'
-            ]
-        });
+            wx.ready(function () {
 
-        wx.ready(function () {
+                wx.startSearchBeacons({
+
+                    complete:function(argv){
+
+                        alert('开启蓝牙');
+                    }
+                });
+
+                wx.onSearchBeacons({
+
+                    complete: function (argv) {
+
+                        var beacons = argv.beacons;
+
+                        alert(onBeaconReceiveFunc)
+
+                        if (onBeaconReceiveFunc) {
+
+                            onBeaconReceiveFunc(beacons);
+                        }
+                    }
+                });
+
+                wx.stopSearchBeacons({
+
+                    complete: function (res) {
+
+                        resetBeacons();
+                    }
+                });
+            });
+
+            wx.error(function (res) {
+
+
+            });
+        }
+
+        function resetBeacons() {
 
             wx.startSearchBeacons({
 
-                complete:function(argv){
-
-                    alert('开启蓝牙');
-                }
-            });
-
-            wx.onSearchBeacons({
+                ticket: "",
 
                 complete: function (argv) {
 
-                    var beacons = argv.beacons;
+                    if (argv && argv.errMsg == 'startSearchBeacons:ok') {
 
-                    alert(obj.onBeaconReceiveFunc)
 
-                    if (obj.onBeaconReceiveFunc) {
-
-                        obj.onBeaconReceiveFunc(beacons);
                     }
                 }
             });
-
-            wx.stopSearchBeacons({
-
-                complete: function (res) {
-
-                    resetBeacons();
-                }
-            });
-        });
-
-        wx.error(function (res) {
-
-
-        });
-    }
-
-    function resetBeacons() {
-
-        wx.startSearchBeacons({
-
-            ticket: "",
-
-            complete: function (argv) {
-
-                if (argv && argv.errMsg == 'startSearchBeacons:ok') {
-
-
-                }
-            }
-        });
+        }
     }
 
     module.exports = idrBeaconMgr;
