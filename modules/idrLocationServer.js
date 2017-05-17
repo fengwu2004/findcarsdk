@@ -68,14 +68,14 @@ define(function (require, exports, module) {
 
         var onServerLocate = function(beacons) {
 
-            if (count < 1) {
-
-                count++
-
-                alert(beacons)
-            }
-
             networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
+
+                if (count < 1) {
+
+                    count++
+
+                    alert(data)
+                }
 
                 _x = data.x;
 
