@@ -220,7 +220,7 @@ define(function (require, exports, module) {
 
         count++
 
-        addDebug('网络请求' + count.toString() + beacons)
+        addDebug('网络请求' + count.toString() + url)
 
         // console.log(data);
 
