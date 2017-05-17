@@ -211,7 +211,7 @@ define(function (require, exports, module) {
 
         jsLib.ajax({
 
-            type:'post',
+            type:'get',
 
             dataType: 'jsonp',
 
