@@ -194,6 +194,8 @@ define(function (require, exports, module) {
         var label = document.getElementById('debug')
 
         label.innerText = str
+
+        label.style.zIndex="2"
     }
 
     idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
