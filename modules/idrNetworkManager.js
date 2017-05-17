@@ -7,6 +7,8 @@ define(function (require, exports, module) {
 
     var networkInstance = new idrNetworkManager();
 
+    var count = 0
+
     function idrNetworkManager() {
 
     }
@@ -216,7 +218,9 @@ define(function (require, exports, module) {
             'sessionKey': coreManager.sessionKey
         };
 
-        addDebug('网络请求' + data.toString())
+        count++
+
+        addDebug('网络请求' + count.toString() + data.toString())
 
         // console.log(data);
 

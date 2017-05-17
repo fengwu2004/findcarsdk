@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         var _beaconsMgr = new BeaconMgr(onReceiveBeacons)
 
-        alert('error' + onReceiveBeacons)
+        // alert('error' + onReceiveBeacons)
 
         _onLocateSuccess = null;
 
