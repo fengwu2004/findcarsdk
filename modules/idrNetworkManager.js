@@ -216,7 +216,7 @@ define(function (require, exports, module) {
             'sessionKey': coreManager.sessionKey
         };
 
-        addDebug('网络请求' + data)
+        addDebug('网络请求' + data.toString())
 
         // console.log(data);
 
