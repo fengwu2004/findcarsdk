@@ -110,7 +110,7 @@ define(function (require, exports, module) {
 
                         var beacons = argv.beacons;
 
-                        alert(onBeaconReceiveFunc)
+                        // alert(onBeaconReceiveFunc)
 
                         if (onBeaconReceiveFunc) {
 
