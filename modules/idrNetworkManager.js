@@ -251,24 +251,28 @@ define(function (require, exports, module) {
 
             success: function (obj) {
 
+                addDebug("成功")
+
                 if (obj.code !== 'failed') {
 
                     if (typeof success === 'function') {
 
                         success(obj)
 
-                        addDebug("成功")
+
                     }
                 }
             },
 
             error: function (str) {
 
+                addDebug("失败")
+
                 if (typeof failed === 'function') {
 
                     failed(str)
 
-                    addDebug("失败")
+
                 }
             }
         });
