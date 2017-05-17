@@ -70,13 +70,6 @@ define(function (require, exports, module) {
 
             networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
 
-                if (count < 1) {
-
-                    count++
-
-                    alert(data)
-                }
-
                 _x = data.x;
 
                 _y = data.y;
@@ -86,7 +79,16 @@ define(function (require, exports, module) {
                 _regionId = data.regionId;
 
                 _onLocateSuccess(_x + ', ' + _y);
-            }, null)
+
+            }, function(str) {
+
+                if (count < 2) {
+
+                    count++
+
+                    alert(str)
+                }
+            })
         }
 
         this.start = function (regionId, floorId, onLocateSuccess) {
