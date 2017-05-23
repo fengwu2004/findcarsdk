@@ -651,7 +651,7 @@ define(function (require, exports, module) {
 
             var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
-            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+            var trans = 'matrix(' + _origScale/_mapScale+ ',' + 0 + ',' + 0 + ',' + _origScale/_mapScale + ',' + x + ',' + y + ')'
 
             marker.el.style.transform = trans
 
