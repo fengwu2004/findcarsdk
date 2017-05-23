@@ -4,7 +4,7 @@
     background-color: #4CAF50;
     bottom:0;
     width: 32%;
-    position: relative;
+    position: absolute;
     padding: 5px 15px 5px 15px;
     text-align: center;
 }
