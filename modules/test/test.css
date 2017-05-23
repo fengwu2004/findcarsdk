@@ -2,10 +2,11 @@
 
     color: #FFFFFF;
     width: 33.33%;
-    padding: 30px 15px 30px 15px;
+    padding: 15px 15px 15px 15px;
     border: 1px solid #00ff00;
     text-align: center;
     float: left;
+    background-color: lime;
 }
 
 .bottomBar{
