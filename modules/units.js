@@ -10,6 +10,7 @@ define(function (require, exports, module) {
     var oUtils = new Utils();
     var Maputils = require('./maputils');
     var oMapUtils = new Maputils();
+    var networkInstance = require('./idrNetworkManager');
 
 
     function Unit() {
@@ -25,67 +26,33 @@ define(function (require, exports, module) {
     };
 
     Unit.prototype = {
+
         constructors: Unit,
 
         //获取文字
         getTxtList: function (regionId, floorId) {
-            // var regionId, floorId;
-            if (regionId && floorId) {
-                regionId = regionId;
-                floorId = floorId;
-            } else {
-                regionId = gV.regionId;
-                floorId = gV.floorId;
-            }
-            var url = 'http://wx.indoorun.com/wx/getUnitsOfFloor.html';
 
-            jsLib.ajax({
-                type: "get",
-                dataType: 'jsonp',
-                url: url, //添加自己的接口链接
-                data: {'regionId': regionId, 'floorId': floorId, 'appId': gV.configure.appId, 'clientId': gV.configure.clientId, 'sessionKey': gV.configure.sessionKey},
-                timeOut: 10000,
-                before: function () {
-                },
-                success: function (str) {
-                    var data = str;
-                    if (data != null) {
-                        if (data.code == "success") {
-                            var units = data.data;
-                            UnitData.allUnits = [];
-                            for (var i = 0; i < units.length; i++) {
-                                UnitData.allUnits.push(units[i]);
-                            };
-                            Unit.prototype.textTransformation(units);
-                        }
-                    }
+            networkInstance.serverCallUnits(regionId, floorId,
 
+                function (data) {
+
+                    var units = data;
+
+                    UnitData.allUnits = [];
+
+                    for (var i = 0; i < units.length; i++) {
+
+                        UnitData.allUnits.push(units[i]);
+                    };
+
+                    Unit.prototype.textTransformation(units);
                 },
-                error: function (str) {
+
+                function () {
+
                     alert('获取unit失败!' + str);
                 }
-            });
-
-            /*oUtils.RequestData.ajax(url, {
-                data: {'regionId': regionId, 'floorId': floorId},
-                fnSucc: function (str) {
-                    str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');
-                    if (data != null) {
-                        if (data.code == "success") {
-                            var units = data.data;
-                            UnitData.allUnits = [];
-                            for (var i = 0; i < units.length; i++) {
-                                UnitData.allUnits.push(units[i]);
-                            };
-                            Unit.prototype.textTransformation(units);
-                        }
-                    }
-                },
-                fnFaild: function (str) {
-                    alert('获取unit失败!' + str);
-                },
-            });*/
+            )
         },
 
         // 文字变化

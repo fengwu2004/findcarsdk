@@ -1,0 +1,12 @@
+
+#composs{
+	position: absolute;
+	left: 20px;
+	top: 30px;
+	width: 36px;
+	height: 36px;
+	transform: rotate(0deg);
+	background-color: transparent;
+	background-size: cover;
+	background-image: url("../../images/resetMap.png");
+}
