@@ -6,28 +6,42 @@ seajs.use([
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/idrMapView',
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRMapMarker/IDRMapMarker'], function (idrMapView, idrMapMarker) {
 
-    var regionId = '14671790606720222'
+    var map = loadMap()
 
-    var idrCarMarker = idrMapMarker['IDRCarMarker']
+    function loadMap() {
 
-    var map = new idrMapView()
+        var regionId = '14671790606720222'
 
-    map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
+        var idrCarMarker = idrMapMarker['IDRCarMarker']
 
-        var marker = new idrCarMarker(unit.getPos())
+        var map = new idrMapView()
 
-        map.addMarker(marker)
-    })
+        map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
-    map.addEventListener(map.eventTypes.onFloorChangeSuccess, function(data) {
+            var marker = new idrCarMarker(unit.getPos())
 
-        console.log(data)
-    })
+            map.addMarker(marker)
+        })
 
-    map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
+        map.addEventListener(map.eventTypes.onFloorChangeSuccess, function(data) {
 
-        map.changeFloor(regionEx.floorList[0].id)
-    })
+            console.log(data)
+        })
 
-    map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
+        map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
+
+            map.changeFloor(regionEx.floorList[0].id)
+        })
+
+        map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
+
+        return map
+    }
+
+    function addDebug() {
+
+        var main = document.getElementById('main')
+
+        var button = document.createElement('')
+    }
 });
