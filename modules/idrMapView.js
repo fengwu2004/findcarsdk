@@ -473,6 +473,23 @@ define(function (require, exports, module) {
             _mapRotate = mdecompose.a
         }
 
+        function updateMarkerScaleAngle(marker, scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + marker.position.x + ',' + marker.position.y + ')'
+
+            marker.el.style.transform = m
+
+            marker.el.style.webkitTransform = m
+        }
+
          function updateMarkersAngleAndScale(scale, rotate) {
 
             var markers = _markers[_currentFloorId]
@@ -651,7 +668,7 @@ define(function (require, exports, module) {
 
             var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
-            var trans = 'matrix(' + _origScale/_mapScale+ ',' + 0 + ',' + 0 + ',' + _origScale/_mapScale + ',' + x + ',' + y + ')'
+            var trans = 'matrix(' + _origScale+ ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
             marker.el.style.transform = trans
 
@@ -662,6 +679,8 @@ define(function (require, exports, module) {
             marker.el.style.webkitTransformOrigin = '50% 100% 0'
 
             marker.el.addEventListener('click', onMarkerClick, true)
+
+            updateMarkerScaleAngle(marker, _mapScale, _mapRotate)
 
             return marker
         }
