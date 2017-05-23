@@ -2,10 +2,9 @@
 
     color: #FFFFFF;
     background-color: #4CAF50;
-    position: fixed;
     bottom:0;
     left: 0;
-    width: 33%;
+    width: 33.33%;
     padding: 50px 30px 50px 80px;
     text-align: center;
 }
