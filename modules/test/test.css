@@ -1,9 +1,9 @@
 .bottomButton{
 
     color: #FFFFFF;
-    border-color: lime;
-    width: 32%;
-    padding: 10px 15px 10px 15px;
+    width: 33%;
+    padding: 30px 15px 30px 15px;
+    border-width: 0;
     text-align: center;
 }
 
