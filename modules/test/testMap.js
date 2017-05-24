@@ -10,7 +10,7 @@ seajs.use([
 
     function loadMap() {
 
-        var regionId = '14633645971891335'
+        var regionId = '14428254382730015'
 
         var idrCarMarker = idrMapMarker['IDRCarMarker']
 
