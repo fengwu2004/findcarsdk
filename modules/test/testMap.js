@@ -10,7 +10,7 @@ seajs.use([
 
     function loadMap() {
 
-        var regionId = '14671790606720222'
+        var regionId = '14428254382730015'
 
         var idrCarMarker = idrMapMarker['IDRCarMarker']
 
@@ -36,12 +36,5 @@ seajs.use([
         map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
 
         return map
-    }
-
-    function addDebug() {
-
-        var main = document.getElementById('main')
-
-        var button = document.createElement('')
     }
 });
