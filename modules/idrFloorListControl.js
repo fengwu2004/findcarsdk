@@ -162,7 +162,7 @@ define(function (require, exports, module) {
 
             var currentNameDiv = jsLib("#currName")
 
-            currentNameDiv.tap(function () {
+            currentNameDiv.click(function () {
 
                 if (floorDiv.toDom().style.display === 'block') {
 
@@ -174,7 +174,7 @@ define(function (require, exports, module) {
                 }
             })
 
-            floorDiv.find('div').tap(function () {
+            floorDiv.find('div').click(function () {
 
                 commMethods.showOrHidddenDiv('floorDiv', false);
 
