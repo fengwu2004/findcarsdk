@@ -94,7 +94,7 @@ define(function (require, exports, module) {
 
             _floorListControl = new idrFloorListControl()
 
-            _floorListControl.setChangeFloorFunc(this, changeFloor)
+            _floorListControl.setChangeFloorFunc(that, changeFloor)
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
