@@ -14,6 +14,7 @@ define(function (require, exports, module) {
                 <br>\
                 <div id="buttons" class="pop_buttons">\
                 </div>\
+                <br>\
                   <input id="inputcontent" type="text" class="pop_inputcontent" placeholder="请输入车位号 例如： 026">\
                     <br>\
                 <label id="errormsg" class="pop_errormsg">输入有误，请重新输入您的车位号！</label>\
