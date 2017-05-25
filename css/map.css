@@ -152,7 +152,7 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
 
 .pop_inputcontent {
     border: 1px solid;
-    height: 80px;
+    height: 20%;
     border-radius: 10px;
     width: 80%;
     font-size: 0.9rem;
