@@ -7,10 +7,10 @@ define(function (require, exports, module) {
     var popUpViewhtml =
         '<div id="pop_backview" class="pop_backview">\
             <div class="pop_centerDiv">\
-            <label style="font-size: 300%;font-weight: 800">手 动 标 记</label>\
+            <label style="font-size: 0.9rem;font-weight: 100">手 动 标 记</label>\
                 <br>\
                 <br>\
-            <label style="font-weight: 100; font-size: 200%; color: gray;"> 请输入您的爱车所停位置的车位号</label>\
+            <label style="font-weight: 100; font-size: 0.6rem; color: gray;"> 请输入您的爱车所停位置的车位号</label>\
                 <br>\
                 <br>\
                 <div id="buttons" class="pop_buttons">\

@@ -126,6 +126,7 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
     bottom: 0;
     height: 100%;
     width: 100%;
+    z-index: 10;
 }
 
 .pop_backview {
@@ -140,7 +141,6 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
     height: 40%;
     background-color: white;
     border-radius: 10px;
-    z-index: 2;
 }
 
 .pop_centerDiv {
@@ -155,40 +155,38 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
     height: 80px;
     border-radius: 10px;
     width: 80%;
-    font-size: 200%;
+    font-size: 0.9rem;
     color: #000!important
 }
 
 .pop_inputcontent::placeholder {
 
     text-align: center;
-    font-size: 100%;
+    font-size: 0.9rem;
 }
 
 .pop_errormsg {
-    font-size: 150%;
+    font-size: 0.9rem;
     color: red;
     margin-left: -100px;
 }
 
 .pop_buttons {
 
-    height:150px;
+    height: 20%;
 }
-
 
 .pop_floorBtn {
 
     display: inline-block;
     border: 1px solid;
-    width: 60px;
-    height: 60px;
+    width: 10%;
+    height: 100%;
     margin-left: 10px;
     margin-right: 10px;
-    font-size: 150%;
-    line-height: 60px;
+    font-size: 0.9rem;
+    line-height: 100%;
     text-align: center;
-
     border-radius: 5px;
 }
 
@@ -204,7 +202,7 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
 
 .pop_confirm {
 
-    font-size: 200%;
+    font-size: 0.9rem;
     width: 80%;
     background-color: #3b06ff;
     border-radius: 10px;
