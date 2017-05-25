@@ -36,7 +36,7 @@ define(function (require, exports, module) {
 
         div.innerHTML = popUpViewhtml
 
-        var main = document.getElementById('main')
+        var main = document.getElementById('page')
 
         main.appendChild(div)
 
