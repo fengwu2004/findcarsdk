@@ -12,9 +12,7 @@ define(function (require, exports, module) {
                 <br>\
             <label style="font-weight: 100; font-size: 0.6rem; color: gray;"> 请输入您的爱车所停位置的车位号</label>\
                 <br>\
-                <br>\
                 <div id="buttons" class="pop_buttons">\
-                <br>\
                 </div>\
                   <input id="inputcontent" type="text" class="pop_inputcontent" placeholder="请输入车位号 例如： 026">\
                     <br>\
@@ -60,6 +58,8 @@ define(function (require, exports, module) {
 
             buttons.appendChild(btn)
         }
+
+        buttons.appendChild(document.createElement('br'))
 
         var confirm = document.getElementById('confirm')
 
