@@ -91,7 +91,7 @@ define(function (require, exports, module) {
             return result
         }
 
-        zip.workerScriptsPath = ''
+        zip.workerScriptsPath = './zip'
 
         function unzipBlob(blob, callback) {
 
