@@ -39,6 +39,8 @@ seajs.use([
             var marker = new IdrCarMarker(startPos)
 
             map.addMarker(marker)
+
+            return
         }
 
         if (endPos == null) {
