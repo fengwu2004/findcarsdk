@@ -596,7 +596,7 @@ define(function (require, exports, module) {
 
                     that.regionEx = new IDRRegionEx(regionAllInfo)
 
-                    router = new IDRRouter(regionId, this.regionEx.floorList, function () {
+                    router = new IDRRouter(regionId, that.regionEx.floorList, function () {
 
                         console.log('path data load success')
                     })
