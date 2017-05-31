@@ -6,37 +6,50 @@ seajs.use([
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/idrMapView',
     'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRMapMarker/IDRMapMarker'], function (idrMapView, idrMapMarker) {
 
-    var map = loadMap()
+    var regionId = '14428254382730015'
 
-    function loadMap() {
+    var map = new idrMapView()
 
-        var regionId = '14428254382730015'
+    var startPos = null
 
-        var idrCarMarker = idrMapMarker['IDRCarMarker']
+    var endPos = null
 
-        var map = new idrMapView()
+    var IdrCarMarker = idrMapMarker['IDRCarMarker']
 
-        map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
+    map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
 
-            var marker = new idrCarMarker(unit.getPos())
+    map.addEventListener(map.eventTypes.onFloorChangeSuccess, function(data) {
+
+        console.log(data)
+    })
+
+    map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
+
+        map.changeFloor(regionEx.floorList[0].id)
+    })
+
+    map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
+
+        if (startPos == null) {
+
+            startPos = unit.getPos()
+
+            var marker = new IdrCarMarker(startPos)
 
             map.addMarker(marker)
-        })
+        }
 
-        map.addEventListener(map.eventTypes.onFloorChangeSuccess, function(data) {
+        if (endPos == null) {
 
-            console.log(data)
-        })
+            endPos = unit.getPos()
 
-        map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
+            var marker = new IdrCarMarker(endPos)
 
-            map.changeFloor(regionEx.floorList[0].id)
-        })
+            map.addMarker(marker)
 
-        map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
-
-        return map
-    }
+            map.navi
+        }
+    })
 
     var startBtn = document.getElementById('startButton')
 

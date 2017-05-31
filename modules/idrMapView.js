@@ -22,6 +22,8 @@ define(function (require, exports, module) {
 
     var _idrPath = IDRPath()
 
+    var IDRRouter = require('./idrRouter')
+
     var IDRRegionEx = require('./idrRegionEx')
 
     var IDRUnit = require('./idrUnit')
@@ -45,6 +47,8 @@ define(function (require, exports, module) {
         this.eventTypes = IDRMapEventModule[1]
 
         this.regionEx = null
+
+        var router = null
 
         var maxScale = 1.5
 
@@ -258,6 +262,11 @@ define(function (require, exports, module) {
 
                 unitSvg.setAttribute('transform', trans)
             }
+        }
+        
+        function doRoute(start, end) {
+
+            router
         }
         
         function showRoutePath(paths) {
@@ -586,6 +595,11 @@ define(function (require, exports, module) {
                 idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
                     that.regionEx = new IDRRegionEx(regionAllInfo)
+
+                    router = new IDRRouter(regionId, this.regionEx.floorList, function () {
+
+                        console.log('path data load success')
+                    })
 
                     _regionId = regionId
 

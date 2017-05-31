@@ -247,5 +247,60 @@ define(function (require, exports, module) {
         });
     }
 
+    idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, failed) {
+
+        var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?'
+
+        var data = {
+            'regionId': regionId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        jsLib.ajax({
+
+            type: "get",
+
+            dataType: 'jsonp',
+
+            url: url, //添加自己的接口链接
+
+            data: data,
+
+            timeOut: 10000,
+
+            before:function () {
+
+            },
+
+            success:function (response) {
+
+                if (response != null && response.code == "success") {
+
+                    if (typeof success === "function") {
+
+                        success(response.data);
+                    }
+                }
+                else {
+
+                    if (typeof failed === "function") {
+
+                        failed(response);
+                    }
+                }
+            },
+
+            error:function (response) {
+
+                if (typeof failed === "function") {
+
+                    failed(response);
+                }
+            }
+        });
+    }
+
     module.exports = networkInstance;
 });
