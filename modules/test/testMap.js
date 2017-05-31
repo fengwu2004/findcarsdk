@@ -6,7 +6,7 @@ modules = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/'
 
 seajs.use([
     modules + 'idrMapView',
-    modules + 'IDRMapMarker'], function (idrMapView, idrMapMarker) {
+    modules + 'IDRMapMarker/IDRMapMarker'], function (idrMapView, idrMapMarker) {
 
     var regionId = '14428254382730015'
 
