@@ -2,9 +2,11 @@
  * Created by yan on 28/02/2017.
  */
 
+modules = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/‘
+
 seajs.use([
-    'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/idrMapView',
-    'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRMapMarker/IDRMapMarker'], function (idrMapView, idrMapMarker) {
+    modules + 'idrMapView',
+    modules + 'IDRMapMarker'], function (idrMapView, idrMapMarker) {
 
     var regionId = '14428254382730015'
 
