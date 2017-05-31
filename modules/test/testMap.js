@@ -37,4 +37,31 @@ seajs.use([
 
         return map
     }
+
+    var startBtn = document.getElementById('startButton')
+
+    startBtn.addEventListener('click', onStart)
+
+    function onStart() {
+
+        console.log('onStart')
+    }
+
+    var endBtn = document.getElementById('endButton')
+
+    endBtn.addEventListener('click', onEnd)
+
+    function onEnd() {
+
+        console.log('onEnd')
+    }
+
+    var navigateBtn = document.getElementById('navigateButton')
+
+    navigateBtn.addEventListener('click', onNavigate)
+
+    function onNavigate() {
+
+        console.log('onNavigate')
+    }
 });
