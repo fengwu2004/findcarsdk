@@ -2,7 +2,7 @@
  * Created by yan on 28/02/2017.
  */
 
-modules = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/‘
+modules = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/'
 
 seajs.use([
     modules + 'idrMapView',
