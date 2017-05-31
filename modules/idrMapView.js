@@ -266,7 +266,9 @@ define(function (require, exports, module) {
         
         function doRoute(start, end) {
 
-            router
+            var path = router.routerPath(start, end, false)
+
+            console.log(path)
         }
         
         function showRoutePath(paths) {
@@ -954,6 +956,8 @@ define(function (require, exports, module) {
         this.removeEventListener = removeEventListener
 
         this.fireEvent = fireEvent
+
+        this.doRoute = doRoute
     }
 
     module.exports = idrMapView;

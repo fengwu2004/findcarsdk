@@ -49,7 +49,7 @@ seajs.use([
 
             map.addMarker(marker)
 
-            map.navi
+            map.doRoute(startPos, endPos)
         }
     })
 
