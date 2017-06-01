@@ -195,6 +195,10 @@ define(function (require, exports, module) {
 
         var url = domain + '/locate/locating';
 
+        domain = "http://localhost:3000"
+
+        url = domain + '/users/locating'
+
         var data = {
             'beacons': beacons,
             'gzId': 'ewr2342342',
