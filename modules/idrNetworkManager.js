@@ -306,7 +306,24 @@ define(function (require, exports, module) {
         });
     }
 
-    idrNetworkManager.prototype.ajax = function(url, data, success, failed) {
+    idrNetworkManager.prototype.serverCallLocate = function(regionId, floorId, success, failed) {
+
+        var data = {
+            'gzId': 'ewr2342342',
+            'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+            'OSType': 'iPhone',
+            'regionId': regionId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        var url = "http://localhost:3000/users/locating"
+
+        ajax(url, data, success, failed)
+    }
+
+    function ajax(url, data, success, failed) {
 
         var xhr = new XMLHttpRequest();
 
