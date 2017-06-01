@@ -20,8 +20,6 @@ define(function (require, exports, module) {
 
     var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
 
-    var _idrPath = IDRPath()
-
     var IDRRouter = require('./idrRouter')
 
     var IDRRegionEx = require('./idrRegionEx')
@@ -93,6 +91,8 @@ define(function (require, exports, module) {
         var _composs = null
 
         var that = this
+
+        var _idrPath = new IDRPath()
 
         function addFloorList() {
 
@@ -264,11 +264,31 @@ define(function (require, exports, module) {
             }
         }
         
+        function getTargetFloorPoints(path, floorId) {
+
+            for (var i = 0; i < path.paths.length; ++i) {
+
+                var floorPath = path.paths[i]
+
+                if (floorPath.floorId === _currentFloorId) {
+
+                    return floorPath.position
+                }
+            }
+
+            return null
+        }
+        
         function doRoute(start, end) {
 
             var path = router.routerPath(start, end, false)
 
-            console.log(path)
+            var currFloorPoints = getTargetFloorPoints(path, _currentFloorId)
+
+            if (currFloorPoints) {
+
+                showRoutePath(currFloorPoints)
+            }
         }
         
         function showRoutePath(paths) {

@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
 	"use strict";
 
-    var IDRSvgPolyLine = function() {
+    function IDRSvgPolyLine() {
 
     	var css = document.createElement('link')
 
@@ -9,7 +9,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRSvgPath/IDRSvgPolyLine.css";
+        css.href = modules + "IDRSvgPath/IDRSvgPolyLine.css";
 
         var header = document.querySelector("head");
 
@@ -344,6 +344,7 @@ define(function (require, exports, module) {
             for (var i = objs.length - 1; i >= 0; i--) {
 
                 var obj = objs[i];
+
                 if (obj.id == "IDRPolyLine") {
 
                     fatherObj.removeChild(objs[i]);
@@ -351,18 +352,16 @@ define(function (require, exports, module) {
             }
         }
 
-        return {
-            getScale: getScale,
-            addScale: addScale,
-            subScale: subScale,
-            addLine: addLine,
-            updateScale: updateScale,
-            updateLine: updateLine,
-            getLineObject: getLineObject,
-            getPolyLineObject: getPolyLineObject,
-            removePath: removePath,
-            removeDot: removeDot
-        }
+        this.getScale = getScale
+        this.addScale = addScale
+        this.subScale = subScale
+        this.addLine = addLine
+        this.updateScale = updateScale
+        this.updateLine = updateLine
+        this.getLineObject = getLineObject
+        this.getPolyLineObject = getPolyLineObject
+        this.removePath = removePath
+        this.removeDot = removeDot
     }
 
     module.exports = IDRSvgPolyLine
