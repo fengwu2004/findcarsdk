@@ -78,7 +78,9 @@ define(function (require, exports, module) {
 
         var _mapRotate = 0
 
-        var _origScale = 1
+        var _origScale = 0.5
+
+        var _markerOrigScale = 1
 
         var _gestures = null
 
@@ -491,7 +493,7 @@ define(function (require, exports, module) {
 
                 // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
 
-                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+                updateMarkersAngleAndScale(_markerOrigScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             if (_composs || _mapRotate !== mdecompose.a) {
@@ -712,7 +714,7 @@ define(function (require, exports, module) {
 
             var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
-            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+            var trans = 'matrix(' + _markerOrigScale + ',' + 0 + ',' + 0 + ',' + _markerOrigScale + ',' + x + ',' + y + ')'
 
             marker.el.style.transform = trans
 
@@ -724,7 +726,7 @@ define(function (require, exports, module) {
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
-            updateMarkerScaleAngle(marker, _origScale/_mapScale, -1 * _mapRotate)
+            updateMarkerScaleAngle(marker, _markerOrigScale/_mapScale, -1 * _mapRotate)
 
             return marker
         }
