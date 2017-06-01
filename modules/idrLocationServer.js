@@ -71,7 +71,7 @@ define(function (require, exports, module) {
                 _beacons = 'empty'
             }
 
-            networkInstance.serverCallLocate(_beacons, _regionId, _floorId, function(data) {
+            networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(data) {
 
                 _x = data.x;
 
