@@ -5,8 +5,6 @@
 
 define(function (require, exports, module) {
 
-    var gv = require('./idrCoreManager');
-
     var BeaconMgr = require('./idrBeaconManager');
 
     var networkInstance = require('./idrNetworkManager')
@@ -29,9 +27,7 @@ define(function (require, exports, module) {
 
         _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
 
-        _onLocateSuccess = onLocateSuccess;
-
-        var filterbeacons = function(beacons) {
+        function filterbeacons(beacons) {
 
             var newBeacons = []
 
@@ -55,7 +51,7 @@ define(function (require, exports, module) {
             return newBeacons;
         }
 
-        var onReceiveBeacons = function(beacons) {
+        function onReceiveBeacons(beacons) {
 
             var newBeacons = filterbeacons(beacons)
 
@@ -64,7 +60,7 @@ define(function (require, exports, module) {
             onServerLocate(beaconParas)
         }
 
-        var onServerLocate = function(beacons) {
+        function onServerLocate(beacons) {
 
             networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
 
@@ -76,15 +72,27 @@ define(function (require, exports, module) {
 
                 _regionId = data.regionId;
 
-                _onLocateSuccess(_x + ', ' + _y);
-            }, null)
+                if (typeof _onLocateSuccess === 'function') {
+
+                    _onLocateSuccess({x:_x, y:_y, floorId:_floorId, regionId:_regionId});
+                }
+
+            }, function (str) {
+
+                if (typeof _onLocateFailed === 'function') {
+
+                    _onLocateFailed(str)
+                }
+            })
         }
 
-        this.start = function (regionId, floorId, onLocateSuccess) {
+        this.start = function (regionId, floorId, onLocateSuccess, onLocateFailed) {
 
             _beaconsMgr.init();
 
-            _beaconsMgr.delegator = this;
+            _onLocateSuccess = onLocateSuccess
+
+            _onLocateFailed = onLocateFailed
 
             onReceiveBeacons()
         }

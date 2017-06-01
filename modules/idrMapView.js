@@ -40,13 +40,17 @@ define(function (require, exports, module) {
 
     var IDRMapEvent = IDRMapEventModule[0]
 
+    var IDRLocationServer = require('./idrLocationServer')
+
     function idrMapView() {
 
         this.eventTypes = IDRMapEventModule[1]
 
         this.regionEx = null
 
-        var router = null
+        var _locator = new IDRLocationServer()
+
+        var _router = null
 
         var maxScale = 1.5
 
@@ -281,9 +285,14 @@ define(function (require, exports, module) {
             return null
         }
         
+        function doLocation(locateCallback) {
+
+            _locator.start(_regionId, _currentFloorId, locateCallback, null)
+        }
+        
         function doRoute(start, end) {
 
-            var path = router.routerPath(start, end, false)
+            var path = _router.routerPath(start, end, false)
 
             var currFloorPoints = getTargetFloorPoints(path, _currentFloorId)
 
@@ -628,7 +637,7 @@ define(function (require, exports, module) {
 
                     that.regionEx = new IDRRegionEx(regionAllInfo)
 
-                    router = new IDRRouter(regionId, that.regionEx.floorList, function () {
+                    _router = new IDRRouter(regionId, that.regionEx.floorList, function () {
 
                         console.log('path data load success')
                     })
@@ -939,6 +948,8 @@ define(function (require, exports, module) {
         
         function setCurrentPos(pos, show) {
 
+            show = typeof show !== 'undefine' ? show : true
+
             _currentPos = pos
 
             if (_idrIndicator == null) {
@@ -990,6 +1001,8 @@ define(function (require, exports, module) {
         this.fireEvent = fireEvent
 
         this.doRoute = doRoute
+
+        this.doLocation = doLocation
     }
 
     module.exports = idrMapView;

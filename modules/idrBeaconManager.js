@@ -135,7 +135,6 @@ define(function (require, exports, module) {
 
     function resetBeacons() {
 
-
         wx.startSearchBeacons({
 
             ticket: "",

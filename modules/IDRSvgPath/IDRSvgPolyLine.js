@@ -121,8 +121,6 @@ define(function (require, exports, module) {
 
             rootElement.appendChild(pathElement)
 
-            // parentNode.appendChild(rootElement);
-
             var markers = document.getElementById('markers')
 
             parentNode.insertBefore(rootElement, markers)
