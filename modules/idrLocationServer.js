@@ -73,13 +73,13 @@ define(function (require, exports, module) {
 
             networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(obj) {
 
-                _x = obj.data.x;
+                _x = obj.data.position.x;
 
-                _y = obj.data.y;
+                _y = obj.data.position.y;
 
-                _floorId = obj.data.floorId;
+                _floorId = obj.data.position.floorId;
 
-                _regionId = obj.data.regionId;
+                _regionId = obj.data.position.regionId;
 
                 if (typeof _onLocateSuccess === 'function') {
 
