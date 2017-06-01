@@ -716,7 +716,7 @@ define(function (require, exports, module) {
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
-            // updateMarkerScaleAngle(marker, _mapScale, _mapRotate)
+            updateMarkerScaleAngle(marker, _mapScale, _mapRotate)
 
             return marker
         }
