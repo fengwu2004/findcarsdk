@@ -71,15 +71,15 @@ define(function (require, exports, module) {
                 _beacons = 'empty'
             }
 
-            networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(data) {
+            networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(obj) {
 
-                _x = data.x;
+                _x = obj.data.x;
 
-                _y = data.y;
+                _y = obj.data.y;
 
-                _floorId = data.floorId;
+                _floorId = obj.data.floorId;
 
-                _regionId = data.regionId;
+                _regionId = obj.data.regionId;
 
                 if (typeof _onLocateSuccess === 'function') {
 
