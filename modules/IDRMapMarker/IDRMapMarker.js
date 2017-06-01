@@ -23,6 +23,8 @@ define(function (require, exports, module) {
                 markers = parent.createAttributeNS('http://www.w3.org/2000/svg','g')
 
                 markers.id = 'markers'
+
+                parent.appendChild(markers)
             }
 
             this.el = document.createElementNS('http://www.w3.org/2000/svg','image')
