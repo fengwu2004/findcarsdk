@@ -121,7 +121,7 @@ define(function (require, exports, module) {
 
             rootElement.appendChild(pathElement)
 
-            parentNode.appendChild(rootElement);
+            // parentNode.appendChild(rootElement);
 
             var markers = parentNode.getElementById('markers')
 
