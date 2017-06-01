@@ -32,10 +32,15 @@ seajs.use([
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
+        doNavi(unit)
+    })
+
+    function addMarker(unit) {
+
         var marker = new IdrCarMarker(unit.getPos())
 
         map.addMarker(marker)
-    })
+    }
     
     function doNavi(unit) {
 
