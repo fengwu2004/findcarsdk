@@ -191,7 +191,7 @@ define(function (require, exports, module) {
                         }
 
                         if (j % defaultDotIndex == 0 && j > 5) {
-                            getXline(currentPos, nextPos, angleObjects, j * factor);
+                            getXline(currentPos, nextPos, angleObjects, j, factor);
                         }
 
                     }
@@ -205,7 +205,7 @@ define(function (require, exports, module) {
                         }
 
                         if (j % defaultDotIndex == 0 && j > 5) {
-                            getYline(currentPos, nextPos, angleObjects, j * factor);
+                            getYline(currentPos, nextPos, angleObjects, j, factor);
                         }
 
                     }
@@ -266,15 +266,15 @@ define(function (require, exports, module) {
         }
 
 		/*======================X坐标相同情况下的路线箭头============*/
-        function getXline(currentPos, nextPos, angleObjects, j) {
+        function getXline(currentPos, nextPos, angleObjects, j, factor) {
 
             var polyObj = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 
             var x = currentPos.x;
-            var y = currentPos.y + j;
+            var y = currentPos.y + j * factor;
 
             var x1 = x - defaulDotWidth / Math.sqrt(2);
-            var y1 = y - defaulDotWidth / Math.sqrt(2);
+            var y1 = y - factor * defaulDotWidth / Math.sqrt(2);
 
             var x2 = x + defaulDotWidth / Math.sqrt(2);
             var y2 = y1;
@@ -290,14 +290,14 @@ define(function (require, exports, module) {
         }
 
 		/*======================Y坐标相同情况下的路线箭头============*/
-        function getYline(currentPos, nextPos, angleObjects, j) {
+        function getYline(currentPos, nextPos, angleObjects, j, factor) {
 
             var polyObj = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 
-            var x = currentPos.x + j;
+            var x = currentPos.x + j * factor;
             var y = currentPos.y;
 
-            var x1 = x - defaulDotWidth / Math.sqrt(2);
+            var x1 = x - factor * defaulDotWidth / Math.sqrt(2);
             var y1 = y - defaulDotWidth / Math.sqrt(2);
 
             var x2 = x1;
