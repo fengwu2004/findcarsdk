@@ -123,6 +123,10 @@ define(function (require, exports, module) {
 
             parentNode.appendChild(rootElement);
 
+            var markers = parentNode.getElementById('markers')
+
+            parentNode.insertChildBefore(rootElement, markers)
+
             for (var i = 0; i < angleDom.length - 1; i++) {
 
                 rootElement.appendChild(angleDom[i]);

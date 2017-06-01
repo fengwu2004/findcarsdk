@@ -16,6 +16,15 @@ define(function (require, exports, module) {
 
         this.addToSuperView = function(parent) {
 
+            var markers = parent.getElementById('markers')
+
+            if (markers === null) {
+
+                markers = parent.createAttributeNS('http://www.w3.org/2000/svg','g')
+
+                markers.id = 'markers'
+            }
+
             this.el = document.createElementNS('http://www.w3.org/2000/svg','image')
 
             this.el.setAttribute('id', this.id);
@@ -26,7 +35,7 @@ define(function (require, exports, module) {
 
             this.el.href.baseVal = this.image
 
-            parent.appendChild(this.el)
+            markers.appendChild(this.el)
         }
 
         this.removeFromSuperView = function() {

@@ -716,6 +716,8 @@ define(function (require, exports, module) {
 
             var trans = 'matrix(' + _markerOrigScale + ',' + 0 + ',' + 0 + ',' + _markerOrigScale + ',' + x + ',' + y + ')'
 
+            marker.el.style.zIndex = 2
+
             marker.el.style.transform = trans
 
             marker.el.style.webkitTransform = trans
