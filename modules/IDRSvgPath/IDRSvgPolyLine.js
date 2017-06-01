@@ -123,7 +123,7 @@ define(function (require, exports, module) {
 
             // parentNode.appendChild(rootElement);
 
-            var markers = parentNode.getElementById('markers')
+            var markers = document.getElementById('markers')
 
             parentNode.insertChildBefore(rootElement, markers)
 

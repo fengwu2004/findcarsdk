@@ -16,11 +16,11 @@ define(function (require, exports, module) {
 
         this.addToSuperView = function(parent) {
 
-            var markers = parent.getElementById('markers')
+            var markers = document.getElementById('markers')
 
             if (markers === null) {
 
-                markers = parent.createAttributeNS('http://www.w3.org/2000/svg','g')
+                markers = document.createAttributeNS('http://www.w3.org/2000/svg','g')
 
                 markers.id = 'markers'
 
