@@ -78,7 +78,7 @@ define(function (require, exports, module) {
 
         var _mapRotate = 0
 
-        var _origScale = 0.5
+        var _origScale = 1
 
         var _gestures = null
 
