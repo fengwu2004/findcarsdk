@@ -20,7 +20,7 @@ define(function (require, exports, module) {
 
             if (markers === null) {
 
-                markers = document.createAttributeNS('http://www.w3.org/2000/svg','g')
+                markers = document.createElementNS('http://www.w3.org/2000/svg','g')
 
                 markers.id = 'markers'
 
