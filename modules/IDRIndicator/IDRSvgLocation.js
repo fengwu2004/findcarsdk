@@ -13,7 +13,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRIndicator/IDRSvgLocation.css";
+        css.href = modules + "/IDRIndicator/IDRSvgLocation.css";
 
         var header = document.querySelector("head");
 
@@ -56,13 +56,13 @@ define(function (require, exports, module) {
             parentNode.appendChild(rootDom);
 
             waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
+            waveDom.href.baseVal = modules + '/IDRIndicator/img_locator_wave.png'
             waveDom.setAttribute('id', 'wave')
             waveDom.setAttribute('width', '50px')
             waveDom.setAttribute('height', '50px')
 
             centerDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            centerDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
+            centerDom.href.baseVal = modules + '/IDRIndicator/img_di_point.png'
             centerDom.setAttribute('id', 'center')
             centerDom.setAttribute('x', '20px')
             centerDom.setAttribute('y', '20px')
