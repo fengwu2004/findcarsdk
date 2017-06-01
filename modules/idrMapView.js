@@ -491,7 +491,7 @@ define(function (require, exports, module) {
 
                 // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
 
-                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+                //updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             if (_composs || _mapRotate !== mdecompose.a) {
