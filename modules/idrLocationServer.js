@@ -66,6 +66,11 @@ define(function (require, exports, module) {
 
         function onServerLocate() {
 
+            if (_beacons === null) {
+
+                _beacons = {}
+            }
+
             networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(data) {
 
                 _x = data.x;
