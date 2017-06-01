@@ -97,6 +97,10 @@ define(function (require, exports, module) {
 
         this.start = function (regionId, floorId, onLocateSuccess, onLocateFailed) {
 
+            _regionId = regionId
+
+            _floorId = floorId
+
             _beaconsMgr.init();
 
             _onLocateSuccess = onLocateSuccess

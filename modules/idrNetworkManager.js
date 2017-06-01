@@ -306,5 +306,79 @@ define(function (require, exports, module) {
         });
     }
 
+    idrNetworkManager.prototype.ajax = function(url, data, success, failed) {
+
+        var xhr = new XMLHttpRequest();
+
+        if (data === null) {
+
+            getType()
+
+        } else {
+
+            postType()
+        }
+
+        function getType() {
+
+            xhr.onreadystatechange = function() {
+
+                if (xhr.readyState === 4) {
+
+                    if (xhr.status >= 200 && xhr.status <= 304) {
+
+                        var results = JSON.parse(xhr.response)
+
+                        if (typeof success === 'function') {
+
+                            success(results)
+                        }
+
+                    }
+                    if (typeof failed === 'function') {
+
+                        failed()
+                    }
+                }
+            }
+
+            xhr.open(type, url + "?", true);
+
+            xhr.send();
+        }
+
+        function postType() {
+
+            xhr.onreadystatechange = function() {
+
+                if (xhr.readyState === 4) {
+
+                    if (xhr.status === '200' || '304') {
+
+                        var results = JSON.parse(xhr.response)
+
+                        if (typeof success === 'function') {
+
+                            success(results)
+                        }
+
+                    } else {
+
+                        if (typeof failed === 'function') {
+
+                            failed()
+                        }
+                    }
+                }
+            }
+
+            xhr.open(type, url, true);
+
+            xhr.setRequestHeader("Content-Type","application/json")
+
+            xhr.send(data);
+        }
+    }
+
     module.exports = networkInstance;
 });
