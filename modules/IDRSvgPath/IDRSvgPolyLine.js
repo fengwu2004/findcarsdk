@@ -125,14 +125,14 @@ define(function (require, exports, module) {
 
             var markers = document.getElementById('markers')
 
-            parentNode.insertChildBefore(rootElement, markers)
+            parentNode.insertBefore(rootElement, markers)
 
             for (var i = 0; i < angleDom.length - 1; i++) {
 
                 rootElement.appendChild(angleDom[i]);
             }
         }
-1
+
 		/*=====================初始化路线对象=======================*/
         function getLineObject(postionList) {
 
