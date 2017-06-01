@@ -700,9 +700,9 @@ define(function (require, exports, module) {
 
             marker.addToSuperView(_mapViewPort)
 
-            var x = marker.position.x - marker.el.width.baseVal.value //use bottom middle
+            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
 
-            var y = marker.position.y - marker.el.height.baseVal.value * 2 //use bottom middle
+            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
             var trans = 'matrix(' + _origScale+ ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
 
