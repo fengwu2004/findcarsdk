@@ -183,17 +183,33 @@ define(function (require, exports, module) {
 
                     if (currentPos.x == nextPos.x) {
 
-                        if (j % defaultDotIndex == 0 && j > 5) {
-                            getXline(currentPos, nextPos, angleObjects, j);
+                        var factor = 1
+
+                        if (nextPos.y < currentPos.y) {
+
+                            factor = -1
                         }
 
-                    } else if (currentPos.y == nextPos.y) {
-
                         if (j % defaultDotIndex == 0 && j > 5) {
-                            getYline(currentPos, nextPos, angleObjects, j);
+                            getXline(currentPos, nextPos, angleObjects, j * factor);
                         }
 
-                    } else {
+                    }
+                    else if (currentPos.y == nextPos.y) {
+
+                        var factor = 1
+
+                        if (nextPos.x < currentPos.x) {
+
+                            factor = -1
+                        }
+
+                        if (j % defaultDotIndex == 0 && j > 5) {
+                            getYline(currentPos, nextPos, angleObjects, j * factor);
+                        }
+
+                    }
+                    else {
 
                         var lineExpression = getLineExpression(currentPos, nextPos);
 
