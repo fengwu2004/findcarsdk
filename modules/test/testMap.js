@@ -32,6 +32,13 @@ seajs.use([
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
+        var marker = new IdrCarMarker(unit.getPos())
+
+        map.addMarker(marker)
+    })
+    
+    function doNavi(unit) {
+
         if (startPos == null) {
 
             startPos = unit.getPos()
@@ -53,7 +60,7 @@ seajs.use([
 
             map.doRoute(startPos, endPos)
         }
-    })
+    }
 
     var startBtn = document.getElementById('startButton')
 
