@@ -13,6 +13,8 @@ define(function (require, exports, module) {
 
         var _floorId = ''
 
+        var _beacons = null
+
         var _regionId = ''
 
         var _x = 0
@@ -22,6 +24,8 @@ define(function (require, exports, module) {
         var _onLocateSuccess = null
 
         var _onLocateFailed = null
+
+        var _locateTimerId = null
 
         var _beaconsMgr = new BeaconMgr()
 
@@ -57,12 +61,12 @@ define(function (require, exports, module) {
 
             var beaconParas = JSON.stringify(newBeacons)
 
-            onServerLocate(beaconParas)
+            _beacons = beaconParas
         }
 
-        function onServerLocate(beacons) {
+        function onServerLocate() {
 
-            networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
+            networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(data) {
 
                 _x = data.x;
 
@@ -93,6 +97,15 @@ define(function (require, exports, module) {
             _onLocateSuccess = onLocateSuccess
 
             _onLocateFailed = onLocateFailed
+
+            _locateTimerId = setInterval(onServerLocate, 1000)
+        }
+        
+        this.stop = function () {
+
+            clearInterval(_locateTimerId)
+
+            _beacons = null
         }
     }
 

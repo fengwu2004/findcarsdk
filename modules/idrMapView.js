@@ -433,7 +433,7 @@ define(function (require, exports, module) {
             }
         }
 
-        var setDisplayTimer = function() {
+        function setDisplayTimer() {
 
             _refreshTimer = setInterval(updateDisplay, 100)
         }
@@ -480,7 +480,7 @@ define(function (require, exports, module) {
             return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
         }
 
-        var updateDisplay = function() {
+        function updateDisplay() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
