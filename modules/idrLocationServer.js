@@ -93,8 +93,6 @@ define(function (require, exports, module) {
             _onLocateSuccess = onLocateSuccess
 
             _onLocateFailed = onLocateFailed
-
-            onReceiveBeacons()
         }
     }
 
