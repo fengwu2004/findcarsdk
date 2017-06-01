@@ -359,7 +359,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            xhr.open(type, url + "?", true);
+            xhr.open('get', url + "?", true);
 
             xhr.send();
         }
@@ -389,7 +389,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            xhr.open(type, url, true);
+            xhr.open('post', url, true);
 
             xhr.setRequestHeader("Content-Type","application/json")
 
