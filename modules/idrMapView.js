@@ -96,6 +96,8 @@ define(function (require, exports, module) {
 
         var _idrIndicator = null
 
+        var _idrMap = new IdrMap()
+
         var _composs = null
 
         var that = this
@@ -117,10 +119,12 @@ define(function (require, exports, module) {
 
         function addMap(svg) {
 
-            var oSvgBox = document.getElementById('svgBox');
+            _idrMap.init(that.regionEx, _currentFloorId, svg)
 
-            oSvgBox.innerHTML = svg;
-            
+            var svgBox = document.getElementById('svgBox');
+
+            svgBox.innerHTML = svg;
+
             _mapViewPort = document.getElementById('viewport');
 
             var map = document.getElementById('background')
@@ -142,7 +146,7 @@ define(function (require, exports, module) {
 
             map.addEventListener('click', onMapClick, false)
 
-            addGestures(oSvgBox)
+            addGestures(svgBox)
 
             getAllUnits()
         }
@@ -351,6 +355,8 @@ define(function (require, exports, module) {
         }
 
         function removePreviousMap() {
+
+            _idrMap.detach()
 
             if (_svgFrame) {
 
