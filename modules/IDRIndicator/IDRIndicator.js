@@ -48,8 +48,8 @@ define(function (require, exports, module) {
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
-            var x = position.x + 25
-            var y = position.y + 25
+            var x = position.x - 25
+            var y = position.y - 25
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
             rootDom.setAttribute('transform', trans)
             rootDom.setAttribute('transform-origin', '50% 50% 0')
