@@ -34,7 +34,7 @@ seajs.use([
 
         var p = unit.getPos()
 
-        map.setCurrPos(p, true)
+        map.setCurrPos(p, tru)
     })
 
     function addMarker(unit) {
