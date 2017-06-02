@@ -80,9 +80,9 @@ define(function (require, exports, module) {
 
             if (!lastPosition) {
 
-                var x = position.x - 25
+                var x = position.x + 25
 
-                var y = position.y - 25
+                var y = position.y + 25
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
 
