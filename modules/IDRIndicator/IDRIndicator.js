@@ -162,7 +162,10 @@ define(function (require, exports, module) {
 
                 mt[5] = xOffsetY + parseFloat(mt[5])
 
-                console.log('当前位置：' + mt[4] + ', ' + mt[5])
+                if (isNaN(mt[4])) {
+
+                    console.log('当前位置：' + mt[4] + ', ' + mt[5])
+                }
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
