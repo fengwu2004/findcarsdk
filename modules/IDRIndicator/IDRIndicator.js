@@ -26,6 +26,8 @@ define(function (require, exports, module) {
 
         var rootDom = null
 
+        var frames = null
+
         var waveDom = null
 
         var centerDom = null
@@ -124,21 +126,22 @@ define(function (require, exports, module) {
 
         function beginMove(position) {
 
+            if (frames) {
+
+                window.cancelAnimationFrame(frames)
+            }
+
             var count = 0
 
             var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y)) / (moveSpeed * 10)
 
             time = time * 60
 
-            // time = Math.max(1, time)
-            //
-            // time = Math.min(59, time)
-
             var xOffsetX = (position.x - lastPosition.x) / time
 
             var xOffsetY = (position.y - lastPosition.y) / time
 
-            var frames = window.requestAnimationFrame(onAnim)
+            frames = window.requestAnimationFrame(onAnim)
 
             function onAnim() {
 
