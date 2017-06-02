@@ -948,8 +948,6 @@ define(function (require, exports, module) {
         
         function setCurrentPos(pos, show) {
 
-            console.log('当前位置：' + pos.x + ', ' + pos.y)
-
             show = typeof show !== 'undefine' ? show : true
 
             _currentPos = pos
