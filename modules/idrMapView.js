@@ -948,13 +948,15 @@ define(function (require, exports, module) {
         
         function setCurrentPos(pos, show) {
 
+            console.log('当前位置：' + pos.x + ', ' + pos.y)
+
             show = typeof show !== 'undefine' ? show : true
 
             _currentPos = pos
 
             if (_idrIndicator == null) {
 
-                _idrIndicator = IDRIndicator()
+                _idrIndicator = new IDRIndicator()
 
                 _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
             }

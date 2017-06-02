@@ -1,11 +1,10 @@
 define(function (require, exports, module) {
-	"use strict";
 
-	var matrix2d = require('../mat2d')
+    var matrix2d = require('../mat2d')
 
     var vec2 = require('../vec2')
 
-    var IDRSvgLocation = function() {
+    function IDRIndicator() {
 
         var css = document.createElement('link')
 
@@ -13,7 +12,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = modules + "/IDRIndicator/IDRSvgLocation.css";
+        css.href = modules + "/IDRIndicator/IDRIndicator.css";
 
         var header = document.querySelector("head");
 
@@ -97,7 +96,7 @@ define(function (require, exports, module) {
 
             var count = 0
 
-            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/(moveSpeed * 10)
+            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y)) / (moveSpeed * 10)
 
             time = time * 60
 
@@ -106,9 +105,9 @@ define(function (require, exports, module) {
                 time = 1
             }
 
-            var xOffsetX = (position.x - lastPosition.x)/time
+            var xOffsetX = (position.x - lastPosition.x) / time
 
-            var xOffsetY = (position.y - lastPosition.y)/time
+            var xOffsetY = (position.y - lastPosition.y) / time
 
             var frames = window.requestAnimationFrame(onAnim)
 
@@ -141,7 +140,7 @@ define(function (require, exports, module) {
             }
         }
 
-        var getTransArray = function(value) {
+        function getTransArray(value) {
 
             if (value == null) {
 
@@ -184,13 +183,11 @@ define(function (require, exports, module) {
             }
         }
 
-        return {
-            creatSvgLocationDom: creatSvgLocationDom,
-            updateLocation: updateLocation,
-            updateScale: updateScale,
-            updateShownState: updateShownState
-        }
-    };
+        this.creatSvgLocationDom = creatSvgLocationDom
+        this.updateLocation = updateLocation
+        this.updateScale = updateScale
+        this.updateShownState = updateShownState
+    }
 
-    module.exports = IDRSvgLocation
-})
+    module.exports = IDRIndicator
+});
