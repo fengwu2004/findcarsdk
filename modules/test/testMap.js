@@ -35,6 +35,11 @@ seajs.use([
         // })
     })
 
+    map.addEventListener(map.eventTypes.onMapClick, function (data) {
+
+        console.log(data)
+    })
+
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
         addMarker(unit)
