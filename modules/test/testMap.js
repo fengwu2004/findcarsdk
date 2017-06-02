@@ -28,11 +28,6 @@ seajs.use([
     map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
 
         map.changeFloor(regionEx.floorList[0].id)
-        
-        // map.doLocation(function (pos) {
-        //
-        //     map.setCurrPos(pos, true)
-        // })
     })
 
     map.addEventListener(map.eventTypes.onMapClick, function (data) {

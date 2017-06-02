@@ -131,9 +131,9 @@ define(function (require, exports, module) {
 
                 map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 
-                map.width = floor.width
+                map.setAttribute('width', floor.width)
 
-                map.height = floor.height
+                map.setAttribute('height', floor.height)
 
                 _mapViewPort.appendChild(map)
             }
