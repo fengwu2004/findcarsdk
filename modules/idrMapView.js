@@ -135,6 +135,8 @@ define(function (require, exports, module) {
 
                 map.setAttribute('height', floor.height)
 
+                map.style.opacity = 0
+
                 _mapViewPort.appendChild(map)
             }
 
