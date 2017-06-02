@@ -167,6 +167,8 @@ define(function (require, exports, module) {
 
                 mt[5] = xOffsetY + lastPosition.y
 
+                console.log('位置: ' + lastPosition.x + ', ' + lastPosition.y)
+
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
                 rootDom.setAttribute('transform', trans)
