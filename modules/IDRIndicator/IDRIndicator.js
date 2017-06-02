@@ -177,7 +177,7 @@ define(function (require, exports, module) {
 
                 ++count
 
-                frames = window.requestAnimationFrame(onAnim)
+                // frames = window.requestAnimationFrame(onAnim)
             }
         }
 
