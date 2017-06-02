@@ -135,6 +135,11 @@ define(function (require, exports, module) {
 
             var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y)) / (moveSpeed * 10)
 
+            if (time === 0) {
+
+                return
+            }
+
             time = time * 60
 
             var xOffsetX = (position.x - lastPosition.x) / time
