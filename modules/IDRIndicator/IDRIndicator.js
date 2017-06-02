@@ -32,6 +32,10 @@ define(function (require, exports, module) {
 
         var moveSpeed = 2
 
+        var width = 50
+
+        var centerWidth = 10
+
         function creatSvgLocationDom(parentNode, position) {
 
             rootDom = document.getElementById("indicator");
@@ -43,16 +47,13 @@ define(function (require, exports, module) {
                 return;
             }
 
-            var width = 50
-            var centerWidth = 10
-
             lastPosition = position
 
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
-            var x = position.x - width * 0.5
-            var y = position.y - width * 0.5
+            var x = position.x - width/2
+            var y = position.y - width/2
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
             rootDom.setAttribute('transform', trans)
             rootDom.setAttribute('transform-origin', '50% 50% 0')
@@ -86,9 +87,9 @@ define(function (require, exports, module) {
 
             if (!lastPosition) {
 
-                var x = position.x - 25
+                var x = position.x - width/2
 
-                var y = position.y - 25
+                var y = position.y - width/2
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
 
