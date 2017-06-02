@@ -124,10 +124,9 @@ define(function (require, exports, module) {
             oSvgBox.innerHTML = svg;
 
             //给每个unit添加一个id
+            var aUnit = document.getElementById('unit');
 
-            var aUnit = document.querySelector('#unit');
-
-            var aUnit1 = document.querySelector('#unit_1_');
+            var aUnit1 = document.getElementById('unit_1_');
 
             if (aUnit) {
 
@@ -613,7 +612,7 @@ define(function (require, exports, module) {
 
             }, function() {
 
-                alert('地图数据获取失败!' + data);
+                console.log('地图数据获取失败!' + data);
             })
         }
 
