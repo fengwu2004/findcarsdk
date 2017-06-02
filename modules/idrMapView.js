@@ -115,45 +115,11 @@ define(function (require, exports, module) {
             _floorListControl.init(_svgFrame, that.regionEx['floorList'], floor)
         }
 
-        function addMap(data) {
-
-            var svg = data;
+        function addMap(svg) {
 
             var oSvgBox = document.getElementById('svgBox');
 
             oSvgBox.innerHTML = svg;
-
-            //给每个unit添加一个id
-            var aUnit = document.getElementById('unit');
-
-            var aUnit1 = document.getElementById('unit_1_');
-
-            if (aUnit) {
-
-                var aPolygon = aUnit.getElementsByTagName('polygon');
-
-                var aRect = aUnit.getElementsByTagName('rect');
-
-                for (var i = 0; i < aPolygon.length; i++) {
-
-                    aPolygon[i].id = 'unit_' + i;
-                }
-
-                for (i = 0; i < aRect.length; i++) {
-
-                    aRect[i].id = 'rect_' + i;
-                }
-            }
-
-            if (aUnit1) {
-
-                var aR = aUnit1.getElementsByTagName('rect');
-
-                Array.prototype.forEach.call(aR, function (node, index, array) {
-
-                    node.id = 'rect_' + index;
-                })
-            }
             
             _mapViewPort = document.getElementById('viewport');
 
