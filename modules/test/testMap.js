@@ -28,16 +28,13 @@ seajs.use([
     map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
 
         map.changeFloor(regionEx.floorList[0].id)
-
-        map.doLocation(function (pos) {
-
-            map.setCurrPos(pos)
-        })
     })
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
-        doNavi(unit)
+        var p = unit.getPos()
+
+        map.setCurrPos(p, true)
     })
 
     function addMarker(unit) {
