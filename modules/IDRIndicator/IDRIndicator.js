@@ -50,32 +50,51 @@ define(function (require, exports, module) {
             lastPosition = position
 
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
             rootDom.setAttribute('id', 'SvgLocation')
+
             var mt = matrix2d.create()
+
             var x = position.x - width/2
+
             var y = position.y - width/2
+
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
+
             rootDom.setAttribute('transform', trans)
+
             rootDom.setAttribute('transform-origin', '50% 50% 0')
 
             parentNode.appendChild(rootDom);
 
             waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
+
             waveDom.href.baseVal = modules + '/IDRIndicator/img_locator_wave.png'
+
             waveDom.setAttribute('id', 'wave')
+
             waveDom.setAttribute('width', width.toString() + 'px')
+
             waveDom.setAttribute('height', width.toString() + 'px')
 
             centerDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
+
             centerDom.href.baseVal = modules + '/IDRIndicator/img_di_point.png'
+
             centerDom.setAttribute('id', 'center')
+
             x = (width - centerWidth)/2
+
             centerDom.setAttribute('x', x.toString() + 'px')
+
             centerDom.setAttribute('y', x.toString() + 'px')
+
             centerDom.setAttribute('width', centerWidth.toString() + 'px')
+
             centerDom.setAttribute('height',centerWidth.toString() + 'px')
 
             rootDom.appendChild(waveDom);
+
             rootDom.appendChild(centerDom);
         }
 
@@ -111,9 +130,9 @@ define(function (require, exports, module) {
 
             time = time * 60
 
-            time = Math.max(1, time)
-
-            time = Math.min(59, time)
+            // time = Math.max(1, time)
+            //
+            // time = Math.min(59, time)
 
             var xOffsetX = (position.x - lastPosition.x) / time
 
