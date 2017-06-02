@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 
         var centerWidth = 10
 
-        function creatSvgLocationDom(parentNode, position) {
+        function creat(parentNode, position) {
 
             rootDom = document.getElementById("indicator");
 
@@ -225,8 +225,14 @@ define(function (require, exports, module) {
                 locationDom.style.display = "none";
             }
         }
+        
+        function remove() {
 
-        this.creatSvgLocationDom = creatSvgLocationDom
+            rootDom.parentNode.removeChild(rootDom)
+        }
+
+        this.remove = remove
+        this.creat = creat
         this.updateLocation = updateLocation
         this.updateScale = updateScale
         this.updateShownState = updateShownState
