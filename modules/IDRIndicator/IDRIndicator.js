@@ -71,9 +71,9 @@ define(function (require, exports, module) {
             rootDom.appendChild(waveDom);
             rootDom.appendChild(centerDom);
 
-            waveDom.style.transformOrigin = '50% 100% 0'
-
-            waveDom.style.webkitTransformOrigin = '50% 100% 0'
+            // waveDom.style.transformOrigin = '50% 100% 0'
+            //
+            // waveDom.style.webkitTransformOrigin = '50% 100% 0'
         }
 
         function updateLocation(position) {
@@ -84,9 +84,9 @@ define(function (require, exports, module) {
 
             if (!lastPosition) {
 
-                var x = position.x
+                var x = position.x - 25
 
-                var y = position.y
+                var y = position.y - 25
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
 
