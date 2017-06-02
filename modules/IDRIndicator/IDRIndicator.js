@@ -142,6 +142,8 @@ define(function (require, exports, module) {
 
             time = time * 60
 
+            time = Math.min(60, time)
+
             var xOffsetX = (position.x - lastPosition.x) / time
 
             var xOffsetY = (position.y - lastPosition.y) / time
