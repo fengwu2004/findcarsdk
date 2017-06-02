@@ -43,13 +43,16 @@ define(function (require, exports, module) {
                 return;
             }
 
+            var width = 50
+            var centerWidth = 10
+
             lastPosition = position
 
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
             rootDom.setAttribute('id', 'SvgLocation')
             var mt = matrix2d.create()
-            var x = position.x - 25
-            var y = position.y - 25
+            var x = position.x - width * 0.5
+            var y = position.y - width * 0.5
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
             rootDom.setAttribute('transform', trans)
             rootDom.setAttribute('transform-origin', '50% 50% 0')
@@ -59,16 +62,17 @@ define(function (require, exports, module) {
             waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             waveDom.href.baseVal = modules + '/IDRIndicator/img_locator_wave.png'
             waveDom.setAttribute('id', 'wave')
-            waveDom.setAttribute('width', '50px')
-            waveDom.setAttribute('height', '50px')
+            waveDom.setAttribute('width', width.toString() + 'px')
+            waveDom.setAttribute('height', width.toString() + 'px')
 
             centerDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
             centerDom.href.baseVal = modules + '/IDRIndicator/img_di_point.png'
             centerDom.setAttribute('id', 'center')
-            centerDom.setAttribute('x', '20px')
-            centerDom.setAttribute('y', '20px')
-            centerDom.setAttribute('width', '10px')
-            centerDom.setAttribute('height', '10px')
+            x = (width - centerWidth)/2
+            centerDom.setAttribute('x', x.toString() + 'px')
+            centerDom.setAttribute('y', x.toString() + 'px')
+            centerDom.setAttribute('width', centerWidth.toString() + 'px')
+            centerDom.setAttribute('height',centerWidth.toString() + 'px')
 
             rootDom.appendChild(waveDom);
             rootDom.appendChild(centerDom);
