@@ -100,10 +100,9 @@ define(function (require, exports, module) {
 
             time = time * 60
 
-            if (time == 0) {
+            time = Math.max(1, time)
 
-                time = 1
-            }
+            time = Math.min(59, time)
 
             var xOffsetX = (position.x - lastPosition.x) / time
 

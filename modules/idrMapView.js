@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
     var IDRUnit = require('./idrUnit')
 
-    var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
+    var IDRIndicator = require('./IDRIndicator/IDRIndicator')
 
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
 
