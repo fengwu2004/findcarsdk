@@ -148,6 +148,8 @@ define(function (require, exports, module) {
 
             frames = window.requestAnimationFrame(onAnim)
 
+            console.log('位置: ' + position.x + ', ' + position.y)
+
             function onAnim() {
 
                 if (count > time) {
@@ -167,7 +169,7 @@ define(function (require, exports, module) {
 
                 mt[5] = xOffsetY + lastPosition.y
 
-                console.log('位置: ' + lastPosition.x + ', ' + lastPosition.y)
+                // console.log('位置: ' + lastPosition.x + ', ' + lastPosition.y)
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
