@@ -70,6 +70,10 @@ define(function (require, exports, module) {
 
             rootDom.appendChild(waveDom);
             rootDom.appendChild(centerDom);
+
+            waveDom.style.transformOrigin = '50% 100% 0'
+
+            waveDom.style.webkitTransformOrigin = '50% 100% 0'
         }
 
         function updateLocation(position) {
