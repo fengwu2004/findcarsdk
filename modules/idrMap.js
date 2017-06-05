@@ -40,6 +40,8 @@ define(function (require, exports, module) {
             that.root.id = 'mapRoot'
 
             that.root.className = 'svg_box'
+
+            that.root.appendChild(_map)
         }
         
         function addEvents() {
