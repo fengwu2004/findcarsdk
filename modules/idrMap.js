@@ -146,7 +146,10 @@ define(function (require, exports, module) {
 
         this.refreshUnits = refreshUnits
 
-        this.root = _root
+        this.root = function () {
+
+            return _root
+        }
 
         this.detach = detach
 
