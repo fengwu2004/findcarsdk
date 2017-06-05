@@ -120,8 +120,15 @@ define(function (require, exports, module) {
 
             _root.parentNode.removeChild(_root)
         }
+        
+        function attachTo(containor) {
+
+            containor.appendChild(_root)
+        }
 
         this.detach = detach
+
+        this.attachTo = attachTo
     }
 
     module.exports = IdrMap

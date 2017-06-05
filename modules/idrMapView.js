@@ -74,8 +74,6 @@ define(function (require, exports, module) {
 
         var _floorListControl = null
 
-        var _svgBox = null
-
         var _units = []
 
         var _unitDivs = []
@@ -119,36 +117,30 @@ define(function (require, exports, module) {
 
         function addMap(svg) {
 
+            _idrMap = new IdrMap()
+
             _idrMap.init(that.regionEx, _currentFloorId, svg)
 
-            var svgBox = document.getElementById('svgBox');
+            if (!_svgFrame) {
 
-            svgBox.innerHTML = svg;
+                _svgFrame = document.createElement('div')
 
-            _mapViewPort = document.getElementById('viewport');
+                _svgFrame.id = 'svgFrame'
 
-            var map = document.getElementById('background')
+                _svgFrame.className = 'svg_box'
 
-            if (!map) {
+                var ele = document.getElementById(_containerId)
 
-                var floor = that.regionEx.getFloorbyId(_currentFloorId)
-
-                map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
-
-                map.setAttribute('width', floor.width)
-
-                map.setAttribute('height', floor.height)
-
-                map.style.opacity = 0
-
-                _mapViewPort.appendChild(map)
+                ele.appendChild(_svgFrame)
             }
 
-            map.addEventListener('click', onMapClick, false)
+            _idrMap.attachTo(_svgFrame)
 
-            addGestures(svgBox)
+            _floorMaps[_currentFloorId] = _idrMap
 
-            getAllUnits()
+            addGestures()
+
+            getUnits()
         }
         
         function onMapClick(evt) {
@@ -217,6 +209,7 @@ define(function (require, exports, module) {
         
         function addUnitsText() {
 
+            _idrMap.refreshUnits()
             for (var i = 0; i < _units.length; ++i) {
 
                 var unit = _units[i]
@@ -279,32 +272,6 @@ define(function (require, exports, module) {
 
             _idrPath.updateLine(_mapViewPort, paths)
         }
-
-        function addUnitClickRect() {
-
-            for (var i = 0; i < _units.length; ++i) {
-
-                var unit = _units[i]
-
-                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','rect')
-
-                unitSvg.id = unit.id
-
-                unitSvg.setAttribute('x', unit.boundLeft)
-
-                unitSvg.setAttribute('y', unit.boundTop)
-
-                unitSvg.setAttribute('width', (unit.boundRight - unit.boundLeft).toString())
-
-                unitSvg.setAttribute('height', (unit.boundBottom - unit.boundTop).toString())
-
-                unitSvg.style.opacity = 0
-
-                _mapViewPort.appendChild(unitSvg)
-
-                unitSvg.addEventListener('click', onUnitClick, true)
-            }
-        }
         
         function onUnitClick(event) {
 
@@ -325,13 +292,9 @@ define(function (require, exports, module) {
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             floor.unitList = _units
-
-            addUnitsText()
-            
-            addUnitClickRect()
         }
 
-        function getAllUnits() {
+        function getUnits() {
 
             networkInstance.serverCallUnits(_regionId, _currentFloorId,
 
@@ -347,65 +310,11 @@ define(function (require, exports, module) {
             )
         }
 
-        function createMap(svg, regionId, floorId) {
-
-            removePreviousMap();
-
-            addMap(svg, regionId, floorId);
-        }
-
-        function removePreviousMap() {
+        function createMap(svg) {
 
             _idrMap.detach()
 
-            if (_svgFrame) {
-
-                _svgBox = document.querySelector('#svgBox');
-
-                var gtext = document.querySelector('#g_txt');
-
-                var lines = document.querySelector('#line');
-
-                _svgBox.innerHTML = '';
-
-                gtext.innerHTML = '';
-
-                lines.innerHTML = '';
-            }
-            else {
-
-                _svgFrame = document.createElement('div');
-
-                _svgFrame.id = 'svgFrame';
-
-                _svgFrame.className = 'svg_frame';
-
-                _svgBox = document.createElement('div');
-
-                _svgBox.id = 'svgBox';
-
-                _svgBox.className = 'svg_box';
-
-                var gText = document.createElement('div');
-
-                gText.id = 'g_txt';
-
-                gText.className = 'gTxt';
-
-                lines = document.createElement('div');
-
-                lines.id = 'line';
-
-                _svgFrame.appendChild(_svgBox);
-
-                _svgFrame.appendChild(gText);
-
-                _svgFrame.appendChild(lines);
-
-                var ele = document.getElementById(_containerId)
-
-                ele.appendChild(_svgFrame);
-            }
+            addMap(svg);
         }
 
         function setDisplayTimer() {
@@ -577,6 +486,15 @@ define(function (require, exports, module) {
         }
         
         function retriveMap() {
+
+            if (_currentFloorId in _floorMaps) {
+
+                _idrMap = _floorMaps[_currentFloorId]
+
+                _idrMap.attachTo(document.getElementById('svgFrame'))
+
+                return
+            }
 
             networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
 
