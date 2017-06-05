@@ -64,10 +64,6 @@ define(function (require, exports, module) {
 
         var _units = []
 
-        var _mapScale = 1
-
-        var _mapRotate = 0
-
         var _mapRoot = null
 
         var _gestures = null

@@ -19,6 +19,10 @@ define(function (require, exports, module) {
 
         var minScale = 1
 
+        var _mapScale = 1
+
+        var _mapRotate = 0
+
         var _mapView = mapView
 
         var _regionEx = null
