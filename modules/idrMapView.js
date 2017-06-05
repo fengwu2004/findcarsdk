@@ -125,9 +125,9 @@ define(function (require, exports, module) {
 
             _floorMaps[_currentFloorId] = _idrMap
 
-            addGestures()
+            // addGestures()
 
-            getUnits()
+            // getUnits()
         }
         
         function onMapClick(evt) {
