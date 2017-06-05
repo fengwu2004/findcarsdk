@@ -15,29 +15,40 @@ define(function (require, exports, module) {
 
         var _origScale = 0.5
 
+        var _map = null
+
         var _root = null
 
-        this.init = function (regionEx, floorId, svg) {
+        this.init = function(regionEx, floorId, svg) {
 
             _regionEx = regionEx
 
             _floorId = floorId
 
-            _root = document.createElement('div');
+            _map = document.createElement('div')
 
-            _root.id = 'mapRoot';
+            _map.id = 'mapRoot'
 
-            _root.className = 'svg_box';
+            _map.className = 'svg_box'
 
-            _root.innerHTML = svg;
+            _map.innerHTML = svg
 
-            _mapViewPort = document.getElementById('viewport');
+            _root = document.createElement('div')
+
+            _root.id = 'mapRoot'
+
+            _root.className = 'svg_box'
+        }
+        
+        function addEvents() {
+
+            _mapViewPort = document.getElementById('viewport')
 
             var map = document.getElementById('background')
 
             if (!map) {
 
-                var floor = regionEx.getFloorbyId(floorId)
+                var floor = _regionEx.getFloorbyId(floorId)
 
                 map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 
@@ -128,6 +139,14 @@ define(function (require, exports, module) {
 
             containor.appendChild(_root)
         }
+
+        function refreshUnits() {
+
+        }
+
+        this.refreshUnits = refreshUnits
+
+        this.root = _root
 
         this.detach = detach
 

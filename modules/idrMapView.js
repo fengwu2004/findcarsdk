@@ -121,20 +121,7 @@ define(function (require, exports, module) {
 
             _idrMap.init(that.regionEx, _currentFloorId, svg)
 
-            if (!_svgFrame) {
-
-                _svgFrame = document.createElement('div')
-
-                _svgFrame.id = 'svgFrame'
-
-                _svgFrame.className = 'svg_box'
-
-                var ele = document.getElementById(_containerId)
-
-                ele.appendChild(_svgFrame)
-            }
-
-            _idrMap.attachTo(_svgFrame)
+            _idrMap.attachTo(document.getElementById(_containerId))
 
             _floorMaps[_currentFloorId] = _idrMap
 
@@ -197,7 +184,7 @@ define(function (require, exports, module) {
 
         function addGestures() {
 
-            _gestures = new AlloyFinger(_svgFrame, {
+            _gestures = new AlloyFinger(_idrMap.root, {
 
                 rotate:onRoate,
 
@@ -210,6 +197,7 @@ define(function (require, exports, module) {
         function addUnitsText() {
 
             _idrMap.refreshUnits()
+
             for (var i = 0; i < _units.length; ++i) {
 
                 var unit = _units[i]
