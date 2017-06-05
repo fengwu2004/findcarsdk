@@ -466,7 +466,7 @@ define(function (require, exports, module) {
 
             div.setAttribute('id', 'composs')
 
-            document.getElementById('svgFrame').appendChild(div)
+            _idrMap.root.appendChild(div)
 
             _composs = new IDRComposs('composs', 0, that)
         }
@@ -477,7 +477,7 @@ define(function (require, exports, module) {
 
                 _idrMap = _floorMaps[_currentFloorId]
 
-                _idrMap.attachTo(document.getElementById('svgFrame'))
+                _idrMap.attachTo(document.getElementById(_containerId))
 
                 return
             }
