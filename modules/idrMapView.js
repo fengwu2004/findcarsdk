@@ -56,7 +56,7 @@ define(function (require, exports, module) {
 
         var minScale = 0.5
 
-        var _containerId = null
+        var _container = null
 
         var _currentPos = null
 
@@ -104,7 +104,7 @@ define(function (require, exports, module) {
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(document.getElementById(_containerId), that.regionEx['floorList'], floor)
+            _floorListControl.init(_container, that.regionEx['floorList'], floor)
         }
 
         function onMapClick(pos) {
@@ -262,7 +262,7 @@ define(function (require, exports, module) {
 
             _idrMap.init(that.regionEx, _currentFloorId, svgData)
 
-            _idrMap.attachTo(document.getElementById(_containerId))
+            _idrMap.attachTo(_container)
 
             _floorMaps[_currentFloorId] = _idrMap
 
@@ -381,7 +381,7 @@ define(function (require, exports, module) {
 
             div.setAttribute('id', 'composs')
 
-            document.getElementById(_containerId).appendChild(div)
+            _container.appendChild(div)
 
             _composs = new IDRComposs('composs', 0, that)
         }
@@ -392,7 +392,7 @@ define(function (require, exports, module) {
 
                 _idrMap = _floorMaps[_currentFloorId]
 
-                _idrMap.attachTo(document.getElementById(_containerId))
+                _idrMap.attachTo(_container)
 
                 return
             }
@@ -423,7 +423,7 @@ define(function (require, exports, module) {
         
         function initMap(appid, containerId, regionId) {
 
-            _containerId = containerId
+            _container = document.getElementById(containerId)
 
             IDRCoreManager.init(appid, function() {
 

@@ -187,7 +187,7 @@ define(function (require, exports, module) {
             })
         }
 
-        this.init = function(map, floorList, currentFloor) {
+        this.init = function(container, floorList, currentFloor) {
 
             _floorList = floorList
 
@@ -197,7 +197,7 @@ define(function (require, exports, module) {
 
             _mainDiv = create('div', 'lc_div', 'lc_div')
 
-            map.appendChild(_mainDiv)
+            container.appendChild(_mainDiv)
 
             createFloorList(_currentFloor, _locateFloor, _floorList)
         }
