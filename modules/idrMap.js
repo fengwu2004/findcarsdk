@@ -362,6 +362,17 @@ define(function (require, exports, module) {
             return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
         }
 
+        function getMapPos(svgPos) {
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.invert(mt, mt)
+
+            var posIn2d = vec2.fromValues(svgPos[0], svgPos[1])
+
+            return vec2.transformMat2d(posIn2d, posIn2d, mt)
+        }
+
         function getSvgPos(mapPos) {
 
             var mt = getMapViewMatrix()
@@ -521,6 +532,8 @@ define(function (require, exports, module) {
         this.getMapViewMatrix = getMapViewMatrix
 
         this.getSvgPos = getSvgPos
+
+        this.getMapPos = getMapPos
 
         this.zoom = zoom
 

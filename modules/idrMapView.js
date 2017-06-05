@@ -460,13 +460,7 @@ define(function (require, exports, module) {
         
         function getMapPos(svgPos) {
 
-            var mt = _idrMap.getMapViewMatrix()
-
-            matrix2d.invert(mt, mt)
-
-            var posIn2d = vec2.fromValues(svgPos[0], svgPos[1])
-
-            return vec2.transformMat2d(posIn2d, posIn2d, mt)
+            return _idrMap.getMapPos(svgPos)
         }
         
         function getSvgPos(mapPos) {
@@ -502,9 +496,9 @@ define(function (require, exports, module) {
 
             var mapWidth = floor.width
 
-            var screenHeight = _idrMap.root.clientHeight
+            var screenHeight = _mapRoot.clientHeight
 
-            var screenWidth = _idrMap.root.clientWidth
+            var screenWidth = _mapRoot.clientWidth
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
