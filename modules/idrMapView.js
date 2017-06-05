@@ -50,8 +50,6 @@ define(function (require, exports, module) {
 
         var _router = null
 
-        var minScale = 0.5
-
         var _container = null
 
         var _currentPos = null
@@ -374,7 +372,7 @@ define(function (require, exports, module) {
                 setDisplayTimer()
             }
 
-            updateMinScale()
+            _idrMap.updateMinScale()
 
             _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
@@ -486,23 +484,6 @@ define(function (require, exports, module) {
         function centerPos(mapPos) {
 
             _idrMap.centerPos(mapPos)
-        }
-        
-        function updateMinScale() {
-
-            var floor = that.regionEx.getFloorbyId(_currentFloorId)
-
-            var mapHeight = floor.height
-
-            var mapWidth = floor.width
-
-            var screenHeight = _mapRoot.clientHeight
-
-            var screenWidth = _mapRoot.clientWidth
-
-            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
-
-            minScale = Math.min(scale, minScale)
         }
 
         function resetMap() {

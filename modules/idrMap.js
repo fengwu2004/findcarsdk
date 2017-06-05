@@ -17,6 +17,8 @@ define(function (require, exports, module) {
 
         var maxScale = 1.5
 
+        var minScale = 1
+
         var _mapView = mapView
 
         var _regionEx = null
@@ -507,6 +509,21 @@ define(function (require, exports, module) {
             _mapRotate = mdecompose.a
         }
 
+        function updateMinScale() {
+
+            var mapHeight = _floor.height
+
+            var mapWidth = _floor.width
+
+            var screenHeight = _root.clientHeight
+
+            var screenWidth = _root.clientWidth
+
+            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
+
+            minScale = Math.min(scale, minScale)
+        }
+
         this.refreshUnits = refreshUnits
 
         this.detach = detach
@@ -544,6 +561,8 @@ define(function (require, exports, module) {
         this.centerPos = centerPos
 
         this.updateDisplay = updateDisplay
+
+        this.updateMinScale = updateMinScale
     }
 
     module.exports = IdrMap
