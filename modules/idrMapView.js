@@ -18,8 +18,6 @@ define(function (require, exports, module) {
 
     var networkInstance = require('./idrNetworkManager')
 
-    var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
-
     var IDRRouter = require('./idrRouter')
 
     var IDRRegionEx = require('./idrRegionEx')
@@ -52,8 +50,6 @@ define(function (require, exports, module) {
 
         var _router = null
 
-        var maxScale = 1.5
-
         var minScale = 0.5
 
         var _container = null
@@ -70,15 +66,11 @@ define(function (require, exports, module) {
 
         var _units = []
 
-        var _unitDivs = []
-
         var _mapScale = 1
 
         var _mapRotate = 0
 
         var _mapRoot = null
-
-        var _markerOrigScale = 1
 
         var _gestures = null
 
@@ -91,8 +83,6 @@ define(function (require, exports, module) {
         var _composs = null
 
         var that = this
-
-        var _idrPath = new IDRPath()
 
         var _floorMaps = {}
 
@@ -171,11 +161,6 @@ define(function (require, exports, module) {
             })
         }
         
-        function addUnitsText() {
-
-            _idrMap.refreshUnits()
-        }
-        
         function getTargetFloorPoints(path, floorId) {
 
             for (var i = 0; i < path.paths.length; ++i) {
@@ -210,7 +195,7 @@ define(function (require, exports, module) {
         
         function showRoutePath(paths) {
 
-            _idrPath.updateLine(_mapViewPort, paths)
+            _idrMap.showRoutePath(paths)
         }
         
         function onUnitClick(unit) {
@@ -276,81 +261,9 @@ define(function (require, exports, module) {
             // _refreshTimer = setInterval(updateDisplay, 100)
         }
 
-        function deTransform(transformList) {
-
-            if (transformList.length != 6) {
-
-                return false;
-            }
-
-            var a = transformList[0];
-            var b = transformList[1];
-
-            var c = transformList[2];
-            var d = transformList[3];
-
-            var tx = transformList[4];
-            var ty = transformList[5];
-
-            var sx = Math.sqrt(a * a + b * b);
-
-            var a = Math.atan2(c, d);
-
-            return {
-                a: a,
-                s: sx,
-                tx: tx,
-                ty: ty
-            }
-        }
-
-        function getTransArray(value) {
-
-            if (value == null) {
-
-                return [1, 0, 0, 1, 0, 0]
-            }
-
-            var temp = value.substring(7, value.length - 1)
-
-            var valueT = temp.split(',')
-
-            return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
-        }
-
         function updateDisplay() {
 
-            var trans = _mapViewPort.getAttribute('transform')
-
-            var mt = getTransArray(trans)
-
-            var mdecompose = deTransform(mt)
-
-            if (_idrIndicator && _mapScale !== mdecompose.s) {
-
-                _idrIndicator.updateScale(1/mdecompose.s)
-            }
-
-            if (_idrPath && _mapScale !== mdecompose.s) {
-
-                _idrPath.updateScale(1/mdecompose.s)
-            }
-
-            if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
-
-                // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
-
-                updateMarkersAngleAndScale(_markerOrigScale * 1/mdecompose.s, -1 * _mapRotate)
-            }
-
-            if (_composs || _mapRotate !== mdecompose.a) {
-
-                _composs.rotateToDegree(-1 * _mapRotate * 180/Math.PI)
-            }
-
-            _mapScale = mdecompose.s
-
-            _mapRotate = mdecompose.a
+            _idrMap.updateDisplay()
         }
 
         function updateMarkerScaleAngle(marker, scale, rotate) {
@@ -358,7 +271,7 @@ define(function (require, exports, module) {
             _idrMap.updateMarkerAngleAndScale(marker, scale, rotate)
         }
 
-         function updateMarkersAngleAndScale(scale, rotate) {
+        function updateMarkersAngleAndScale(scale, rotate) {
 
             var markers = _markers[_currentFloorId]
 
@@ -544,19 +457,10 @@ define(function (require, exports, module) {
 
             _mapEvent.fireEvent(that.eventTypes.onMarkerClick, marker)
         }
-
-        function getMapViewMatrix() {
-
-            var trans = _mapViewPort.getAttribute('transform')
-
-            var mt = getTransArray(trans)
-
-            return matrix2d.fromValues(mt[0], mt[1], mt[2], mt[3], mt[4], mt[5])
-        }
         
         function getMapPos(svgPos) {
 
-            var mt = getMapViewMatrix()
+            var mt = _idrMap.getMapViewMatrix()
 
             matrix2d.invert(mt, mt)
 
@@ -567,82 +471,27 @@ define(function (require, exports, module) {
         
         function getSvgPos(mapPos) {
 
-            var mt = getMapViewMatrix()
-
-            var posIn2d = vec2.fromValues(mapPos.x, mapPos.y)
-
-            return vec2.transformMat2d(posIn2d, posIn2d, mt)
-        }
-
-        function updateMapViewTrans(mt) {
-
-            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
-
-            _mapViewPort.setAttribute('transform', trans)
+            return _idrMap.getSvgPos(mapPos)
         }
 
         function zoom(scale, anchor) {
 
-            var mt = getMapViewMatrix()
-
-            var lastScale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
-
-            var factor = scale
-
-            if (lastScale * scale > maxScale) {
-
-                factor = maxScale/lastScale
-            }
-
-            if (lastScale * scale < minScale) {
-
-                factor = minScale/lastScale
-            }
-
-            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
-
-            matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
-
-            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
-
-            updateMapViewTrans(mt)
+            _idrMap.zoom(scale, anchor)
         }
         
         function scroll(screenVec) {
 
-            var v = vec2.fromValues(screenVec[0], screenVec[1])
-
-            var mt = getMapViewMatrix()
-
-            matrix2d.mytranslate(mt, mt, v)
-
-            updateMapViewTrans(mt)
+            _idrMap.scroll(screenVec)
         }
 
         function rotate(rad, anchor) {
 
-            var p = anchor
-
-            var mt = getMapViewMatrix()
-
-            matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
-
-            matrix2d.rotate(mt, mt, rad)
-
-            matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
-
-            updateMapViewTrans(mt)
+            _idrMap.rotate(rad, anchor)
         }
 
         function centerPos(mapPos) {
 
-            var center = vec2.fromValues(0.5 * _idrMap.root.clientWidth, 0.5 * _idrMap.root.clientHeight)
-
-            var pos = getSvgPos(mapPos)
-
-            var v = vec2.subtract(pos, center, pos)
-
-            scroll(v)
+            _idrMap.centerPos(mapPos)
         }
         
         function updateMinScale() {
@@ -664,40 +513,12 @@ define(function (require, exports, module) {
 
         function resetMap() {
 
-            console.log('resetMap')
-
-            var floor = that.regionEx.getFloorbyId(_currentFloorId)
-
-            var mapHeight = floor.height
-
-            var mapWidth = floor.width
-
-            var screenHeight = _idrMap.root.clientHeight
-
-            var screenWidth = _idrMap.root.clientWidth
-
-            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
-
-            scale = 1/scale
-
-            scale = Math.min(scale, maxScale)
-
-            var mt = matrix2d.create()
-
-            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
-
-            matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight * scale))
-
-            updateMapViewTrans(mt)
-
-            _mapRotate = null
-
-            updateDisplay()
+            _idrMap.resetMap()
         }
         
         function birdLook() {
 
-
+            _idrMap.birdLook()
         }
         
         function setUserPos(pos) {

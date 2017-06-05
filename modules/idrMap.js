@@ -5,15 +5,27 @@ define(function (require, exports, module) {
 
     var IDRIndicator = require('./IDRIndicator/IDRIndicator')
 
+    var matrix2d = require('./mat2d')
+
+    var vec2 = require('./vec2')
+
+    var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
+
     function IdrMap(mapView) {
 
-        this.root = null
+        var _root = null
+
+        var maxScale = 1.5
 
         var _mapView = mapView
 
         var _regionEx = null
 
         var _mapViewPort = null
+
+        var _idrPath = new IDRPath()
+
+        var _markerOrigScale = 1
 
         var _floorId = null
 
@@ -45,13 +57,13 @@ define(function (require, exports, module) {
 
             _map.innerHTML = svg
 
-            that.root = document.createElement('div')
+            _root = document.createElement('div')
 
-            that.root.id = 'mapRoot'
+            _root.id = 'mapRoot'
 
-            that.root.className = 'svg_box'
+            _root.className = 'svg_box'
 
-            that.root.appendChild(_map)
+            _root.appendChild(_map)
         }
 
         function addMapEvent() {
@@ -248,15 +260,15 @@ define(function (require, exports, module) {
 
         function detach() {
 
-            if (that.root) {
+            if (_root) {
 
-                that.root.parentNode.removeChild(that.root)
+                _root.parentNode.removeChild(_root)
             }
         }
         
         function attachTo(containor) {
 
-            containor.appendChild(that.root)
+            containor.appendChild(_root)
 
             _mapViewPort = document.getElementById('viewport')
         }
@@ -280,6 +292,210 @@ define(function (require, exports, module) {
             }
         }
 
+        function resetMap() {
+
+            var mapHeight = _floor.height
+
+            var mapWidth = _floor.width
+
+            var screenHeight = _root.clientHeight
+
+            var screenWidth = _root.clientWidth
+
+            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
+
+            scale = 1/scale
+
+            scale = Math.min(scale, maxScale)
+
+            var mt = matrix2d.create()
+
+            matrix2d.scale(mt, mt, vec2.fromValues(scale, scale))
+
+            matrix2d.mytranslate(mt, mt, vec2.fromValues(0, 0.5 * screenHeight - 0.5 * mapHeight * scale))
+
+            updateMapViewTrans(mt)
+
+            _mapRotate = null
+
+            updateDisplay()
+        }
+
+        function scroll(screenVec) {
+
+            var v = vec2.fromValues(screenVec[0], screenVec[1])
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.mytranslate(mt, mt, v)
+
+            updateMapViewTrans(mt)
+        }
+        
+        function birdLook() {
+            
+        }
+
+        function updateMapViewTrans(mt) {
+
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
+
+            _mapViewPort.setAttribute('transform', trans)
+        }
+
+        function showRoutePath(paths) {
+
+            _idrPath.updateLine(_mapViewPort, paths)
+        }
+
+        function getTransArray(value) {
+
+            if (value == null) {
+
+                return [1, 0, 0, 1, 0, 0]
+            }
+
+            var temp = value.substring(7, value.length - 1)
+
+            var valueT = temp.split(',')
+
+            return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
+        }
+
+        function getSvgPos(mapPos) {
+
+            var mt = getMapViewMatrix()
+
+            var posIn2d = vec2.fromValues(mapPos.x, mapPos.y)
+
+            return vec2.transformMat2d(posIn2d, posIn2d, mt)
+        }
+
+        function getMapViewMatrix() {
+
+            var trans = _mapViewPort.getAttribute('transform')
+
+            var mt = getTransArray(trans)
+
+            return matrix2d.fromValues(mt[0], mt[1], mt[2], mt[3], mt[4], mt[5])
+        }
+
+        function zoom(scale, anchor) {
+
+            var mt = getMapViewMatrix()
+
+            var lastScale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
+
+            var factor = scale
+
+            if (lastScale * scale > maxScale) {
+
+                factor = maxScale/lastScale
+            }
+
+            if (lastScale * scale < minScale) {
+
+                factor = minScale/lastScale
+            }
+
+            matrix2d.translate(mt, mt, vec2.fromValues(anchor[0], anchor[1]))
+
+            matrix2d.scale(mt, mt, vec2.fromValues(factor, factor))
+
+            matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
+
+            updateMapViewTrans(mt)
+        }
+
+        function rotate(rad, anchor) {
+
+            var p = anchor
+
+            var mt = getMapViewMatrix()
+
+            matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
+
+            matrix2d.rotate(mt, mt, rad)
+
+            matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
+
+            updateMapViewTrans(mt)
+        }
+
+        function centerPos(mapPos) {
+
+            var center = vec2.fromValues(0.5 * _root.clientWidth, 0.5 * _root.clientHeight)
+
+            var pos = getSvgPos(mapPos)
+
+            var v = vec2.subtract(pos, center, pos)
+
+            scroll(v)
+        }
+
+        function deTransform(transformList) {
+
+            if (transformList.length != 6) {
+
+                return false;
+            }
+
+            var a = transformList[0];
+            var b = transformList[1];
+
+            var c = transformList[2];
+            var d = transformList[3];
+
+            var tx = transformList[4];
+            var ty = transformList[5];
+
+            var sx = Math.sqrt(a * a + b * b);
+
+            var a = Math.atan2(c, d);
+
+            return {
+                a: a,
+                s: sx,
+                tx: tx,
+                ty: ty
+            }
+        }
+
+        function updateDisplay() {
+
+            var trans = _mapViewPort.getAttribute('transform')
+
+            var mt = getTransArray(trans)
+
+            var mdecompose = deTransform(mt)
+
+            if (_idrIndicator && _mapScale !== mdecompose.s) {
+
+                _idrIndicator.updateScale(1/mdecompose.s)
+            }
+
+            if (_idrPath && _mapScale !== mdecompose.s) {
+
+                _idrPath.updateScale(1/mdecompose.s)
+            }
+
+            if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
+
+                // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+
+                updateMarkersAngleAndScale(_markerOrigScale * 1/mdecompose.s, -1 * _mapRotate)
+            }
+
+            if (_composs || _mapRotate !== mdecompose.a) {
+
+                _composs.rotateToDegree(-1 * _mapRotate * 180/Math.PI)
+            }
+
+            _mapScale = mdecompose.s
+
+            _mapRotate = mdecompose.a
+        }
+
         this.refreshUnits = refreshUnits
 
         this.detach = detach
@@ -295,6 +511,26 @@ define(function (require, exports, module) {
         this.updateMarkerAngleAndScale = updateMarkerAngleAndScale
 
         this.updateMarkersAngleAndScale = updateMarkersAngleAndScale
+
+        this.resetMap = resetMap
+        
+        this.birdLook = birdLook
+
+        this.showRoutePath = showRoutePath
+
+        this.getMapViewMatrix = getMapViewMatrix
+
+        this.getSvgPos = getSvgPos
+
+        this.zoom = zoom
+
+        this.scroll = scroll
+
+        this.rotate = rotate
+
+        this.centerPos = centerPos
+
+        this.updateDisplay = updateDisplay
     }
 
     module.exports = IdrMap
