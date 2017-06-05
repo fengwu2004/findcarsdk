@@ -118,7 +118,10 @@ define(function (require, exports, module) {
 
         function detach() {
 
-            _root.parentNode.removeChild(_root)
+            if (_root) {
+
+                _root.parentNode.removeChild(_root)
+            }
         }
         
         function attachTo(containor) {
