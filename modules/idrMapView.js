@@ -243,6 +243,8 @@ define(function (require, exports, module) {
                     var units = storeUnits(data)
 
                     _idrMap.refreshUnits(units)
+
+                    _idrMap.addEvents()
                 },
 
                 function (str) {
@@ -353,23 +355,7 @@ define(function (require, exports, module) {
 
         function updateMarkerScaleAngle(marker, scale, rotate) {
 
-            var a = scale * Math.cos(rotate)
-
-            var b = -scale * Math.sin(rotate)
-
-            var c = scale * Math.sin(rotate)
-
-            var d = scale * Math.cos(rotate)
-
-            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
-
-            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
-
-            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
-
-            marker.el.style.transform = m
-
-            marker.el.style.webkitTransform = m
+            _idrMap.updateMarkerAngleAndScale(marker, scale, rotate)
         }
 
          function updateMarkersAngleAndScale(scale, rotate) {
@@ -381,44 +367,7 @@ define(function (require, exports, module) {
                 return
             }
 
-            var a = scale * Math.cos(rotate)
-
-            var b = -scale * Math.sin(rotate)
-
-            var c = scale * Math.sin(rotate)
-
-            var d = scale * Math.cos(rotate)
-
-            markers.forEach(function(marker) {
-
-                var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
-
-                var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
-
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
-
-                marker.el.style.transform = m
-
-                marker.el.style.webkitTransform = m
-            })
-        }
-
-        function updateUnitAngleAndScale(scale, rotate) {
-
-            var a = scale * Math.cos(rotate)
-
-            var b = -scale * Math.sin(rotate)
-
-            var c = scale * Math.sin(rotate)
-
-            var d = scale * Math.cos(rotate)
-
-            _unitDivs.forEach(function(unitSvg) {
-
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
-
-                unitSvg.setAttribute('transform', m)
-            })
+            _idrMap.updateMarkersAngleAndScale(markers, scale, rotate)
         }
         
         function addComposs() {
@@ -432,7 +381,7 @@ define(function (require, exports, module) {
 
             div.setAttribute('id', 'composs')
 
-            _idrMap.root.appendChild(div)
+            _mapRoot.appendChild(div)
 
             _composs = new IDRComposs('composs', 0, that)
         }

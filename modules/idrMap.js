@@ -127,6 +127,8 @@ define(function (require, exports, module) {
 
         function addUnitsText(unitList) {
 
+            _unitDivs = []
+
             for (var i = 0; i < unitList.length; ++i) {
 
                 var unit = unitList[i]
@@ -151,6 +153,69 @@ define(function (require, exports, module) {
 
                 unitSvg.setAttribute('transform', trans)
             }
+        }
+
+        function updateUnitAngleAndScale(scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            _unitDivs.forEach(function(unitSvg) {
+
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
+
+                unitSvg.setAttribute('transform', m)
+            })
+        }
+
+        function updateMarkerAngleAndScale(marker, scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
+
+            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
+
+            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+
+            marker.el.style.transform = m
+
+            marker.el.style.webkitTransform = m
+        }
+
+        function updateMarkersAngleAndScale(markers, scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            markers.forEach(function(marker) {
+
+                var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
+
+                var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
+
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+
+                marker.el.style.transform = m
+
+                marker.el.style.webkitTransform = m
+            })
         }
         
         function addMarker(marker) {
@@ -228,6 +293,10 @@ define(function (require, exports, module) {
         this.setPos = setPos
 
         this.addMarker = addMarker
+
+        this.updateMarkerAngleAndScale = updateMarkerAngleAndScale
+
+        this.updateMarkersAngleAndScale = updateMarkersAngleAndScale
     }
 
     module.exports = IdrMap
