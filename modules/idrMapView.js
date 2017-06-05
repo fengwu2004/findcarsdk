@@ -68,8 +68,6 @@ define(function (require, exports, module) {
 
         var _refreshTimer = null
 
-        var _svgFrame = null
-
         var _mapViewPort = null
 
         var _floorListControl = null
@@ -112,7 +110,7 @@ define(function (require, exports, module) {
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(_svgFrame, that.regionEx['floorList'], floor)
+            _floorListControl.init(_idrMap.root, that.regionEx['floorList'], floor)
         }
 
         function addMap(svg) {
@@ -763,7 +761,7 @@ define(function (require, exports, module) {
 
         function centerPos(mapPos) {
 
-            var center = vec2.fromValues(0.5 * _svgFrame.clientWidth, 0.5 * _svgFrame.clientHeight)
+            var center = vec2.fromValues(0.5 * _idrMap.root.clientWidth, 0.5 * _idrMap.root.clientHeight)
 
             var pos = getSvgPos(mapPos)
 
@@ -780,9 +778,9 @@ define(function (require, exports, module) {
 
             var mapWidth = floor.width
 
-            var screenHeight = _svgFrame.clientHeight
+            var screenHeight = _idrMap.root.clientHeight
 
-            var screenWidth = _svgFrame.clientWidth
+            var screenWidth = _idrMap.root.clientWidth
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
@@ -799,9 +797,9 @@ define(function (require, exports, module) {
 
             var mapWidth = floor.width
 
-            var screenHeight = _svgFrame.clientHeight
+            var screenHeight = _idrMap.root.clientHeight
 
-            var screenWidth = _svgFrame.clientWidth
+            var screenWidth = _idrMap.root.clientWidth
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
