@@ -5,6 +5,8 @@ define(function (require, exports, module) {
     
     function IdrMap() {
 
+        this.root = null
+
         var _regionEx = null
 
         var _mapViewPort = null
@@ -16,8 +18,6 @@ define(function (require, exports, module) {
         var _origScale = 0.5
 
         var _map = null
-
-        this.root = null
 
         var that = this
 

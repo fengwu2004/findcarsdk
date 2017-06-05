@@ -68,8 +68,6 @@ define(function (require, exports, module) {
 
         var _refreshTimer = null
 
-        var _mapViewPort = null
-
         var _floorListControl = null
 
         var _units = []
@@ -195,31 +193,6 @@ define(function (require, exports, module) {
         function addUnitsText() {
 
             _idrMap.refreshUnits()
-
-            for (var i = 0; i < _units.length; ++i) {
-
-                var unit = _units[i]
-
-                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','text')
-
-                unitSvg.innerHTML = unit.name
-
-                _unitDivs.push(unitSvg)
-
-                _mapViewPort.appendChild(unitSvg)
-
-                var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
-
-                unitSvg.centerX = center[0]
-
-                unitSvg.centerY = center[1]
-
-                var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
-
-                unitSvg.setAttribute('transform-origin', '50% 50% 0')
-
-                unitSvg.setAttribute('transform', trans)
-            }
         }
         
         function getTargetFloorPoints(path, floorId) {
@@ -305,7 +278,7 @@ define(function (require, exports, module) {
 
         function setDisplayTimer() {
 
-            _refreshTimer = setInterval(updateDisplay, 100)
+            // _refreshTimer = setInterval(updateDisplay, 100)
         }
 
         function deTransform(transformList) {
