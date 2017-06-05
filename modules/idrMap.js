@@ -60,13 +60,11 @@ define(function (require, exports, module) {
 
             if (!map) {
 
-                var floor = _regionEx.getFloorbyId(floorId)
-
                 map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 
-                map.setAttribute('width', floor.width)
+                map.setAttribute('width', _floor.width)
 
-                map.setAttribute('height', floor.height)
+                map.setAttribute('height', _floor.height)
 
                 map.style.opacity = 0
 
