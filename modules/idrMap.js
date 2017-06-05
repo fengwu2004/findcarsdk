@@ -2,16 +2,22 @@
  * Created by ky on 17-6-2.
  */
 define(function (require, exports, module) {
-    
-    function IdrMap() {
+
+    var IDRIndicator = require('./IDRIndicator/IDRIndicator')
+
+    function IdrMap(mapView) {
 
         this.root = null
+
+        var _mapView = mapView
 
         var _regionEx = null
 
         var _mapViewPort = null
 
         var _floorId = null
+
+        var _floor = null
 
         var _unitDivs = null
 
@@ -21,11 +27,15 @@ define(function (require, exports, module) {
 
         var that = this
 
+        var _idrIndicator = null
+
         this.init = function(regionEx, floorId, svg) {
 
             _regionEx = regionEx
 
             _floorId = floorId
+
+            _floor = _regionEx.getFloorbyId(_floorId)
 
             _map = document.createElement('div')
 
@@ -43,10 +53,8 @@ define(function (require, exports, module) {
 
             that.root.appendChild(_map)
         }
-        
-        function addEvents() {
 
-            _mapViewPort = document.getElementById('viewport')
+        function addMapEvent() {
 
             var map = document.getElementById('background')
 
@@ -68,7 +76,23 @@ define(function (require, exports, module) {
             map.addEventListener('click', onMapClick, false)
         }
 
-        function addUnitClickRect(unitList) {
+        function onMapClick(event) {
+
+            var pos = {x:event.clientX, y:event.clientY, floorId:_floorId}
+
+            _mapView.onMapClick(pos)
+        }
+
+        function onUnitClick(event) {
+
+            var unit = that.regionEx.getUnitById(_floorId, event.currentTarget.id)
+
+            _mapView.onClickUnit(unit)
+        }
+
+        function addUnitClickRect() {
+
+            var unitList = _floor.unitList
 
             for (var i = 0; i < unitList.length; ++i) {
 
@@ -92,6 +116,13 @@ define(function (require, exports, module) {
 
                 unitSvg.addEventListener('click', onUnitClick, true)
             }
+        }
+        
+        function addEvents() {
+
+            addMapEvent()
+
+            addUnitClickRect()
         }
 
         function addUnitsText(unitList) {
@@ -123,12 +154,33 @@ define(function (require, exports, module) {
         }
         
         function addMarker(marker) {
-            
+
+            marker.addToSuperView(_mapViewPort)
+
+            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
+
+            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
+
+            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+
+            marker.el.style.zIndex = 2
+
+            marker.el.style.transform = trans
+
+            marker.el.style.webkitTransform = trans
+
+            marker.el.style.transformOrigin = '50% 100% 0'
+
+            marker.el.style.webkitTransformOrigin = '50% 100% 0'
+
+            marker.el.addEventListener('click', onMarkerClick, true)
         }
 
-        function onMapClick(evt) {
+        function onMarkerClick(event) {
 
+            var markerId = event.currentTarget.id
 
+            _mapView.onMarkerClick(_floorId, markerId)
         }
 
         function detach() {
@@ -142,10 +194,27 @@ define(function (require, exports, module) {
         function attachTo(containor) {
 
             containor.appendChild(that.root)
+
+            _mapViewPort = document.getElementById('viewport')
         }
 
-        function refreshUnits() {
+        function refreshUnits(units) {
 
+            addUnitsText(units)
+        }
+
+        function setPos(pos) {
+
+            if (_idrIndicator == null) {
+
+                _idrIndicator = new IDRIndicator()
+
+                _idrIndicator.creat(_mapViewPort, pos)
+            }
+            else  {
+
+                _idrIndicator.updateLocation(pos)
+            }
         }
 
         this.refreshUnits = refreshUnits
@@ -153,6 +222,12 @@ define(function (require, exports, module) {
         this.detach = detach
 
         this.attachTo = attachTo
+
+        this.addEvents = addEvents
+
+        this.setPos = setPos
+
+        this.addMarker = addMarker
     }
 
     module.exports = IdrMap

@@ -26,8 +26,6 @@ define(function (require, exports, module) {
 
     var IDRUnit = require('./idrUnit')
 
-    var IDRIndicator = require('./IDRIndicator/IDRIndicator')
-
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
 
     var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
@@ -88,8 +86,6 @@ define(function (require, exports, module) {
 
         var _markers = {}
 
-        var _idrIndicator = null
-
         var _idrMap = new IdrMap()
 
         var _composs = null
@@ -111,9 +107,9 @@ define(function (require, exports, module) {
             _floorListControl.init(_mapRoot, that.regionEx['floorList'], floor)
         }
 
-        function onMapClick(evt) {
+        function onMapClick(pos) {
 
-            _mapEvent.fireEvent(that.eventTypes.onMapClick, {x:evt.clientX, y:evt.clientY, floorId:_currentFloorId})
+            _mapEvent.fireEvent(that.eventTypes.onMapClick, pos)
         }
 
         function getTouchCenter(p) {
@@ -217,14 +213,12 @@ define(function (require, exports, module) {
             _idrPath.updateLine(_mapViewPort, paths)
         }
         
-        function onUnitClick(event) {
-
-            var unit = that.regionEx.getUnitById(_currentFloorId, event.currentTarget.id)
+        function onUnitClick(unit) {
 
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
-        function addUnits(unitsInfo) {
+        function storeUnits(unitsInfo) {
 
             _units = []
 
@@ -236,15 +230,19 @@ define(function (require, exports, module) {
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             floor.unitList = _units
+
+            return floor.unitList
         }
 
-        function getUnits() {
+        function loadUnits() {
 
             networkInstance.serverCallUnits(_regionId, _currentFloorId,
 
                 function (data) {
 
-                    addUnits(data)
+                    var units = storeUnits(data)
+
+                    _idrMap.refreshUnits(units)
                 },
 
                 function (str) {
@@ -267,6 +265,8 @@ define(function (require, exports, module) {
             _floorMaps[_currentFloorId] = _idrMap
 
             _mapRoot = _idrMap.root
+
+            loadUnits()
         }
 
         function setDisplayTimer() {
@@ -437,7 +437,7 @@ define(function (require, exports, module) {
             _composs = new IDRComposs('composs', 0, that)
         }
         
-        function retriveMap() {
+        function loadMap() {
 
             if (_currentFloorId in _floorMaps) {
 
@@ -469,7 +469,7 @@ define(function (require, exports, module) {
 
             _currentFloorId = floorId
 
-            retriveMap()
+            loadMap()
         }
         
         function initMap(appid, containerId, regionId) {
@@ -562,25 +562,7 @@ define(function (require, exports, module) {
 
             marker.id = 'marker_' + marker.position.floorId + '_' + _markers[marker.position.floorId].length
 
-            marker.addToSuperView(_mapViewPort)
-
-            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
-
-            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
-
-            var trans = 'matrix(' + _markerOrigScale + ',' + 0 + ',' + 0 + ',' + _markerOrigScale + ',' + x + ',' + y + ')'
-
-            marker.el.style.zIndex = 2
-
-            marker.el.style.transform = trans
-
-            marker.el.style.webkitTransform = trans
-
-            marker.el.style.transformOrigin = '50% 100% 0'
-
-            marker.el.style.webkitTransformOrigin = '50% 100% 0'
-
-            marker.el.addEventListener('click', onMarkerClick, true)
+            _idrMap.addMarker(marker)
 
             updateMarkerScaleAngle(marker, _markerOrigScale/_mapScale, -1 * _mapRotate)
 
@@ -607,33 +589,11 @@ define(function (require, exports, module) {
             return null
         }
 
-        function onMarkerClick(event) {
+        function onMarkerClick(floorId, markerId) {
 
-            var markerId = event.currentTarget.id
-
-            var marker = findMarker(_currentFloorId, markerId)
+            var marker = findMarker(floorId, markerId)
 
             _mapEvent.fireEvent(that.eventTypes.onMarkerClick, marker)
-        }
-
-        this.addPoint = function(p) {
-
-            var circle = document.createElementNS('http://www.w3.org/2000/svg','circle')
-
-            circle.setAttribute('cx', p.x.toString())
-
-            circle.setAttribute('cy', p.y.toString())
-
-            circle.setAttribute('r', '10')
-
-            circle.setAttribute('fill', 'red')
-
-            _mapViewPort.appendChild(circle)
-        }
-
-        function onTestClick() {
-
-            addComposs()
         }
 
         function getMapViewMatrix() {
@@ -795,16 +755,7 @@ define(function (require, exports, module) {
 
             _currentPos = pos
 
-            if (_idrIndicator == null) {
-
-                _idrIndicator = new IDRIndicator()
-
-                _idrIndicator.creat(_mapViewPort, _currentPos)
-            }
-            else  {
-
-                _idrIndicator.updateLocation(_currentPos)
-            }
+            _idrMap.setPos(pos)
         }
         
         function setPos(pos) {
@@ -858,6 +809,12 @@ define(function (require, exports, module) {
         this.doRoute = doRoute
 
         this.doLocation = doLocation
+
+        this.onUnitClick = onUnitClick
+
+        this.onMapClick = onMapClick
+
+        this.onMarkerClick = onMarkerClick
     }
 
     module.exports = idrMapView;
