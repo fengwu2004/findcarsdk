@@ -17,7 +17,9 @@ define(function (require, exports, module) {
 
         var _map = null
 
-        var _root = null
+        this.root = null
+
+        var that = this
 
         this.init = function(regionEx, floorId, svg) {
 
@@ -33,11 +35,11 @@ define(function (require, exports, module) {
 
             _map.innerHTML = svg
 
-            _root = document.createElement('div')
+            that.root = document.createElement('div')
 
-            _root.id = 'mapRoot'
+            that.root.id = 'mapRoot'
 
-            _root.className = 'svg_box'
+            that.root.className = 'svg_box'
         }
         
         function addEvents() {
@@ -129,15 +131,15 @@ define(function (require, exports, module) {
 
         function detach() {
 
-            if (_root) {
+            if (that.root) {
 
-                _root.parentNode.removeChild(_root)
+                that.root.parentNode.removeChild(that.root)
             }
         }
         
         function attachTo(containor) {
 
-            containor.appendChild(_root)
+            containor.appendChild(that.root)
         }
 
         function refreshUnits() {
@@ -145,11 +147,6 @@ define(function (require, exports, module) {
         }
 
         this.refreshUnits = refreshUnits
-
-        this.root = function () {
-
-            return _root
-        }
 
         this.detach = detach
 
