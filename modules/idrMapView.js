@@ -104,7 +104,7 @@ define(function (require, exports, module) {
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(_mapRoot, that.regionEx['floorList'], floor)
+            _floorListControl.init(document.getElementById(_containerId), that.regionEx['floorList'], floor)
         }
 
         function onMapClick(pos) {
@@ -381,7 +381,7 @@ define(function (require, exports, module) {
 
             div.setAttribute('id', 'composs')
 
-            _mapRoot.appendChild(div)
+            document.getElementById(_containerId).appendChild(div)
 
             _composs = new IDRComposs('composs', 0, that)
         }
