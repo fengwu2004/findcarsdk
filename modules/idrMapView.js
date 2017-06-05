@@ -78,7 +78,7 @@ define(function (require, exports, module) {
 
         var _mapRotate = 0
 
-        var _origScale = 0.5
+        var _mapRoot = null
 
         var _markerOrigScale = 1
 
@@ -108,24 +108,9 @@ define(function (require, exports, module) {
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(_idrMap.root, that.regionEx['floorList'], floor)
+            _floorListControl.init(_mapRoot, that.regionEx['floorList'], floor)
         }
 
-        function addMap(svg) {
-
-            _idrMap = new IdrMap()
-
-            _idrMap.init(that.regionEx, _currentFloorId, svg)
-
-            _idrMap.attachTo(document.getElementById(_containerId))
-
-            _floorMaps[_currentFloorId] = _idrMap
-
-            // addGestures()
-
-            // getUnits()
-        }
-        
         function onMapClick(evt) {
 
             _mapEvent.fireEvent(that.eventTypes.onMapClick, {x:evt.clientX, y:evt.clientY, floorId:_currentFloorId})
@@ -269,11 +254,19 @@ define(function (require, exports, module) {
             )
         }
 
-        function createMap(svg) {
+        function createMap(svgData) {
 
             _idrMap.detach()
 
-            addMap(svg);
+            _idrMap = new IdrMap()
+
+            _idrMap.init(that.regionEx, _currentFloorId, svgData)
+
+            _idrMap.attachTo(document.getElementById(_containerId))
+
+            _floorMaps[_currentFloorId] = _idrMap
+
+            _mapRoot = _idrMap.root
         }
 
         function setDisplayTimer() {
