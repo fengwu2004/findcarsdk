@@ -13,8 +13,6 @@ define(function (require, exports, module) {
 
     function IdrMap(mapView) {
 
-        var _root = null
-
         var maxScale = 1.5
 
         var minScale = 1
@@ -43,8 +41,6 @@ define(function (require, exports, module) {
 
         var _map = null
 
-        var that = this
-
         var _idrIndicator = null
 
         this.init = function(regionEx, floorId, svg) {
@@ -62,14 +58,6 @@ define(function (require, exports, module) {
             _map.className = 'svg_box'
 
             _map.innerHTML = svg
-
-            _root = document.createElement('div')
-
-            _root.id = 'mapRoot'
-
-            _root.className = 'svg_box'
-
-            _root.appendChild(_map)
         }
 
         function addMapEvent() {
@@ -247,9 +235,9 @@ define(function (require, exports, module) {
 
         function detach() {
 
-            if (_root) {
+            if (_map) {
 
-                _root.parentNode.removeChild(_root)
+                _map.parentNode.removeChild(_map)
             }
         }
         
@@ -285,9 +273,9 @@ define(function (require, exports, module) {
 
             var mapWidth = _floor.width
 
-            var screenHeight = _root.clientHeight
+            var screenHeight = _map.clientHeight
 
-            var screenWidth = _root.clientWidth
+            var screenWidth = _map.clientWidth
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
@@ -504,9 +492,9 @@ define(function (require, exports, module) {
 
             var mapWidth = _floor.width
 
-            var screenHeight = _root.clientHeight
+            var screenHeight = _map.clientHeight
 
-            var screenWidth = _root.clientWidth
+            var screenWidth = _map.clientWidth
 
             var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
 
@@ -562,6 +550,11 @@ define(function (require, exports, module) {
         this.updateDisplay = updateDisplay
 
         this.updateMinScale = updateMinScale
+
+        this.root = function () {
+
+            return _map
+        }
     }
 
     module.exports = IdrMap
