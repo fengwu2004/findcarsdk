@@ -14,24 +14,24 @@ define(function (require, exports, module) {
 
     var Composs = function(id, defaultDegree, map) {
 
-        var composs = document.getElementById(id);
+        var _composs = document.getElementById(id);
 
-        var idrMap = map
+        var _mapview = map
 
-        var currentValue = 0;
+        var _currentValue = 0;
 
-        composs.addEventListener('click', onCompossClick)
+        _composs.addEventListener('click', onCompossClick)
 
         function onCompossClick() {
 
-            idrMap.resetMap()
+            _mapview.resetMap()
         }
 
         function rotateToDegree(degree) {
 
-            currentValue = degree
+            _currentValue = degree
 
-            composs.style.transform = "rotate(" + currentValue + "deg)";
+            _composs.style.transform = "rotate(" + _currentValue + "deg)";
         }
 
         this.rotateToDegree = rotateToDegree
