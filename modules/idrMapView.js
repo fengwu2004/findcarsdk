@@ -435,8 +435,6 @@ define(function (require, exports, module) {
 
             _idrMap.addMarker(marker)
 
-            updateMarkerScaleAngle(marker, _markerOrigScale/_mapScale, -1 * _mapRotate)
-
             return marker
         }
 

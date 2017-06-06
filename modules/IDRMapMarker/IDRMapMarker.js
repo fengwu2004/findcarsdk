@@ -40,6 +40,27 @@ define(function (require, exports, module) {
             markers.appendChild(this.el)
         }
 
+        this.update = function(scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            var x = this.position.x - this.el.width.baseVal.value * 0.5 //use bottom middle
+
+            var y = this.position.y - this.el.height.baseVal.value //use bottom middle
+
+            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+
+            this.el.style.transform = m
+
+            this.el.style.webkitTransform = m
+        }
+
         this.removeFromSuperView = function() {
 
             this.el.parentNode.removeChild(this.el)

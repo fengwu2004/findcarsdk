@@ -189,28 +189,7 @@ define(function (require, exports, module) {
             })
         }
 
-        function updateMarkerAngleAndScale(marker, scale, rotate) {
-
-            var a = scale * Math.cos(rotate)
-
-            var b = -scale * Math.sin(rotate)
-
-            var c = scale * Math.sin(rotate)
-
-            var d = scale * Math.cos(rotate)
-
-            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
-
-            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
-
-            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
-
-            marker.el.style.transform = m
-
-            marker.el.style.webkitTransform = m
-        }
-
-        function updateMarkersAngleAndScale(markers, scale, rotate) {
+        function updateMarkers(markers, scale, rotate) {
 
             var a = scale * Math.cos(rotate)
 
@@ -255,6 +234,8 @@ define(function (require, exports, module) {
             marker.el.style.webkitTransformOrigin = '50% 100% 0'
 
             marker.el.addEventListener('click', onMarkerClick, true)
+
+            marker.update(_mapScale, _mapRotate)
         }
 
         function onMarkerClick(event) {
@@ -509,7 +490,7 @@ define(function (require, exports, module) {
 
                 var markers = _mapView.getMarkers(_floorId)
 
-                markers && updateMarkersAngleAndScale(markers, _markerOrigScale * 1/scale, -1 * rotate)
+                markers && updateMarkers(markers, _markerOrigScale * 1/scale, -1 * rotate)
             }
 
             _mapScale = scale
