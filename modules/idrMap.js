@@ -509,7 +509,7 @@ define(function (require, exports, module) {
 
                 var markers = _mapView.getMarkers(_floorId)
 
-                updateMarkersAngleAndScale(markers, _markerOrigScale * 1/scale, -1 * rotate)
+                markers && updateMarkersAngleAndScale(markers, _markerOrigScale * 1/scale, -1 * rotate)
             }
 
             _mapScale = scale
