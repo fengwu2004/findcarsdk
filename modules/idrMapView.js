@@ -145,7 +145,7 @@ define(function (require, exports, module) {
 
         function addGestures() {
 
-            _gestures = new AlloyFinger(_idrMap.root, {
+            _gestures = new AlloyFinger(_mapRoot, {
 
                 rotate:onRoate,
 
@@ -258,6 +258,11 @@ define(function (require, exports, module) {
         function updateDisplay() {
 
             _idrMap.updateDisplay()
+
+            if (_composs) {
+
+                _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
+            }
         }
 
         function updateMarkerScaleAngle(marker, scale, rotate) {
@@ -407,6 +412,16 @@ define(function (require, exports, module) {
             marker.removeFromSuperView()
         }
 
+        function getMarkers(floorId) {
+
+            if (floorId in _markers) {
+
+                return _markers[floorId]
+            }
+
+            return null
+        }
+        
         function addMarker(marker) {
 
             if (!_markers.hasOwnProperty(marker.position.floorId)) {
@@ -556,6 +571,8 @@ define(function (require, exports, module) {
         this.onMapClick = onMapClick
 
         this.onMarkerClick = onMarkerClick
+        
+        this.getMarkers = getMarkers
     }
 
     module.exports = idrMapView;

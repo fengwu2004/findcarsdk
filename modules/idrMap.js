@@ -339,7 +339,8 @@ define(function (require, exports, module) {
         }
         
         function birdLook() {
-            
+
+
         }
 
         function updateMapViewTrans(mt) {
@@ -478,7 +479,7 @@ define(function (require, exports, module) {
             }
         }
 
-        function updateDisplay() {
+        function getRotateAndScale() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
@@ -486,31 +487,34 @@ define(function (require, exports, module) {
 
             var mdecompose = deTransform(mt)
 
-            if (_idrIndicator && _mapScale !== mdecompose.s) {
+            return [mdecompose.s, mdecompose.a]
+        }
+        
+        function updateDisplay() {
 
-                _idrIndicator.updateScale(1/mdecompose.s)
+            var scaleRotate = getRotateAndScale()
+
+            var scale = scaleRotate[0]
+
+            var rotate = scaleRotate[1]
+
+            if (_mapScale !== scale) {
+
+                _idrIndicator && _idrIndicator.updateScale(1/scale)
+
+                _idrPath && _idrPath.updateScale(1/scale)
             }
 
-            if (_idrPath && _mapScale !== mdecompose.s) {
+            if (_mapScale !== scale || _mapRotate !== rotate) {
 
-                _idrPath.updateScale(1/mdecompose.s)
+                var markers = _mapView.getMarkers(_floorId)
+
+                updateMarkersAngleAndScale(markers, _markerOrigScale * 1/scale, -1 * rotate)
             }
 
-            if (_mapScale !== mdecompose.s || _mapRotate !== mdecompose.a) {
+            _mapScale = scale
 
-                // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
-
-                updateMarkersAngleAndScale(_markerOrigScale * 1/mdecompose.s, -1 * _mapRotate)
-            }
-
-            if (_composs || _mapRotate !== mdecompose.a) {
-
-                _composs.rotateToDegree(-1 * _mapRotate * 180/Math.PI)
-            }
-
-            _mapScale = mdecompose.s
-
-            _mapRotate = mdecompose.a
+            _mapRotate = rotate
         }
 
         function updateMinScale() {
@@ -527,7 +531,21 @@ define(function (require, exports, module) {
 
             minScale = Math.min(scale, minScale)
         }
+        
+        function getMapScale() {
 
+            return _mapScale
+        }
+
+        function getMapRotate() {
+
+            return _mapRotate
+        }
+        
+        this.getMapScale = getMapScale
+
+        this.getMapRotate = getMapRotate
+        
         this.refreshUnits = refreshUnits
 
         this.detach = detach
