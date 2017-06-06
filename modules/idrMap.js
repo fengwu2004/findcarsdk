@@ -243,7 +243,7 @@ define(function (require, exports, module) {
         
         function attachTo(containor) {
 
-            containor.appendChild(_root)
+            containor.appendChild(_map)
 
             _mapViewPort = document.getElementById('viewport')
         }
