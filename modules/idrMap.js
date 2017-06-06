@@ -101,7 +101,7 @@ define(function (require, exports, module) {
 
         function onUnitClick(event) {
 
-            var unit = that.regionEx.getUnitById(_floorId, event.currentTarget.id)
+            var unit = _regionEx.getUnitById(_floorId, event.currentTarget.id)
 
             _mapView.onClickUnit(unit)
         }
