@@ -539,10 +539,6 @@ define(function (require, exports, module) {
 
         this.addMarker = addMarker
 
-        this.updateMarkerAngleAndScale = updateMarkerAngleAndScale
-
-        this.updateMarkersAngleAndScale = updateMarkersAngleAndScale
-
         this.resetMap = resetMap
         
         this.birdLook = birdLook

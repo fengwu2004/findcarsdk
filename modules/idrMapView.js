@@ -264,23 +264,6 @@ define(function (require, exports, module) {
                 _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
             }
         }
-
-        function updateMarkerScaleAngle(marker, scale, rotate) {
-
-            _idrMap.updateMarkerAngleAndScale(marker, scale, rotate)
-        }
-
-        function updateMarkersAngleAndScale(scale, rotate) {
-
-            var markers = _markers[_currentFloorId]
-
-            if (markers == undefined) {
-
-                return
-            }
-
-            _idrMap.updateMarkersAngleAndScale(markers, scale, rotate)
-        }
         
         function addComposs() {
 
