@@ -237,7 +237,7 @@ define(function (require, exports, module) {
 
             _idrMap.detach()
 
-            _idrMap = new IdrMap()
+            _idrMap = new IdrMap(that)
 
             _idrMap.init(that.regionEx, _currentFloorId, svgData)
 
