@@ -98,6 +98,12 @@ define(function (require, exports, module) {
 
             var unitList = _floor.unitList
 
+            var group = document.createElementNS('http://www.w3.org/2000/svg','g')
+
+            group.id = 'unitClickRect'
+
+            _mapViewPort.appendChild(group)
+
             for (var i = 0; i < unitList.length; ++i) {
 
                 var unit = unitList[i]
@@ -116,7 +122,7 @@ define(function (require, exports, module) {
 
                 unitSvg.style.opacity = 0
 
-                _mapViewPort.appendChild(unitSvg)
+                group.appendChild(unitSvg)
 
                 unitSvg.addEventListener('click', onUnitClick, true)
             }
