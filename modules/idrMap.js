@@ -503,7 +503,7 @@ define(function (require, exports, module) {
         
         function resizeViewBox() {
 
-            var nodes = _map.children()
+            var nodes = _map.children
 
             if (!nodes || nodes.length == 0) {
 
