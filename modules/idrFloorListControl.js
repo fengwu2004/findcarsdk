@@ -154,7 +154,7 @@ define(function (require, exports, module) {
 
         function setElementShow(id, show) {
 
-            var ele = document.getElementById(id)
+            var ele = $('#' + id)
 
             if (!ele) {
 
@@ -163,13 +163,18 @@ define(function (require, exports, module) {
 
             if (show) {
 
-                ele.style.opacity = 0
+                ele.setStyle({'opacity':0})
 
                 ele.show()
+
+                ele.fadeIn()
             }
             else {
 
-                ele.hide()
+                ele.fadeOut(function () {
+
+                    ele.hide()
+                })
             }
         }
 
