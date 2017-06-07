@@ -163,7 +163,7 @@ define(function (require, exports, module) {
 
             if (show) {
 
-                ele.setStyle({'opacity':0})
+                ele.style.opacity = 0
 
                 ele.show()
 
