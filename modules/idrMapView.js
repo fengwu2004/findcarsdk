@@ -247,6 +247,8 @@ define(function (require, exports, module) {
 
             _mapRoot = _idrMap.root
 
+            _idrMap.resizeViewBox()
+
             loadUnits()
         }
 

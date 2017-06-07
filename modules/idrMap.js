@@ -501,6 +501,22 @@ define(function (require, exports, module) {
             minScale = Math.min(scale, minScale)
         }
         
+        function resizeViewBox() {
+
+            var nodes = _map.children()
+
+            if (!nodes || nodes.length == 0) {
+
+                return
+            }
+
+            var svgMap = nodes[0]
+
+            svgMap.viewBox.baseVal.width = _map.clientWidth
+
+            svgMap.viewBox.baseVal.height = _map.clientHeight
+        }
+        
         function getMapScale() {
 
             return _mapScale
@@ -550,6 +566,8 @@ define(function (require, exports, module) {
         this.updateDisplay = updateDisplay
 
         this.updateMinScale = updateMinScale
+        
+        this.resizeViewBox = resizeViewBox
 
         this.root = function () {
 
