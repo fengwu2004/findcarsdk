@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         var _idrPath = new IDRPath()
 
-        var _markerOrigScale = 1
+        var _markerOrigScale = 0.5
 
         var _floorId = null
 
