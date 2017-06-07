@@ -14,6 +14,10 @@ define(function (require, exports, module) {
 
         this.el = null
 
+        var width = 60
+
+        var height = 80
+
         this.addToSuperView = function(parent) {
 
             var markers = document.getElementById('markers')
@@ -31,9 +35,9 @@ define(function (require, exports, module) {
 
             this.el.setAttribute('id', this.id);
 
-            this.el.setAttribute('width', 60)
+            this.el.setAttribute('width', width.toString())
 
-            this.el.setAttribute('height', 80)
+            this.el.setAttribute('height', height.toString())
 
             this.el.href.baseVal = this.image
 

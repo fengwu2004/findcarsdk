@@ -237,7 +237,7 @@ define(function (require, exports, module) {
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
-            marker.update(_mapScale, _mapRotate)
+            marker.update(1/_mapScale, _mapRotate)
         }
 
         function onMarkerClick(event) {
