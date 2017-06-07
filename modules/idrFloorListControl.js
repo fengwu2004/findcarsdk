@@ -185,11 +185,11 @@ define(function (require, exports, module) {
 
                 if (floorDiv.toDom().style.display === 'block') {
 
-                    setElementShow('floorDiv', false)
+                    commMethods.showOrHidddenDiv('floorDiv', false)
                 }
                 else {
 
-                    setElementShow('floorDiv', true)
+                    commMethods.showOrHidddenDiv('floorDiv', true)
                 }
             })
 
