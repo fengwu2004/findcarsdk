@@ -4,6 +4,8 @@
 
 define(function (require, exports, module) {
 
+    var commMethods = require('./idrCommonMethod')
+
     function createCurrName(floor) {
 
         var div = create('div', 'currName', 'lc_div1 lc_divcom')
@@ -128,7 +130,7 @@ define(function (require, exports, module) {
 
             _mainDiv.appendChild(_floorDiv)
 
-            setElementShow('floorDiv', false)
+            commMethods.showOrHidddenDiv('floorDiv', false)
 
             addTaps(self);
         }
@@ -154,29 +156,22 @@ define(function (require, exports, module) {
 
         function setElementShow(id, show) {
 
-            var jele = $('#' + id)
+            var ele = document.getElementById(id)
 
-            if (!jele) {
+            if (!ele) {
 
                 return
             }
 
             if (show) {
 
-                var ele = document.getElementById(id)
-
                 ele.style.opacity = 0
 
-                jele.show()
-
-                jele.fadeIn()
+                ele.show()
             }
             else {
 
-                jele.fadeOut(function () {
-
-                    jele.hide()
-                })
+                ele.hide()
             }
         }
 
@@ -200,7 +195,9 @@ define(function (require, exports, module) {
 
             floorDiv.find('div').click(function () {
 
-                setElementShow('floorDiv', false)
+                setElementShow()
+
+                commMethods.showOrHidddenDiv('floorDiv', false);
 
                 if (typeof _onChangeFloor == 'function') {
 
