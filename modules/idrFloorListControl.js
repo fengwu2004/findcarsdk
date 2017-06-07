@@ -4,8 +4,6 @@
 
 define(function (require, exports, module) {
 
-    var commMethods = require('./idrCommonMethod')
-
     function createCurrName(floor) {
 
         var div = create('div', 'currName', 'lc_div1 lc_divcom')
@@ -130,7 +128,7 @@ define(function (require, exports, module) {
 
             _mainDiv.appendChild(_floorDiv)
 
-            commMethods.showOrHidddenDiv('floorDiv', false)
+            setElementShow('floorDiv', false)
 
             addTaps(self);
         }
