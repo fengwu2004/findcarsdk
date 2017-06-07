@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
         var _idrPath = new IDRPath()
 
-        var _markerOrigScale = 0.5
+        var _markerOrigScale = 1
 
         var _floorId = null
 
@@ -237,7 +237,7 @@ define(function (require, exports, module) {
 
             marker.el.addEventListener('click', onMarkerClick, true)
 
-            marker.update(1/_mapScale, _mapRotate)
+            marker.update(_markerOrigScale * 1/_mapScale, _mapRotate)
         }
 
         function onMarkerClick(event) {
