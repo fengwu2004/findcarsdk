@@ -154,26 +154,28 @@ define(function (require, exports, module) {
 
         function setElementShow(id, show) {
 
-            var ele = $('#' + id)
+            var jele = $('#' + id)
 
-            if (!ele) {
+            if (!jele) {
 
                 return
             }
 
             if (show) {
 
+                var ele = document.getElementById(id)
+
                 ele.style.opacity = 0
 
-                ele.show()
+                jele.show()
 
-                ele.fadeIn()
+                jele.fadeIn()
             }
             else {
 
-                ele.fadeOut(function () {
+                jele.fadeOut(function () {
 
-                    ele.hide()
+                    jele.hide()
                 })
             }
         }
