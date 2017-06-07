@@ -133,6 +133,12 @@ define(function (require, exports, module) {
 
             _unitDivs = []
 
+            var group = document.createElementNS('http://www.w3.org/2000/svg','g')
+
+            group.id = 'unitText'
+
+            _mapViewPort.appendChild(group)
+
             for (var i = 0; i < unitList.length; ++i) {
 
                 var unit = unitList[i]
@@ -143,7 +149,7 @@ define(function (require, exports, module) {
 
                 _unitDivs.push(unitSvg)
 
-                _mapViewPort.appendChild(unitSvg)
+                unitSvg.appendChild(unitSvg)
 
                 var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
 
