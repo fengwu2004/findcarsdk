@@ -37,7 +37,7 @@ seajs.use([
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
-        addMarker(unit)
+        doNavi(unit)
     })
 
     function addMarker(unit) {
