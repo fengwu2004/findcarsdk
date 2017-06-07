@@ -72,6 +72,8 @@ define(function (require, exports, module) {
 
                 map.setAttribute('height', _floor.height)
 
+                map.id = 'mapClickRect'
+
                 map.style.opacity = 0
 
                 _mapViewPort.appendChild(map)
