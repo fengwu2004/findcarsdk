@@ -185,7 +185,7 @@ define(function (require, exports, module) {
             })
         }
 
-        this.init = function(container, floorList, currentFloor) {
+        function init(container, floorList, currentFloor) {
 
             _floorList = floorList
 
@@ -200,19 +200,25 @@ define(function (require, exports, module) {
             createFloorList(_currentFloor, _locateFloor, _floorList)
         }
         
-        this.setCurrentFloor = function(floorId) {
+        function setCurrentFloor(floorId) {
 
             _currentFloor = findFloorById(floorId)
 
             refreshDisplay()
         }
 
-        this.setChangeFloorFunc = function(delegate, callBack) {
+        function setChangeFloorFunc(delegate, callBack) {
 
             _onChangeFloor = callBack
 
             _delegator = delegate
         }
+
+        this.setCurrentFloor = setCurrentFloor
+
+        this.setChangeFloorFunc = setChangeFloorFunc
+
+        this.init = init
     }
 
     module.exports = idrFloorListUi;
