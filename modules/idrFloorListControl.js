@@ -88,13 +88,11 @@ define(function (require, exports, module) {
 
         var _floorDiv = null
 
-        var _currPos = null
-
         var _onChangeFloor = null
 
         var _delegator = null
 
-        var findFloorById = function(floorId){
+        function findFloorById(floorId){
 
             var result = null
 
@@ -111,7 +109,7 @@ define(function (require, exports, module) {
             return result
         }
 
-        var createFloorList = function(currentFloor, locateFloor, floorList) {
+        function createFloorList(currentFloor, locateFloor, floorList) {
 
             var temp = createCurrName(currentFloor)
 
@@ -137,7 +135,7 @@ define(function (require, exports, module) {
             addTaps(self);
         }
 
-        var refreshDisplay = function() {
+        function refreshDisplay() {
 
             _titleDiv.innerText = _currentFloor.name
 
@@ -156,7 +154,7 @@ define(function (require, exports, module) {
             })
         }
 
-        var addTaps = function() {
+        function addTaps() {
 
             var floorDiv = jsLib("#floorDiv")
 

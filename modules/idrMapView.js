@@ -287,6 +287,8 @@ define(function (require, exports, module) {
 
             if (_currentFloorId in _floorMaps) {
 
+                _idrMap.detach()
+
                 _idrMap = _floorMaps[_currentFloorId]
 
                 _idrMap.attachTo(_container)
