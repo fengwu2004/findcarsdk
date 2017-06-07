@@ -154,6 +154,27 @@ define(function (require, exports, module) {
             })
         }
 
+        function setElementShow(id, show) {
+
+            var ele = document.getElementById(id)
+
+            if (!ele) {
+
+                return
+            }
+
+            if (show) {
+
+                ele.style.opacity = 0
+
+                ele.show()
+            }
+            else {
+
+                ele.hide()
+            }
+        }
+
         function addTaps() {
 
             var floorDiv = jsLib("#floorDiv")
@@ -164,17 +185,17 @@ define(function (require, exports, module) {
 
                 if (floorDiv.toDom().style.display === 'block') {
 
-                    commMethods.showOrHidddenDiv('floorDiv', false);
+                    setElementShow('floorDiv', false)
                 }
                 else {
 
-                    commMethods.showOrHidddenDiv('floorDiv', true)
+                    setElementShow('floorDiv', true)
                 }
             })
 
             floorDiv.find('div').click(function () {
 
-                commMethods.showOrHidddenDiv('floorDiv', false);
+                setElementShow('floorDiv', false)
 
                 if (typeof _onChangeFloor == 'function') {
 
