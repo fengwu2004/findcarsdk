@@ -526,7 +526,9 @@ define(function (require, exports, module) {
 
             var svgMap = nodes[0]
 
-            svgMap.viewBox = null
+            svgMap.viewBox.baseVal.width = svgMap.width = _map.clientWidth
+
+            svgMap.viewBox.baseVal.height = svgMap.height = _map.clientHeight
         }
         
         function getMapScale() {
