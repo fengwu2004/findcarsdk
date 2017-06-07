@@ -149,7 +149,7 @@ define(function (require, exports, module) {
 
                 _unitDivs.push(unitSvg)
 
-                unitSvg.appendChild(unitSvg)
+                group.appendChild(unitSvg)
 
                 var center = [0.5 * (unit.boundLeft + unit.boundRight), 0.5 * (unit.boundTop + unit.boundBottom)]
 
