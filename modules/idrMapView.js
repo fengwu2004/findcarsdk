@@ -375,6 +375,11 @@ define(function (require, exports, module) {
 
         function removeMarker(deleteMarker) {
 
+            if (!deleteMarker) {
+
+                return
+            }
+
             var temp = new Array()
 
             for (var i = 0; i < _markers[deleteMarker.position.floorId].length; ++i) {
@@ -389,7 +394,7 @@ define(function (require, exports, module) {
 
             _markers[marker.position.floorId] = temp
 
-            marker.removeFromSuperView()
+            deleteMarker.removeFromSuperView()
         }
 
         function getMarkers(floorId) {
