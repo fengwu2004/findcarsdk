@@ -97,16 +97,9 @@ define(function (require, exports, module) {
 
         function updateLine(parentNode, postionList) {
 
-            if (rootElement !== undefined && rootElement.parentNode.isEqualNode(parentNode)) {
-
-                parentNode.removeChild(rootElement);
-
-                rootElement = null
-            }
+            rootElement && rootElement.parentNode && rootElement.parentNode.removeChild(rootElement)
 
             if (!postionList || postionList.length <= 1) {
-
-                parentNode.removeChild(rootElement)
 
                 return;
             }
