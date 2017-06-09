@@ -104,7 +104,7 @@ define(function (require, exports, module) {
                 rootElement = null
             }
 
-            if (!postionList && postionList.length <= 1) {
+            if (!postionList || postionList.length <= 1) {
 
                 parentNode.removeChild(rootElement)
 
