@@ -41,8 +41,6 @@ define(function (require, exports, module) {
 
         var _map = null
 
-        var _path = null
-
         var _idrIndicator = null
 
         this.init = function(regionEx, floorId, svg) {
@@ -335,21 +333,16 @@ define(function (require, exports, module) {
             _mapViewPort.setAttribute('transform', trans)
         }
 
-        function updateRoutePath() {
+        function updateRoutePath(path) {
 
-            var currFloorPoints = getTargetFloorPoints(_path, _floorId)
+            var currFloorPoints = getTargetFloorPoints(path, _floorId)
 
-            if (currFloorPoints) {
-
-                _idrPath.updateLine(_mapViewPort, currFloorPoints)
-            }
+            _idrPath.updateLine(_mapViewPort, currFloorPoints)
         }
 
-        function showRoutePath(paths) {
+        function showRoutePath(path) {
 
-            _path = paths
-
-            updateRoutePath()
+            updateRoutePath(path)
         }
 
         function getTransArray(value) {

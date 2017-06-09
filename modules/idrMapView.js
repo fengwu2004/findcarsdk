@@ -74,6 +74,8 @@ define(function (require, exports, module) {
 
         var _idrMap = new IdrMap()
 
+        var _path = null
+
         var _composs = null
 
         var that = this
@@ -162,9 +164,9 @@ define(function (require, exports, module) {
         
         function doRoute(start, end) {
 
-            var path = _router.routerPath(start, end, false)
+            _path = _router.routerPath(start, end, false)
 
-            showRoutePath(path)
+            showRoutePath(_path)
         }
         
         function showRoutePath(paths) {
@@ -342,7 +344,7 @@ define(function (require, exports, module) {
                 setDisplayTimer()
             }
 
-            _idrMap.updateRoutePath()
+            _idrMap.updateRoutePath(_path)
 
             _idrMap.updateMinScale()
 
