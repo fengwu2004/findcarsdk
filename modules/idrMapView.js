@@ -169,6 +169,13 @@ define(function (require, exports, module) {
             showRoutePath(_path)
         }
         
+        function stopRoute() {
+
+            _path = null
+
+            _idrMap.showRoutePath(null)
+        }
+        
         function showRoutePath(paths) {
 
             _idrMap.showRoutePath(paths)
@@ -544,6 +551,8 @@ define(function (require, exports, module) {
         this.onMarkerClick = onMarkerClick
         
         this.getMarkers = getMarkers
+
+        this.stopRoute = stopRoute
     }
 
     module.exports = idrMapView;

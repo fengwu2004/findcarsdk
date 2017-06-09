@@ -16,6 +16,10 @@ seajs.use([
 
     var endPos = null
 
+    var startMarker = null
+
+    var endMarker = null
+
     var IdrCarMarker = idrMapMarker['IDRCarMarker']
 
     map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
@@ -53,9 +57,9 @@ seajs.use([
 
             startPos = unit.getPos()
 
-            var marker = new IdrCarMarker(startPos)
+            startMarker = new IdrCarMarker(startPos)
 
-            map.addMarker(marker)
+            map.addMarker(startMarker)
 
             return
         }
@@ -64,9 +68,9 @@ seajs.use([
 
             endPos = unit.getPos()
 
-            var marker = new IdrCarMarker(endPos)
+            endMarker = new IdrCarMarker(endPos)
 
-            map.addMarker(marker)
+            map.addMarker(endMarker)
 
             map.doRoute(startPos, endPos)
         }
@@ -96,6 +100,14 @@ seajs.use([
 
     function onNavigate() {
 
-        console.log('onNavigate')
+        map.stopRoute()
+
+        map.removeMarker(startMarker)
+
+        map.removeMarker(endMarker)
+
+        startPos = null
+
+        endPos = null
     }
 });
