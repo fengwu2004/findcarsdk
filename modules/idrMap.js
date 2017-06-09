@@ -41,6 +41,8 @@ define(function (require, exports, module) {
 
         var _map = null
 
+        var _path = null
+
         var _idrIndicator = null
 
         this.init = function(regionEx, floorId, svg) {
@@ -333,9 +335,21 @@ define(function (require, exports, module) {
             _mapViewPort.setAttribute('transform', trans)
         }
 
+        function updateRoutePath() {
+
+            var currFloorPoints = getTargetFloorPoints(_path, _floorId)
+
+            if (currFloorPoints) {
+
+                _idrPath.updateLine(_mapViewPort, currFloorPoints)
+            }
+        }
+
         function showRoutePath(paths) {
 
-            _idrPath.updateLine(_mapViewPort, paths)
+            _path = paths
+
+            updateRoutePath()
         }
 
         function getTransArray(value) {
@@ -500,6 +514,26 @@ define(function (require, exports, module) {
             _mapRotate = rotate
         }
 
+        function getTargetFloorPoints(path, floorId) {
+
+            if (!path) {
+
+                return null
+            }
+
+            for (var i = 0; i < path.paths.length; ++i) {
+
+                var floorPath = path.paths[i]
+
+                if (floorPath.floorId === _floorId) {
+
+                    return floorPath.position
+                }
+            }
+
+            return null
+        }
+
         function updateMinScale() {
 
             var mapHeight = _floor.height
@@ -584,6 +618,8 @@ define(function (require, exports, module) {
         this.updateDisplay = updateDisplay
 
         this.updateMinScale = updateMinScale
+        
+        this.updateRoutePath = updateRoutePath
         
         this.resizeViewBox = resizeViewBox
 

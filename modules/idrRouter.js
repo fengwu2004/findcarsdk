@@ -17,6 +17,12 @@ define(function (require, exports, module) {
 
         var _floorList = floorList
 
+        var _start = null
+
+        var _end = null
+
+        var _car = false
+
         var _pathSearch = null
 
         function getFloorIndex(floorId) {
@@ -30,6 +36,11 @@ define(function (require, exports, module) {
             }
 
             return -1
+        }
+        
+        function getRouterParm() {
+
+            return {start:_start, end:_end, car:_car}
         }
 
         function getFloorId(floorIndex) {
@@ -51,7 +62,13 @@ define(function (require, exports, module) {
          * @param car 是否车行
          * @return PathResult
          */
-        this.routerPath = function(start, end, car) {
+        function routerPath(start, end, car) {
+
+            _start = start
+
+            _end = end
+
+            _car = car
 
             return doRouter(start, end, car)
         }
@@ -136,6 +153,10 @@ define(function (require, exports, module) {
 
             }, null);
         })(successFunc)
+
+        this.getRouterParm = getRouterParm
+
+        this.routerPath = routerPath
     }
 
     module.exports = idrRouter

@@ -155,21 +155,6 @@ define(function (require, exports, module) {
             })
         }
         
-        function getTargetFloorPoints(path, floorId) {
-
-            for (var i = 0; i < path.paths.length; ++i) {
-
-                var floorPath = path.paths[i]
-
-                if (floorPath.floorId === _currentFloorId) {
-
-                    return floorPath.position
-                }
-            }
-
-            return null
-        }
-        
         function doLocation(locateCallback) {
 
             _locator.start(_regionId, _currentFloorId, locateCallback, null)
@@ -179,12 +164,7 @@ define(function (require, exports, module) {
 
             var path = _router.routerPath(start, end, false)
 
-            var currFloorPoints = getTargetFloorPoints(path, _currentFloorId)
-
-            if (currFloorPoints) {
-
-                showRoutePath(currFloorPoints)
-            }
+            showRoutePath(path)
         }
         
         function showRoutePath(paths) {
@@ -293,6 +273,8 @@ define(function (require, exports, module) {
 
                 _idrMap.attachTo(_container)
 
+                onLoadMapSuccess()
+
                 return
             }
 
@@ -302,7 +284,7 @@ define(function (require, exports, module) {
 
                 onLoadMapSuccess()
 
-            }, function() {
+            }, function(data) {
 
                 console.log('地图数据获取失败!' + data);
             })
@@ -359,6 +341,8 @@ define(function (require, exports, module) {
 
                 setDisplayTimer()
             }
+
+            _idrMap.updateRoutePath()
 
             _idrMap.updateMinScale()
 
