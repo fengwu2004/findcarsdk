@@ -36,15 +36,7 @@ define(function (require, exports, module) {
 
             var bottom = that.boundBottom
 
-            that.points = []
-
-            that.points.push({x:left, y:top})
-
-            that.points.push({x:right, y:top})
-
-            that.points.push({x:right, y:bottom})
-
-            that.points.push({x:left, y:bottom})
+            that.points = left + ',' + top + ' ' + right + ',' + top + ' ' + right + ',' + bottom + ' ' + left + ',' + bottom
 
             return that.points
         }
