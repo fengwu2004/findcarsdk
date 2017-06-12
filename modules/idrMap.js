@@ -98,16 +98,30 @@ define(function (require, exports, module) {
 
         function changeUnitColor(unit, color) {
 
-            //todo
+            var unitCovers = document.getElementById('unitClickCovers')
+
+            for (var i = 0; i < unitCovers.children.length; ++i) {
+
+                var unitCover = unitCovers.children[i]
+
+                if (unitCover.id === unit.id) {
+
+                    unitCovers.style.fill = color
+
+                    unitCovers.style.opacity = 0.5
+
+                    return
+                }
+            }
         }
 
-        function addUnitClickRect() {
+        function addUnitCover() {
 
             var unitList = _floor.unitList
 
             var group = document.createElementNS('http://www.w3.org/2000/svg','g')
 
-            group.id = 'unitClickRect'
+            group.id = 'unitClickCovers'
 
             _mapViewPort.appendChild(group)
 
@@ -115,17 +129,17 @@ define(function (require, exports, module) {
 
                 var unit = unitList[i]
 
-                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','polygon')
+                var unitCover = document.createElementNS('http://www.w3.org/2000/svg','polygon')
 
-                unitSvg.id = unit.id
+                unitCover.id = unit.id
 
-                unitSvg.setAttribute('points', unit.getPolygon())
+                unitCover.setAttribute('points', unit.getPolygon())
 
-                unitSvg.style.opacity = 0
+                unitCover.style.opacity = 0
 
-                group.appendChild(unitSvg)
+                group.appendChild(unitCover)
 
-                unitSvg.addEventListener('click', onUnitClick, true)
+                unitCover.addEventListener('click', onUnitClick, true)
             }
         }
         
@@ -133,7 +147,7 @@ define(function (require, exports, module) {
 
             addMapEvent()
 
-            addUnitClickRect()
+            addUnitCover()
         }
 
         function addUnitsText(unitList) {

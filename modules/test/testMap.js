@@ -51,6 +51,11 @@ seajs.use([
         doDyNavi(unit)
     })
 
+    function changeUnitColor(unit) {
+
+        map.changeUnitColor(unit, 'red')
+    }
+
     function addMarker(unit) {
 
         var marker = new IdrCarMarker(unit.getPos())

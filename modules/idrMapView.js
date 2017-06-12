@@ -186,6 +186,11 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
+        function changeUnitColor(unit, color) {
+
+            _idrMap.changeUnitColor(unit, color)
+        }
+
         function storeUnits(unitsInfo) {
 
             _units = []
@@ -571,6 +576,8 @@ define(function (require, exports, module) {
         this.onMarkerClick = onMarkerClick
         
         this.getMarkers = getMarkers
+
+        this.changeUnitColor = changeUnitColor
 
         this.stopRoute = stopRoute
         
