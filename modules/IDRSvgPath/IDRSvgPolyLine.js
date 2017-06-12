@@ -368,7 +368,7 @@ define(function (require, exports, module) {
         this.subScale = subScale
         this.addLine = addLine
         this.updateScale = updateScale
-        this.updateLine = updateLine
+        this.updateLine = updateLinidnee
         this.getLineObject = getLineObject
         this.getPolyLineObject = getPolyLineObject
         this.removePath = removePath

@@ -192,7 +192,11 @@ define(function (require, exports, module) {
 
             for (var i = 0; i < unitsInfo.length; ++i) {
 
-                _units.push(new IDRUnit(unitsInfo[i]))
+                var unit = new IDRUnit(unitsInfo[i])
+
+                _units.push(unit)
+
+                unit.getPolygon()
             }
 
             var floor = that.regionEx.getFloorbyId(_currentFloorId)
@@ -355,6 +359,8 @@ define(function (require, exports, module) {
 
             _idrMap.updateMinScale()
 
+            _idrMap.setPos(_currentPos)
+
             _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
 
@@ -490,14 +496,23 @@ define(function (require, exports, module) {
             _idrMap.birdLook()
         }
         
-        function setUserPos(pos) {
+        function setPos(pos) {
 
-            _currentPos = pos
+            if (_path) {
+
+                var routeParm = _router.getRouterParm()
+
+                doRoute(pos, routeParm.end)
+
+                pos = _path.paths[0].position[0]
+            }
 
             _idrMap.setPos(pos)
         }
         
-        function setPos(pos) {
+        function setUserPos(pos) {
+
+            _currentPos = pos
 
             if (pos.floorId !== _currentFloorId) {
 
@@ -505,7 +520,7 @@ define(function (require, exports, module) {
             }
             else  {
 
-                setUserPos(pos)
+                setPos(pos)
             }
         }
 
@@ -558,6 +573,11 @@ define(function (require, exports, module) {
         this.getMarkers = getMarkers
 
         this.stopRoute = stopRoute
+        
+        this.userPos = function () {
+
+            return _currentPos
+        }
     }
 
     module.exports = idrMapView;

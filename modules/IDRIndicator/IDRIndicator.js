@@ -228,7 +228,7 @@ define(function (require, exports, module) {
         
         function remove() {
 
-            rootDom.parentNode.removeChild(rootDom)
+            rootDom && rootDom.parentNode && rootDom.parentNode.removeChild(rootDom)
         }
 
         this.remove = remove

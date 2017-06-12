@@ -10,6 +10,8 @@ seajs.use([
 
     var regionId = '14428254382730015'
 
+    //F1:14428254382890016 F2:14557583851000004 regionId:14428254382730015
+
     var map = new idrMapView()
 
     var startPos = null
@@ -32,6 +34,11 @@ seajs.use([
     map.addEventListener(map.eventTypes.onInitMapSuccess, function(regionEx) {
 
         map.changeFloor(regionEx.floorList[0].id)
+
+        map.doLocation(function (pos) {
+
+            map.setCurrPos(pos)
+        })
     })
 
     map.addEventListener(map.eventTypes.onMapClick, function (data) {
@@ -41,7 +48,7 @@ seajs.use([
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
-        doNavi(unit)
+        doDyNavi(unit)
     })
 
     function addMarker(unit) {
@@ -49,6 +56,25 @@ seajs.use([
         var marker = new IdrCarMarker(unit.getPos())
 
         map.addMarker(marker)
+    }
+
+    function doDyNavi(unit) {
+
+        if (map.userPos() == null) {
+
+            return
+        }
+
+        if (endPos == null) {
+
+            endPos = unit.getPos()
+
+            endMarker = new IdrCarMarker(endPos)
+
+            map.addMarker(endMarker)
+
+            map.doRoute(map.userPos(), endPos)
+        }
     }
     
     function doNavi(unit) {
@@ -82,7 +108,7 @@ seajs.use([
 
     function onStart() {
 
-        console.log('onStart')
+        map.setCurrPos({x:300, y:300, floorId:'14557583851000004'})
     }
 
     var endBtn = document.getElementById('endButton')
@@ -91,7 +117,13 @@ seajs.use([
 
     function onEnd() {
 
-        console.log('onEnd')
+        endPos = unit.getPos()
+
+        endMarker = new IdrCarMarker(endPos)
+
+        map.addMarker(endMarker)
+
+        map.doRoute(map.userPos(), endPos)
     }
 
     var navigateBtn = document.getElementById('navigateButton')

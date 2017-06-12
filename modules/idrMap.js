@@ -96,6 +96,11 @@ define(function (require, exports, module) {
             _mapView.onUnitClick(unit)
         }
 
+        function changeUnitColor(unit, color) {
+
+            //todo
+        }
+
         function addUnitClickRect() {
 
             var unitList = _floor.unitList
@@ -110,17 +115,11 @@ define(function (require, exports, module) {
 
                 var unit = unitList[i]
 
-                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','rect')
+                var unitSvg = document.createElementNS('http://www.w3.org/2000/svg','polygon')
 
                 unitSvg.id = unit.id
 
-                unitSvg.setAttribute('x', unit.boundLeft)
-
-                unitSvg.setAttribute('y', unit.boundTop)
-
-                unitSvg.setAttribute('width', (unit.boundRight - unit.boundLeft).toString())
-
-                unitSvg.setAttribute('height', (unit.boundBottom - unit.boundTop).toString())
+                unitSvg.setAttribute('points', unit.getPolygon())
 
                 unitSvg.style.opacity = 0
 
@@ -268,6 +267,13 @@ define(function (require, exports, module) {
         }
 
         function setPos(pos) {
+
+            if (!pos || pos.floorId !== _floorId) {
+
+                _idrIndicator && _idrIndicator.remove()
+
+                return
+            }
 
             if (_idrIndicator == null) {
 
@@ -597,6 +603,8 @@ define(function (require, exports, module) {
         this.getMapViewMatrix = getMapViewMatrix
 
         this.getSvgPos = getSvgPos
+
+        this.changeUnitColor = changeUnitColor
 
         this.getMapPos = getMapPos
 

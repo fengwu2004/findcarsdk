@@ -20,6 +20,34 @@ define(function (require, exports, module) {
 
             return {x:x, y:y, floorId:that.floorId}
         }
+        
+        this.getPolygon = function () {
+
+            if (that.points) {
+
+                return that.points
+            }
+
+            var left = that.boundLeft
+
+            var top = that.boundTop
+
+            var right = that.boundRight
+
+            var bottom = that.boundBottom
+
+            that.points = []
+
+            that.points.push({x:left, y:top})
+
+            that.points.push({x:right, y:top})
+
+            that.points.push({x:right, y:bottom})
+
+            that.points.push({x:left, y:bottom})
+
+            return that.points
+        }
     }
 
     module.exports = idrUnit
