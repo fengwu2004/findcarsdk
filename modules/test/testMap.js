@@ -10,6 +10,8 @@ seajs.use([
 
     var regionId = '14428254382730015'
 
+    var units = []
+
     //F1:14428254382890016 F2:14557583851000004 regionId:14428254382730015
 
     var map = new idrMapView()
@@ -49,11 +51,13 @@ seajs.use([
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
         changeUnitColor(unit)
+
+        units.push(unit)
     })
 
     function changeUnitColor(unit) {
 
-        map.changeUnitColor(unit, 'lime')
+        map.updateUnitsColor([unit], 'lime')
     }
 
     function addMarker(unit) {
@@ -113,7 +117,7 @@ seajs.use([
 
     function onStart() {
 
-        map.setCurrPos({x:300, y:300, floorId:'14557583851000004'})
+        map.clearUnitsColor(units)
     }
 
     var endBtn = document.getElementById('endButton')

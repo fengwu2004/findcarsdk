@@ -582,7 +582,9 @@ define(function (require, exports, module) {
         
         this.getMarkers = getMarkers
 
-        this.changeUnitColor = changeUnitColor
+        this.updateUnitsColor = updateUnitsColor
+
+        this.clearUnitsColor = clearUnitsColor
 
         this.stopRoute = stopRoute
         
