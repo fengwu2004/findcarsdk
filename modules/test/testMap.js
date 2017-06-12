@@ -48,12 +48,12 @@ seajs.use([
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
 
-        doDyNavi(unit)
+        changeUnitColor(unit)
     })
 
     function changeUnitColor(unit) {
 
-        map.changeUnitColor(unit, 'red')
+        map.changeUnitColor(unit, 'lime')
     }
 
     function addMarker(unit) {

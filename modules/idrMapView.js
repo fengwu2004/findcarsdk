@@ -186,9 +186,14 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
-        function changeUnitColor(unit, color) {
+        function updateUnitsColor(units, color) {
 
-            _idrMap.changeUnitColor(unit, color)
+            _idrMap.updateUnitsColor(units, color)
+        }
+
+        function clearUnitsColor(units) {
+
+            _idrMap.clearUnitsColor(units)
         }
 
         function storeUnits(unitsInfo) {

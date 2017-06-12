@@ -96,7 +96,20 @@ define(function (require, exports, module) {
             _mapView.onUnitClick(unit)
         }
 
-        function changeUnitColor(unit, color) {
+        function updateUnitsColor(units, color) {
+
+            for (var i = 0; i < units.length; ++i) {
+
+                changeUnitColor(units[i], color)
+            }
+        }
+
+        function clearUnitColor(unit) {
+
+            if (unit.floorId !== _floorId) {
+
+                return
+            }
 
             var unitCovers = document.getElementById('unitClickCovers')
 
@@ -106,9 +119,39 @@ define(function (require, exports, module) {
 
                 if (unitCover.id === unit.id) {
 
-                    unitCovers.style.fill = color
+                    unitCover.style.opacity = 0
 
-                    unitCovers.style.opacity = 0.5
+                    return
+                }
+            }
+        }
+
+        function clearUnitsColor(units) {
+
+            for (var i = 0; i < units.length; ++i) {
+
+                clearUnitColor(units[i])
+            }
+        }
+
+        function changeUnitColor(unit, color) {
+
+            if (unit.floorId !== _floorId) {
+
+                return
+            }
+
+            var unitCovers = document.getElementById('unitClickCovers')
+
+            for (var i = 0; i < unitCovers.children.length; ++i) {
+
+                var unitCover = unitCovers.children[i]
+
+                if (unitCover.id === unit.id) {
+
+                    unitCover.style.fill = color
+
+                    unitCover.style.opacity = 0.5
 
                     return
                 }
@@ -618,7 +661,9 @@ define(function (require, exports, module) {
 
         this.getSvgPos = getSvgPos
 
-        this.changeUnitColor = changeUnitColor
+        this.updateUnitsColor = updateUnitsColor
+
+        this.clearUnitsColor = clearUnitsColor
 
         this.getMapPos = getMapPos
 
