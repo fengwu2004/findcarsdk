@@ -141,10 +141,6 @@ define(function (require, exports, module) {
 
             var p = getTouchesCenter(evt)
 
-            console.log(count)
-
-            ++count
-
             rotate(evt.angle * Math.PI/180, p)
         }
 
