@@ -43,6 +43,8 @@ define(function (require, exports, module) {
 
         var _idrIndicator = null
 
+        var _mat = null
+
         this.init = function(regionEx, floorId, svg) {
 
             _regionEx = regionEx
@@ -377,11 +379,16 @@ define(function (require, exports, module) {
 
             var v = vec2.fromValues(screenVec[0], screenVec[1])
 
-            var mt = getMapViewMatrix()
+            if (!_mat) {
+
+                _mat = getMapViewMatrix()
+            }
+
+            var mt = _mat
 
             matrix2d.mytranslate(mt, mt, v)
 
-            updateMapViewTrans(mt)
+            // updateMapViewTrans(mt)
         }
         
         function birdLook() {
@@ -453,7 +460,12 @@ define(function (require, exports, module) {
 
         function zoom(scale, anchor) {
 
-            var mt = getMapViewMatrix()
+            if (!_mat) {
+
+                _mat = getMapViewMatrix()
+            }
+
+            var mt = _mat
 
             var lastScale = Math.sqrt(mt[0] * mt[0] + mt[1] * mt[1])
 
@@ -475,14 +487,19 @@ define(function (require, exports, module) {
 
             matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
 
-            updateMapViewTrans(mt)
+            // updateMapViewTrans(mt)
         }
 
         function rotate(rad, anchor) {
 
             var p = anchor
 
-            var mt = getMapViewMatrix()
+            if (!_mat) {
+
+                _mat = getMapViewMatrix()
+            }
+
+            var mt = _mat
 
             matrix2d.translate(mt, mt, vec2.fromValues(p[0], p[1]))
 
@@ -490,7 +507,7 @@ define(function (require, exports, module) {
 
             matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
 
-            updateMapViewTrans(mt)
+            // updateMapViewTrans(mt)
         }
 
         function centerPos(mapPos) {
@@ -544,6 +561,8 @@ define(function (require, exports, module) {
         }
         
         function updateDisplay() {
+
+            _mat && updateMapViewTrans(_mat)
 
             var scaleRotate = getRotateAndScale()
 

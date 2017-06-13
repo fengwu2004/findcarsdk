@@ -272,7 +272,7 @@ define(function (require, exports, module) {
 
         function updateDisplay() {
 
-            console.log('up')
+            // console.log('up')
 
             // _idrMap.updateDisplay()
             //
