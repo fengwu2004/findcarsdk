@@ -40,6 +40,8 @@ define(function (require, exports, module) {
 
     var IdrMap = require('./idrMap')
 
+    var count = 0
+
     function idrMapView() {
 
         this.eventTypes = IDRMapEventModule[1]
@@ -128,6 +130,8 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
+            return
+
             var p = getTouchesCenter(evt)
 
             zoom(evt.gradualscale, p)
@@ -137,10 +141,16 @@ define(function (require, exports, module) {
 
             var p = getTouchesCenter(evt)
 
+            console.log(count)
+
+            ++count
+
             rotate(evt.angle * Math.PI/180, p)
         }
 
         function onPan(evt) {
+
+            return
 
             scroll([evt.deltaX, evt.deltaY])
         }
@@ -257,7 +267,7 @@ define(function (require, exports, module) {
 
         function setDisplayTimer() {
 
-            // _refreshTimer = setInterval(updateDisplay, 100)
+            _refreshTimer = setInterval(updateDisplay, 100)
         }
 
         function updateDisplay() {
