@@ -147,7 +147,7 @@ define(function (require, exports, module) {
 
         function addGestures() {
 
-            _gestures.destroy()
+            _gestures && _gestures.destroy()
 
             _gestures = new AlloyFinger(_mapRoot, {
 

@@ -195,7 +195,7 @@ define(function (require, exports, module) {
 
         var url = domain + '/locate/locating';
 
-        domain = "http://localhost:3000"
+        domain = "http://192.168.1.116:3000"
 
         url = domain + '/users/locating'
 
