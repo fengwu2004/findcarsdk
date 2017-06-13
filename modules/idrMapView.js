@@ -119,7 +119,7 @@ define(function (require, exports, module) {
 
             var im = matrix2d.create()
 
-            matrix2d.invert(im, getMapViewMatrix())
+            matrix2d.invert(im, _idrMap.getMapViewMatrix())
 
             vec2.transformMat2d(p, p, im)
 
