@@ -284,8 +284,11 @@
     };
 
     if (typeof module !== 'undefined' && typeof exports === 'object') {
+
         module.exports = AlloyFinger;
+
     } else {
+
         window.AlloyFinger = AlloyFinger;
     }
 })();

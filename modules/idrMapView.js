@@ -147,6 +147,8 @@ define(function (require, exports, module) {
 
         function addGestures() {
 
+            _gestures.destroy()
+
             _gestures = new AlloyFinger(_mapRoot, {
 
                 rotate:onRoate,
@@ -247,8 +249,6 @@ define(function (require, exports, module) {
             _idrMap.attachTo(_container)
 
             _floorMaps[_currentFloorId] = _idrMap
-
-            _mapRoot = _idrMap.root
 
             _idrMap.resizeViewBox()
 
@@ -365,11 +365,15 @@ define(function (require, exports, module) {
                 setDisplayTimer()
             }
 
+            _mapRoot = _idrMap.root
+
             _idrMap.updateRoutePath(_path)
 
             _idrMap.updateMinScale()
 
             _idrMap.setPos(_currentPos)
+
+            addGestures()
 
             _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
