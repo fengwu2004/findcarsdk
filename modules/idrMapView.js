@@ -365,7 +365,7 @@ define(function (require, exports, module) {
                 setDisplayTimer()
             }
 
-            _mapRoot = _idrMap.root
+            _mapRoot = _idrMap.root()
 
             _idrMap.updateRoutePath(_path)
 

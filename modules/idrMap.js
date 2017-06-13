@@ -683,7 +683,10 @@ define(function (require, exports, module) {
         
         this.resizeViewBox = resizeViewBox
 
-        this.root = _map
+        this.root = function () {
+
+            return _map
+        }
     }
 
     module.exports = IdrMap
