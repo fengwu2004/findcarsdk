@@ -274,12 +274,12 @@ define(function (require, exports, module) {
 
             // console.log('up')
 
-            // _idrMap.updateDisplay()
-            //
-            // if (_composs) {
-            //
-            //     _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
-            // }
+            _idrMap.updateDisplay()
+
+            if (_composs) {
+
+                _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
+            }
         }
         
         function addComposs() {
