@@ -263,19 +263,22 @@ define(function (require, exports, module) {
 
         function setDisplayTimer() {
 
-            _refreshTimer = setInterval(updateDisplay, 100)
+            _refreshTimer = setInterval(updateDisplay, 60)
         }
 
         function updateDisplay() {
 
             // console.log('up')
 
-            _idrMap.updateDisplay()
+            requestAnimationFrame(function (p1) {
 
-            if (_composs) {
+                _idrMap.updateDisplay()
 
-                _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
-            }
+                if (_composs) {
+
+                    _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
+                }
+            })
         }
         
         function addComposs() {
