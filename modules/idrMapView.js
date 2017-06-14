@@ -60,7 +60,7 @@ define(function (require, exports, module) {
 
         var _currentFloorId = null
 
-        var _refreshTimer = null
+        // var _refreshTimer = null
 
         var _floorListControl = null
 
@@ -130,8 +130,6 @@ define(function (require, exports, module) {
 
         function onPinch(evt) {
 
-            return
-
             var p = getTouchesCenter(evt)
 
             zoom(evt.gradualscale, p)
@@ -145,8 +143,6 @@ define(function (require, exports, module) {
         }
 
         function onPan(evt) {
-
-            return
 
             scroll([evt.deltaX, evt.deltaY])
         }
@@ -263,12 +259,10 @@ define(function (require, exports, module) {
 
         function setDisplayTimer() {
 
-            _refreshTimer = setInterval(updateDisplay, 60)
+            // _refreshTimer = setInterval(updateDisplay, 60)
         }
 
         function updateDisplay() {
-
-            // console.log('up')
 
             requestAnimationFrame(function (p1) {
 
@@ -371,10 +365,10 @@ define(function (require, exports, module) {
                 addComposs()
             }
 
-            if (_refreshTimer == null) {
-
-                setDisplayTimer()
-            }
+            // if (_refreshTimer == null) {
+            //
+            //     setDisplayTimer()
+            // }
 
             _mapRoot = _idrMap.root()
 
@@ -602,6 +596,8 @@ define(function (require, exports, module) {
         this.clearUnitsColor = clearUnitsColor
 
         this.stopRoute = stopRoute
+
+        this.updateDisplay = updateDisplay
         
         this.userPos = function () {
 

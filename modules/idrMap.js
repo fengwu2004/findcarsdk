@@ -368,11 +368,14 @@ define(function (require, exports, module) {
 
             matrix2d.mytranslate(mt, mt, vec2.fromValues(0.5 * screenWidth - 0.5 * mapWidth * scale, 0.5 * screenHeight - 0.5 * mapHeight * scale))
 
-            updateMapViewTrans(mt)
+            _mat = mt
 
             _mapRotate = null
 
-            updateDisplay()
+            requestAnimationFrame(function (p1) {
+
+                _mapView.updateDisplay()
+            })
         }
 
         function scroll(screenVec) {
@@ -388,7 +391,10 @@ define(function (require, exports, module) {
 
             matrix2d.mytranslate(mt, mt, v)
 
-            // updateMapViewTrans(mt)
+            requestAnimationFrame(function (p1) {
+
+                _mapView.updateDisplay()
+            })
         }
         
         function birdLook() {
@@ -487,7 +493,10 @@ define(function (require, exports, module) {
 
             matrix2d.translate(mt, mt, vec2.fromValues(-anchor[0], -anchor[1]))
 
-            // updateMapViewTrans(mt)
+            requestAnimationFrame(function (p1) {
+
+                _mapView.updateDisplay()
+            })
         }
 
         function rotate(rad, anchor) {
@@ -507,7 +516,10 @@ define(function (require, exports, module) {
 
             matrix2d.translate(mt, mt, vec2.fromValues(-p[0], -p[1]))
 
-            // updateMapViewTrans(mt)
+            requestAnimationFrame(function (p1) {
+
+                _mapView.updateDisplay()
+            })
         }
 
         function centerPos(mapPos) {
