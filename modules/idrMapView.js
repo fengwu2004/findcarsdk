@@ -40,8 +40,6 @@ define(function (require, exports, module) {
 
     var IdrMap = require('./idrMap')
 
-    var count = 0
-
     function idrMapView() {
 
         this.eventTypes = IDRMapEventModule[1]
