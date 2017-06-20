@@ -11,7 +11,7 @@ define(function (require, exports, module) {
 
     var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
 
-    function IdrMap(mapView) {
+    function IdrSvgMap(mapView) {
 
         var maxScale = 1.5
 
@@ -720,5 +720,5 @@ define(function (require, exports, module) {
         }
     }
 
-    module.exports = IdrMap
+    module.exports = IdrSvgMap
 });

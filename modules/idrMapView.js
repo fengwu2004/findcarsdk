@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 
     var IDRLocationServer = require('./idrLocationServer')
 
-    var IdrMap = require('./idrMap')
+    var IdrMap = require('./idrSvgMap')
 
     function idrMapView() {
 
@@ -253,11 +253,6 @@ define(function (require, exports, module) {
             _idrMap.resizeViewBox()
 
             loadUnits()
-        }
-
-        function setDisplayTimer() {
-
-            // _refreshTimer = setInterval(updateDisplay, 60)
         }
 
         function updateDisplay() {
