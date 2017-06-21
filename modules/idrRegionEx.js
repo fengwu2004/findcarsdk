@@ -79,7 +79,7 @@ define(function (require, exports, module) {
 
                 networkManager.serverCallSvgMap(that.id, floorId, function(data) {
 
-                    that.floorSvgs.floorId = data
+                    that.floorSvgs[floorId] = data
 
                     if (allLoaded()) {
 
