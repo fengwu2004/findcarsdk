@@ -77,6 +77,8 @@ define(function (require, exports, module) {
 
                 var floorId = floorList[i].id
 
+                console.log('load + ' + floorId)
+
                 networkManager.serverCallSvgMap(that.id, floorId, function(data) {
 
                     console.log(floorId)
