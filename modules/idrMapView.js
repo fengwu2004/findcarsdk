@@ -244,7 +244,7 @@ define(function (require, exports, module) {
 
             _idrMap = new IdrMap(that)
 
-            _idrMap.init(that.regionEx, _currentFloorId, svgData)
+            _idrMap.init(that.regionEx, _currentFloorId)
 
             _idrMap.attachTo(_container)
 
@@ -299,16 +299,9 @@ define(function (require, exports, module) {
                 return
             }
 
-            networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
+            createMap(that.regionEx.floorSvgs[_currentFloorId], _regionId, _currentFloorId)
 
-                createMap(data, _regionId, _currentFloorId)
-
-                onLoadMapSuccess()
-
-            }, function(data) {
-
-                console.log('地图数据获取失败!' + data);
-            })
+            onLoadMapSuccess()
         }
 
         function changeFloor(floorId) {
@@ -320,7 +313,7 @@ define(function (require, exports, module) {
 
             _currentFloorId = floorId
 
-            loadMap()
+            that.regionEx.loadMaps(loadMap)
         }
         
         function initMap(appid, containerId, regionId) {
@@ -357,11 +350,6 @@ define(function (require, exports, module) {
 
                 addComposs()
             }
-
-            // if (_refreshTimer == null) {
-            //
-            //     setDisplayTimer()
-            // }
 
             _mapRoot = _idrMap.root()
 

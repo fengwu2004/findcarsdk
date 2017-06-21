@@ -45,7 +45,7 @@ define(function (require, exports, module) {
 
         var _mat = null
 
-        this.init = function(regionEx, floorId, svg) {
+        this.init = function(regionEx, floorId) {
 
             _regionEx = regionEx
 
@@ -59,7 +59,7 @@ define(function (require, exports, module) {
 
             _map.className = 'svg_box'
 
-            _map.innerHTML = svg
+            _map.innerHTML = regionEx.floorSvgs[floorId]
         }
 
         function addMapEvent() {
