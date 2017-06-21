@@ -74,28 +74,31 @@ define(function (require, exports, module) {
         function loadMaps(callBack) {
 
             for (var i = 0; i < floorList.length; ++i) {
+                
+                (function() {
 
-                var floorId = floorList[i].id
+                    var floorId = floorList[i].id
 
-                console.log('load + ' + floorId)
+                    console.log('load + ' + floorId)
 
-                networkManager.serverCallSvgMap(that.id, floorId, function(data) {
+                    networkManager.serverCallSvgMap(that.id, floorId, function(data) {
 
-                    console.log(floorId)
+                        console.log(floorId)
 
-                    that.floorSvgs[floorId] = data
+                        that.floorSvgs[floorId] = data
 
-                    if (allLoaded()) {
+                        if (allLoaded()) {
 
-                        console.log('所有地图数据加载成功')
+                            console.log('所有地图数据加载成功')
 
-                        typeof callBack == "function" && callBack()
-                    }
+                            typeof callBack == "function" && callBack()
+                        }
 
-                }, function(data) {
+                    }, function(data) {
 
-                    console.log('地图数据获取失败!' + data);
-                })
+                        console.log('地图数据获取失败!' + data);
+                    })
+                })()
             }
         }
         
