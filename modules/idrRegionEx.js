@@ -83,6 +83,7 @@ define(function (require, exports, module) {
 
                     if (allLoaded()) {
 
+                        console.log('所有地图数据加载成功')
                         typeof callBack == "function" && callBack()
                     }
 
