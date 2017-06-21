@@ -79,11 +79,14 @@ define(function (require, exports, module) {
 
                 networkManager.serverCallSvgMap(that.id, floorId, function(data) {
 
+                    console.log(floorId)
+
                     that.floorSvgs[floorId] = data
 
                     if (allLoaded()) {
 
                         console.log('所有地图数据加载成功')
+
                         typeof callBack == "function" && callBack()
                     }
 
