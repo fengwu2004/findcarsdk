@@ -50,9 +50,7 @@ define(function (require, exports, module) {
 
                     if (data != null) {
 
-                        // alert('启动成功');
-
-                        if (data.code == "success") {
+                    if (data.code == "success") {
 
                             sAppId = data.appId;
 
@@ -134,9 +132,7 @@ define(function (require, exports, module) {
             });
         }
 
-        function resetBeacons() {
-
-            wx.startSearchBeacons({
+        wx.startSearchBeacons({
 
                 ticket: "",
 

@@ -1,11 +1,10 @@
 define(function (require, exports, module) {
-	"use strict";
 
-	var matrix2d = require('../mat2d')
+    var matrix2d = require('../mat2d')
 
     var vec2 = require('../vec2')
 
-    var IDRSvgLocation = function() {
+    function IDRIndicator() {
 
         var css = document.createElement('link')
 
@@ -13,7 +12,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRIndicator/IDRSvgLocation.css";
+        css.href = modules + "/IDRIndicator/IDRIndicator.css";
 
         var header = document.querySelector("head");
 
@@ -27,13 +26,19 @@ define(function (require, exports, module) {
 
         var rootDom = null
 
+        var frames = null
+
         var waveDom = null
 
         var centerDom = null
 
         var moveSpeed = 2
 
-        function creatSvgLocationDom(parentNode, position) {
+        var width = 50
+
+        var centerWidth = 10
+
+        function creat(parentNode, position) {
 
             rootDom = document.getElementById("indicator");
 
@@ -47,29 +52,51 @@ define(function (require, exports, module) {
             lastPosition = position
 
             rootDom = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
             rootDom.setAttribute('id', 'SvgLocation')
+
             var mt = matrix2d.create()
-            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+
+            var x = position.x - width/2
+
+            var y = position.y - width/2
+
+            var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
+
             rootDom.setAttribute('transform', trans)
+
             rootDom.setAttribute('transform-origin', '50% 50% 0')
 
             parentNode.appendChild(rootDom);
 
             waveDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            waveDom.href.baseVal = '../sdk/modules/IDRIndicator/img_locator_wave.png'
+
+            waveDom.href.baseVal = modules + '/IDRIndicator/img_locator_wave.png'
+
             waveDom.setAttribute('id', 'wave')
-            waveDom.setAttribute('width', '50px')
-            waveDom.setAttribute('height', '50px')
+
+            waveDom.setAttribute('width', width.toString() + 'px')
+
+            waveDom.setAttribute('height', width.toString() + 'px')
 
             centerDom = document.createElementNS("http://www.w3.org/2000/svg", "image");
-            centerDom.href.baseVal = '../sdk/modules/IDRIndicator/img_di_point.png'
+
+            centerDom.href.baseVal = modules + '/IDRIndicator/img_di_point.png'
+
             centerDom.setAttribute('id', 'center')
-            centerDom.setAttribute('x', '20px')
-            centerDom.setAttribute('y', '20px')
-            centerDom.setAttribute('width', '10px')
-            centerDom.setAttribute('height', '10px')
+
+            x = (width - centerWidth)/2
+
+            centerDom.setAttribute('x', x.toString() + 'px')
+
+            centerDom.setAttribute('y', x.toString() + 'px')
+
+            centerDom.setAttribute('width', centerWidth.toString() + 'px')
+
+            centerDom.setAttribute('height',centerWidth.toString() + 'px')
 
             rootDom.appendChild(waveDom);
+
             rootDom.appendChild(centerDom);
         }
 
@@ -81,7 +108,11 @@ define(function (require, exports, module) {
 
             if (!lastPosition) {
 
-                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + position.x + ',' + position.y + ')'
+                var x = position.x - width/2
+
+                var y = position.y - width/2
+
+                var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + x + ',' + y + ')'
 
                 rootDom.setAttribute('transform', trans)
 
@@ -95,22 +126,29 @@ define(function (require, exports, module) {
 
         function beginMove(position) {
 
+            if (frames) {
+
+                window.cancelAnimationFrame(frames)
+            }
+
             var count = 0
 
-            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y))/(moveSpeed * 10)
+            var time = Math.sqrt((position.x - lastPosition.x) * (position.x - lastPosition.x) + (position.y - lastPosition.y) * (position.y - lastPosition.y)) / (moveSpeed * 10)
+
+            if (time === 0) {
+
+                return
+            }
 
             time = time * 60
 
-            if (time == 0) {
+            time = Math.min(60, time)
 
-                time = 1
-            }
+            var xOffsetX = (position.x - lastPosition.x) / time
 
-            var xOffsetX = (position.x - lastPosition.x)/time
+            var xOffsetY = (position.y - lastPosition.y) / time
 
-            var xOffsetY = (position.y - lastPosition.y)/time
-
-            var frames = window.requestAnimationFrame(onAnim)
+            frames = window.requestAnimationFrame(onAnim)
 
             function onAnim() {
 
@@ -127,13 +165,17 @@ define(function (require, exports, module) {
 
                 var mt = getTransArray(trans)
 
-                mt[4] = xOffsetX + parseFloat(mt[4])
+                mt[4] = xOffsetX + lastPosition.x
 
-                mt[5] = xOffsetY + parseFloat(mt[5])
+                mt[5] = xOffsetY + lastPosition.y
 
                 var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
                 rootDom.setAttribute('transform', trans)
+
+                lastPosition.x = mt[4]
+
+                lastPosition.y = mt[5]
 
                 ++count
 
@@ -141,7 +183,7 @@ define(function (require, exports, module) {
             }
         }
 
-        var getTransArray = function(value) {
+        function getTransArray(value) {
 
             if (value == null) {
 
@@ -183,14 +225,18 @@ define(function (require, exports, module) {
                 locationDom.style.display = "none";
             }
         }
+        
+        function remove() {
 
-        return {
-            creatSvgLocationDom: creatSvgLocationDom,
-            updateLocation: updateLocation,
-            updateScale: updateScale,
-            updateShownState: updateShownState
+            rootDom.parentNode.removeChild(rootDom)
         }
-    };
 
-    module.exports = IDRSvgLocation
-})
+        this.remove = remove
+        this.creat = creat
+        this.updateLocation = updateLocation
+        this.updateScale = updateScale
+        this.updateShownState = updateShownState
+    }
+
+    module.exports = IDRIndicator
+});

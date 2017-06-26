@@ -218,6 +218,10 @@ define(function (require, exports, module) {
 
         var url = domain + '/locate/locating';
 
+        domain = "http://localhost:3000"
+
+        url = domain + '/users/locating'
+
         var data = {
             'beacons': beacons,
             'gzId': 'ewr2342342',
@@ -276,6 +280,152 @@ define(function (require, exports, module) {
                 }
             }
         });
+    }
+
+    idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, failed) {
+
+        var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?'
+
+        var data = {
+            'regionId': regionId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        jsLib.ajax({
+
+            type: "get",
+
+            dataType: 'jsonp',
+
+            url: url, //添加自己的接口链接
+
+            data: data,
+
+            timeOut: 10000,
+
+            before:function () {
+
+            },
+
+            success:function (response) {
+
+                if (response != null && response.code == "success") {
+
+                    if (typeof success === "function") {
+
+                        success(response.data);
+                    }
+                }
+                else {
+
+                    if (typeof failed === "function") {
+
+                        failed(response);
+                    }
+                }
+            },
+
+            error:function (response) {
+
+                if (typeof failed === "function") {
+
+                    failed(response);
+                }
+            }
+        });
+    }
+
+    idrNetworkManager.prototype.serverCallLocate = function(regionId, floorId, success, failed) {
+
+        var data = {
+            'gzId': 'ewr2342342',
+            'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+            'OSType': 'iPhone',
+            'regionId': regionId,
+            'appId': coreManager.appId,
+            'clientId': coreManager.clientId,
+            'sessionKey': coreManager.sessionKey
+        };
+
+        var url = "http://localhost:3000/users/locating"
+
+        ajax(url, data, success, failed)
+    }
+
+    function ajax(url, data, success, failed) {
+
+        var xhr = new XMLHttpRequest();
+
+        if (data === null) {
+
+            getType()
+
+        } else {
+
+            postType()
+        }
+
+        function getType() {
+
+            xhr.onreadystatechange = function() {
+
+                if (xhr.readyState === 4) {
+
+                    if (xhr.status >= 200 && xhr.status <= 304) {
+
+                        var results = JSON.parse(xhr.response)
+
+                        if (typeof success === 'function') {
+
+                            success(results)
+                        }
+
+                    }
+                    if (typeof failed === 'function') {
+
+                        failed()
+                    }
+                }
+            }
+
+            xhr.open('get', url + "?", true);
+
+            xhr.send();
+        }
+
+        function postType() {
+
+            xhr.onreadystatechange = function() {
+
+                if (xhr.readyState === 4) {
+
+                    if (xhr.status === '200' || '304') {
+
+                        var results = JSON.parse(xhr.response)
+
+                        if (typeof success === 'function') {
+
+                            success(results)
+                        }
+
+                    } else {
+
+                        if (typeof failed === 'function') {
+
+                            failed()
+                        }
+                    }
+                }
+            }
+
+            xhr.open('post', url, true);
+
+            xhr.setRequestHeader("Content-Type","application/json")
+
+            xhr.send(data);
+        }
     }
 
     module.exports = networkInstance;

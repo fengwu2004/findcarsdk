@@ -5,10 +5,6 @@ define(function (require, exports, module) {
 
     var idrRouter = require('../idrRouter')
 
-    // var gv = require('../globalvalue')
-
-    var gv = require('../idrCoreManager')
-
     var RouteTest = function() {
 
         var p1 = {x:15, y:155, floorId:'14557583851000004'}
@@ -59,26 +55,18 @@ define(function (require, exports, module) {
                 "regionId":"14428254382730015"
             }]
 
-        var router = new idrRouter('14428254382730015', floorList, gv.clientId, gv.appId, gv.sessionKey)
+        var router = new idrRouter('14428254382730015', floorList)
 
         var carNavi = false
 
-        router.init(function() {
+        var result = router.routerPath(p1, p2, carNavi)
 
-            console.log('加载成功')
-        })
+        for (var i = 0; i < result.paths[0].position.length; ++i) {
 
-        // router.routerPath(p1, p2, carNavi, function(result) {
-        //
-        //     for (var i = 0; i < result.paths[0].position.length; ++i) {
-        //
-        //         console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
-        //     }
-        //
-        //     console.log(result)
-        // })
+            console.log(":" + result.paths[0].position[i].x + ', ' + result.paths[0].position[i].y)
+        }
 
-
+        console.log(result)
     }()
 
     module.exports = RouteTest

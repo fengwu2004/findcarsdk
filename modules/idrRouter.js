@@ -7,13 +7,11 @@ define(function (require, exports, module) {
 
     var Position = require('./pathRoute/Position')
 
-    function idrRouter(regionId, floorList, clientId, appId, sessionKey) {
+    var zip = require('./zip/zip')
 
-        var _clientId = clientId
+    var idrNetworkManager = require('./idrNetworkManager')
 
-        var _appId = appId
-
-        var _sessionKey = sessionKey
+    function idrRouter(regionId, floorList, successFunc) {
 
         var _regionId = regionId
 
@@ -45,23 +43,6 @@ define(function (require, exports, module) {
             }
 
             return null
-        }
-        
-        this.init = function(successFunc) {
-
-            serverCallRegionPath(_regionId, function(data) {
-
-                unzipBlob(data, function(jobj) {
-
-                    _pathSearch = new PathSearch(jobj)
-
-                    if (successFunc) {
-
-                        successFunc()
-                    }
-                })
-
-            }, null);
         }
 
         /**
@@ -110,7 +91,7 @@ define(function (require, exports, module) {
             return result
         }
 
-        zip.workerScriptsPath = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/zip/'
+        zip.workerScriptsPath = modules + 'zip/'
 
         function unzipBlob(blob, callback) {
 
@@ -139,60 +120,22 @@ define(function (require, exports, module) {
             }, onerror);
         }
 
-        function serverCallRegionPath(regionId, success, failed) {
+        (function(successFunc) {
 
-            var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?'
+            idrNetworkManager.serverCallRouteData(_regionId, function(data) {
 
-            var data = {
-                'regionId': regionId,
-                'appId': _appId,
-                'clientId': _clientId,
-                'sessionKey': _sessionKey
-            };
+                unzipBlob(data, function(jobj) {
 
-            jsLib.ajax({
+                    _pathSearch = new PathSearch(jobj)
 
-                type: "get",
+                    if (successFunc) {
 
-                dataType: 'jsonp',
-
-                url: url, //添加自己的接口链接
-
-                data: data,
-
-                timeOut: 10000,
-
-                before:function () {
-
-                },
-
-                success:function (response) {
-
-                    if (response != null && response.code == "success") {
-
-                        if (typeof success === "function") {
-
-                            success(response.data);
-                        }
+                        successFunc()
                     }
-                    else  {
+                })
 
-                        if (typeof failed === "function") {
-
-                            failed(response);
-                        }
-                    }
-                },
-
-                error:function (response) {
-
-                    if (typeof failed === "function") {
-
-                        failed(response);
-                    }
-                }
-            });
-        }
+            }, null);
+        })(successFunc)
     }
 
     module.exports = idrRouter

@@ -5,8 +5,6 @@
 
 define(function (require, exports, module) {
 
-    var gv = require('./idrCoreManager');
-
     var BeaconMgr = require('./idrBeaconManager');
 
     var networkInstance = require('./idrNetworkManager')
@@ -14,6 +12,8 @@ define(function (require, exports, module) {
     function idrLocateServer() {
 
         var _floorId = ''
+
+        var _beacons = null
 
         var _regionId = ''
 
@@ -27,9 +27,9 @@ define(function (require, exports, module) {
 
         var _onLocateFailed = null
 
-        var _beaconsMgr = new BeaconMgr(onReceiveBeacons)
+        var _locateTimerId = null
 
-        // alert('error' + onReceiveBeacons)
+        var _beaconsMgr = new BeaconMgr()
 
         _onLocateSuccess = null;
 
@@ -63,32 +63,45 @@ define(function (require, exports, module) {
 
             var beaconParas = JSON.stringify(newBeacons)
 
-            onServerLocate(beaconParas)
+            _beacons = beaconParas
         }
 
-        var onServerLocate = function(beacons) {
+        function onServerLocate() {
 
-            networkInstance.serverCallLocating(beacons, _regionId, _floorId, function(data) {
+            if (_beacons === null) {
 
-                alert("成功")
+                _beacons = 'empty'
+            }
 
-                _x = data.x;
+            networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(obj) {
 
-                _y = data.y;
+                _x = obj.data.position.x;
 
-                _floorId = data.floorId;
+                _y = obj.data.position.y;
 
-                _regionId = data.regionId;
+                _floorId = obj.data.position.floorId;
 
-                _onLocateSuccess(_x + ', ' + _y);
+                _regionId = obj.data.position.regionId;
 
-            }, function(str) {
+                if (typeof _onLocateSuccess === 'function') {
 
-                alert("失败")
+                    _onLocateSuccess({x:_x, y:_y, floorId:_floorId, regionId:_regionId});
+                }
+
+            }, function (str) {
+
+                if (typeof _onLocateFailed === 'function') {
+
+                    _onLocateFailed(str)
+                }
             })
         }
 
-        this.start = function (regionId, floorId, onLocateSuccess) {
+        this.start = function (regionId, floorId, onLocateSuccess, onLocateFailed) {
+
+            _regionId = regionId
+
+            _floorId = floorId
 
             _regionId = regionId
 
@@ -98,7 +111,18 @@ define(function (require, exports, module) {
 
             _beaconsMgr.init();
 
-            _beaconsMgr.delegator = this;
+            _onLocateSuccess = onLocateSuccess
+
+            _onLocateFailed = onLocateFailed
+
+            _locateTimerId = setInterval(onServerLocate, 1000)
+        }
+        
+        this.stop = function () {
+
+            clearInterval(_locateTimerId)
+
+            _beacons = null
         }
     }
 

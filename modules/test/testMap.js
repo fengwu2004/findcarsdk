@@ -27,5 +27,72 @@ seajs.use([
         }
     })
 
-    map.initMap('2b497ada3b2711e4b60500163e0e2e6b', 'main', regionId)
+    map.addEventListener(map.eventTypes.onMapClick, function (data) {
+
+        console.log(data)
+    })
+
+    map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
+
+        addMarker(unit)
+    })
+
+    function addMarker(unit) {
+
+        var marker = new IdrCarMarker(unit.getPos())
+
+        map.addMarker(marker)
+    }
+    
+    function doNavi(unit) {
+
+        if (startPos == null) {
+
+            startPos = unit.getPos()
+
+            var marker = new IdrCarMarker(startPos)
+
+            map.addMarker(marker)
+
+            return
+        }
+
+        if (endPos == null) {
+
+            endPos = unit.getPos()
+
+            var marker = new IdrCarMarker(endPos)
+
+            map.addMarker(marker)
+
+            map.doRoute(startPos, endPos)
+        }
+    }
+
+    var startBtn = document.getElementById('startButton')
+
+    startBtn.addEventListener('click', onStart)
+
+    function onStart() {
+
+        console.log('onStart')
+    }
+
+    var endBtn = document.getElementById('endButton')
+
+    endBtn.addEventListener('click', onEnd)
+
+    function onEnd() {
+
+        console.log('onEnd')
+    }
+
+    var navigateBtn = document.getElementById('navigateButton')
+
+    navigateBtn.addEventListener('click', onNavigate)
+
+    function onNavigate() {
+
+        console.log('onNavigate')
+    }
 });

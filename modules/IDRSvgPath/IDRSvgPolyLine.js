@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
 	"use strict";
 
-    var IDRSvgPolyLine = function() {
+    function IDRSvgPolyLine() {
 
     	var css = document.createElement('link')
 
@@ -9,7 +9,7 @@ define(function (require, exports, module) {
 
         css.rel = 'stylesheet';
 
-        css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/IDRSvgPath/IDRSvgPolyLine.css";
+        css.href = modules + "IDRSvgPath/IDRSvgPolyLine.css";
 
         var header = document.querySelector("head");
 
@@ -121,14 +121,16 @@ define(function (require, exports, module) {
 
             rootElement.appendChild(pathElement)
 
-            parentNode.appendChild(rootElement);
+            var markers = document.getElementById('markers')
+
+            parentNode.insertBefore(rootElement, markers)
 
             for (var i = 0; i < angleDom.length - 1; i++) {
 
                 rootElement.appendChild(angleDom[i]);
             }
         }
-1
+
 		/*=====================初始化路线对象=======================*/
         function getLineObject(postionList) {
 
@@ -183,17 +185,33 @@ define(function (require, exports, module) {
 
                     if (currentPos.x == nextPos.x) {
 
-                        if (j % defaultDotIndex == 0 && j > 5) {
-                            getXline(currentPos, nextPos, angleObjects, j);
+                        var factor = 1
+
+                        if (nextPos.y < currentPos.y) {
+
+                            factor = -1
                         }
 
-                    } else if (currentPos.y == nextPos.y) {
-
                         if (j % defaultDotIndex == 0 && j > 5) {
-                            getYline(currentPos, nextPos, angleObjects, j);
+                            getXline(currentPos, nextPos, angleObjects, j, factor);
                         }
 
-                    } else {
+                    }
+                    else if (currentPos.y == nextPos.y) {
+
+                        var factor = 1
+
+                        if (nextPos.x < currentPos.x) {
+
+                            factor = -1
+                        }
+
+                        if (j % defaultDotIndex == 0 && j > 5) {
+                            getYline(currentPos, nextPos, angleObjects, j, factor);
+                        }
+
+                    }
+                    else {
 
                         var lineExpression = getLineExpression(currentPos, nextPos);
 
@@ -250,15 +268,15 @@ define(function (require, exports, module) {
         }
 
 		/*======================X坐标相同情况下的路线箭头============*/
-        function getXline(currentPos, nextPos, angleObjects, j) {
+        function getXline(currentPos, nextPos, angleObjects, j, factor) {
 
             var polyObj = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 
             var x = currentPos.x;
-            var y = currentPos.y + j;
+            var y = currentPos.y + j * factor;
 
             var x1 = x - defaulDotWidth / Math.sqrt(2);
-            var y1 = y - defaulDotWidth / Math.sqrt(2);
+            var y1 = y - factor * defaulDotWidth / Math.sqrt(2);
 
             var x2 = x + defaulDotWidth / Math.sqrt(2);
             var y2 = y1;
@@ -274,14 +292,14 @@ define(function (require, exports, module) {
         }
 
 		/*======================Y坐标相同情况下的路线箭头============*/
-        function getYline(currentPos, nextPos, angleObjects, j) {
+        function getYline(currentPos, nextPos, angleObjects, j, factor) {
 
             var polyObj = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
 
-            var x = currentPos.x + j;
+            var x = currentPos.x + j * factor;
             var y = currentPos.y;
 
-            var x1 = x - defaulDotWidth / Math.sqrt(2);
+            var x1 = x - factor * defaulDotWidth / Math.sqrt(2);
             var y1 = y - defaulDotWidth / Math.sqrt(2);
 
             var x2 = x1;
@@ -344,6 +362,7 @@ define(function (require, exports, module) {
             for (var i = objs.length - 1; i >= 0; i--) {
 
                 var obj = objs[i];
+
                 if (obj.id == "IDRPolyLine") {
 
                     fatherObj.removeChild(objs[i]);
@@ -351,18 +370,16 @@ define(function (require, exports, module) {
             }
         }
 
-        return {
-            getScale: getScale,
-            addScale: addScale,
-            subScale: subScale,
-            addLine: addLine,
-            updateScale: updateScale,
-            updateLine: updateLine,
-            getLineObject: getLineObject,
-            getPolyLineObject: getPolyLineObject,
-            removePath: removePath,
-            removeDot: removeDot
-        }
+        this.getScale = getScale
+        this.addScale = addScale
+        this.subScale = subScale
+        this.addLine = addLine
+        this.updateScale = updateScale
+        this.updateLine = updateLine
+        this.getLineObject = getLineObject
+        this.getPolyLineObject = getPolyLineObject
+        this.removePath = removePath
+        this.removeDot = removeDot
     }
 
     module.exports = IDRSvgPolyLine

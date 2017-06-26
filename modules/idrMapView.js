@@ -20,13 +20,13 @@ define(function (require, exports, module) {
 
     var IDRPath = require('./IDRSvgPath/IDRSvgPolyLine')
 
-    var _idrPath = IDRPath()
+    var IDRRouter = require('./idrRouter')
 
     var IDRRegionEx = require('./idrRegionEx')
 
     var IDRUnit = require('./idrUnit')
 
-    var IDRIndicator = require('./IDRIndicator/IDRSvgLocation')
+    var IDRIndicator = require('./IDRIndicator/IDRIndicator')
 
     var IDRMapMarkers = require('./IDRMapMarker/IDRMapMarker')
 
@@ -40,9 +40,19 @@ define(function (require, exports, module) {
 
     var IDRMapEvent = IDRMapEventModule[0]
 
+    var IDRLocationServer = require('./idrLocationServer')
+
+    var IdrMap = require('./idrMap')
+
     function idrMapView() {
 
         this.eventTypes = IDRMapEventModule[1]
+
+        this.regionEx = null
+
+        var _locator = new IDRLocationServer()
+
+        var _router = null
 
         var maxScale = 1.5
 
@@ -62,8 +72,6 @@ define(function (require, exports, module) {
 
         var _mapViewPort = null
 
-        var _regionData = null
-
         var _floorListControl = null
 
         var _svgBox = null
@@ -78,6 +86,8 @@ define(function (require, exports, module) {
 
         var _origScale = 0.5
 
+        var _markerOrigScale = 1
+
         var _gestures = null
 
         var _mapEvent = new IDRMapEvent()
@@ -86,84 +96,57 @@ define(function (require, exports, module) {
 
         var _idrIndicator = null
 
+        var _idrMap = new IdrMap()
+
         var _composs = null
 
         var that = this
 
+        var _idrPath = new IDRPath()
+
+        var _floorMaps = {}
+
         function addFloorList() {
 
-            _floorListControl = new idrFloorListControl();
+            _floorListControl = new idrFloorListControl()
 
-            _floorListControl.setChangeFloorFunc(this, changeFloor)
+            _floorListControl.setChangeFloorFunc(that, changeFloor)
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
-            _floorListControl.init(_svgFrame, _regionData['floorList'], floor)
+            _floorListControl.init(_svgFrame, that.regionEx['floorList'], floor)
         }
 
-        var addSvgMap = function(data) {
+        function addMap(svg) {
 
-            var svg = data;
+            _idrMap.init(that.regionEx, _currentFloorId, svg)
 
-            var oSvgBox = document.querySelector('#svgBox');
+            var svgBox = document.getElementById('svgBox');
 
-            oSvgBox.innerHTML = svg;
+            svgBox.innerHTML = svg;
 
-            //给每个unit添加一个id
-
-            var aUnit = document.querySelector('#unit');
-
-            var aUnit1 = document.querySelector('#unit_1_');
-
-            if (aUnit) {
-
-                var aPolygon = aUnit.getElementsByTagName('polygon');
-
-                var aRect = aUnit.getElementsByTagName('rect');
-
-                for (var i = 0; i < aPolygon.length; i++) {
-
-                    aPolygon[i].id = 'unit_' + i;
-                }
-
-                for (i = 0; i < aRect.length; i++) {
-
-                    aRect[i].id = 'rect_' + i;
-                }
-            }
-
-            if (aUnit1) {
-
-                var aR = aUnit1.getElementsByTagName('rect');
-
-                Array.prototype.forEach.call(aR, function (node, index, array) {
-
-                    node.id = 'rect_' + index;
-                })
-            }
-            
-            _mapViewPort = jsLib.getEle('#viewport');
-
-            // _mapViewPort.addEventListener('click', onMapClick, false)
+            _mapViewPort = document.getElementById('viewport');
 
             var map = document.getElementById('background')
 
             if (!map) {
 
-                var floor = _regionData.getFloorbyId(_currentFloorId)
+                var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
                 map = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 
-                map.width = floor.width
+                map.setAttribute('width', floor.width)
 
-                map.height = floor.height
+                map.setAttribute('height', floor.height)
+
+                map.style.opacity = 0
 
                 _mapViewPort.appendChild(map)
             }
 
             map.addEventListener('click', onMapClick, false)
 
-            addGestures(oSvgBox)
+            addGestures(svgBox)
 
             getAllUnits()
         }
@@ -260,6 +243,38 @@ define(function (require, exports, module) {
             }
         }
         
+        function getTargetFloorPoints(path, floorId) {
+
+            for (var i = 0; i < path.paths.length; ++i) {
+
+                var floorPath = path.paths[i]
+
+                if (floorPath.floorId === _currentFloorId) {
+
+                    return floorPath.position
+                }
+            }
+
+            return null
+        }
+        
+        function doLocation(locateCallback) {
+
+            _locator.start(_regionId, _currentFloorId, locateCallback, null)
+        }
+        
+        function doRoute(start, end) {
+
+            var path = _router.routerPath(start, end, false)
+
+            var currFloorPoints = getTargetFloorPoints(path, _currentFloorId)
+
+            if (currFloorPoints) {
+
+                showRoutePath(currFloorPoints)
+            }
+        }
+        
         function showRoutePath(paths) {
 
             _idrPath.updateLine(_mapViewPort, paths)
@@ -293,12 +308,12 @@ define(function (require, exports, module) {
         
         function onUnitClick(event) {
 
-            var unit = _regionData.getUnitById(_currentFloorId, event.currentTarget.id)
+            var unit = that.regionEx.getUnitById(_currentFloorId, event.currentTarget.id)
 
             _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
         }
 
-        var addUnits = function(unitsInfo) {
+        function addUnits(unitsInfo) {
 
             _units = []
 
@@ -307,7 +322,7 @@ define(function (require, exports, module) {
                 _units.push(new IDRUnit(unitsInfo[i]))
             }
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             floor.unitList = _units
 
@@ -316,7 +331,7 @@ define(function (require, exports, module) {
             addUnitClickRect()
         }
 
-        var getAllUnits = function() {
+        function getAllUnits() {
 
             networkInstance.serverCallUnits(_regionId, _currentFloorId,
 
@@ -332,14 +347,16 @@ define(function (require, exports, module) {
             )
         }
 
-        var createSVGMap = function(svg, regionId, floorId) {
+        function createMap(svg, regionId, floorId) {
 
-            removePreviousSVG();
+            removePreviousMap();
 
-            addSvgMap(svg, regionId, floorId);
+            addMap(svg, regionId, floorId);
         }
 
-        var removePreviousSVG = function () {
+        function removePreviousMap() {
+
+            _idrMap.detach()
 
             if (_svgFrame) {
 
@@ -391,7 +408,7 @@ define(function (require, exports, module) {
             }
         }
 
-        var setDisplayTimer = function() {
+        function setDisplayTimer() {
 
             _refreshTimer = setInterval(updateDisplay, 100)
         }
@@ -424,7 +441,7 @@ define(function (require, exports, module) {
             }
         }
 
-        var getTransArray = function(value) {
+        function getTransArray(value) {
 
             if (value == null) {
 
@@ -438,7 +455,7 @@ define(function (require, exports, module) {
             return [valueT[0], valueT[1], valueT[2], valueT[3], valueT[4], valueT[5]]
         }
 
-        var updateDisplay = function() {
+        function updateDisplay() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
@@ -460,7 +477,7 @@ define(function (require, exports, module) {
 
                 // updateUnitAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
 
-                updateMarkersAngleAndScale(_origScale * 1/mdecompose.s, -1 * _mapRotate)
+                updateMarkersAngleAndScale(_markerOrigScale * 1/mdecompose.s, -1 * _mapRotate)
             }
 
             if (_composs || _mapRotate !== mdecompose.a) {
@@ -471,6 +488,27 @@ define(function (require, exports, module) {
             _mapScale = mdecompose.s
 
             _mapRotate = mdecompose.a
+        }
+
+        function updateMarkerScaleAngle(marker, scale, rotate) {
+
+            var a = scale * Math.cos(rotate)
+
+            var b = -scale * Math.sin(rotate)
+
+            var c = scale * Math.sin(rotate)
+
+            var d = scale * Math.cos(rotate)
+
+            var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
+
+            var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
+
+            var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+
+            marker.el.style.transform = m
+
+            marker.el.style.webkitTransform = m
         }
 
          function updateMarkersAngleAndScale(scale, rotate) {
@@ -490,13 +528,17 @@ define(function (require, exports, module) {
 
             var d = scale * Math.cos(rotate)
 
-            markers.forEach(function(unitSvg, index) {
+            markers.forEach(function(marker) {
 
-                var marker = markers[index]
+                var x = marker.position.x - marker.el.width.baseVal.value * 0.5 //use bottom middle
 
-                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + marker.position.x + ',' + marker.position.y + ')'
+                var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
-                marker.el.setAttribute('transform', m)
+                var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + x + ',' + y + ')'
+
+                marker.el.style.transform = m
+
+                marker.el.style.webkitTransform = m
             })
         }
 
@@ -510,7 +552,7 @@ define(function (require, exports, module) {
 
             var d = scale * Math.cos(rotate)
 
-            _unitDivs.forEach(function(unitSvg, index) {
+            _unitDivs.forEach(function(unitSvg) {
 
                 var m = 'matrix(' + a + ',' + b + ',' + c + ',' + d + ',' + unitSvg.centerX + ',' + unitSvg.centerY + ')'
 
@@ -534,17 +576,17 @@ define(function (require, exports, module) {
             _composs = new IDRComposs('composs', 0, that)
         }
         
-        function retriveSvgDataAndShow() {
+        function retriveMap() {
 
             networkManager.serverCallSvgMap(_regionId, _currentFloorId, function(data) {
 
-                createSVGMap(data, _regionId, _currentFloorId)
+                createMap(data, _regionId, _currentFloorId)
 
                 onLoadMapSuccess()
 
             }, function() {
 
-                alert('地图数据获取失败!' + data);
+                console.log('地图数据获取失败!' + data);
             })
         }
 
@@ -557,7 +599,7 @@ define(function (require, exports, module) {
 
             _currentFloorId = floorId
 
-            retriveSvgDataAndShow()
+            retriveMap()
         }
         
         function initMap(appid, containerId, regionId) {
@@ -568,7 +610,12 @@ define(function (require, exports, module) {
 
                 idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
 
-                    _regionData = new IDRRegionEx(regionAllInfo)
+                    that.regionEx = new IDRRegionEx(regionAllInfo)
+
+                    _router = new IDRRouter(regionId, that.regionEx.floorList, function () {
+
+                        console.log('path data load success')
+                    })
 
                     _regionId = regionId
 
@@ -651,17 +698,21 @@ define(function (require, exports, module) {
 
             var y = marker.position.y - marker.el.height.baseVal.value //use bottom middle
 
-            var trans = 'matrix(' + _origScale + ',' + 0 + ',' + 0 + ',' + _origScale + ',' + x + ',' + y + ')'
+            var trans = 'matrix(' + _markerOrigScale + ',' + 0 + ',' + 0 + ',' + _markerOrigScale + ',' + x + ',' + y + ')'
 
-            marker.el.style.transformOrigin =  '50% 100% 0'
-            //
-            marker.el.style.webkitTransformOrigin = '50% 100% 0'
+            marker.el.style.zIndex = 2
 
             marker.el.style.transform = trans
 
             marker.el.style.webkitTransform = trans
 
+            marker.el.style.transformOrigin = '50% 100% 0'
+
+            marker.el.style.webkitTransformOrigin = '50% 100% 0'
+
             marker.el.addEventListener('click', onMarkerClick, true)
+
+            updateMarkerScaleAngle(marker, _markerOrigScale/_mapScale, -1 * _mapRotate)
 
             return marker
         }
@@ -715,7 +766,7 @@ define(function (require, exports, module) {
             addComposs()
         }
 
-        var getMapViewMatrix = function() {
+        function getMapViewMatrix() {
 
             var trans = _mapViewPort.getAttribute('transform')
 
@@ -724,7 +775,7 @@ define(function (require, exports, module) {
             return matrix2d.fromValues(mt[0], mt[1], mt[2], mt[3], mt[4], mt[5])
         }
         
-        var getMapPos = function(svgPos) {
+        function getMapPos(svgPos) {
 
             var mt = getMapViewMatrix()
 
@@ -735,23 +786,23 @@ define(function (require, exports, module) {
             return vec2.transformMat2d(posIn2d, posIn2d, mt)
         }
         
-        var getSvgPos = function(mapPos) {
+        function getSvgPos(mapPos) {
 
             var mt = getMapViewMatrix()
 
-            var posIn2d = vec2.fromValues(mapPos[0], mapPos[1])
+            var posIn2d = vec2.fromValues(mapPos.x, mapPos.y)
 
             return vec2.transformMat2d(posIn2d, posIn2d, mt)
         }
 
-        var updateMapViewTrans = function(mt) {
+        function updateMapViewTrans(mt) {
 
             var trans = 'matrix(' + mt[0] + ',' + mt[1] + ',' + mt[2] + ',' + mt[3] + ',' + mt[4] + ',' + mt[5] + ')'
 
             _mapViewPort.setAttribute('transform', trans)
         }
 
-        var zoom = function(scale, anchor) {
+        function zoom(scale, anchor) {
 
             var mt = getMapViewMatrix()
 
@@ -778,7 +829,7 @@ define(function (require, exports, module) {
             updateMapViewTrans(mt)
         }
         
-        var scroll = function(screenVec) {
+        function scroll(screenVec) {
 
             var v = vec2.fromValues(screenVec[0], screenVec[1])
 
@@ -789,7 +840,7 @@ define(function (require, exports, module) {
             updateMapViewTrans(mt)
         }
 
-        var rotate = function(rad, anchor) {
+        function rotate(rad, anchor) {
 
             var p = anchor
 
@@ -817,7 +868,7 @@ define(function (require, exports, module) {
         
         function updateMinScale() {
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             var mapHeight = floor.height
 
@@ -836,7 +887,7 @@ define(function (require, exports, module) {
 
             console.log('resetMap')
 
-            var floor = _regionData.getFloorbyId(_currentFloorId)
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
 
             var mapHeight = floor.height
 
@@ -870,19 +921,31 @@ define(function (require, exports, module) {
 
         }
         
-        function setCurrentPos(pos, show) {
+        function setUserPos(pos) {
 
             _currentPos = pos
 
             if (_idrIndicator == null) {
 
-                _idrIndicator = IDRIndicator()
+                _idrIndicator = new IDRIndicator()
 
-                _idrIndicator.creatSvgLocationDom(_mapViewPort, {x:_currentPos.x, y:_currentPos.y})
+                _idrIndicator.creat(_mapViewPort, _currentPos)
             }
             else  {
 
-                _idrIndicator.updateLocation({x:_currentPos.x, y:_currentPos.y})
+                _idrIndicator.updateLocation(_currentPos)
+            }
+        }
+        
+        function setPos(pos) {
+
+            if (pos.floorId !== _currentFloorId) {
+
+                changeFloor(pos.floorId)
+            }
+            else  {
+
+                setUserPos(pos)
             }
         }
 
@@ -902,7 +965,7 @@ define(function (require, exports, module) {
 
         this.rotate = rotate
 
-        this.setCurrPos = setCurrentPos
+        this.setCurrPos = setUserPos
 
         this.addMarker = addMarker
 
@@ -921,6 +984,10 @@ define(function (require, exports, module) {
         this.removeEventListener = removeEventListener
 
         this.fireEvent = fireEvent
+
+        this.doRoute = doRoute
+
+        this.doLocation = doLocation
     }
 
     module.exports = idrMapView;

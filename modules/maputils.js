@@ -9,6 +9,7 @@ define(function (require, exports, module) {
     var gV = require('./globalvalue');
     var Utils = require('./utils');
     var oUtils = new Utils();
+    var IdrRouter = require('./idrRouter');
     // require('http://binnng.github.io/debug.js/build/debug.min.js');
 
     // var ccc = 0;// 测试用的
@@ -19,7 +20,14 @@ define(function (require, exports, module) {
             // floorId: this._getMapId().floorId,
             OSType: this._checkClient(),
             ticket: 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-        }
+        };
+
+        // 比例尺参数
+        this.y = 22;    // canvas的高度
+
+        // idrRouter = null;
+        this.initIdrRouterOk = false;
+        idrRouter = null;
     };
 
 
@@ -237,98 +245,10 @@ define(function (require, exports, module) {
                     alert('阿欧,坐标数据没有找到!' + str);
                 }
             });
-            /*oUtils.RequestData.ajax(url, {
-                data: {
-                    'regionId': this.mapValue.regionId,
-                    'floorId': this.mapValue.floorId,
-                    'sx': sx,
-                    'sy': sy,
-                    'tx': tx,
-                    'ty': ty
-                },
-                fnSucc: function (str) {
-                    str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');
-                    if (data != null) {
-                        if (data.code == "success") {
-                            var oLine = document.querySelector('#line');
-                            if (oLine) oLine.innerHTML = '';
-                            gV.aLineSvgPos = data.data;
-                            var aClientPos = MapFn.prototype.changeToAllClientPos(gV.aLineSvgPos);
-                            MapFn.prototype.draw('line', aClientPos, false);
-                        }
-                    }
-                },
-                fnFaild: function (str) {
-                    alert('阿欧,坐标数据没有找到!' + str);
-                },
-            });*/
-        },
-
-        //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层
-        askPosMore: function (regionId, startFloorId, endFloorId, startSvgX, startSvgY, endSvgX, endSvgY, isPeopleType) {
-            if (isPeopleType) {
-                var url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + regionId + "&sFloorId=" + startFloorId + "&tFloorId=" + endFloorId + "&sx=" + startSvgX + "&sy=" + startSvgY + "&tx=" + endSvgX + "&ty=" + endSvgY;
-            } else {
-                var url = "http://wx.indoorun.com/wx/getMultiFloorNearestLines.html?regionId=" + regionId + "&sFloorId=" + startFloorId + "&tFloorId=" + endFloorId + "&sx=" + startSvgX + "&sy=" + startSvgY + "&tx=" + endSvgX + "&ty=" + endSvgY;
-            };
-            jsLib.ajax({
-                // type: "get",
-                dataType: 'jsonp',
-                url: url, //添加自己的接口链接
-                data: {'regionId': regionId, 'floorId': floorId},
-                timeOut: 10000,
-                before: function () {
-                    console.log("before");
-                },
-                success: function (str) {
-                    var data = str;
-                    if (data != null) {
-                        if (data.code == "success") {
-                            //存到全局变量去
-                            gV.floorMore.floorInfo = [];
-                            data.data.forEach(function (item) {
-                                gV.floorMore.floorInfo.push(item);
-                            });
-
-                            var oLine = document.querySelector('#line');
-                            if (oLine) oLine.innerHTML = '';
-                            MapFn.prototype.isDrawLine(gV.floorMore.floorInfo);
-                        }
-                    }
-                },
-                error: function (str) {
-                    alert('阿欧,多坐标数据没有找到!' + str);
-                }
-            });
-            /*oUtils.RequestData.ajax(url, {
-                fnSucc: function (str) {
-                    str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');
-                    // gV.floorMore.floorInfo = data.data;
-
-                    if (data != null) {
-                        if (data.code == "success") {
-                            //存到全局变量去
-                            gV.floorMore.floorInfo = [];
-                            data.data.forEach(function (item) {
-                                gV.floorMore.floorInfo.push(item);
-                            });
-
-                            var oLine = document.querySelector('#line');
-                            if (oLine) oLine.innerHTML = '';
-                            MapFn.prototype.isDrawLine(gV.floorMore.floorInfo);
-                        }
-                    }
-                },
-                fnFaild: function (str) {
-                    alert('阿欧,多坐标数据没有找到!' + str);
-                },
-            });*/
         },
 
         //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层(外部接口)
-        askPosMore2: function (startObj, endObj, bool, fn) {
+        /*askPosMore2: function (startObj, endObj, bool, fn) {
             var url, strUrl;
             strUrl = startObj.regionId + "&sFloorId=" + startObj.floorId + "&tFloorId=" + endObj.floorId + "&sx=" + startObj.svgX + "&sy=" + startObj.svgY + "&tx=" + endObj.svgX + "&ty=" + endObj.svgY;
             bool == true ? url = "http://wx.indoorun.com/wx/getMultiFloorNearestLinesByCar.html?regionId=" + strUrl
@@ -349,7 +269,6 @@ define(function (require, exports, module) {
                 },
                 before: function () {
                     // console.log("before");
-
                 },
                 success: function (str) {
                     var data = str;
@@ -376,7 +295,108 @@ define(function (require, exports, module) {
                     alert('阿欧,多坐标数据没有找到!' + str);
                 }
             });
-            
+        },*/
+
+        askPosMore2: function (startObj, endObj, bool, fn) {
+            var self = this;
+            var p1 = { x: startObj.svgX, y: startObj.svgY, floorId: startObj.floorId };
+            var p2 = { x: endObj.svgX, y: endObj.svgY, floorId: endObj.floorId };
+
+            if (!this.idrRouter) {    // 获取划线实例
+                this.initIdrRouter(function(idrRouter) {
+                    self.idrRouter = idrRouter;
+                    self.idrRouteFn(p1, p2, bool, fn, idrRouter);
+                });
+            } else {
+                self.idrRouteFn(p1, p2, bool, fn, this.idrRouter);
+            };
+        },
+
+        initIdrRouter: function(callback) {
+            var self = this;
+            var url = 'http://wx.indoorun.com/wx/getRegionInfo';
+            jsLib.ajax({
+                type: "get",
+                dataType: 'jsonp',
+                url: url, //添加自己的接口链接
+                data: {
+                    'regionId': gV.regionId,
+                    'appId': gV.configure.appId,
+                    'clientId': gV.configure.clientId,
+                    'sessionKey': gV.configure.sessionKey
+                },
+                timeOut: 10000,
+                before: function () {
+                    // console.log("before");
+                },
+                success: function (str) {
+                    var data = str;
+                    if (data != null) {
+                        if (data.code == "success") {
+                            gV.floorData.aAllFloor = data.data.floorList;
+                            self.idrRouter = new IdrRouter(gV.regionId, gV.floorData.aAllFloor, gV.configure.clientId, gV.configure.appId, gV.configure.sessionKey);
+                            self.idrRouter.init(function() {
+                                this.initIdrRouterOk = true;
+                            }, function(data) {
+                                this.initIdrRouterOk = false;
+                                alert(JSON.stringify(data));
+                            });
+                            callback && callback(self.idrRouter);
+                        };
+                    };
+                },
+                error: function (str) {
+                    errorFn && errorFn(str);
+                }
+            });
+        },
+
+        idrRouteFn: function(p1, p2, bool, fn, instance) {
+            var self = this;
+            if (!this.idrRouter) {    // 获取划线实例
+                this.initIdrRouter(function(idrRouter) {
+                    self.idrRouter = idrRouter;
+                    todo(idrRouter);
+                });
+            } else {
+                todo(this.idrRouter);
+            };
+
+            function todo(ins) {
+                /*ins.routerPath(p1, p2, bool, function(result) {
+                    //存到全局变量去
+                    gV.floorInfo = [];
+                    result.paths.forEach(function (item) {
+                        gV.floorInfo.push(item);
+                    });
+
+                    var oLine = document.querySelector('#line');
+                    if (oLine) oLine.innerHTML = '';
+                    MapFn.prototype.isDrawLine(gV.floorInfo);
+                    //执行第三方的逻辑
+                    fn && fn(gV.floorInfo, result.distance);
+                });*/
+
+                var result = ins.routerPath(p1, p2, bool);
+
+                //存到全局变量去
+                gV.floorInfo = [];
+                result.paths.forEach(function (item) {
+                    gV.floorInfo.push(item);
+                });
+
+                var oLine = document.querySelector('#line');
+                if (oLine) oLine.innerHTML = '';
+                MapFn.prototype.isDrawLine(gV.floorInfo);
+                //执行第三方的逻辑
+                fn && fn(gV.floorInfo, result.distance);
+            };
+
+        },
+
+        idrRouteResult: function(p1, p2, bool) {
+            var result = this.idrRouter.routerPath(p1, p2, bool);
+            return result.distance;
         },
 
         //向服务器请求坐标  Map.StaticGPS.askPosMore();       多楼层(外部接口)
@@ -442,7 +462,7 @@ define(function (require, exports, module) {
             aData.forEach(function (item, index, arr) {
                 var sFloorid = item.floorId;
                 if (gV.floorId === sFloorid) {
-                    var aPos = item.pointList;
+                    var aPos = item.position;
                     gV.aLineSvgPos = aPos;
                     // jsLib('#beaCount').html(gV.aLineSvgPos[0].x + ',' + gV.aLineSvgPos[0].y + ',' + ccc);
                     var aClientPos = MapFn.prototype.changeToAllClientPos(gV.aLineSvgPos);
@@ -596,44 +616,67 @@ define(function (require, exports, module) {
             }
         },
 
-        /*//向服务器获取存储的动静态导航终点信息
-        getSendEndInfo: function () {
-            var _this = this;
-            var url = 'http://wx.indoorun.com/chene/getCheLocation.html';
-            oUtils.RequestData.ajax(url, {
-                fnSucc: function (str) {
-                    str = str.replace(/\n/g, '');
-                    var data = eval('(' + str + ')');
-                    if (data != null) {
-                        if (data.code == "success") {
-                            // alert("发送成功");
-                            //存终点数据
-                            var obj = data.data;
-                            //静态的终点
-                            gV.floorMore.endObj.svgx = gV.floorDTMore.endObj.svgx = obj.svgX;
-                            gV.floorMore.endObj.svgy = gV.floorDTMore.endObj.svgy = obj.svgY;
-                            gV.floorMore.endObj.regionId = gV.floorDTMore.endObj.regionId = obj.regionId;
-                            gV.floorMore.endObj.floorId = gV.floorDTMore.endObj.floorId = obj.floorId;
-                            gV.floorMore.endObj.unit = gV.floorDTMore.endObj.unit = obj.unitId;
+        // 比例尺
+        comparingRule: function() {
+            this.maxWidth = gV.box_w / 4;
+            this.minWidth = gV.box_w / 8;
 
-                            /!*if (_this.isRemain(gV.floorMore.endObj)) {
-                             _this.svgShowPoint('zhongdian', [parseFloat(data.data.svgX), parseFloat(data.data.svgY)], 32, 32);
-                             }
-                             if (_this.isRemain(gV.floorDTMore.endObj)) {
-                             _this.svgShowPoint('zhongdian', [parseFloat(data.data.svgX), parseFloat(data.data.svgY)], 32, 32);
-                             // if (bnData.bOpenBlueTooth) {
-                             document.querySelector('#dtgps').style.display = 'block';
-                             // }
-                             }*!/
-                        }
-                    }
-                },
-                fnFaild: function (str) {
-                    alert('向服务器获取存储的动静态导航终点信息, 失败!' + str);
-                },
+            // 创建canvas标签
+            var oSvgFrame = document.querySelector('#svgFrame');
+            var oCanvas = document.createElement('canvas');
+            oCanvas.id = 'comparingRule';
+            // oCanvas.setAttribute('width', (this.maxWidth + 10) + 'px');
+            oCanvas.setAttribute('width', gV.box_w + 'px');
+            oCanvas.setAttribute('height', this.y + 'px');
+            // oCanvas.style.background = 'red';
+            oCanvas.style.position = 'absolute';
+            oCanvas.style.bottom = '14%';
+            oCanvas.style.left = '4rem';
+            oCanvas.style.zIndex = 11;
+            oSvgFrame.appendChild(oCanvas);
+        },
+
+        calculationRule: function(x) {
+
+            // 计算显示多少米[1, 2, 5, 10, 20, 50, 100, 200, 500]
+            this.maxWidth = gV.box_w / 4;
+            this.minWidth = gV.box_w / 8;
+
+            var arrRule = [1, 2, 5, 10, 20, 50, 100, 200, 500];
+            var arrRulePx = arrRule.map(function(item, index) {
+                var scale = item / 10;
+                return scale * x;
             });
-        }*/
 
+            var aFilterIndex = [];
+            arrRulePx.filter(function(item, index) {
+                if (this.minWidth < item && item < this.maxWidth) {
+                    aFilterIndex.push(index);
+                    return true;
+                };
+            }, this);
 
+            x = arrRulePx[aFilterIndex[0]];
+            var str = arrRule[aFilterIndex[0]];
+            if (typeof x === 'undefined' || typeof str === 'undefined') return;
+            var cx = document.querySelector("#comparingRule").getContext('2d');
+            cx.clearRect(0, 0, gV.box_w, this.y);
+            cx.beginPath();
+            cx.moveTo(2.5, this.y - 6.5);
+            cx.lineTo(2.5, this.y - 1.5);
+            cx.lineTo(x + .5, this.y - 1.5);
+            cx.lineTo(x + .5, this.y - 6.5);
+            cx.lineCap = 'butt';
+            cx.stroke();
+
+            cx.font = "1.5rem";
+            cx.fillText(str + 'm', this.y - 14.5, this.y - 10.5);
+        },
+
+        notShowRule: function() {
+            var cx = document.querySelector("#comparingRule").getContext('2d');
+            cx.clearRect(0, 0, gV.box_w, this.y);
+        }
     }
+
 });
