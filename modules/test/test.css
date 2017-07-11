@@ -16,3 +16,9 @@
     width: 100%;
     background-color: #0087ff;
 }
+
+.canvas-frame {
+    position:absolute;
+    left:0;
+    top:0;
+}

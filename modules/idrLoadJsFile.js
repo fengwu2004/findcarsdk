@@ -3,60 +3,60 @@
  */
 define(function (require, exports, module) {
 
-    var root = modules + "/../"
+    var root = modules + "../../"
 
     var load_queue =
 
-        [root + "../src/yf3dmap.js",
-        root + "../src/adt/ArrayList.js",
-        root + "../src/adt/IndexMinPQ.js",
-        root + "../src/map/Map.js",
-        root + "../src/map/Region.js",
-        root + "../src/map/RegionLocMarker.js",
-        root + "../src/map/RegionTouchMgr.js",
-        root + "../src/map/AnimationMgr.js",
-        root + "../src/map/RegionRoute.js",
-        root + "../src/map/Floor.js",
-        root + "../src/map/FloorExtrude.js",
-        root + "../src/map/FloorIcons.js",
-        root + "../src/map/FloorQuickIcons.js",
-        root + "../src/map/FloorMarkers.js",
-        root + "../src/math/Math.js",
-        root + "../src/math/Vector.js",
-        root + "../src/math/Matrix.js",
-        root + "../src/math/Euler.js",
-        root + "../src/math/Quaternion.js",
-        root + "../src/math/Line.js",
-        root + "../src/math/Plane.js",
-        root + "../src/math/LDS.js",
-        root + "../src/math/visibility/FrustumWorldSpace.js",
-        root + "../src/math/visibility/OBB.js",
-        root + "../src/math/visibility/FloorQuadTree.js",
-        root + "../src/math/collision/PlanePolygon.js",
-        root + "../src/math/physics/Mover.js",
-        root + "../src/mesh/Mesh.js",
-        root + "../src/mesh/TetrahedronMesh.js",
-        root + "../src/mesh/HexahedronMesh.js",
-        root + "../src/mesh/OctahedronMesh.js",
-        root + "../src/mesh/DodecahedronMesh.js",
-        root + "../src/mesh/IcosahedronMesh.js",
-        root + "../src/panorama/RawPanorama.js",
-        root + "../src/webgl/WebGL.js",
-        root + "../src/webgl/Color.js",
-        root + "../src/webgl/BaseColorProgram.js",
-        root + "../src/webgl/BasePhongProgram.js",
-        root + "../src/webgl/RegionPhongProgram.js",
-        root + "../src/webgl/SelectColorProgram.js",
-        root + "../src/webgl/BillboardIconProgram.js",
-        root + "../src/webgl/Marker2DProgram.js",
-        root + "../src/webgl/PointSpiritProgram.js",
-        root + "../src/webgl/RawPanoramaProgram.js",
-        root + "../src/webgl/DeviceOrientationCamera.js",
-        root + "../src/webgl/TexturePool.js",]
+        [root + "libidrn/src/yf3dmap.js",
+        root + "libidrn/src/adt/ArrayList.js",
+        root + "libidrn/src/adt/IndexMinPQ.js",
+        root + "libidrn/src/map/Map.js",
+        root + "libidrn/src/map/Region.js",
+        root + "libidrn/src/map/RegionLocMarker.js",
+        root + "libidrn/src/map/RegionTouchMgr.js",
+        root + "libidrn/src/map/AnimationMgr.js",
+        root + "libidrn/src/map/RegionRoute.js",
+        root + "libidrn/src/map/Floor.js",
+        root + "libidrn/src/map/FloorExtrude.js",
+        root + "libidrn/src/map/FloorIcons.js",
+        root + "libidrn/src/map/FloorQuickIcons.js",
+        root + "libidrn/src/map/FloorMarkers.js",
+        root + "libidrn/src/math/Math.js",
+        root + "libidrn/src/math/Vector.js",
+        root + "libidrn/src/math/Matrix.js",
+        root + "libidrn/src/math/Euler.js",
+        root + "libidrn/src/math/Quaternion.js",
+        root + "libidrn/src/math/Line.js",
+        root + "libidrn/src/math/Plane.js",
+        root + "libidrn/src/math/LDS.js",
+        root + "libidrn/src/math/visibility/FrustumWorldSpace.js",
+        root + "libidrn/src/math/visibility/OBB.js",
+        root + "libidrn/src/math/visibility/FloorQuadTree.js",
+        root + "libidrn/src/math/collision/PlanePolygon.js",
+        root + "libidrn/src/math/physics/Mover.js",
+        root + "libidrn/src/mesh/Mesh.js",
+        root + "libidrn/src/mesh/TetrahedronMesh.js",
+        root + "libidrn/src/mesh/HexahedronMesh.js",
+        root + "libidrn/src/mesh/OctahedronMesh.js",
+        root + "libidrn/src/mesh/DodecahedronMesh.js",
+        root + "libidrn/src/mesh/IcosahedronMesh.js",
+        root + "libidrn/src/panorama/RawPanorama.js",
+        root + "libidrn/src/webgl/WebGL.js",
+        root + "libidrn/src/webgl/Color.js",
+        root + "libidrn/src/webgl/BaseColorProgram.js",
+        root + "libidrn/src/webgl/BasePhongProgram.js",
+        root + "libidrn/src/webgl/RegionPhongProgram.js",
+        root + "libidrn/src/webgl/SelectColorProgram.js",
+        root + "libidrn/src/webgl/BillboardIconProgram.js",
+        root + "libidrn/src/webgl/Marker2DProgram.js",
+        root + "libidrn/src/webgl/PointSpiritProgram.js",
+        root + "libidrn/src/webgl/RawPanoramaProgram.js",
+        root + "libidrn/src/webgl/DeviceOrientationCamera.js",
+        root + "libidrn/src/webgl/TexturePool.js",]
 
     var load_cursor = 0;
 
-    var loadFinished = function() {
+    function loadFinished() {
 
         load_cursor ++;
 
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
         console.error("The script " + oError.target.src + " is not accessible.");
     }
 
-    var loadScript = function() {
+    function loadScript() {
 
         var url = load_queue[load_cursor];
 
@@ -85,13 +85,14 @@ define(function (require, exports, module) {
         };
 
         script.onerror = loadError;
+    
+        // + '?' + 'time=' + Date.parse(new Date());
+        script.src = url
 
-        script.src = url + '?' + 'time=' + Date.parse(new Date());
-
-        document.body.appendChild(script);
+        document.head.appendChild(script);
     };
 
-    var loadMultiScript = function() {
+    function loadMultiScript() {
 
         load_cursor = 0;
 

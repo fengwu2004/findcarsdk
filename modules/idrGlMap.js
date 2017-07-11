@@ -4,8 +4,6 @@
 
 define(function (require, exports, module) {
 
-    require('./idrLoadJsFile')
-
     function idrGlMap(mapView) {
 
         var maxScale = 1.5
@@ -21,8 +19,6 @@ define(function (require, exports, module) {
         var _regionEx = null
 
         var _mapViewPort = null
-
-        var _idrPath = new IDRPath()
 
         var _markerOrigScale = 1
 
@@ -43,30 +39,137 @@ define(function (require, exports, module) {
         var _canvas_txt = null
 
         var _canvas_gl = null
-
-        this.init = function(regionEx, floorId) {
-
-            _regionEx = regionEx
-
-            _floorId = floorId
-
-            _floor = _regionEx.getFloorbyId(_floorId)
-
-            _map = document.createElement('div')
-
-            _map.id = 'mapRoot'
-
-            _map.className = 'svg_box'
-
-            createCanvas()
+        
+        var _floorList = []
+        
+        var _region = null
+    
+        var listener = {
+            
+            onLoadFinish : function(floorId, floorIndex){
+                "use strict";
+                
+            },
+        
+            onLoadFailed : function(floorId, floorIndex){
+            },
+        
+            onAllFloorLoadFinish : function(){
+            
+            },
+        
+            onStatusChange : function(status){
+            
+            },
+        
+            onAnimStart : function(anim){
+            },
+        
+            onAnimFinish : function(anim){
+            },
+        
+            onAnimCancel : function(anim){
+            
+            },
+        
+            onClick : function(x, y){
+            
+            },
+        
+            onDClick : function(x, y){
+            
+            },
+        
+            on2FClick : function(x, y){
+            
+            },
+        
+            onLongPressUp : function(x, y){
+            
+            }
         }
         
-        function createCanvas() {
+        var _currentFloorId = null
 
+        this.init = function(regionEx, floorId, container) {
 
+            _regionEx = regionEx
+            
+            _floor = _regionEx.getFloorbyId(floorId)
+
+            createCanvas(container)
+    
+            for (var i = 0; i < _regionEx.floorList.length; ++i) {
+    
+                var data = {}
+    
+                data.id = _regionEx.floorList[i].id
+                
+                data.svg = _regionEx.floorSvgs[data.id]
+                
+                data.deflection = _regionEx.northDeflectionAngle
+    
+                _floorList.push(data)
+            }
+    
+            _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
+            
+            _region.addFloorsSVG(_floorList);
+    
+            _region.startRender();
+    
+            _currentFloorId = floorId
+    
+            _region.displayFloor(_floor.floorIndex)
+        }
+        
+        function createEle(type, id, className) {
+        
+            var ele = document.createElement(type)
+    
+            ele.id = id
+            
+            ele.className = className
+            
+            return ele
+        }
+        
+        function createCanvas(containor) {
+    
+            _map = createEle('div', 'mapRoot', 'svg_box')
+    
+            _canvas_gl = document.getElementById('gl-canvas')
+            
+            if (!_canvas_gl) {
+    
+                _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
+    
+                _canvas_gl.width = window.innerWidth
+
+                _canvas_gl.height = window.innerHeight
+            }
+            
+            _map.appendChild(_canvas_gl)
+            
+            _canvas_txt = document.getElementById('txt-canvas')
+            
+            if (!_canvas_txt) {
+    
+                _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
+                
+                _canvas_txt.width = window.innerWidth
+
+                _canvas_txt.height = window.innerHeight
+            }
+            
+            _map.appendChild(_canvas_txt)
+    
+            containor.appendChild(_map)
         }
 
         function addMapEvent() {
+            
+            return
 
             var map = document.getElementById('background')
 
@@ -165,6 +268,8 @@ define(function (require, exports, module) {
         }
 
         function addUnitCover() {
+            
+            return
 
             var unitList = _floor.unitList
 
@@ -200,6 +305,8 @@ define(function (require, exports, module) {
         }
 
         function addUnitsText(unitList) {
+            
+            return
 
             _unitDivs = []
 
@@ -319,7 +426,7 @@ define(function (require, exports, module) {
 
         function attachTo(containor) {
 
-            containor.appendChild(_map)
+            
 
             _mapViewPort = document.getElementById('viewport')
         }
@@ -352,6 +459,7 @@ define(function (require, exports, module) {
 
         function resetMap() {
 
+            return
             var mapHeight = _floor.height
 
             var mapWidth = _floor.width
@@ -384,6 +492,7 @@ define(function (require, exports, module) {
 
         function scroll(screenVec) {
 
+            return
             var v = vec2.fromValues(screenVec[0], screenVec[1])
 
             if (!_mat) {
@@ -415,9 +524,7 @@ define(function (require, exports, module) {
 
         function updateRoutePath(path) {
 
-            var currFloorPoints = getTargetFloorPoints(path, _floorId)
-
-            _idrPath.updateLine(_mapViewPort, currFloorPoints)
+        
         }
 
         function showRoutePath(path) {
@@ -589,8 +696,6 @@ define(function (require, exports, module) {
             if (_mapScale !== scale) {
 
                 _idrIndicator && _idrIndicator.updateScale(1/scale)
-
-                _idrPath && _idrPath.updateScale(1/scale)
             }
 
             if (_mapScale !== scale || _mapRotate !== rotate) {
@@ -626,6 +731,8 @@ define(function (require, exports, module) {
         }
 
         function updateMinScale() {
+            
+            return
 
             var mapHeight = _floor.height
 

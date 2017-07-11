@@ -38,7 +38,7 @@ define(function (require, exports, module) {
 
     var IDRLocationServer = require('./idrLocationServer')
 
-    var IdrMap = require('./idrSvgMap')
+    var IdrMap = require('./idrGlMap')
 
     function idrMapView() {
 
@@ -58,8 +58,6 @@ define(function (require, exports, module) {
 
         var _currentFloorId = null
 
-        // var _refreshTimer = null
-
         var _floorListControl = null
 
         var _units = []
@@ -72,15 +70,13 @@ define(function (require, exports, module) {
 
         var _markers = {}
 
-        var _idrMap = new IdrMap()
+        var _idrMap = null
 
         var _path = null
 
         var _composs = null
 
         var that = this
-
-        var _floorMaps = {}
 
         function addFloorList() {
 
@@ -238,21 +234,16 @@ define(function (require, exports, module) {
             )
         }
 
-        function createMap(svgData) {
+        function createMap() {
 
-            _idrMap.detach()
+            if (_idrMap) {
+    
+                _idrMap.detach()
+            }
 
             _idrMap = new IdrMap(that)
 
-            _idrMap.init(that.regionEx, _currentFloorId)
-
-            _idrMap.attachTo(_container)
-
-            _floorMaps[_currentFloorId] = _idrMap
-
-            _idrMap.resizeViewBox()
-
-            loadUnits()
+            _idrMap.init(that.regionEx, _currentFloorId, _container)
         }
 
         function updateDisplay() {
@@ -286,30 +277,12 @@ define(function (require, exports, module) {
         
         function loadMap() {
 
-            if (_currentFloorId in _floorMaps) {
-
-                _idrMap.detach()
-
-                _idrMap = _floorMaps[_currentFloorId]
-
-                _idrMap.attachTo(_container)
-
-                onLoadMapSuccess()
-
-                return
-            }
-
-            createMap(that.regionEx.floorSvgs[_currentFloorId], _regionId, _currentFloorId)
+            createMap(_regionId, _currentFloorId)
 
             onLoadMapSuccess()
         }
 
         function changeFloor(floorId) {
-
-            if (floorId === _currentFloorId) {
-
-                return
-            }
 
             _currentFloorId = floorId
 
@@ -359,7 +332,7 @@ define(function (require, exports, module) {
 
             _idrMap.setPos(_currentPos)
 
-            addGestures()
+            // addGestures()
 
             _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
         }
