@@ -105,54 +105,19 @@ define(function (require, exports, module) {
             return p
         }
 
-        function getTouchesCenter(evt) {
-
-            var x = (evt.touches[0].pageX + evt.touches[1].pageX)/2
-
-            var y = (evt.touches[0].pageY + evt.touches[1].pageY)/2
-
-            var p = vec2.fromValues(x, y)
-
-            var im = matrix2d.create()
-
-            matrix2d.invert(im, _idrMap.getMapViewMatrix())
-
-            vec2.transformMat2d(p, p, im)
-
-            return p
-        }
-
         function onPinch(evt) {
 
-            var p = getTouchesCenter(evt)
-
-            zoom(evt.gradualscale, p)
+        
         }
 
         function onRoate(evt) {
 
-            var p = getTouchesCenter(evt)
-
-            rotate(evt.angle * Math.PI/180, p)
+        
         }
 
         function onPan(evt) {
 
-            scroll([evt.deltaX, evt.deltaY])
-        }
-
-        function addGestures() {
-
-            _gestures && _gestures.destroy()
-
-            _gestures = new AlloyFinger(_mapRoot, {
-
-                rotate:onRoate,
-
-                pinch:onPinch,
-
-                pressMove:onPan
-            })
+        
         }
         
         function doLocation(locateCallback) {
