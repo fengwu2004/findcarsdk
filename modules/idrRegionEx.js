@@ -19,6 +19,8 @@ define(function (require, exports, module) {
 
         var floorList = this.floorList
         
+        var svgDataLoaded = false
+        
         function getFloorbyId(floorId) {
 
             for (var i = 0; i < floorList.length; ++i) {
@@ -90,6 +92,8 @@ define(function (require, exports, module) {
                         if (allLoaded()) {
 
                             console.log('所有地图数据加载成功')
+    
+                            svgDataLoaded = true
 
                             typeof callBack == "function" && callBack()
                         }
@@ -102,11 +106,18 @@ define(function (require, exports, module) {
             }
         }
         
+        function isSvgDataExist() {
+    
+            return svgDataLoaded
+        }
+        
         this.getFloorbyId = getFloorbyId
 
         this.getUnitById = getUnitById
 
-        this.loadMaps = loadMaps
+        this.loadSvgMaps = loadMaps
+        
+        this.isSvgDataExist = isSvgDataExist 
     }
 
     module.exports = IDRRegionEx

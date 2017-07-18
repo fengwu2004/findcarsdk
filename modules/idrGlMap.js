@@ -18,22 +18,14 @@ define(function (require, exports, module) {
 
         var _regionEx = null
 
-        var _markerOrigScale = 1
-
         var _floorId = null
 
         var _floor = null
-
-        var _unitDivs = null
-
+        
         var _origScale = 0.5
 
         var _map = null
-
-        var _idrIndicator = null
-
-        var _mat = null
-
+        
         var _canvas_txt = null
 
         var _canvas_gl = null
@@ -45,15 +37,16 @@ define(function (require, exports, module) {
         var listener = {
             
             onLoadFinish : function(floorId, floorIndex){
-                "use strict";
-                
+            
+            
             },
         
             onLoadFailed : function(floorId, floorIndex){
             },
         
             onAllFloorLoadFinish : function(){
-            
+    
+                onAllFloorLoaded()
             },
         
             onStatusChange : function(status){
@@ -72,7 +65,7 @@ define(function (require, exports, module) {
         
             onClick : function(x, y){
             
-                console.log(x, y)
+                handleClick(x, y)
             },
         
             onDClick : function(x, y){
@@ -93,6 +86,8 @@ define(function (require, exports, module) {
         this.init = function(regionEx, floorId, container) {
 
             _regionEx = regionEx
+    
+            _currentFloorId = floorId
             
             _floor = _regionEx.getFloorbyId(floorId)
 
@@ -117,9 +112,23 @@ define(function (require, exports, module) {
     
             _region.startRender();
     
+            _region.displayFloor(_floor.floorIndex)
+    
+            _region.animPitch(0)//设置为 2d
+        }
+        
+        function changeToFloor(floorId) {
+    
             _currentFloorId = floorId
     
+            _floor = _regionEx.getFloorbyId(floorId)
+    
             _region.displayFloor(_floor.floorIndex)
+        }
+        
+        function onAllFloorLoaded() {
+        
+        
         }
         
         function createEle(type, id, className) {
@@ -166,16 +175,6 @@ define(function (require, exports, module) {
             containor.appendChild(_map)
         }
 
-        function onMapClick() {
-
-        
-        }
-
-        function onUnitClick() {
-
-        
-        }
-
         function updateUnitsColor(units, color) {
 
         
@@ -195,24 +194,78 @@ define(function (require, exports, module) {
 
         
         }
-
-        function addEvents() {
-
-            addMapEvent()
-        }
-
-        function addUnitsText(unitList) {
-            
+        
+        function addUnits(unitList) {
+    
             for (var i = 0; i < unitList.length; ++i) {
-
+        
                 var unit = unitList[i]
-                
-                var unitMapObj = {type:unit.types, str:unit.name}
-                
+        
+                var unitMapObj = {}
+        
+                unitMapObj.type = parseFloat(unit.unitTypeId)
+        
+                unitMapObj.text = unit.name
+        
                 var pos = unit.getPos()
-                
+        
                 _region.insertUnit(unitMapObj, _floor.floorIndex, pos.x, pos.y)
             }
+        }
+        
+        function getDistance(pos1, pos2) {
+        
+            return Math.sqrt((pos2.y - pos1.y) * (pos2.y - pos1.y) + (pos2.x - pos1.x) * (pos2.x - pos1.x))
+        }
+        
+        function findUnit(x, y) {
+            
+            var minUnit = null
+            
+            var minDistance = 10000
+        
+            for (var i = 0; i < _floor.unitList.length; ++i) {
+            
+                var unit = _floor.unitList[i]
+                
+                var dis = getDistance({x:x, y:y}, unit.getPos())
+                
+                if (dis < minDistance) {
+    
+                    minUnit = unit
+    
+                    minDistance = dis
+                }
+            }
+            
+            return minUnit
+        }
+        
+        function handleClick(x, y) {
+            
+            var markerId = _region.searchMarker(x, y)
+            
+            if (markerId != -1) {
+            
+                _mapView.onMarkerClick(_currentFloorId, markerId)
+                
+                return
+            }
+            
+            var units = _region.searchUnit(x, y)
+            
+            if (units.length > 0) {
+                
+                var unit = findUnit(units[0].x, units[0].y)
+                
+                _mapView.onUnitClick(unit)
+            
+                return
+            }
+    
+            var mapLoc = _region.getTouchPosMapLoc(x, y)
+            
+            _mapView.onMapClick({x:mapLoc.x, y:mapLoc.y, floorId:_currentFloorId})
         }
 
         function addMarker(marker) {
@@ -231,29 +284,14 @@ define(function (require, exports, module) {
             
         
         }
-
-        function refreshUnits(units) {
-
-            addUnitsText(units)
-        }
-
+        
         function setPos(pos) {
 
-            if (!pos || pos.floorId !== _floorId) {
-
-                _idrIndicator && _idrIndicator.remove()
-
-                return
-            }
-
-            if (_idrIndicator == null) {
-
-                _idrIndicator = new IDRIndicator()
-
-            }
-            else  {
-
-                _idrIndicator.updateLocation(pos)
+            var floor = _regionEx.getFloorbyId(pos.floorId)
+            
+            if (floor) {
+    
+                _region.setLocation(floor.floorIndex, pos.x, pos.y)
             }
         }
 
@@ -264,6 +302,11 @@ define(function (require, exports, module) {
 
         function scroll(screenVec) {
 
+        
+        }
+    
+        function zoom(screenVec) {
+        
         
         }
 
@@ -288,7 +331,7 @@ define(function (require, exports, module) {
         }
 
         function getSvgPos(mapPos) {
-
+        
         
         }
 
@@ -341,13 +384,9 @@ define(function (require, exports, module) {
 
         this.getMapRotate = getMapRotate
 
-        this.refreshUnits = refreshUnits
-
         this.detach = detach
 
         this.attachTo = attachTo
-
-        this.addEvents = addEvents
 
         this.setPos = setPos
 
@@ -358,8 +397,6 @@ define(function (require, exports, module) {
         this.birdLook = birdLook
 
         this.showRoutePath = showRoutePath
-
-        this.getMapViewMatrix = getMapViewMatrix
 
         this.getSvgPos = getSvgPos
 
@@ -380,6 +417,10 @@ define(function (require, exports, module) {
         this.updateDisplay = updateDisplay
 
         this.updateRoutePath = updateRoutePath
+    
+        this.changeToFloor = changeToFloor
+        
+        this.addUnits = addUnits
 
         this.root = function () {
 

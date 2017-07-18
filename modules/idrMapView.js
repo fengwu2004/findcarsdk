@@ -94,32 +94,6 @@ define(function (require, exports, module) {
             _mapEvent.fireEvent(that.eventTypes.onMapClick, pos)
         }
 
-        function getTouchCenter(p) {
-
-            var im = matrix2d.create()
-
-            im = matrix2d.invert(im, getMapViewMatrix())
-
-            vec2.transformMat2d(p, p, im)
-
-            return p
-        }
-
-        function onPinch(evt) {
-
-        
-        }
-
-        function onRoate(evt) {
-
-        
-        }
-
-        function onPan(evt) {
-
-        
-        }
-        
         function doLocation(locateCallback) {
 
             _locator.start(_regionId, _currentFloorId, locateCallback, null)
@@ -180,16 +154,21 @@ define(function (require, exports, module) {
         }
 
         function loadUnits() {
-
+    
+            var floor = that.regionEx.getFloorbyId(_currentFloorId)
+            
+            if (floor.unitList && floor.unitList.length > 0) {
+            
+                return
+            }
+            
             networkInstance.serverCallUnits(_regionId, _currentFloorId,
 
                 function (data) {
 
                     var units = storeUnits(data)
 
-                    _idrMap.refreshUnits(units)
-
-                    _idrMap.addEvents()
+                    _idrMap.addUnits(units)
                 },
 
                 function (str) {
@@ -201,14 +180,16 @@ define(function (require, exports, module) {
 
         function createMap() {
 
-            if (_idrMap) {
+            if (!_idrMap) {
     
-                _idrMap.detach()
+                _idrMap = new IdrMap(that)
+    
+                _idrMap.init(that.regionEx, _currentFloorId, _container)
             }
-
-            _idrMap = new IdrMap(that)
-
-            _idrMap.init(that.regionEx, _currentFloorId, _container)
+            else  {
+    
+                _idrMap.changeToFloor(_currentFloorId)
+            }
         }
 
         function updateDisplay() {
@@ -243,15 +224,22 @@ define(function (require, exports, module) {
         function loadMap() {
 
             createMap(_regionId, _currentFloorId)
-
-            onLoadMapSuccess()
+            
+            loadUnits()
         }
 
         function changeFloor(floorId) {
 
             _currentFloorId = floorId
-
-            that.regionEx.loadMaps(loadMap)
+            
+            if (!that.regionEx.isSvgDataExist()) {
+    
+                that.regionEx.loadSvgMaps(loadMap)
+            }
+            else  {
+    
+                loadMap()
+            }
         }
         
         function initMap(appid, containerId, regionId) {
