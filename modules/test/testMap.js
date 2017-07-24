@@ -2,7 +2,7 @@
  * Created by yan on 28/02/2017.
  */
 
-modules = 'http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/'
+modules = 'http://wx.indoorun.com/indoorun/webgl/sdk/modules/'
 
 seajs.use([
     modules + 'idrMapView',
@@ -44,10 +44,8 @@ seajs.use([
     })
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
-
-        changeUnitColor(unit)
-
-        units.push(unit)
+    
+        doDyNavi(unit)
     })
 
     function changeUnitColor(unit) {
@@ -64,8 +62,14 @@ seajs.use([
 
     function doDyNavi(unit) {
 
-        if (map.userPos() == null) {
+        if (startPos == null) {
 
+            startPos = unit.getPos()
+            
+            startMarker = new IdrCarMarker(startPos)
+            
+            map.addMarker(startMarker)
+            
             return
         }
 
@@ -77,7 +81,7 @@ seajs.use([
 
             map.addMarker(endMarker)
 
-            map.doRoute(map.userPos(), endPos)
+            map.doRoute(startPos, endPos)
         }
     }
     

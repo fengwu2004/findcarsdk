@@ -506,6 +506,8 @@ define(function (require, exports, module) {
 
         this.updateDisplay = updateDisplay
         
+        this.onLoadMapSuccess = onLoadMapSuccess
+        
         this.userPos = function () {
 
             return _currentPos

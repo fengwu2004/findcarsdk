@@ -18,8 +18,6 @@ define(function (require, exports, module) {
 
         var _regionEx = null
 
-        var _floorId = null
-
         var _floor = null
         
         var _origScale = 0.5
@@ -107,6 +105,8 @@ define(function (require, exports, module) {
             }
     
             _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
+    
+            _region.setUIScaleRate(0.38333333)
             
             _region.addFloorsSVG(_floorList);
     
@@ -128,7 +128,7 @@ define(function (require, exports, module) {
         
         function onAllFloorLoaded() {
         
-        
+            _mapView.onLoadMapSuccess()
         }
         
         function createEle(type, id, className) {
@@ -272,7 +272,7 @@ define(function (require, exports, module) {
 
             _region.addTexture(marker.className, marker.image)
     
-            _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.pos.x, marker.pos.y, 0, 0, 40)
+            _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 40)
         }
 
         function detach() {
@@ -286,6 +286,13 @@ define(function (require, exports, module) {
         }
         
         function setPos(pos) {
+            
+            if (!pos) {
+    
+                _region.cleanLocation()
+                
+                return
+            }
 
             var floor = _regionEx.getFloorbyId(pos.floorId)
             
@@ -297,7 +304,7 @@ define(function (require, exports, module) {
 
         function resetMap() {
 
-        
+            _region.overlookMap(_regionEx.getFloorIndex(_currentFloorId))
         }
 
         function scroll(screenVec) {
@@ -312,22 +319,34 @@ define(function (require, exports, module) {
 
         function birdLook() {
 
-        
-        }
-
-        function updateRoutePath(path) {
-
-        
+            _region.overlookRoute()
         }
 
         function showRoutePath(path) {
-
-            updateRoutePath(path)
+    
+            var pathInfloor = getTargetFloorPoints(path, _currentFloorId)
+            
+            var data = []
+    
+            pathInfloor.forEach(function(p) {
+                "use strict";
+                var pos = {}
+    
+                pos.floor = _regionEx.getFloorIndex(p.floorId)
+    
+                pos.x = p.x
+    
+                pos.y = p.y
+    
+                data.push(pos)
+            })
+            
+            _region.setRoute(data)
         }
 
         function getMapPos(svgPos) {
 
-        
+            
         }
 
         function getSvgPos(mapPos) {
@@ -349,6 +368,10 @@ define(function (require, exports, module) {
 
         
         }
+        
+        function updateRoutePath() {
+            
+        }
 
         function getTargetFloorPoints(path, floorId) {
 
@@ -361,7 +384,7 @@ define(function (require, exports, module) {
 
                 var floorPath = path.paths[i]
 
-                if (floorPath.floorId === _floorId) {
+                if (floorPath.floorId === floorId) {
 
                     return floorPath.position
                 }
@@ -378,6 +401,10 @@ define(function (require, exports, module) {
         function getMapRotate() {
 
             return _mapRotate
+        }
+        
+        this.updateMinScale = function() {
+            
         }
 
         this.getMapScale = getMapScale

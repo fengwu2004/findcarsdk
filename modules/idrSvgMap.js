@@ -623,17 +623,17 @@ define(function (require, exports, module) {
 
         function updateMinScale() {
 
-            var mapHeight = _floor.height
-
-            var mapWidth = _floor.width
-
-            var screenHeight = _map.clientHeight
-
-            var screenWidth = _map.clientWidth
-
-            var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
-
-            minScale = Math.min(scale, minScale)
+            // var mapHeight = _floor.height
+            //
+            // var mapWidth = _floor.width
+            //
+            // var screenHeight = _map.clientHeight
+            //
+            // var screenWidth = _map.clientWidth
+            //
+            // var scale = mapWidth/screenWidth > mapHeight/screenHeight ? mapWidth/screenWidth : mapHeight/screenHeight
+            //
+            // minScale = Math.min(scale, minScale)
         }
         
         function resizeViewBox() {

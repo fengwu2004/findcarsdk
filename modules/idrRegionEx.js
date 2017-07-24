@@ -21,6 +21,21 @@ define(function (require, exports, module) {
         
         var svgDataLoaded = false
         
+        function getFloorIndex(floorId) {
+    
+            for (var i = 0; i < floorList.length; ++i) {
+        
+                var floor = floorList[i]
+        
+                if (floor.id === floorId) {
+            
+                    return floor.floorIndex
+                }
+            }
+    
+            return null
+        }
+        
         function getFloorbyId(floorId) {
 
             for (var i = 0; i < floorList.length; ++i) {
@@ -117,7 +132,9 @@ define(function (require, exports, module) {
 
         this.loadSvgMaps = loadMaps
         
-        this.isSvgDataExist = isSvgDataExist 
+        this.isSvgDataExist = isSvgDataExist
+        
+        this.getFloorIndex = getFloorIndex
     }
 
     module.exports = IDRRegionEx
