@@ -176,23 +176,31 @@ define(function (require, exports, module) {
         }
 
         function updateUnitsColor(units, color) {
-
-        
-        }
-
-        function clearUnitColor(unit) {
-
-        
+    
+            units.forEach(function(unit) {
+                
+                unit.color = color
+            })
+            
+            _floor.unitList.forEach(function(unit) {
+    
+                if (unit.color) {
+    
+                    _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), unit.color)
+                }
+            })
+    
+            _region.buildQuickPolygonFloor(_floor.floorIndex)
         }
 
         function clearUnitsColor(units) {
 
-        
-        }
-
-        function changeUnitColor(unit, color) {
-
-        
+            units.forEach(function(unit) {
+                
+                unit.color = null
+            })
+    
+            _region.cleanQuickPolygonFloor(_floor.floorIndex)
         }
         
         function addUnits(unitList) {

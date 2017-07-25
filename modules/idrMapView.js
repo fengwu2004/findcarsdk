@@ -4,14 +4,6 @@
 
 define(function (require, exports, module) {
 
-    require('./alloy_finger')
-
-    var matrix2d = require('./mat2d')
-
-    var vec2 = require('./vec2')
-
-    var networkManager = require('./idrNetworkManager');
-
     var idrFloorListControl = require('./idrFloorListControl');
 
     var idrDataMgr = require('./idrDataManager');
@@ -63,8 +55,6 @@ define(function (require, exports, module) {
         var _units = []
 
         var _mapRoot = null
-
-        var _gestures = null
 
         var _mapEvent = new IDRMapEvent()
 

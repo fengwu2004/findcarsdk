@@ -21,7 +21,32 @@ define(function (require, exports, module) {
             return {x:x, y:y, floorId:that.floorId}
         }
         
-        this.getPolygon = function () {
+        var _pts = null
+        
+        function getPts() {
+            
+            if (_pts) {
+                
+                return _pts
+            }
+    
+            var pts = getPolygon().split(' ')
+    
+            _pts = []
+    
+            for (var i = 0; i < pts.length; ++i) {
+                
+                var p = pts[i].split(',').map(Number)
+                
+                var temp = YFM.Math.Vector.pos(p[0], p[1])
+    
+                _pts.push(temp)
+            }
+            
+            return _pts
+        }
+        
+        function getPolygon() {
 
             if (that.points) {
 
@@ -40,6 +65,12 @@ define(function (require, exports, module) {
 
             return that.points
         }
+        
+        this.color = null
+    
+        this.getPolygon = getPolygon
+    
+        this.getPts = getPts
     }
 
     module.exports = idrUnit

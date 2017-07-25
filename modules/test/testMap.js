@@ -42,15 +42,19 @@ seajs.use([
 
         console.log(data)
     })
+    
+    var _unit = null
 
     map.addEventListener(map.eventTypes.onUnitClick, function(unit) {
     
-        doDyNavi(unit)
+        doNavi(unit)
+        
+        // _unit = unit
     })
 
     function changeUnitColor(unit) {
 
-        map.updateUnitsColor([unit], 'lime')
+        map.updateUnitsColor([unit], 0xff0000)
     }
 
     function addMarker(unit) {
@@ -115,8 +119,8 @@ seajs.use([
     startBtn.addEventListener('click', onStart)
 
     function onStart() {
-
-        map.clearUnitsColor(units)
+    
+        map.updateUnitsColor([_unit], 0x00A000)
     }
 
     var endBtn = document.getElementById('endButton')
