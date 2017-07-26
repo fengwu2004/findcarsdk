@@ -2,7 +2,7 @@
  * Created by yan on 01/03/2017.
  */
 
-import idrNetwork from './idrNetworkManager'
+import idrNetwork from './idrNetworkManager.js'
 
 function idrDataManager() {
     

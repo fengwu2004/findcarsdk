@@ -6,7 +6,7 @@
  * beacons.js  蓝牙功能模块
  */
 
-import networkInstance from './idrNetworkManager'
+import networkInstance from './idrNetworkManager.js'
 
 function idrBeaconMgr() {
     

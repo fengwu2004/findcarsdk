@@ -8,7 +8,7 @@ import Position from './pathRoute/Position'
 
 import zip from './zip/zip'
 
-import idrNetworkManager from './idrNetworkManager'
+import idrNetworkManager from './idrNetworkManager.js'
 
 function idrRouter(regionId, floorList, successFunc) {
     

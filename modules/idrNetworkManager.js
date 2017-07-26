@@ -3,7 +3,7 @@
  */
 
 
-import coreManager from 'idrCoreManager'
+import coreManager from 'idrCoreManager.js'
 
 var networkInstance = new idrNetworkManager();
 

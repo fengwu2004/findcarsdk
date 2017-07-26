@@ -2,31 +2,31 @@
  * Created by yan on 09/02/2017.
  */
 
-import idrFloorListControl from './idrFloorListControl'
+import idrFloorListControl from './idrFloorListControl.js'
 
-import idrDataMgr from './idrDataManager'
+import idrDataMgr from './idrDataManager.js'
 
-import networkInstance from './idrNetworkManager'
+import networkInstance from './idrNetworkManager.js'
 
-import IDRRouter from './idrRouter'
+import IDRRouter from './idrRouter.js'
 
-import IDRRegionEx from './idrRegionEx'
+import IDRRegionEx from './idrRegionEx.js'
 
-import IDRUnit from './idrUnit'
+import IDRUnit from './idrUnit.js'
 
-import IDRMapMarkers from './IDRMapMarker/IDRMapMarker'
+import IDRMapMarkers from './IDRMapMarker/IDRMapMarker.js'
 
 var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
 
-import IDRComposs from './Composs/IDRComposs'
+import IDRComposs from './Composs/IDRComposs.js'
 
-import {idrMapEvent, idrMapEventTypes} from './idrMapEvent'
+import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
 
-import IDRCoreManager from './idrCoreManager'
+import IDRCoreManager from './idrCoreManager.js'
 
-import IDRLocationServer from './idrLocationServer'
+import IDRLocationServer from './idrLocationServer.js'
 
-import IdrMap from './idrGlMap'
+import IdrMap from './idrGlMap.js'
 
 function idrMapView() {
     
@@ -500,4 +500,4 @@ function idrMapView() {
     }
 }
 
-export { idrMapView }
+export { idrMapView as default }

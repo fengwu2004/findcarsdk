@@ -3,9 +3,9 @@
  */
 
 
-import BeaconMgr from './idrBeaconManager'
+import BeaconMgr from './idrBeaconManager.js'
 
-import networkInstance from './idrNetworkManager'
+import networkInstance from './idrNetworkManager.js'
 
 function idrLocateServer() {
     

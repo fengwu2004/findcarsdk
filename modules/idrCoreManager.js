@@ -2,7 +2,7 @@
  * Created by yan on 08/02/2017.
  */
 
-import networkInstance from './idrNetworkManager'
+import networkInstance from './idrNetworkManager.js'
 
 function idrCoreManager() {
 

@@ -2,7 +2,7 @@
  * Created by ky on 17-4-21.
  */
 
-import networkManager from './idrNetworkManager'
+import networkManager from './idrNetworkManager.js'
 
 function IDRRegionEx(regionAllInfo) {
     
