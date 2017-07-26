@@ -3,11 +3,11 @@
  */
 
 
-import coreManager from 'idrCoreManager.js'
+import coreManager from './idrCoreManager.js'
 
 var networkInstance = new idrNetworkManager();
 
-ajax = function(options) {
+function ajax(options) {
     //编码数据
     function setData() {
         var name, value;
@@ -19,6 +19,8 @@ ajax = function(options) {
                     value = data[i].split("=")[1];
                     data[i] = encodeURIComponent(name) + "=" + encodeURIComponent(value);
                 }
+                console.log(data)
+                console.log(typeof data)
                 data = data.replace("/%20/g", "+");
             } else if (typeof data === "object") {
                 var arr = [];

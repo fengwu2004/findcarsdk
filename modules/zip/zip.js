@@ -26,7 +26,6 @@
  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-define(function (require, exports, module) {
     var zip = (function(obj) {
         "use strict";
 
@@ -966,10 +965,6 @@ define(function (require, exports, module) {
 
         return obj.zip;
     })(this);
-
-    module.exports = zip;
-});
-
 
 
 

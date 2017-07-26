@@ -1,33 +1,29 @@
+function Segment() {
+    
+    this.endPointOne = null;
+    
+    this.endPointTwo = null;
+}
 
-define(function (require, exports, module) {
+Segment.prototype.getEndPointOne = function() {
+    
+    return this.endPointOne;
+}
 
-    function Segment() {
+Segment.prototype.setEndPointOne = function(endPointOne) {
+    
+    this.endPointOne = endPointOne;
+}
 
-        this.endPointOne = null;
+Segment.prototype.getEndPointTwo = function() {
+    
+    return this.endPointTwo;
+}
 
-        this.endPointTwo = null;
-    }
+Segment.prototype.setEndPointTwo = function(endPointTwo) {
+    
+    this.endPointTwo = endPointTwo;
+}
 
-    Segment.prototype.getEndPointOne = function() {
-
-        return this.endPointOne;
-    }
-
-    Segment.prototype.setEndPointOne = function(endPointOne) {
-
-        this.endPointOne = endPointOne;
-    }
-
-    Segment.prototype.getEndPointTwo = function() {
-
-        return this.endPointTwo;
-    }
-
-    Segment.prototype.setEndPointTwo = function(endPointTwo) {
-
-        this.endPointTwo = endPointTwo;
-    }
-
-    module.exports = Segment
-})
+export { Segment as default }
 

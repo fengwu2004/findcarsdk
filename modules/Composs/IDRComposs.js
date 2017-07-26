@@ -1,41 +1,38 @@
-define(function (require, exports, module) {
+var css = document.createElement('link')
 
-    var css = document.createElement('link')
+css.type = 'text/css';
 
-    css.type = 'text/css';
+css.rel = 'stylesheet';
 
-    css.rel = 'stylesheet';
+css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/Composs/IDRComposs.css";
 
-    css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/Composs/IDRComposs.css";
+var header = document.querySelector("head");
 
-    var header = document.querySelector("head");
+header.appendChild(css)
 
-    header.appendChild(css)
+var Composs = function(id, defaultDegree, map) {
+    
+    var _composs = document.getElementById(id);
+    
+    var _mapview = map
+    
+    var _currentValue = 0;
+    
+    _composs.addEventListener('click', onCompossClick)
+    
+    function onCompossClick() {
+        
+        _mapview.resetMap()
+    }
+    
+    function rotateToDegree(degree) {
+        
+        _currentValue = degree
+        
+        _composs.style.transform = "rotate(" + _currentValue + "deg)";
+    }
+    
+    this.rotateToDegree = rotateToDegree
+};
 
-    var Composs = function(id, defaultDegree, map) {
-
-        var _composs = document.getElementById(id);
-
-        var _mapview = map
-
-        var _currentValue = 0;
-
-        _composs.addEventListener('click', onCompossClick)
-
-        function onCompossClick() {
-
-            _mapview.resetMap()
-        }
-
-        function rotateToDegree(degree) {
-
-            _currentValue = degree
-
-            _composs.style.transform = "rotate(" + _currentValue + "deg)";
-        }
-
-        this.rotateToDegree = rotateToDegree
-    };
-
-    module.exports = Composs
-});
+export { Composs as default }

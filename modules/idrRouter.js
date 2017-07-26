@@ -2,11 +2,9 @@
  * Created by yan on 15/03/2017.
  */
 
-import PathSearch from './pathRoute/PathSearch'
+import PathSearch from './pathRoute/PathSearch.js'
 
-import Position from './pathRoute/Position'
-
-import zip from './zip/zip'
+import Position from './pathRoute/Position.js'
 
 import idrNetworkManager from './idrNetworkManager.js'
 
