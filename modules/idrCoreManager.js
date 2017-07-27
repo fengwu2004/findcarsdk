@@ -12,7 +12,7 @@ idrCoreManager.prototype.init = function(appid, initSuccessFunc, initFailedFunc)
     
     var that = this;
     
-    networkInstance.serverCallWXSign('http://wx.indoorun.com/wx/getSign.html', {'appId': appid}, function(data) {
+    networkInstance.serverCallWXSign({'appId': appid}, function(data) {
     
         success(data, initSuccessFunc, initFailedFunc);
         

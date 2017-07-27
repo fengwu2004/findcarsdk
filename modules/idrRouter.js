@@ -105,7 +105,7 @@ function idrRouter(regionId, floorList, successFunc) {
         return result
     }
     
-    zip.workerScriptsPath = modules + 'zip/'
+    zip.workerScriptsPath = 'http://wx.indoorun.com/indoorun/webgl/sdk/modules/' + 'zip/'
     
     function unzipBlob(blob, callback) {
         
@@ -136,9 +136,9 @@ function idrRouter(regionId, floorList, successFunc) {
     
     (function(successFunc) {
         
-        idrNetworkManager.serverCallRouteData(_regionId, function(data) {
+        idrNetworkManager.serverCallRouteData(_regionId, function(res) {
             
-            unzipBlob(data, function(jobj) {
+            unzipBlob(res['data'], function(jobj) {
                 
                 _pathSearch = new PathSearch(jobj)
                 

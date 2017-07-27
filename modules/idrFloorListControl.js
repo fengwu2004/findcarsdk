@@ -213,19 +213,24 @@ function idrFloorListUi() {
             }
         })
         
-        floorDiv.getElementsByClassName('div').click(function () {
-            
-            setElementShow()
+        var divs = floorDiv.getElementsByClassName('lc_divcom')
+        
+        for (var i = 0; i < divs.length; ++i) {
     
-            showOrHide('floorDiv', false);
-            
-            if (typeof _onChangeFloor == 'function') {
-                
-                _onChangeFloor.call(_delegator, this.id)
-            }
-            
-            self.setCurrentFloor(this.id)
-        })
+            divs[i].addEventListener('click', function () {
+    
+                setElementShow(divs[i].id, false)
+    
+                showOrHide('floorDiv', false);
+    
+                if (typeof _onChangeFloor == 'function') {
+        
+                    _onChangeFloor.call(_delegator, this.id)
+                }
+    
+                self.setCurrentFloor(this.id)
+            })
+        }
     }
     
     function init(container, floorList, currentFloor) {

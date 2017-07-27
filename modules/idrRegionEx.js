@@ -96,11 +96,11 @@ function IDRRegionEx(regionAllInfo) {
                 
                 console.log('load + ' + floorId)
                 
-                networkManager.serverCallSvgMap(that.id, floorId, function(data) {
+                networkManager.serverCallSvgMap(that.id, floorId, function(res) {
                     
                     console.log(floorId)
                     
-                    that.floorSvgs[floorId] = data
+                    that.floorSvgs[floorId] = res['data']
                     
                     if (allLoaded()) {
                         

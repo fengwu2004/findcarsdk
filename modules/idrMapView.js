@@ -234,9 +234,9 @@ function idrMapView() {
         
         IDRCoreManager.init(appid, function() {
             
-            idrDataMgr.loadRegionInfo(regionId, function(regionAllInfo) {
+            idrDataMgr.loadRegionInfo(regionId, function(res) {
                 
-                that.regionEx = new IDRRegionEx(regionAllInfo)
+                that.regionEx = new IDRRegionEx(res['data'])
                 
                 _router = new IDRRouter(regionId, that.regionEx.floorList, function () {
                     
@@ -245,7 +245,7 @@ function idrMapView() {
                 
                 _regionId = regionId
                 
-                _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, regionAllInfo)
+                _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, that.regionEx)
                 
             }, function() {
                 
