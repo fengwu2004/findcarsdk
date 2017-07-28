@@ -174,27 +174,6 @@ function idrFloorListUi() {
         })
     }
     
-    function setElementShow(id, show) {
-        
-        var ele = document.getElementById(id)
-        
-        if (!ele) {
-            
-            return
-        }
-        
-        if (show) {
-            
-            ele.style.opacity = 0
-            
-            ele.show()
-        }
-        else {
-            
-            ele.hide()
-        }
-    }
-    
     function addTaps() {
         
         var floorDiv = document.getElementById("floorDiv")
@@ -219,7 +198,7 @@ function idrFloorListUi() {
     
             divs[i].addEventListener('click', function () {
     
-                setElementShow(divs[i].id, false)
+                showOrHide(this.id, false)
     
                 showOrHide('floorDiv', false);
     

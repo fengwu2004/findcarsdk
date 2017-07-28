@@ -2,7 +2,6 @@
  * Created by ky on 17-6-20.
  */
 
-
 function idrGlMap(mapView) {
 
     var maxScale = 1.5
