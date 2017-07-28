@@ -149,6 +149,39 @@ function ajax(options) {
     }
 };
 
+function doAjax_(url, data, successFn, failedFn) {
+    
+    ajax({
+        
+        type: "get",
+        
+        dataType: 'jsonp',
+        
+        url: url, //添加自己的接口链接
+        
+        data: data,
+        
+        timeOut: 10000,
+        
+        before:function () {
+        
+        },
+        
+        success:function (response) {
+            
+            if (response != null && response.code == "success") {
+                
+                successFn && successFn(response.data)
+            }
+        },
+        
+        error:function (response) {
+            
+            failedFn && failedFn(response);
+        }
+    });
+}
+
 function doAjax(url, data, successFn, failedFn) {
     
     ajax({
@@ -240,7 +273,7 @@ idrNetworkManager.prototype.serverCallUnits = function(regionId, floorId, succes
     
     var url = 'http://wx.indoorun.com/wx/getUnitsOfFloor.html';
     
-    doAjax(url, data, success, failed)
+    doAjax_(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {

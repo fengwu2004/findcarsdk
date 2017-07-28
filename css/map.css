@@ -119,12 +119,16 @@ body{background-color:#f2f2f2;height:100%;width:100%;overflow:hidden;}
 
 .fadein {
 
-    animation: fadeIn 1s;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 1s linear;
 }
 
 .fadeout {
 
-    animation: fadeOut .5s;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 1s linear;
 }
 
 @keyframes fadeIn {

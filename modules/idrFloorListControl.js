@@ -180,14 +180,14 @@ function idrFloorListUi() {
         
         var currentNameDiv = document.getElementById("currName")
         
-        currentNameDiv.click(function () {
-            
-            if (floorDiv.toDom().style.display === 'block') {
+        currentNameDiv.addEventListener('click', function() {
     
+            if (floorDiv.style.display === 'block') {
+        
                 showOrHide('floorDiv', false)
             }
             else {
-    
+        
                 showOrHide('floorDiv', true)
             }
         })

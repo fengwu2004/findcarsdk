@@ -311,6 +311,8 @@ function idrGlMap(mapView) {
     function resetMap() {
 
         _region.overlookMap(_regionEx.getFloorIndex(_currentFloorId))
+    
+        _region.animPitch(0)//设置为 2d
     }
 
     function scroll(screenVec) {

@@ -2,9 +2,9 @@
  * Created by yan on 28/02/2017.
  */
 
-var regionId = '14428254382730015'
+var regionId = '14425495768461035'
 
-var idrMapView = map.default.idrMapView
+var idrMapView = indoorunMap.map.idrMapView
 
 var map = new idrMapView()
 
