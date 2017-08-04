@@ -71,7 +71,7 @@ function IDRMapMarker(pos) {
     
     this.resetPosition = function(p) {
         
-        _position = p
+        this.position = p
     }
 }
 
@@ -116,6 +116,7 @@ var IDRMarkers = {
     "IDRCarMarker":IDRCarMarker,
     "IDRFacMarker":IDRFacMarker,
     "IDRStartMarker":IDRStartMarker,
-    "IDREndMarker":IDREndMarker}
+    "IDREndMarker":IDREndMarker
+}
 
 export { IDRMarkers as default }

@@ -142,7 +142,7 @@ function idrGlMap(mapView) {
     
     function createCanvas(containor) {
 
-        _map = createEle('div', 'mapRoot', 'svg_box')
+        _map = createEle('div', 'mapRoot', 'indoorunMap_map')
 
         _canvas_gl = document.getElementById('gl-canvas')
         

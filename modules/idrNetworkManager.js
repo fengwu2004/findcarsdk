@@ -5,7 +5,18 @@
 
 import coreManager from './idrCoreManager.js'
 
+var host = "http://192.168.0.102:8888/"
+// var host = "http://wx.indoorun.com/wx/"
+
 var networkInstance = new idrNetworkManager();
+
+function doAjax(url, data, success, failed) {
+    
+    $.post(url, JSON.stringify(data), function(res) {
+        
+        success && success(res.response)
+    })
+}
 
 function ajax(options) {
     //编码数据
@@ -168,6 +179,14 @@ function doAjax_(url, data, successFn, failedFn) {
         },
         
         success:function (response) {
+    
+            var div = document.createElement('div')
+    
+            div.innerText = JSON.stringify(response)
+    
+            div.id = url
+    
+            document.body.appendChild(div)
             
             if (response != null && response.code == "success") {
                 
@@ -182,7 +201,7 @@ function doAjax_(url, data, successFn, failedFn) {
     });
 }
 
-function doAjax(url, data, successFn, failedFn) {
+function doAjax__(url, data, successFn, failedFn) {
     
     ajax({
         
@@ -201,10 +220,26 @@ function doAjax(url, data, successFn, failedFn) {
         },
         
         success:function (response) {
+    
+            console.log(url)
+            
+            console.log(JSON.stringify(response))
+            
+            var div = document.createElement('div')
+    
+            div.innerText = JSON.stringify(response)
+    
+            div.id = url
+            
+            document.body.appendChild(div)
             
             if (response != null && response.code == "success") {
     
                 successFn && successFn(response)
+            }
+            else {
+    
+                console.log(url + JSON.stringify(response))
             }
         },
         
@@ -219,9 +254,14 @@ function idrNetworkManager() {
 
 }
 
+idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
+    
+    doAjax(url, data, successFn, failedFn)
+}
+
 idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
     
-    var url = 'http://wx.indoorun.com/wxauth/getAuthParas?reqUrl=' + window.location.href;
+    var url = host + 'getAuthParas?reqUrl=' + window.location.href;
     
     doAjax(url, {}, success, failed)
 }
@@ -233,28 +273,14 @@ idrNetworkManager.prototype.serverCallInitSession = function(url, success, faile
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
  
-    var url = 'http://wx.indoorun.com/wx/getSign.html'
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallRegionPath = function(regionId, success, failed) {
-    
-    var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?regionId=14428254382730015'
-    
-    var data = {
-        'regionId': regionId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
+    var url = host + 'getSign.html'
     
     doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallSvgMap = function (regionId, floorId, success, failed) {
     
-    var url = 'http://wx.indoorun.com/wx/getSvg.html';
+    var url = host + 'getSvg.html';
     
     var data = {
         'regionId': regionId,
@@ -271,14 +297,14 @@ idrNetworkManager.prototype.serverCallUnits = function(regionId, floorId, succes
     
     var data = {'regionId': regionId, 'floorId': floorId, 'appId': coreManager.appId, 'clientId': coreManager.clientId, 'sessionKey': coreManager.sessionKey};
     
-    var url = 'http://wx.indoorun.com/wx/getUnitsOfFloor.html';
+    var url = host + 'getUnitsOfFloor.html';
     
-    doAjax_(url, data, success, failed)
+    doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
     
-    var url = 'http://wx.indoorun.com/wx/getRegionInfo';
+    var url = host + 'getRegionInfo.html';
     
     var data = {
         'regionId': regionId,
@@ -317,7 +343,7 @@ idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, flo
 
 idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, failed) {
     
-    var url = 'http://wx.indoorun.com/wx/getPathOfRegionZipBase64.html?'
+    var url = host + 'getPathOfRegionZipBase64.html?'
     
     var data = {
         'regionId': regionId,
@@ -344,80 +370,6 @@ idrNetworkManager.prototype.serverCallLocate = function(regionId, floorId, succe
     var url = "http://localhost:3000/users/locating"
     
     doAjax(url, data, success, failed)
-}
-
-function pureAjax(url, data, success, failed) {
-
-    var xhr = new XMLHttpRequest();
-
-    if (data === null) {
-
-        getType()
-
-    } else {
-
-        postType()
-    }
-
-    function getType() {
-
-        xhr.onreadystatechange = function() {
-
-            if (xhr.readyState === 4) {
-
-                if (xhr.status >= 200 && xhr.status <= 304) {
-
-                    var results = JSON.parse(xhr.response)
-
-                    if (typeof success === 'function') {
-
-                        success(results)
-                    }
-
-                }
-                if (typeof failed === 'function') {
-
-                    failed()
-                }
-            }
-        }
-
-        xhr.open('get', url + "?", true);
-
-        xhr.send();
-    }
-
-    function postType() {
-
-        xhr.onreadystatechange = function() {
-
-            if (xhr.readyState === 4) {
-
-                if (xhr.status === '200' || '304') {
-
-                    var results = JSON.parse(xhr.response)
-
-                    if (typeof success === 'function') {
-
-                        success(results)
-                    }
-
-                } else {
-
-                    if (typeof failed === 'function') {
-
-                        failed()
-                    }
-                }
-            }
-        }
-
-        xhr.open('post', url, true);
-
-        xhr.setRequestHeader("Content-Type","application/json")
-
-        xhr.send(data);
-    }
 }
 
 export { networkInstance as default }

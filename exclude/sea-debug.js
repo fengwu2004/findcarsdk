@@ -342,7 +342,7 @@ function addOnload(node, callback, isCSS, url) {
   if (supportOnload) {
     node.onload = onload
     node.onerror = function() {
-      emit("error", { uri: url, node: node })
+      // emit("error", { uri: url, node: node })
       onload()
     }
   }

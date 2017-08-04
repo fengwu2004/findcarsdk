@@ -10,13 +10,13 @@ import networkInstance from './idrNetworkManager.js'
 
 function idrBeaconMgr() {
     
-    this.sAppId = '';
+    this.appId = '';
     
-    this.iTimestamp = '';
+    this.timestamp = '';
     
-    this.sNonceStr = '';
+    this.nonceStr = '';
     
-    this.sSignature = '';
+    this.signature = '';
     
     this.onBeaconReceiveFunc = '';
 }
@@ -27,13 +27,13 @@ idrBeaconMgr.prototype.init = function() {
     
     networkInstance.serverCallWxAuth(function(data) {
     
-        obj.sAppId = data.appId;
+        obj.appId = data.appId;
     
-        obj.iTimestamp = data.timestamp;
+        obj.timestamp = data.timestamp;
     
-        obj.sNonceStr = data.nonceStr;
+        obj.nonceStr = data.nonceStr;
     
-        obj.sSignature = data.signature;
+        obj.signature = data.signature;
     
         config(obj);
         
@@ -47,10 +47,10 @@ function config(obj) {
     
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: obj.sAppId, // 必填，公众号的唯一标识
-        timestamp: obj.iTimestamp, // 必填，生成签名的时间戳
-        nonceStr: obj.sNonceStr, // 必填，生成签名的随机串
-        signature: obj.sSignature, // 必填，签名，见附录1
+        appId: obj.appId, // 必填，公众号的唯一标识
+        timestamp: obj.timestamp, // 必填，生成签名的时间戳
+        nonceStr: obj.nonceStr, // 必填，生成签名的随机串
+        signature: obj.signature, // 必填，签名，见附录1
         jsApiList: [    // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             'checkJsApi',
             'getNetworkType',

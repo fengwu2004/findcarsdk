@@ -150,9 +150,9 @@ function idrMapView() {
         
         networkInstance.serverCallUnits(_regionId, _currentFloorId,
             
-            function (data) {
+            function (res) {
                 
-                var units = storeUnits(data)
+                var units = storeUnits(res.data)
                 
                 _idrMap.addUnits(units)
             },
@@ -258,7 +258,7 @@ function idrMapView() {
         
         if (_floorListControl == null) {
             
-            addFloorList()
+            // addFloorList()
             
             addComposs()
         }
@@ -298,7 +298,7 @@ function idrMapView() {
             return
         }
         
-        var temp = new Array()
+        var temp = []
         
         for (var i = 0; i < _markers[deleteMarker.position.floorId].length; ++i) {
             
@@ -410,15 +410,6 @@ function idrMapView() {
     
     function setPos(pos) {
         
-        if (_path) {
-            
-            var routeParm = _router.getRouterParm()
-            
-            doRoute(pos, routeParm.end)
-            
-            pos = _path.paths[0].position[0]
-        }
-        
         _idrMap.setPos(pos)
     }
     
@@ -497,6 +488,16 @@ function idrMapView() {
     this.userPos = function () {
         
         return _currentPos
+    }
+    
+    this.getRegionId = function() {
+        
+        return _regionId
+    }
+    
+    this.getFloorId = function() {
+        
+        return _currentFloorId
     }
 }
 

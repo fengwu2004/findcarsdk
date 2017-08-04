@@ -1,16 +1,4 @@
-var css = document.createElement('link')
-
-css.type = 'text/css';
-
-css.rel = 'stylesheet';
-
-css.href = "http://wx.indoorun.com/indoorun/app/yanli/indoorun/sdk/modules/Composs/IDRComposs.css";
-
-var header = document.querySelector("head");
-
-header.appendChild(css)
-
-var Composs = function(id, defaultDegree, map) {
+function Composs(id, defaultDegree, map) {
     
     var _composs = document.getElementById(id);
     

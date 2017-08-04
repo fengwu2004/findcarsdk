@@ -2,57 +2,72 @@
  * Created by yan on 08/02/2017.
  */
 
+var host = "http://192.168.0.102:8888/"
+
 import networkInstance from './idrNetworkManager.js'
 
 function idrCoreManager() {
+    
+    this.appId = '2b497ada3b2711e4b60500163e0e2e6b'
+    
+    this.clientId = ''
+    
+    this.time = ''
+    
+    this.sign = ''
+    
+    this.sessionKey = ''
+    
+    var self = this
 
-}
-
-idrCoreManager.prototype.init = function(appid, initSuccessFunc, initFailedFunc) {
-    
-    var that = this;
-    
-    networkInstance.serverCallWXSign({'appId': appid}, function(data) {
-    
-        success(data, initSuccessFunc, initFailedFunc);
+    function init(appid, initSuccessFunc, initFailedFunc) {
         
-    }, function(str) {
+        self.appId = appid
     
-        initFailedFunc && initFailedFunc(str)
-    })
+        networkInstance.serverCallWXSign({'appId': appid}, function(data) {
+        
+            success(data, initSuccessFunc, initFailedFunc);
+        
+        }, function(str) {
+        
+            initFailedFunc && initFailedFunc(str)
+        })
+    }
     
     function success(obj, succFn, errorFn) {
         
         if (typeof obj !== 'object' && typeof succFn !== 'function') {
             
-            return;
+            return
         }
-        
-        that.appId = '2b497ada3b2711e4b60500163e0e2e6b';
-        
-        that.clientId = obj.clientId;
-        
-        that.time = obj.time;
-        
-        that.sign = obj.sign;
-        
-        var str = 'appId=' + '2b497ada3b2711e4b60500163e0e2e6b' + '&clientId=' + obj.clientId + '&time=' + obj.time + '&sign=' + obj.sign;
-        
-        var url = 'http://wx.indoorun.com/wx/initSession.html?'+ str;
     
+        self.clientId = obj.clientId
+    
+        self.time = obj.time
+    
+        self.sign = obj.sign
+        
+        var str = 'appId=' + self.appId + '&clientId=' + self.clientId + '&time=' + self.time + '&sign=' + self.sign
+        
+        var url = host + 'initSession.html?' + str;
+        
         networkInstance.serverCallInitSession(url, function(data) {
     
-            that.sessionKey = data.sessionKey;
-    
+            self.sessionKey = data.sessionKey;
+            
+            console.log('sessionKey: ' + self.sessionKey)
+            
             data.code === 'failed' ? (errorFn && errorFn(data)) : succFn && succFn(data);
             
         }, function() {
-    
+            
             console.log(str);
-    
+            
             errorFn && errorFn();
         })
     }
+    
+    this.init = init
 }
 
 var idrCoreMgr = new idrCoreManager();

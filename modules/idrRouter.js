@@ -8,6 +8,8 @@ import Position from './pathRoute/Position.js'
 
 import idrNetworkManager from './idrNetworkManager.js'
 
+import zip from 'jszip'
+
 function idrRouter(regionId, floorList, successFunc) {
     
     var _regionId = regionId
@@ -105,33 +107,38 @@ function idrRouter(regionId, floorList, successFunc) {
         return result
     }
     
-    zip.workerScriptsPath = 'http://wx.indoorun.com/indoorun/webgl/sdk/modules/' + 'zip/'
+    // function unzipBlob(blob, callback) {
+    //
+    //     var blobreader = new zip.Data64URIReader(blob)
+    //
+    //     zip.createReader(blobreader, function(zipReader) {
+    //
+    //         zipReader.getEntries(function(entries) {
+    //
+    //             entries[0].getData(new zip.BlobWriter("text/plain"), function(data) {
+    //
+    //                 zipReader.close();
+    //
+    //                 var reader = new FileReader();
+    //
+    //                 reader.onload = function() {
+    //
+    //                     var jobj = JSON.parse(reader.result)
+    //
+    //                     callback(jobj)
+    //                 }
+    //
+    //                 reader.readAsText(data);
+    //             });
+    //         });
+    //     }, onerror);
+    // }
     
-    function unzipBlob(blob, callback) {
+    function unzipBlob(data, callback) {
+    
+        var r = zip.loadAsync(data, {base64:true})
         
-        var blobreader = new zip.Data64URIReader(blob)
-        
-        zip.createReader(blobreader, function(zipReader) {
-            
-            zipReader.getEntries(function(entries) {
-                
-                entries[0].getData(new zip.BlobWriter("text/plain"), function(data) {
-                    
-                    zipReader.close();
-                    
-                    var reader = new FileReader();
-                    
-                    reader.onload = function() {
-                        
-                        var jobj = JSON.parse(reader.result)
-                        
-                        callback(jobj)
-                    }
-                    
-                    reader.readAsText(data);
-                });
-            });
-        }, onerror);
+        console.log(r)
     }
     
     (function(successFunc) {
