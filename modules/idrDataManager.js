@@ -9,7 +9,7 @@ function idrDataManager() {
     this.regionAllInfo = null
 }
 
-idrDataManager.prototype.loadRegionInfo = function (regionId, success, failed) {
+idrDataManager.prototype.loadRegionInfo = function(regionId, success, failed) {
     
     var that = this
     

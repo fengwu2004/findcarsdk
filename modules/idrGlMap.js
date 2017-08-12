@@ -10,8 +10,6 @@ function idrGlMap(mapView) {
 
     var _mapScale = 1
 
-    var _mapRotate = 0
-
     var _mapView = mapView
 
     var _regionEx = null
@@ -20,7 +18,7 @@ function idrGlMap(mapView) {
     
     var _origScale = 0.5
 
-    var _map = null
+    var _mapRoot = null
     
     var _canvas_txt = null
 
@@ -34,10 +32,12 @@ function idrGlMap(mapView) {
         
         onLoadFinish : function(floorId, floorIndex){
         
-        
+            console.log('onLoadFinish')
         },
-    
+        
         onLoadFailed : function(floorId, floorIndex){
+            
+            console.log('onLoadFailed')
         },
     
         onAllFloorLoadFinish : function(){
@@ -74,6 +74,12 @@ function idrGlMap(mapView) {
     
         onLongPressUp : function(x, y){
         
+            handleLongPressUp(x, y)
+        },
+    
+        onScroll: function(x, y) {
+        
+            handleMapScroll(x, y)
         }
     }
     
@@ -113,6 +119,8 @@ function idrGlMap(mapView) {
         _region.displayFloor(_floor.floorIndex)
 
         _region.animPitch(0)//设置为 2d
+        
+        _region.set2DMarkerWaveColor(0x4f000088)
     }
     
     function changeToFloor(floorId) {
@@ -122,6 +130,8 @@ function idrGlMap(mapView) {
         _floor = _regionEx.getFloorbyId(floorId)
 
         _region.displayFloor(_floor.floorIndex)
+        
+        onAllFloorLoaded()
     }
     
     function onAllFloorLoaded() {
@@ -142,7 +152,7 @@ function idrGlMap(mapView) {
     
     function createCanvas(containor) {
 
-        _map = createEle('div', 'mapRoot', 'indoorunMap_map')
+        _mapRoot = createEle('div', 'mapRoot', 'indoorunMap_map')
 
         _canvas_gl = document.getElementById('gl-canvas')
         
@@ -155,7 +165,7 @@ function idrGlMap(mapView) {
             _canvas_gl.height = 1920
         }
         
-        _map.appendChild(_canvas_gl)
+        _mapRoot.appendChild(_canvas_gl)
         
         _canvas_txt = document.getElementById('txt-canvas')
         
@@ -168,24 +178,16 @@ function idrGlMap(mapView) {
             _canvas_txt.height = 1920
         }
         
-        _map.appendChild(_canvas_txt)
+        _mapRoot.appendChild(_canvas_txt)
 
-        containor.appendChild(_map)
+        containor.appendChild(_mapRoot)
     }
 
     function updateUnitsColor(units, color) {
 
         units.forEach(function(unit) {
-            
-            unit.color = color
-        })
-        
-        _floor.unitList.forEach(function(unit) {
-
-            if (unit.color) {
-
-                _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), unit.color)
-            }
+    
+            _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), color)
         })
 
         _region.buildQuickPolygonFloor(_floor.floorIndex)
@@ -199,6 +201,21 @@ function idrGlMap(mapView) {
         })
 
         _region.cleanQuickPolygonFloor(_floor.floorIndex)
+    }
+    
+    function clearFloorUnitsColor(allFloor) {
+        
+        if (!allFloor) {
+    
+            _region.cleanQuickPolygonFloor(_floor.floorIndex)
+            
+            return
+        }
+    
+        for (var i = 0; i < _regionEx.floorList.length; ++i) {
+    
+            _region.cleanQuickPolygonFloor(_regionEx.floorList[i].floorIndex)
+        }
     }
     
     function addUnits(unitList) {
@@ -216,6 +233,16 @@ function idrGlMap(mapView) {
             var pos = unit.getPos()
     
             _region.insertUnit(unitMapObj, _floor.floorIndex, pos.x, pos.y)
+        }
+    }
+    
+    function removeMarker(marker) {
+        
+        if (marker) {
+    
+            _region.removeMarker(marker.id)
+            
+            console.log('移除marker')
         }
     }
     
@@ -247,11 +274,25 @@ function idrGlMap(mapView) {
         return minUnit
     }
     
+    function handleMapScroll(x, y) {
+    
+        _mapView.onMapScroll(x, y)
+    }
+    
+    function handleLongPressUp(x, y) {
+    
+        var mapLoc = _region.getTouchPosMapLoc(x, y)
+    
+        _mapView.onMapLongPress({x:mapLoc.x, y:mapLoc.y, floorId:_currentFloorId})
+    }
+    
     function handleClick(x, y) {
         
         var markerId = _region.searchMarker(x, y)
         
-        if (markerId != -1) {
+        console.log(markerId)
+        
+        if (markerId !== -1) {
         
             _mapView.onMarkerClick(_currentFloorId, markerId)
             
@@ -277,8 +318,10 @@ function idrGlMap(mapView) {
     function addMarker(marker) {
 
         _region.addTexture(marker.className, marker.image)
-
-        _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 40)
+        
+        console.log('_floor.floorIndex' + _floor.floorIndex + ' ' + marker.position.x + ' ' + marker.position.y)
+    
+        marker.id = _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 40)
     }
 
     function detach() {
@@ -293,7 +336,7 @@ function idrGlMap(mapView) {
     
     function setPos(pos) {
         
-        if (!pos) {
+        if (!pos || pos.floorId !== _currentFloorId) {
 
             _region.cleanLocation()
             
@@ -305,6 +348,8 @@ function idrGlMap(mapView) {
         if (floor) {
 
             _region.setLocation(floor.floorIndex, pos.x, pos.y)
+            
+            _region.locateLaunch()
         }
     }
 
@@ -320,9 +365,16 @@ function idrGlMap(mapView) {
     
     }
 
-    function zoom(screenVec) {
+    function zoom(scale) {
     
-    
+        var dis = _region.getLookDistance()
+        
+        if (dis < 100 || dis > 3000) {
+            
+            return
+        }
+        
+        _region.animLookDistance(dis * scale)
     }
 
     function birdLook() {
@@ -331,6 +383,13 @@ function idrGlMap(mapView) {
     }
 
     function showRoutePath(path) {
+        
+        if (!path) {
+            
+            _region.cleanRoute()
+            
+            return
+        }
 
         var pathInfloor = getTargetFloorPoints(path, _currentFloorId)
         
@@ -357,9 +416,15 @@ function idrGlMap(mapView) {
     
     }
 
-    function getSvgPos(mapPos) {
+    function getScreenPos(mapPos) {
+        
+        var floorIndex = _regionEx.getFloorbyId(mapPos.floorId).floorIndex
     
-    
+        var v = _region.floorPos2RegionPos(floorIndex, mapPos.x, mapPos.y)
+        
+        var p = _region.regionPos2Screen(v)
+        
+        return {x:p[0] * 0.3833333, y:p[1] * 0.3833333}
     }
 
     function rotate(rad, anchor) {
@@ -367,9 +432,19 @@ function idrGlMap(mapView) {
 
     }
 
-    function centerPos(mapPos) {
-
+    function centerPos(mapPos, anim) {
     
+        var floor = _regionEx.getFloorbyId(mapPos.floorId)
+    
+        if (anim) {
+    
+            _region.animLookAt(floor.floorIndex, mapPos.x, mapPos.y)
+        }
+        else {
+            
+            _region.lookAtMapLoc(floor.floorIndex, mapPos.x, mapPos.y)
+        }
+        
     }
 
     function updateDisplay() {
@@ -408,13 +483,24 @@ function idrGlMap(mapView) {
 
     function getMapRotate() {
 
-        return _mapRotate
+        var val = _region.getFloorAngle(_floor.floorIndex)
+        
+        return val
     }
     
     this.updateMinScale = function() {
     
     }
-
+    
+    function updateMarkerLocation(marker, pos) {
+    
+        var floor = _regionEx.getFloorbyId(pos.floorId)
+    
+        marker.id = _region.updateMarkerLocation(marker.id, floor.floorIndex, pos.x, pos.y)
+    
+        marker.position = pos
+    }
+    
     this.getMapScale = getMapScale
 
     this.getMapRotate = getMapRotate
@@ -433,11 +519,11 @@ function idrGlMap(mapView) {
 
     this.showRoutePath = showRoutePath
 
-    this.getSvgPos = getSvgPos
+    this.getScreenPos = getScreenPos
 
     this.updateUnitsColor = updateUnitsColor
 
-    this.clearUnitsColor = clearUnitsColor
+    this.clearFloorUnitsColor = clearFloorUnitsColor
 
     this.getMapPos = getMapPos
 
@@ -456,11 +542,17 @@ function idrGlMap(mapView) {
     this.changeToFloor = changeToFloor
     
     this.addUnits = addUnits
-
+    
+    this.removeMarker = removeMarker
+    
     this.root = function () {
 
-        return _map
+        return _mapRoot
     }
+    
+    this.updateMarkerLocation = updateMarkerLocation
+    
+    this.clearUnitsColor = clearUnitsColor
 }
 
 export { idrGlMap as default }

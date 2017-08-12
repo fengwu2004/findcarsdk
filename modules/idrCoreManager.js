@@ -2,13 +2,11 @@
  * Created by yan on 08/02/2017.
  */
 
-var host = "http://192.168.0.102:8888/"
-
 import networkInstance from './idrNetworkManager.js'
 
 function idrCoreManager() {
     
-    this.appId = '2b497ada3b2711e4b60500163e0e2e6b'
+    this.appId = ''
     
     this.clientId = ''
     
@@ -49,13 +47,11 @@ function idrCoreManager() {
         
         var str = 'appId=' + self.appId + '&clientId=' + self.clientId + '&time=' + self.time + '&sign=' + self.sign
         
-        var url = host + 'initSession.html?' + str;
+        var url = networkInstance.host + 'wx/initSession.html?' + str;
         
         networkInstance.serverCallInitSession(url, function(data) {
     
             self.sessionKey = data.sessionKey;
-            
-            console.log('sessionKey: ' + self.sessionKey)
             
             data.code === 'failed' ? (errorFn && errorFn(data)) : succFn && succFn(data);
             

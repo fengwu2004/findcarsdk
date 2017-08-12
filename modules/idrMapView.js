@@ -2,8 +2,6 @@
  * Created by yan on 09/02/2017.
  */
 
-import idrFloorListControl from './idrFloorListControl.js'
-
 import idrDataMgr from './idrDataManager.js'
 
 import networkInstance from './idrNetworkManager.js'
@@ -34,6 +32,8 @@ function idrMapView() {
     
     this.regionEx = null
     
+    this.autoChangeFloor = true
+    
     var _locator = new IDRLocationServer()
     
     var _router = null
@@ -45,8 +45,6 @@ function idrMapView() {
     var _regionId = null
     
     var _currentFloorId = null
-    
-    var _floorListControl = null
     
     var _units = []
     
@@ -62,34 +60,42 @@ function idrMapView() {
     
     var _composs = null
     
-    var that = this
+    var self = this
     
-    function addFloorList() {
-        
-        _floorListControl = new idrFloorListControl()
-        
-        _floorListControl.setChangeFloorFunc(that, changeFloor)
-        
-        var floor = that.regionEx.getFloorbyId(_currentFloorId)
-        
-        _floorListControl.init(_container, that.regionEx['floorList'], floor)
-    }
+    var _displayAnimId = null
     
     function onMapClick(pos) {
         
-        _mapEvent.fireEvent(that.eventTypes.onMapClick, pos)
+        _mapEvent.fireEvent(self.eventTypes.onMapClick, pos)
     }
     
-    function doLocation(locateCallback) {
+    function doLocation(locateCallback, failedCallBack) {
         
-        _locator.start(_regionId, _currentFloorId, locateCallback, null)
+        _locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+    }
+    
+    function getRoutePath(start, end) {
+    
+        return _router.routerPath(start, end, false)
     }
     
     function doRoute(start, end) {
         
         _path = _router.routerPath(start, end, false)
         
-        showRoutePath(_path)
+        if (_path) {
+        
+            if (_path.distance < 120) {
+    
+                _mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
+            }
+            else {
+    
+                showRoutePath(_path)
+    
+                _mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
+            }
+        }
     }
     
     function stopRoute() {
@@ -97,6 +103,8 @@ function idrMapView() {
         _path = null
         
         _idrMap.showRoutePath(null)
+    
+        _mapEvent.fireEvent(self.eventTypes.onRouterFinish, null)
     }
     
     function showRoutePath(paths) {
@@ -104,9 +112,19 @@ function idrMapView() {
         _idrMap.showRoutePath(paths)
     }
     
+    function onMapScroll(x, y) {
+    
+        _mapEvent.fireEvent(self.eventTypes.onMapScroll, {x:x, y:y})
+    }
+    
+    function onMapLongPress(pos) {
+        
+        _mapEvent.fireEvent(self.eventTypes.onMapLongPress, pos)
+    }
+    
     function onUnitClick(unit) {
         
-        _mapEvent.fireEvent(that.eventTypes.onUnitClick, unit)
+        _mapEvent.fireEvent(self.eventTypes.onUnitClick, unit)
     }
     
     function updateUnitsColor(units, color) {
@@ -117,6 +135,11 @@ function idrMapView() {
     function clearUnitsColor(units) {
         
         _idrMap.clearUnitsColor(units)
+    }
+    
+    function clearFloorUnitsColor(allfloor) {
+     
+        _idrMap.clearFloorUnitsColor(allfloor)
     }
     
     function storeUnits(unitsInfo) {
@@ -132,16 +155,16 @@ function idrMapView() {
             unit.getPolygon()
         }
         
-        var floor = that.regionEx.getFloorbyId(_currentFloorId)
+        var floor = self.regionEx.getFloorbyId(_currentFloorId)
         
         floor.unitList = _units
         
         return floor.unitList
     }
     
-    function loadUnits() {
+    function loadUnits(cb) {
         
-        var floor = that.regionEx.getFloorbyId(_currentFloorId)
+        var floor = self.regionEx.getFloorbyId(_currentFloorId)
         
         if (floor.unitList && floor.unitList.length > 0) {
             
@@ -153,13 +176,13 @@ function idrMapView() {
             function (res) {
                 
                 var units = storeUnits(res.data)
-                
-                _idrMap.addUnits(units)
+    
+                cb && cb(units)
             },
             
             function (str) {
                 
-                alert('获取unit失败!' + str);
+                console.log('获取unit失败!' + str);
             }
         )
     }
@@ -168,9 +191,9 @@ function idrMapView() {
         
         if (!_idrMap) {
             
-            _idrMap = new IdrMap(that)
+            _idrMap = new IdrMap(self)
             
-            _idrMap.init(that.regionEx, _currentFloorId, _container)
+            _idrMap.init(self.regionEx, _currentFloorId, _container)
         }
         else  {
             
@@ -179,15 +202,15 @@ function idrMapView() {
     }
     
     function updateDisplay() {
-        
-        requestAnimationFrame(function (p1) {
-            
-            _idrMap.updateDisplay()
+    
+        _displayAnimId = requestAnimationFrame(function () {
             
             if (_composs) {
                 
-                _composs.rotateToDegree(-1 * _idrMap.getMapRotate() * 180/Math.PI)
+                _composs.rotateToDegree(_idrMap.getMapRotate())
             }
+            
+            updateDisplay()
         })
     }
     
@@ -204,23 +227,26 @@ function idrMapView() {
         
         _container.appendChild(div)
         
-        _composs = new IDRComposs('composs', 0, that)
+        _composs = new IDRComposs('composs', 0, self)
     }
     
     function loadMap() {
         
         createMap(_regionId, _currentFloorId)
         
-        loadUnits()
+        loadUnits(function(units) {
+    
+            _idrMap.addUnits(units)
+        })
     }
     
     function changeFloor(floorId) {
         
         _currentFloorId = floorId
         
-        if (!that.regionEx.isSvgDataExist()) {
+        if (!self.regionEx.isSvgDataExist()) {
             
-            that.regionEx.loadSvgMaps(loadMap)
+            self.regionEx.loadSvgMaps(loadMap)
         }
         else  {
             
@@ -236,16 +262,16 @@ function idrMapView() {
             
             idrDataMgr.loadRegionInfo(regionId, function(res) {
                 
-                that.regionEx = new IDRRegionEx(res['data'])
+                self.regionEx = new IDRRegionEx(res['data'])
                 
-                _router = new IDRRouter(regionId, that.regionEx.floorList, function () {
+                _router = new IDRRouter(regionId, self.regionEx.floorList, function () {
                     
                     console.log('path data load success')
                 })
                 
                 _regionId = regionId
                 
-                _mapEvent.fireEvent(that.eventTypes.onInitMapSuccess, that.regionEx)
+                _mapEvent.fireEvent(self.eventTypes.onInitMapSuccess, self.regionEx)
                 
             }, function() {
                 
@@ -255,13 +281,8 @@ function idrMapView() {
     }
     
     function onLoadMapSuccess() {
-        
-        if (_floorListControl == null) {
-            
-            // addFloorList()
-            
-            addComposs()
-        }
+    
+        addComposs()
         
         _mapRoot = _idrMap.root()
         
@@ -271,9 +292,9 @@ function idrMapView() {
         
         _idrMap.setPos(_currentPos)
         
-        // addGestures()
+        updateDisplay()
         
-        _mapEvent.fireEvent(that.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
+        _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
     }
     
     function addEventListener(type, fn) {
@@ -291,28 +312,28 @@ function idrMapView() {
         return _mapEvent.fireEvent(type, data)
     }
     
-    function removeMarker(deleteMarker) {
+    function removeMarker(marker) {
         
-        if (!deleteMarker) {
+        if (!marker) {
             
             return
         }
         
         var temp = []
         
-        for (var i = 0; i < _markers[deleteMarker.position.floorId].length; ++i) {
+        for (var i = 0; i < _markers[marker.position.floorId].length; ++i) {
             
-            var marker = _markers[deleteMarker.position.floorId][i]
+            var tempMarker = _markers[marker.position.floorId][i]
             
-            if (marker.id !== deleteMarker.id) {
+            if (tempMarker.id !== marker.id) {
                 
-                temp.push(marker)
+                temp.push(tempMarker)
             }
         }
         
         _markers[marker.position.floorId] = temp
         
-        deleteMarker.removeFromSuperView()
+        _idrMap.removeMarker(marker)
     }
     
     function getMarkers(floorId) {
@@ -334,9 +355,9 @@ function idrMapView() {
         
         _markers[marker.position.floorId].push(marker)
         
-        marker.id = 'marker_' + marker.position.floorId + '_' + _markers[marker.position.floorId].length
-        
         _idrMap.addMarker(marker)
+        
+        console.log('加marker')
         
         return marker
     }
@@ -365,22 +386,22 @@ function idrMapView() {
         
         var marker = findMarker(floorId, markerId)
         
-        _mapEvent.fireEvent(that.eventTypes.onMarkerClick, marker)
+        _mapEvent.fireEvent(self.eventTypes.onMarkerClick, marker)
     }
     
-    function getMapPos(svgPos) {
+    function getMapPos(screenPos) {
         
-        return _idrMap.getMapPos(svgPos)
+        return _idrMap.getMapPos(screenPos)
     }
     
-    function getSvgPos(mapPos) {
+    function getScreenPos(mapPos) {
         
-        return _idrMap.getSvgPos(mapPos)
+        return _idrMap.getScreenPos(mapPos)
     }
     
-    function zoom(scale, anchor) {
+    function zoom(scale) {
         
-        _idrMap.zoom(scale, anchor)
+        _idrMap.zoom(scale)
     }
     
     function scroll(screenVec) {
@@ -393,9 +414,9 @@ function idrMapView() {
         _idrMap.rotate(rad, anchor)
     }
     
-    function centerPos(mapPos) {
+    function centerPos(mapPos, anim) {
         
-        _idrMap.centerPos(mapPos)
+        _idrMap.centerPos(mapPos, anim)
     }
     
     function resetMap() {
@@ -417,7 +438,7 @@ function idrMapView() {
         
         _currentPos = pos
         
-        if (pos.floorId !== _currentFloorId) {
+        if (pos.floorId !== _currentFloorId && self.autoChangeFloor) {
             
             changeFloor(pos.floorId)
         }
@@ -425,6 +446,78 @@ function idrMapView() {
             
             setPos(pos)
         }
+    }
+    
+    function updateMarkerLocation(marker, pos) {
+        
+        _idrMap.updateMarkerLocation(marker, pos)
+    }
+    
+    function findUnitWithName(floorId, name) {
+    
+        var floor = self.regionEx.getFloorbyId(floorId)
+    
+        var results = null
+        
+        for (var i = 0; i < floor.unitList.length; ++i) {
+    
+            var unit = floor.unitList[i]
+            
+            var index = unit.name.indexOf(name)
+            
+            if (index !== -1 && index + name.length == unit.name.length) {
+            
+                if (!results) {
+    
+                    results = []
+                }
+    
+                results.push(unit)
+            }
+        }
+        
+        return results
+    }
+    
+    function findNearUnit(pos, targetunits) {
+    
+        return self.regionEx.getNearUnit(pos, targetunits)
+    }
+    
+    function getNearUnit(pos) {
+        
+        var floor = self.regionEx.getFloorbyId(_currentFloorId)
+        
+        return self.regionEx.getNearUnit(pos, floor.unitList)
+    }
+    
+    function findUnitsWithType(types) {
+        
+        var result = {}
+    
+        var floor = self.regionEx.getFloorbyId(_currentFloorId)
+        
+        for (var i = 0; i < floor.unitList.length; ++i) {
+        
+            var unit = floor.unitList[i]
+            
+            for (var j = 0; j < types.length; ++j) {
+            
+                if (unit.unitTypeId == types[j]) {
+    
+                    if (unit.unitTypeId in result) {
+    
+                        result[unit.unitTypeId].push(unit)
+                    }
+                    else  {
+    
+                        result[unit.unitTypeId] = [unit]
+                    }
+                }
+            }
+        }
+        
+        return result
     }
     
     this.centerPos = centerPos
@@ -435,7 +528,7 @@ function idrMapView() {
     
     this.getMapPos = getMapPos
     
-    this.getSvgPos = getSvgPos
+    this.getScreenPos = getScreenPos
     
     this.zoom = zoom
     
@@ -485,7 +578,7 @@ function idrMapView() {
     
     this.onLoadMapSuccess = onLoadMapSuccess
     
-    this.userPos = function () {
+    this.getUserPos = function () {
         
         return _currentPos
     }
@@ -499,6 +592,24 @@ function idrMapView() {
         
         return _currentFloorId
     }
+    
+    this.findUnitsWithType = findUnitsWithType
+    
+    this.getRoutePath = getRoutePath
+    
+    this.onMapLongPress = onMapLongPress
+    
+    this.onMapScroll = onMapScroll
+    
+    this.findUnitWithName = findUnitWithName
+    
+    this.getNearUnit = getNearUnit
+    
+    this.updateMarkerLocation = updateMarkerLocation
+    
+    this.clearFloorUnitsColor = clearFloorUnitsColor
+    
+    this.findNearUnit = findNearUnit
 }
 
 export { idrMapView as default }

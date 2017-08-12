@@ -69,15 +69,15 @@ function idrLocateServer() {
             _beacons = 'empty'
         }
         
-        networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(obj) {
+        networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(res) {
             
-            _x = obj.data.position.x;
+            var pos = res.data.position
             
-            _y = obj.data.position.y;
+            _x = pos.x;
             
-            _floorId = obj.data.position.floorId;
+            _y = pos.y;
             
-            _regionId = obj.data.position.regionId;
+            _floorId = pos.floorId;
             
             if (typeof _onLocateSuccess === 'function') {
                 
@@ -98,12 +98,12 @@ function idrLocateServer() {
         _regionId = regionId
         
         _floorId = floorId
+    
+        _onLocateFailed = onLocateFailed
         
-        _beaconsMgr.init();
+        _beaconsMgr.init(onLocateFailed);
         
         _onLocateSuccess = onLocateSuccess
-        
-        _onLocateFailed = onLocateFailed
         
         _locateTimerId = setInterval(onServerLocate, 1000)
     }

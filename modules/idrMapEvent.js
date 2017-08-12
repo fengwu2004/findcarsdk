@@ -13,6 +13,16 @@ var idrMapEventTypes = {
     onMarkerClick:'onMarkerClick',
     
     onUnitClick:'onUnitClick',
+    
+    onRouterSuccess:'onRouterSuccess',
+    
+    onRouterFinish:'onRouterFinish',
+    
+    onMapLongPress:'onMapLongPress',
+    
+    onMapScroll:'onMapScroll',
+    
+    onRouterFailed:'onRouterFailed'
 }
 
 function idrMapEvent() {

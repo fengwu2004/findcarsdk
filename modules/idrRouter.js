@@ -8,7 +8,7 @@ import Position from './pathRoute/Position.js'
 
 import idrNetworkManager from './idrNetworkManager.js'
 
-import zip from 'jszip'
+import JSZip from 'jszip'
 
 function idrRouter(regionId, floorList, successFunc) {
     
@@ -107,38 +107,20 @@ function idrRouter(regionId, floorList, successFunc) {
         return result
     }
     
-    // function unzipBlob(blob, callback) {
-    //
-    //     var blobreader = new zip.Data64URIReader(blob)
-    //
-    //     zip.createReader(blobreader, function(zipReader) {
-    //
-    //         zipReader.getEntries(function(entries) {
-    //
-    //             entries[0].getData(new zip.BlobWriter("text/plain"), function(data) {
-    //
-    //                 zipReader.close();
-    //
-    //                 var reader = new FileReader();
-    //
-    //                 reader.onload = function() {
-    //
-    //                     var jobj = JSON.parse(reader.result)
-    //
-    //                     callback(jobj)
-    //                 }
-    //
-    //                 reader.readAsText(data);
-    //             });
-    //         });
-    //     }, onerror);
-    // }
-    
     function unzipBlob(data, callback) {
-    
-        var r = zip.loadAsync(data, {base64:true})
         
-        console.log(r)
+        var new_zip = new JSZip()
+    
+        new_zip.loadAsync(data, {base64:true}).then(function(zip) {
+    
+            zip.forEach(function(name, file) {
+    
+                file.async('string').then(function(jsonStr) {
+    
+                    callback && callback(JSON.parse(jsonStr))
+                })
+            })
+        })
     }
     
     (function(successFunc) {

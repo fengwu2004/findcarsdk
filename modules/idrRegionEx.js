@@ -94,8 +94,6 @@ function IDRRegionEx(regionAllInfo) {
                 
                 var floorId = floorList[i].id
                 
-                console.log('load + ' + floorId)
-                
                 networkManager.serverCallSvgMap(that.id, floorId, function(res) {
                     
                     console.log(floorId)
@@ -124,6 +122,37 @@ function IDRRegionEx(regionAllInfo) {
         return svgDataLoaded
     }
     
+    function getDistance(pos1, pos2) {
+        
+        return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2))
+    }
+    
+    function getNearUnit(pos, unitList) {
+        
+        if (!pos || !pos.floorId) {
+            
+            return null
+        }
+        
+        var result = null, mindis = 10000
+        
+        for (var i = 0; i < unitList.length; ++i) {
+        
+            var unit = unitList[i]
+            
+            var dis = getDistance(pos, unit.getPos())
+            
+            if (dis < mindis) {
+                
+                mindis = dis
+                
+                result = unit
+            }
+        }
+        
+        return result
+    }
+    
     this.getFloorbyId = getFloorbyId
     
     this.getUnitById = getUnitById
@@ -133,6 +162,8 @@ function IDRRegionEx(regionAllInfo) {
     this.isSvgDataExist = isSvgDataExist
     
     this.getFloorIndex = getFloorIndex
+    
+    this.getNearUnit = getNearUnit 
 }
 
 export { IDRRegionEx as default }

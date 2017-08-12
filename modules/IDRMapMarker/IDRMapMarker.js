@@ -1,13 +1,11 @@
 
-import resource from '../IDRResourceDefine.js'
-
-function IDRMapMarker(pos) {
+function IDRMapMarker(pos, icon) {
     
     this.position = pos
     
     this.id = null
     
-    this.image = resource.mapMarker
+    this.image = icon
     
     this.className = 'IDRMapMarker'
     
@@ -75,38 +73,30 @@ function IDRMapMarker(pos) {
     }
 }
 
-function IDRCarMarker(pos) {
+function IDRCarMarker(pos, icon) {
     
-    IDRMapMarker.call(this, pos)
-    
-    this.image = resource.carMarker
+    IDRMapMarker.call(this, pos, icon)
     
     this.className = 'IDRCarMarker'
 }
 
-function IDRFacMarker(pos) {
+function IDRFacMarker(pos, icon) {
     
-    IDRMapMarker.call(this, pos)
-    
-    this.image = resource.facMarker
+    IDRMapMarker.call(this, pos, icon)
     
     this.className = 'IDRFacMarker'
 }
 
-function IDRStartMarker(pos) {
+function IDRStartMarker(pos, icon) {
     
-    IDRMapMarker.call(this, pos)
-    
-    this.image = resource.startMarker
+    IDRMapMarker.call(this, pos, icon)
     
     this.className = 'IDRStartMarker'
 }
 
-function IDREndMarker(pos) {
+function IDREndMarker(pos, icon) {
     
-    IDRMapMarker.call(this, pos)
-    
-    this.image = resource.endMarker
+    IDRMapMarker.call(this, pos, icon)
     
     this.className = 'IDREndMarker'
 }

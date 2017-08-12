@@ -5,18 +5,15 @@
 
 import coreManager from './idrCoreManager.js'
 
-var host = "http://192.168.0.102:8888/"
-// var host = "http://wx.indoorun.com/wx/"
-
 var networkInstance = new idrNetworkManager();
 
-function doAjax(url, data, success, failed) {
-    
-    $.post(url, JSON.stringify(data), function(res) {
-        
-        success && success(res.response)
-    })
-}
+// function doAjax(url, data, success, failed) {
+//
+//     $.post(url, JSON.stringify(data), function(res) {
+//
+//         success && success(res.response)
+//     })
+// }
 
 function ajax(options) {
     //编码数据
@@ -160,110 +157,101 @@ function ajax(options) {
     }
 };
 
-function doAjax_(url, data, successFn, failedFn) {
+function doAjax(url, data, successFn, failedFn) {
     
-    ajax({
-        
-        type: "get",
-        
-        dataType: 'jsonp',
-        
-        url: url, //添加自己的接口链接
-        
-        data: data,
-        
-        timeOut: 10000,
-        
-        before:function () {
-        
-        },
-        
-        success:function (response) {
+    if (data) {
     
-            var div = document.createElement('div')
-    
-            div.innerText = JSON.stringify(response)
-    
-            div.id = url
-    
-            document.body.appendChild(div)
+        ajax({
+        
+            type: "get",
+        
+            dataType: 'jsonp',
+        
+            url: url, //添加自己的接口链接
+        
+            data: data,
+        
+            timeOut: 10000,
+        
+            before:function () {
             
-            if (response != null && response.code == "success") {
+            },
+        
+            success:function (response) {
+            
+                if (response != null && response.code == "success") {
                 
-                successFn && successFn(response.data)
+                    successFn && successFn(response)
+                }
+                else {
+                
+                    console.log(url + JSON.stringify(response))
+                }
+            },
+        
+            error:function (response) {
+            
+                failedFn && failedFn(response);
             }
-        },
-        
-        error:function (response) {
-            
-            failedFn && failedFn(response);
-        }
-    });
-}
-
-function doAjax__(url, data, successFn, failedFn) {
+        });
+    }
+    else {
     
-    ajax({
+        ajax({
         
-        type: "get",
+            type: "get",
         
-        dataType: 'jsonp',
+            dataType: 'jsonp',
         
-        url: url, //添加自己的接口链接
+            url: url, //添加自己的接口链接
         
-        data: data,
+            timeOut: 10000,
         
-        timeOut: 10000,
-        
-        before:function () {
-        
-        },
-        
-        success:function (response) {
-    
-            console.log(url)
+            before:function () {
             
-            console.log(JSON.stringify(response))
+            },
+        
+            success:function (response) {
             
-            var div = document.createElement('div')
-    
-            div.innerText = JSON.stringify(response)
-    
-            div.id = url
+                if (response != null && response.code == "success") {
+                
+                    successFn && successFn(response)
+                }
+                else {
+                
+                    console.log(url + JSON.stringify(response))
+                }
+            },
+        
+            error:function (response) {
             
-            document.body.appendChild(div)
-            
-            if (response != null && response.code == "success") {
-    
-                successFn && successFn(response)
+                failedFn && failedFn(response);
             }
-            else {
-    
-                console.log(url + JSON.stringify(response))
-            }
-        },
-        
-        error:function (response) {
-    
-            failedFn && failedFn(response);
-        }
-    });
+        });
+    }
 }
 
 function idrNetworkManager() {
 
+    this.host = 'http://wx.indoorun.com/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
-    
+
+    data.appId = coreManager.appId
+
+    data.sessionKey = coreManager.sessionKey
+
+    data.clientId = coreManager.clientId
+
     doAjax(url, data, successFn, failedFn)
 }
 
 idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
     
-    var url = host + 'getAuthParas?reqUrl=' + window.location.href;
+    var url = this.host + 'wxauth/getAuthParas?reqUrl=' + window.location.href;
     
-    doAjax(url, {}, success, failed)
+    doAjax(url, null, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
@@ -272,15 +260,15 @@ idrNetworkManager.prototype.serverCallInitSession = function(url, success, faile
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
- 
-    var url = host + 'getSign.html'
+    
+    var url = this.host + 'wx/getSign.html'
     
     doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallSvgMap = function (regionId, floorId, success, failed) {
     
-    var url = host + 'getSvg.html';
+    var url = this.host + 'wx/getSvg.html';
     
     var data = {
         'regionId': regionId,
@@ -297,14 +285,14 @@ idrNetworkManager.prototype.serverCallUnits = function(regionId, floorId, succes
     
     var data = {'regionId': regionId, 'floorId': floorId, 'appId': coreManager.appId, 'clientId': coreManager.clientId, 'sessionKey': coreManager.sessionKey};
     
-    var url = host + 'getUnitsOfFloor.html';
+    var url = this.host + 'wx/getUnitsOfFloor.html';
     
     doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
     
-    var url = host + 'getRegionInfo.html';
+    var url = this.host + 'wx/getRegionInfo.html';
     
     var data = {
         'regionId': regionId,
@@ -318,13 +306,9 @@ idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, succes
 
 idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
     
-    var domain = 'http://wx.indoorun.com';
+    return
     
-    var url = domain + '/locate/locating';
-    
-    domain = "http://192.168.1.116:3000"
-    
-    url = domain + '/users/locating'
+    var url = this.host + 'wx/locate/locating';
     
     var data = {
         'beacons': beacons,
@@ -343,7 +327,7 @@ idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, flo
 
 idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, failed) {
     
-    var url = host + 'getPathOfRegionZipBase64.html?'
+    var url = this.host + 'wx/getPathOfRegionZipBase64.html?'
     
     var data = {
         'regionId': regionId,
@@ -351,23 +335,6 @@ idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, fa
         'clientId': coreManager.clientId,
         'sessionKey': coreManager.sessionKey
     };
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallLocate = function(regionId, floorId, success, failed) {
-    
-    var data = {
-        'gzId': 'ewr2342342',
-        'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-        'OSType': 'iPhone',
-        'regionId': regionId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    var url = "http://localhost:3000/users/locating"
     
     doAjax(url, data, success, failed)
 }
