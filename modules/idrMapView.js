@@ -71,7 +71,10 @@ function idrMapView() {
     
     function doLocation(locateCallback, failedCallBack) {
         
-        _locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+        if (!_locator.isStart()) {
+    
+            _locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+        }
     }
     
     function getRoutePath(start, end) {

@@ -111,6 +111,10 @@ function idrGlMap(mapView) {
         _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
 
         _region.setUIScaleRate(0.38333333)
+    
+        _region.addTexture("pubIcons", _mapView.publicPath + "/static/img_pub_icons.png");
+        
+        _region.addTexture("parking", _mapView.publicPath + "/static/img_parking.png");
         
         _region.addFloorsSVG(_floorList);
 

@@ -19,6 +19,8 @@ function idrLocateServer() {
     
     var _y = 0
     
+    var _started = false
+    
     var _onLocateSuccess = null
     
     var _onLocateFailed = null
@@ -71,13 +73,11 @@ function idrLocateServer() {
         
         networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(res) {
             
-            var pos = res.data.position
+            _x = res.x;
             
-            _x = pos.x;
+            _y = res.y;
             
-            _y = pos.y;
-            
-            _floorId = pos.floorId;
+            _floorId = res.floorId;
             
             if (typeof _onLocateSuccess === 'function') {
                 
@@ -97,6 +97,8 @@ function idrLocateServer() {
         
         _regionId = regionId
         
+        _started = true
+        
         _floorId = floorId
     
         _onLocateFailed = onLocateFailed
@@ -111,8 +113,15 @@ function idrLocateServer() {
     this.stop = function () {
         
         clearInterval(_locateTimerId)
+    
+        _started = false
         
         _beacons = null
+    }
+    
+    this.isStart = function() {
+        
+        return _started
     }
 }
 

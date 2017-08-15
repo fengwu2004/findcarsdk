@@ -184,8 +184,8 @@ function doAjax(url, data, successFn, failedFn) {
                     successFn && successFn(response)
                 }
                 else {
-                
-                    console.log(url + JSON.stringify(response))
+    
+                    failedFn && failedFn(response);
                 }
             },
         
@@ -218,8 +218,8 @@ function doAjax(url, data, successFn, failedFn) {
                     successFn && successFn(response)
                 }
                 else {
-                
-                    console.log(url + JSON.stringify(response))
+    
+                    failedFn && failedFn(response);
                 }
             },
         
@@ -308,9 +308,29 @@ idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, flo
     
     return
     
-    var url = this.host + 'wx/locate/locating';
+    var url = this.host + 'locate/locating';
     
     var data = {
+        'beacons': beacons,
+        'gzId': 'ewr2342342',
+        'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+        'OSType': 'iPhone',
+        'regionId': regionId,
+        'floorId': floorId,
+        'appId': coreManager.appId,
+        'clientId': coreManager.clientId,
+        'sessionKey': coreManager.sessionKey
+    };
+    
+    doAjax(url, data, success, failed)
+}
+
+idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, regionId, floorId, success, failed) {
+    
+    var url = this.host + 'locate/locating';
+    
+    var data = {
+        'version':1,
         'beacons': beacons,
         'gzId': 'ewr2342342',
         'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
