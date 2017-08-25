@@ -4,13 +4,22 @@ function Composs(id, defaultDegree, map) {
     
     var _mapview = map
     
-    var _currentValue = 0;
+    var _currentValue = 0
+    
+    var _lastClickTime = null
     
     _composs.addEventListener('click', onCompossClick)
     
     function onCompossClick() {
         
-        _mapview.resetMap()
+        var time = new Date()
+        
+        if (!_lastClickTime || time.getTime() - _lastClickTime > 2000) {
+    
+            _mapview.resetMap()
+    
+            _lastClickTime = time.getTime()
+        }
     }
     
     function rotateToDegree(degree) {

@@ -13,6 +13,8 @@ function idrLocateServer() {
     
     var _beacons = null
     
+    var _count = 0
+    
     var _regionId = ''
     
     var _x = 0
@@ -31,53 +33,84 @@ function idrLocateServer() {
     
     _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
     
-    function filterbeacons(beacons) {
-        
-        var newBeacons = []
-        
+    function getValidBeacons(beacons) {
+
+        var temp = []
+
         for (var i = 0; i < beacons.length; ++i) {
-            
-            var beacon = beacons[i];
-            
-            if (beacon.rssi != 0) {
-                
-                var val = {
-                    'accuracy':beacon.accuracy,
-                    'major':beacon.major,
-                    'minor':beacon.minor,
-                    'rssi':beacon.rssi
-                };
-                
-                newBeacons.push(val);
+
+            if (parseInt(beacons[i].rssi) !== 0) {
+
+                temp.push(beacons[i])
             }
         }
+
+        return temp
+    }
+    
+    function filterbeacons(inBeacons) {
         
-        return newBeacons;
+        var beacons = getValidBeacons(inBeacons)
+        
+        var newBeacons = ''
+    
+        for (var i = 0; i < beacons.length; ++i) {
+        
+            var beacon = beacons[i];
+        
+            var major = parseInt(beacon.major)
+        
+            var minor = parseInt(beacon.minor)
+        
+            var rssi = parseInt(beacon.rssi)
+        
+            var accuracy = parseInt(beacon.accuracy * 100)
+            
+            var v0 = String.fromCharCode(accuracy & 0x00ff)
+        
+            var v1 = String.fromCharCode((accuracy & 0xff00) >> 8)
+        
+            var v2 = String.fromCharCode(rssi + 256)
+        
+            var v3 = String.fromCharCode(minor & 0x00ff)
+        
+            var v4 = String.fromCharCode((minor & 0xff00) >> 8)
+        
+            var v5 = String.fromCharCode(major & 0x00ff)
+        
+            var v6 = String.fromCharCode((major & 0xff00) >> 8)
+        
+            var value = v6 + v5 + v4 + v3 + v2 + v1 + v0
+        
+            newBeacons = newBeacons + value
+        }
+        
+        return {beacons:newBeacons, count:beacons.length};
     }
     
     function onReceiveBeacons(beacons) {
-        
+    
         var newBeacons = filterbeacons(beacons)
-        
-        var beaconParas = JSON.stringify(newBeacons)
-        
-        _beacons = beaconParas
+    
+        _beacons = window.btoa(newBeacons.beacons)
+    
+        _count = newBeacons.count
     }
     
     function onServerLocate() {
         
-        if (_beacons === null) {
+        if (_count <= 0) {
             
-            _beacons = 'empty'
+            return
         }
         
-        networkInstance.serverCallLocating(_beacons, _regionId, _floorId, function(res) {
+        networkInstance.serverCallLocatingBin(_beacons, _count, _regionId, _floorId, function(res) {
             
-            _x = res.x;
+            _x = res.x
             
-            _y = res.y;
+            _y = res.y
             
-            _floorId = res.floorId;
+            _floorId = res.floorId
             
             if (typeof _onLocateSuccess === 'function') {
                 

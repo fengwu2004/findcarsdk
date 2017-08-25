@@ -304,9 +304,51 @@ idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, succes
     doAjax(url, data, success, failed)
 }
 
-idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
+idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) {
     
-    return
+    var url = this.host + 'chene/getCheLocation.html'
+    
+    var data = {
+        'appId': coreManager.appId,
+        'clientId': coreManager.clientId,
+        'sessionKey': coreManager.sessionKey
+    };
+    
+    doAjax(url, data, success, failed)
+}
+
+idrNetworkManager.prototype.removeMarkedUnit = function(success, failed) {
+    
+    var url = this.host + 'chene/removeCheLocation.html'
+    
+    var data = {
+        'appId': coreManager.appId,
+        'clientId': coreManager.clientId,
+        'sessionKey': coreManager.sessionKey
+    };
+    
+    doAjax(url, data, success, failed)
+}
+
+idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, failed) {
+    
+    var pos = unit.getPos()
+    
+    var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:regionId})
+    
+    var url = this.host + 'chene/saveCheLocation.html'
+    
+    var data = {
+        'sName': unitInJson,
+        'appId': coreManager.appId,
+        'clientId': coreManager.clientId,
+        'sessionKey': coreManager.sessionKey
+    };
+    
+    doAjax(url, data, success, failed)
+}
+
+idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
     
     var url = this.host + 'locate/locating';
     
@@ -325,9 +367,9 @@ idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, flo
     doAjax(url, data, success, failed)
 }
 
-idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, regionId, floorId, success, failed) {
+idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {
     
-    var url = this.host + 'locate/locating';
+    var url = this.host + 'locate/locatingBin';
     
     var data = {
         'version':1,
@@ -339,8 +381,11 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, regionId, 
         'floorId': floorId,
         'appId': coreManager.appId,
         'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
+        'sessionKey': coreManager.sessionKey,
+        'beaconCount':count
     };
+    
+    // alert(JSON.stringify(data))
     
     doAjax(url, data, success, failed)
 }

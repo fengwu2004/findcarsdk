@@ -88,6 +88,8 @@ function IDRRegionEx(regionAllInfo) {
     
     function loadMaps(callBack) {
         
+        var time = (new Date()).getTime()
+        
         for (var i = 0; i < floorList.length; ++i) {
             
             (function() {
@@ -100,7 +102,11 @@ function IDRRegionEx(regionAllInfo) {
                     
                     that.floorSvgs[floorId] = res['data']
                     
+                    var va = (new Date()).getTime() - time
+                    
                     if (allLoaded()) {
+    
+                        console.log('时间是多少:' + va.toString())
                         
                         console.log('所有地图数据加载成功')
                         

@@ -64,6 +64,8 @@ function idrMapView() {
     
     var _displayAnimId = null
     
+    var _naviStatusUpdateTimer = null
+    
     function onMapClick(pos) {
         
         _mapEvent.fireEvent(self.eventTypes.onMapClick, pos)
@@ -86,19 +88,27 @@ function idrMapView() {
         
         _path = _router.routerPath(start, end, false)
         
-        if (_path) {
-        
-            if (_path.distance < 120) {
+        if (!_path) {
     
-                _mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
-            }
-            else {
-    
-                showRoutePath(_path)
-    
-                _mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
-            }
+            return
         }
+    
+        if (_path.distance < 120) {
+        
+            _mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
+            
+            return
+        }
+    
+        showRoutePath(_path)
+    
+        _mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
+    
+        _naviStatusUpdateTimer = setInterval(function() {
+    
+            _mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
+            
+        }, 1000)
     }
     
     function stopRoute() {
@@ -108,6 +118,10 @@ function idrMapView() {
         _idrMap.showRoutePath(null)
     
         _mapEvent.fireEvent(self.eventTypes.onRouterFinish, null)
+    
+        clearInterval(_naviStatusUpdateTimer)
+    
+        _naviStatusUpdateTimer = null
     }
     
     function showRoutePath(paths) {
@@ -289,9 +303,7 @@ function idrMapView() {
         
         _mapRoot = _idrMap.root()
         
-        _idrMap.updateRoutePath(_path)
-        
-        _idrMap.updateMinScale()
+        _idrMap.showRoutePath(_path)
         
         _idrMap.setPos(_currentPos)
         
@@ -437,17 +449,38 @@ function idrMapView() {
         _idrMap.setPos(pos)
     }
     
+    function Positionfilter(ps, pe, v) {
+        
+        if (ps == null) return;
+        
+        var d = Math.sqrt((ps.x - pe.x)*(ps.x - pe.x) + (ps.y - pe.y)*(ps.y - pe.y));
+        
+        if (d > v){
+            
+            pe.x=(ps.x * (d - v) + pe.x * v) / d;
+            
+            pe.y=(ps.y * (d - v) + pe.y * v) / d;
+        }
+    }
+    
     function setUserPos(pos) {
         
-        _currentPos = pos
+        var p = {x:pos.x, y:pos.y, floorId:pos.floorId}
+        
+        if (_currentPos && _currentPos.floorId === pos.floorId) {
+    
+            Positionfilter(_currentPos, p, 40)
+        }
+        
+        _currentPos = p
         
         if (pos.floorId !== _currentFloorId && self.autoChangeFloor) {
             
-            changeFloor(pos.floorId)
+            changeFloor(p.floorId)
         }
         else  {
             
-            setPos(pos)
+            setPos(p)
         }
     }
     
@@ -489,7 +522,7 @@ function idrMapView() {
     
     function getNearUnit(pos) {
         
-        var floor = self.regionEx.getFloorbyId(_currentFloorId)
+        var floor = self.regionEx.getFloorbyId(pos.floorId)
         
         return self.regionEx.getNearUnit(pos, floor.unitList)
     }

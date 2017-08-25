@@ -22,7 +22,11 @@ var idrMapEventTypes = {
     
     onMapScroll:'onMapScroll',
     
-    onRouterFailed:'onRouterFailed'
+    onRouterFailed:'onRouterFailed',
+    
+    onRouterPathUpdate:'onRouterPathUpdate',
+    
+    onNaviStatusUpdate:'onNaviStatusUpdate'
 }
 
 function idrMapEvent() {

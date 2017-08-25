@@ -117,12 +117,18 @@ function idrGlMap(mapView) {
         _region.addTexture("parking", _mapView.publicPath + "/static/img_parking.png");
         
         _region.addFloorsSVG(_floorList);
+        
+        _region.setFontColor('#825537')
+        
+        _region.setFontType('24px Arial')
 
         _region.startRender();
 
         _region.displayFloor(_floor.floorIndex)
 
         _region.animPitch(0)//设置为 2d
+        
+        _region.setAlwaysDrawUnit(true)
         
         _region.set2DMarkerWaveColor(0x4f000088)
     }
@@ -414,6 +420,16 @@ function idrGlMap(mapView) {
         
         _region.setRoute(data)
     }
+    
+    function getNaviStatus() {
+        
+        if (_region) {
+            
+            return _region.getNaviStatus()
+        }
+        
+        return null
+    }
 
     function getMapPos(svgPos) {
 
@@ -557,6 +573,8 @@ function idrGlMap(mapView) {
     this.updateMarkerLocation = updateMarkerLocation
     
     this.clearUnitsColor = clearUnitsColor
+    
+    this.getNaviStatus = getNaviStatus 
 }
 
 export { idrGlMap as default }
