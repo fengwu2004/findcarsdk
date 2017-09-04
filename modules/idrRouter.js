@@ -8,8 +8,6 @@ import Position from './pathRoute/Position.js'
 
 import idrNetworkManager from './idrNetworkManager.js'
 
-import JSZip from 'jszip'
-
 function idrRouter(regionId, floorList, successFunc) {
     
     var _regionId = regionId

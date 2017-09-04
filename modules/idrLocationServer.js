@@ -89,7 +89,7 @@ function idrLocateServer() {
     }
     
     function onReceiveBeacons(beacons) {
-    
+        
         var newBeacons = filterbeacons(beacons)
     
         _beacons = window.btoa(newBeacons.beacons)

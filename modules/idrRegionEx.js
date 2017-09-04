@@ -17,8 +17,6 @@ function IDRRegionEx(regionAllInfo) {
     
     var floorList = this.floorList
     
-    var svgDataLoaded = false
-    
     function getFloorIndex(floorId) {
         
         for (var i = 0; i < floorList.length; ++i) {
@@ -86,48 +84,6 @@ function IDRRegionEx(regionAllInfo) {
         return true
     }
     
-    function loadMaps(callBack) {
-        
-        var time = (new Date()).getTime()
-        
-        for (var i = 0; i < floorList.length; ++i) {
-            
-            (function() {
-                
-                var floorId = floorList[i].id
-                
-                networkManager.serverCallSvgMap(that.id, floorId, function(res) {
-                    
-                    console.log(floorId)
-                    
-                    that.floorSvgs[floorId] = res['data']
-                    
-                    var va = (new Date()).getTime() - time
-                    
-                    if (allLoaded()) {
-    
-                        console.log('时间是多少:' + va.toString())
-                        
-                        console.log('所有地图数据加载成功')
-                        
-                        svgDataLoaded = true
-                        
-                        typeof callBack == "function" && callBack()
-                    }
-                    
-                }, function(data) {
-                    
-                    console.log('地图数据获取失败!' + data);
-                })
-            })()
-        }
-    }
-    
-    function isSvgDataExist() {
-        
-        return svgDataLoaded
-    }
-    
     function getDistance(pos1, pos2) {
         
         return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2))
@@ -162,10 +118,6 @@ function IDRRegionEx(regionAllInfo) {
     this.getFloorbyId = getFloorbyId
     
     this.getUnitById = getUnitById
-    
-    this.loadSvgMaps = loadMaps
-    
-    this.isSvgDataExist = isSvgDataExist
     
     this.getFloorIndex = getFloorIndex
     

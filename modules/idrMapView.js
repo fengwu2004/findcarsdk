@@ -260,15 +260,8 @@ function idrMapView() {
     function changeFloor(floorId) {
         
         _currentFloorId = floorId
-        
-        if (!self.regionEx.isSvgDataExist()) {
-            
-            self.regionEx.loadSvgMaps(loadMap)
-        }
-        else  {
-            
-            loadMap()
-        }
+	
+			  loadMap()
     }
     
     function initMap(appid, containerId, regionId) {

@@ -331,7 +331,7 @@ function idrGlMap(mapView) {
         
         console.log('_floor.floorIndex' + _floor.floorIndex + ' ' + marker.position.x + ' ' + marker.position.y)
     
-        marker.id = _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 40)
+        marker.id = _region.insertTextureMarker(marker.className, _floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 80)
     }
 
     function detach() {

@@ -7,6 +7,8 @@ import coreManager from './idrCoreManager.js'
 
 var networkInstance = new idrNetworkManager();
 
+// import $ from 'jquery'
+//
 // function doAjax(url, data, success, failed) {
 //
 //     $.post(url, JSON.stringify(data), function(res) {
@@ -158,73 +160,73 @@ function ajax(options) {
 };
 
 function doAjax(url, data, successFn, failedFn) {
-    
+
     if (data) {
-    
+
         ajax({
-        
+
             type: "get",
-        
+
             dataType: 'jsonp',
-        
+
             url: url, //添加自己的接口链接
-        
+
             data: data,
-        
+
             timeOut: 10000,
-        
+
             before:function () {
-            
+
             },
-        
+
             success:function (response) {
-            
+
                 if (response != null && response.code == "success") {
-                
+
                     successFn && successFn(response)
                 }
                 else {
-    
+
                     failedFn && failedFn(response);
                 }
             },
-        
+
             error:function (response) {
-            
+
                 failedFn && failedFn(response);
             }
         });
     }
     else {
-    
+
         ajax({
-        
+
             type: "get",
-        
+
             dataType: 'jsonp',
-        
+
             url: url, //添加自己的接口链接
-        
+
             timeOut: 10000,
-        
+
             before:function () {
-            
+
             },
-        
+
             success:function (response) {
-            
+
                 if (response != null && response.code == "success") {
-                
+
                     successFn && successFn(response)
                 }
                 else {
-    
+
                     failedFn && failedFn(response);
                 }
             },
-        
+
             error:function (response) {
-            
+
                 failedFn && failedFn(response);
             }
         });
