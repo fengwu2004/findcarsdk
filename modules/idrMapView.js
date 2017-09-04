@@ -27,618 +27,569 @@ import IDRLocationServer from './idrLocationServer.js'
 import IdrMap from './idrGlMap.js'
 
 function idrMapView() {
-    
-    this.eventTypes = idrMapEventTypes
-    
-    this.regionEx = null
-    
-    this.autoChangeFloor = true
-    
-    var _locator = new IDRLocationServer()
-    
-    var _router = null
-    
-    var _container = null
-    
-    var _currentPos = null
-    
-    var _regionId = null
-    
-    var _currentFloorId = null
-    
-    var _units = []
-    
-    var _mapRoot = null
-    
-    var _mapEvent = new idrMapEvent()
-    
-    var _markers = {}
-    
-    var _idrMap = null
-    
-    var _path = null
-    
-    var _composs = null
-    
-    var self = this
-    
-    var _displayAnimId = null
-    
-    var _naviStatusUpdateTimer = null
-    
-    function onMapClick(pos) {
-        
-        _mapEvent.fireEvent(self.eventTypes.onMapClick, pos)
-    }
-    
-    function doLocation(locateCallback, failedCallBack) {
-        
-        if (!_locator.isStart()) {
-    
-            _locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
-        }
-    }
-    
-    function getRoutePath(start, end) {
-    
-        return _router.routerPath(start, end, false)
-    }
-    
-    function doRoute(start, end) {
-        
-        _path = _router.routerPath(start, end, false)
-        
-        if (!_path) {
-    
-            return
-        }
-    
-        if (_path.distance < 120) {
-        
-            _mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
-            
-            return
-        }
-    
-        showRoutePath(_path)
-    
-        _mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
-    
-        _naviStatusUpdateTimer = setInterval(function() {
-    
-            _mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
-            
-        }, 1000)
-    }
-    
-    function stopRoute() {
-        
-        _path = null
-        
-        _idrMap.showRoutePath(null)
-    
-        _mapEvent.fireEvent(self.eventTypes.onRouterFinish, null)
-    
-        clearInterval(_naviStatusUpdateTimer)
-    
-        _naviStatusUpdateTimer = null
-    }
-    
-    function showRoutePath(paths) {
-        
-        _idrMap.showRoutePath(paths)
-    }
-    
-    function onMapScroll(x, y) {
-    
-        _mapEvent.fireEvent(self.eventTypes.onMapScroll, {x:x, y:y})
-    }
-    
-    function onMapLongPress(pos) {
-        
-        _mapEvent.fireEvent(self.eventTypes.onMapLongPress, pos)
-    }
-    
-    function onUnitClick(unit) {
-        
-        _mapEvent.fireEvent(self.eventTypes.onUnitClick, unit)
-    }
-    
-    function updateUnitsColor(units, color) {
-        
-        _idrMap.updateUnitsColor(units, color)
-    }
-    
-    function clearUnitsColor(units) {
-        
-        _idrMap.clearUnitsColor(units)
-    }
-    
-    function clearFloorUnitsColor(allfloor) {
-     
-        _idrMap.clearFloorUnitsColor(allfloor)
-    }
-    
-    function storeUnits(unitsInfo) {
-        
-        _units = []
-        
-        for (var i = 0; i < unitsInfo.length; ++i) {
-            
-            var unit = new IDRUnit(unitsInfo[i])
-            
-            _units.push(unit)
-            
-            unit.getPolygon()
-        }
-        
-        var floor = self.regionEx.getFloorbyId(_currentFloorId)
-        
-        floor.unitList = _units
-        
-        return floor.unitList
-    }
-    
-    function loadUnits(cb) {
-        
-        var floor = self.regionEx.getFloorbyId(_currentFloorId)
-        
-        if (floor.unitList && floor.unitList.length > 0) {
-            
-            return
-        }
-        
-        networkInstance.serverCallUnits(_regionId, _currentFloorId,
-            
-            function (res) {
-                
-                var units = storeUnits(res.data)
-    
-                cb && cb(units)
-            },
-            
-            function (str) {
-                
-                console.log('获取unit失败!' + str);
-            }
-        )
-    }
-    
-    function createMap() {
-        
-        if (!_idrMap) {
-            
-            _idrMap = new IdrMap(self)
-            
-            _idrMap.init(self.regionEx, _currentFloorId, _container)
-        }
-        else  {
-            
-            _idrMap.changeToFloor(_currentFloorId)
-        }
-    }
-    
-    function updateDisplay() {
-    
-        _displayAnimId = requestAnimationFrame(function () {
-            
-            if (_composs) {
-                
-                _composs.rotateToDegree(_idrMap.getMapRotate())
-            }
-            
-            updateDisplay()
-        })
-    }
-    
-    function addComposs() {
-        
-        if (_composs) {
-            
-            return
-        }
-        
-        var div = document.createElement('div')
-        
-        div.setAttribute('id', 'composs')
-        
-        _container.appendChild(div)
-        
-        _composs = new IDRComposs('composs', 0, self)
-    }
-    
-    function loadMap() {
-        
-        createMap(_regionId, _currentFloorId)
-        
-        loadUnits(function(units) {
-    
-            _idrMap.addUnits(units)
-        })
-    }
-    
-    function changeFloor(floorId) {
-        
-        _currentFloorId = floorId
 	
-			  loadMap()
-    }
-    
-    function initMap(appid, containerId, regionId) {
-        
-        _container = document.getElementById(containerId)
-        
-        IDRCoreManager.init(appid, function() {
-            
-            idrDataMgr.loadRegionInfo(regionId, function(res) {
-                
-                self.regionEx = new IDRRegionEx(res['data'])
-                
-                _router = new IDRRouter(regionId, self.regionEx.floorList, function () {
-                    
-                    console.log('path data load success')
-                })
-                
-                _regionId = regionId
-                
-                _mapEvent.fireEvent(self.eventTypes.onInitMapSuccess, self.regionEx)
-                
-            }, function() {
-                
-                console.log('load region data failed')
-            })
-        })
-    }
-    
-    function onLoadMapSuccess() {
-    
-        addComposs()
-        
-        _mapRoot = _idrMap.root()
-        
-        _idrMap.showRoutePath(_path)
-        
-        _idrMap.setPos(_currentPos)
-        
-        updateDisplay()
-        
-        _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
-    }
-    
-    function addEventListener(type, fn) {
-        
-        return _mapEvent.addEvent(type, fn)
-    }
-    
-    function removeEventListener(type) {
-        
-        return _mapEvent.removeEvent(type)
-    }
-    
-    function fireEvent(type, data) {
-        
-        return _mapEvent.fireEvent(type, data)
-    }
-    
-    function removeMarker(marker) {
-        
-        if (!marker) {
-            
-            return
-        }
-        
-        var temp = []
-        
-        for (var i = 0; i < _markers[marker.position.floorId].length; ++i) {
-            
-            var tempMarker = _markers[marker.position.floorId][i]
-            
-            if (tempMarker.id !== marker.id) {
-                
-                temp.push(tempMarker)
-            }
-        }
-        
-        _markers[marker.position.floorId] = temp
-        
-        _idrMap.removeMarker(marker)
-    }
-    
-    function getMarkers(floorId) {
-        
-        if (floorId in _markers) {
-            
-            return _markers[floorId]
-        }
-        
-        return null
-    }
-    
-    function addMarker(marker) {
-        
-        if (!_markers.hasOwnProperty(marker.position.floorId)) {
-            
-            _markers[marker.position.floorId] = new Array()
-        }
-        
-        _markers[marker.position.floorId].push(marker)
-        
-        _idrMap.addMarker(marker)
-        
-        console.log('加marker')
-        
-        return marker
-    }
-    
-    function findMarker(floorId, markerId) {
-        
-        if (!_markers.hasOwnProperty(floorId)) {
-            
-            return null
-        }
-        
-        var markersArray = _markers[floorId]
-        
-        for (var i = 0; i < markersArray.length; ++i) {
-            
-            if (markerId === markersArray[i].id) {
-                
-                return markersArray[i]
-            }
-        }
-        
-        return null
-    }
-    
-    function onMarkerClick(floorId, markerId) {
-        
-        var marker = findMarker(floorId, markerId)
-        
-        _mapEvent.fireEvent(self.eventTypes.onMarkerClick, marker)
-    }
-    
-    function getMapPos(screenPos) {
-        
-        return _idrMap.getMapPos(screenPos)
-    }
-    
-    function getScreenPos(mapPos) {
-        
-        return _idrMap.getScreenPos(mapPos)
-    }
-    
-    function zoom(scale) {
-        
-        _idrMap.zoom(scale)
-    }
-    
-    function scroll(screenVec) {
-        
-        _idrMap.scroll(screenVec)
-    }
-    
-    function rotate(rad, anchor) {
-        
-        _idrMap.rotate(rad, anchor)
-    }
-    
-    function centerPos(mapPos, anim) {
-        
-        _idrMap.centerPos(mapPos, anim)
-    }
-    
-    function resetMap() {
-        
-        _idrMap.resetMap()
-    }
-    
-    function birdLook() {
-        
-        _idrMap.birdLook()
-    }
-    
-    function setPos(pos) {
-        
-        _idrMap.setPos(pos)
-    }
-    
-    function Positionfilter(ps, pe, v) {
-        
-        if (ps == null) return;
-        
-        var d = Math.sqrt((ps.x - pe.x)*(ps.x - pe.x) + (ps.y - pe.y)*(ps.y - pe.y));
-        
-        if (d > v){
-            
-            pe.x=(ps.x * (d - v) + pe.x * v) / d;
-            
-            pe.y=(ps.y * (d - v) + pe.y * v) / d;
-        }
-    }
-    
-    function setUserPos(pos) {
-        
-        var p = {x:pos.x, y:pos.y, floorId:pos.floorId}
-        
-        if (_currentPos && _currentPos.floorId === pos.floorId) {
-    
-            Positionfilter(_currentPos, p, 40)
-        }
-        
-        _currentPos = p
-        
-        if (pos.floorId !== _currentFloorId && self.autoChangeFloor) {
-            
-            changeFloor(p.floorId)
-        }
-        else  {
-            
-            setPos(p)
-        }
-    }
-    
-    function updateMarkerLocation(marker, pos) {
-        
-        _idrMap.updateMarkerLocation(marker, pos)
-    }
-    
-    function findUnitWithName(floorId, name) {
-    
-        var floor = self.regionEx.getFloorbyId(floorId)
-    
-        var results = null
-        
-        for (var i = 0; i < floor.unitList.length; ++i) {
-    
-            var unit = floor.unitList[i]
-            
-            var index = unit.name.indexOf(name)
-            
-            if (index !== -1 && index + name.length == unit.name.length) {
-            
-                if (!results) {
-    
-                    results = []
-                }
-    
-                results.push(unit)
-            }
-        }
-        
-        return results
-    }
-    
-    function findNearUnit(pos, targetunits) {
-    
-        return self.regionEx.getNearUnit(pos, targetunits)
-    }
-    
-    function getNearUnit(pos) {
-        
-        var floor = self.regionEx.getFloorbyId(pos.floorId)
-        
-        return self.regionEx.getNearUnit(pos, floor.unitList)
-    }
-    
-    function findUnitsWithType(types) {
-        
-        var result = {}
-    
-        var floor = self.regionEx.getFloorbyId(_currentFloorId)
-        
-        for (var i = 0; i < floor.unitList.length; ++i) {
-        
-            var unit = floor.unitList[i]
-            
-            for (var j = 0; j < types.length; ++j) {
-            
-                if (unit.unitTypeId == types[j]) {
-    
-                    if (unit.unitTypeId in result) {
-    
-                        result[unit.unitTypeId].push(unit)
-                    }
-                    else  {
-    
-                        result[unit.unitTypeId] = [unit]
-                    }
-                }
-            }
-        }
-        
-        return result
-    }
-    
-    this.centerPos = centerPos
-    
-    this.resetMap = resetMap
-    
-    this.birdLook = birdLook
-    
-    this.getMapPos = getMapPos
-    
-    this.getScreenPos = getScreenPos
-    
-    this.zoom = zoom
-    
-    this.scroll = scroll
-    
-    this.rotate = rotate
-    
-    this.setCurrPos = setUserPos
-    
-    this.addMarker = addMarker
-    
-    this.removeMarker = removeMarker
-    
-    this.changeFloor = changeFloor
-    
-    this.showRootPath = showRoutePath
-    
-    this.addComposs = addComposs
-    
-    this.initMap = initMap
-    
-    this.addEventListener = addEventListener
-    
-    this.removeEventListener = removeEventListener
-    
-    this.fireEvent = fireEvent
-    
-    this.doRoute = doRoute
-    
-    this.doLocation = doLocation
-    
-    this.onUnitClick = onUnitClick
-    
-    this.onMapClick = onMapClick
-    
-    this.onMarkerClick = onMarkerClick
-    
-    this.getMarkers = getMarkers
-    
-    this.updateUnitsColor = updateUnitsColor
-    
-    this.clearUnitsColor = clearUnitsColor
-    
-    this.stopRoute = stopRoute
-    
-    this.updateDisplay = updateDisplay
-    
-    this.onLoadMapSuccess = onLoadMapSuccess
-    
-    this.getUserPos = function () {
-        
-        return _currentPos
-    }
-    
-    this.getRegionId = function() {
-        
-        return _regionId
-    }
-    
-    this.getFloorId = function() {
-        
-        return _currentFloorId
-    }
-    
-    this.findUnitsWithType = findUnitsWithType
-    
-    this.getRoutePath = getRoutePath
-    
-    this.onMapLongPress = onMapLongPress
-    
-    this.onMapScroll = onMapScroll
-    
-    this.findUnitWithName = findUnitWithName
-    
-    this.getNearUnit = getNearUnit
-    
-    this.updateMarkerLocation = updateMarkerLocation
-    
-    this.clearFloorUnitsColor = clearFloorUnitsColor
-    
-    this.findNearUnit = findNearUnit
+	this.eventTypes = idrMapEventTypes
+	
+	this.regionEx = null
+	
+	this.autoChangeFloor = true
+	
+	var _locator = new IDRLocationServer()
+	
+	var _router = null
+	
+	var _container = null
+	
+	var _currentPos = null
+	
+	var _regionId = null
+	
+	var _currentFloorId = null
+	
+	var _units = []
+	
+	var _mapRoot = null
+	
+	var _mapEvent = new idrMapEvent()
+	
+	var _markers = {}
+	
+	var _idrMap = null
+	
+	var _path = null
+	
+	var _composs = null
+	
+	var self = this
+	
+	var _displayAnimId = null
+	
+	var _naviStatusUpdateTimer = null
+	
+	function onMapClick(pos) {
+		
+		_mapEvent.fireEvent(self.eventTypes.onMapClick, pos)
+	}
+	
+	function doLocation(locateCallback, failedCallBack) {
+		
+		if (!_locator.isStart()) {
+			
+			_locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+		}
+	}
+	
+	function getRoutePath(start, end) {
+		
+		return _router.routerPath(start, end, false)
+	}
+	
+	function doRoute(start, end) {
+		
+		_path = _router.routerPath(start, end, false)
+		
+		if (!_path) {
+			
+			return
+		}
+		
+		if (_path.distance < 120) {
+			
+			_mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
+			
+			return
+		}
+		
+		showRoutePath(_path)
+		
+		_mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
+		
+		_naviStatusUpdateTimer = setInterval(function() {
+			
+			_mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
+			
+		}, 1000)
+	}
+	
+	function stopRoute() {
+		
+		_path = null
+		
+		_idrMap.showRoutePath(null)
+		
+		_mapEvent.fireEvent(self.eventTypes.onRouterFinish, null)
+		
+		clearInterval(_naviStatusUpdateTimer)
+		
+		_naviStatusUpdateTimer = null
+	}
+	
+	function showRoutePath(paths) {
+		
+		_idrMap.showRoutePath(paths)
+	}
+	
+	function onMapScroll(x, y) {
+		
+		_mapEvent.fireEvent(self.eventTypes.onMapScroll, {x:x, y:y})
+	}
+	
+	function onMapLongPress(pos) {
+		
+		_mapEvent.fireEvent(self.eventTypes.onMapLongPress, pos)
+	}
+	
+	function onUnitClick(unit) {
+		
+		_mapEvent.fireEvent(self.eventTypes.onUnitClick, unit)
+	}
+	
+	function updateUnitsColor(units, color) {
+		
+		_idrMap.updateUnitsColor(units, color)
+	}
+	
+	function clearUnitsColor(units) {
+		
+		_idrMap.clearUnitsColor(units)
+	}
+	
+	function clearFloorUnitsColor(allfloor) {
+		
+		_idrMap.clearFloorUnitsColor(allfloor)
+	}
+	
+	function createMap() {
+		
+		if (!_idrMap) {
+			
+			_idrMap = new IdrMap(self)
+			
+			_idrMap.init(self.regionEx, _currentFloorId, _container)
+		}
+		else  {
+			
+			_idrMap.changeToFloor(_currentFloorId)
+		}
+	}
+	
+	function updateDisplay() {
+		
+		_displayAnimId = requestAnimationFrame(function () {
+			
+			if (_composs) {
+				
+				_composs.rotateToDegree(_idrMap.getMapRotate())
+			}
+			
+			updateDisplay()
+		})
+	}
+	
+	function addComposs() {
+		
+		if (_composs) {
+			
+			return
+		}
+		
+		var div = document.createElement('div')
+		
+		div.setAttribute('id', 'composs')
+		
+		_container.appendChild(div)
+		
+		_composs = new IDRComposs('composs', 0, self)
+	}
+	
+	function loadMap() {
+		
+		createMap(_regionId, _currentFloorId)
+	}
+	
+	function changeFloor(floorId) {
+		
+		_currentFloorId = floorId
+		
+		loadMap()
+	}
+	
+	function initMap(appid, containerId, regionId) {
+		
+		_container = document.getElementById(containerId)
+		
+		IDRCoreManager.init(appid, function() {
+			
+			idrDataMgr.loadRegionInfo(regionId, function(res) {
+				
+				self.regionEx = new IDRRegionEx(res['data'])
+				
+				_router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
+				
+				_regionId = regionId
+				
+				_mapEvent.fireEvent(self.eventTypes.onInitMapSuccess, self.regionEx)
+				
+			}, function() {
+				
+				console.log('load region data failed')
+			})
+		})
+	}
+	
+	function onLoadMapSuccess() {
+		
+		addComposs()
+		
+		_mapRoot = _idrMap.root()
+		
+		_idrMap.showRoutePath(_path)
+		
+		_idrMap.setPos(_currentPos)
+		
+		var floor = self.regionEx.getFloorbyId(_currentFloorId)
+		
+		_idrMap.addUnits(floor.unitList)
+		
+		updateDisplay()
+		
+		_mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
+	}
+	
+	function addEventListener(type, fn) {
+		
+		return _mapEvent.addEvent(type, fn)
+	}
+	
+	function removeEventListener(type) {
+		
+		return _mapEvent.removeEvent(type)
+	}
+	
+	function fireEvent(type, data) {
+		
+		return _mapEvent.fireEvent(type, data)
+	}
+	
+	function removeMarker(marker) {
+		
+		if (!marker) {
+			
+			return
+		}
+		
+		var temp = []
+		
+		for (var i = 0; i < _markers[marker.position.floorId].length; ++i) {
+			
+			var tempMarker = _markers[marker.position.floorId][i]
+			
+			if (tempMarker.id !== marker.id) {
+				
+				temp.push(tempMarker)
+			}
+		}
+		
+		_markers[marker.position.floorId] = temp
+		
+		_idrMap.removeMarker(marker)
+	}
+	
+	function getMarkers(floorId) {
+		
+		if (floorId in _markers) {
+			
+			return _markers[floorId]
+		}
+		
+		return null
+	}
+	
+	function addMarker(marker) {
+		
+		if (!_markers.hasOwnProperty(marker.position.floorId)) {
+			
+			_markers[marker.position.floorId] = new Array()
+		}
+		
+		_markers[marker.position.floorId].push(marker)
+		
+		_idrMap.addMarker(marker)
+		
+		console.log('加marker')
+		
+		return marker
+	}
+	
+	function findMarker(floorId, markerId) {
+		
+		if (!_markers.hasOwnProperty(floorId)) {
+			
+			return null
+		}
+		
+		var markersArray = _markers[floorId]
+		
+		for (var i = 0; i < markersArray.length; ++i) {
+			
+			if (markerId === markersArray[i].id) {
+				
+				return markersArray[i]
+			}
+		}
+		
+		return null
+	}
+	
+	function onMarkerClick(floorId, markerId) {
+		
+		var marker = findMarker(floorId, markerId)
+		
+		_mapEvent.fireEvent(self.eventTypes.onMarkerClick, marker)
+	}
+	
+	function getMapPos(screenPos) {
+		
+		return _idrMap.getMapPos(screenPos)
+	}
+	
+	function getScreenPos(mapPos) {
+		
+		return _idrMap.getScreenPos(mapPos)
+	}
+	
+	function zoom(scale) {
+		
+		_idrMap.zoom(scale)
+	}
+	
+	function scroll(screenVec) {
+		
+		_idrMap.scroll(screenVec)
+	}
+	
+	function rotate(rad, anchor) {
+		
+		_idrMap.rotate(rad, anchor)
+	}
+	
+	function centerPos(mapPos, anim) {
+		
+		_idrMap.centerPos(mapPos, anim)
+	}
+	
+	function resetMap() {
+		
+		_idrMap.resetMap()
+	}
+	
+	function birdLook() {
+		
+		_idrMap.birdLook()
+	}
+	
+	function setPos(pos) {
+		
+		_idrMap.setPos(pos)
+	}
+	
+	function Positionfilter(ps, pe, v) {
+		
+		if (ps == null) return;
+		
+		var d = Math.sqrt((ps.x - pe.x)*(ps.x - pe.x) + (ps.y - pe.y)*(ps.y - pe.y));
+		
+		if (d > v){
+			
+			pe.x=(ps.x * (d - v) + pe.x * v) / d;
+			
+			pe.y=(ps.y * (d - v) + pe.y * v) / d;
+		}
+	}
+	
+	function setUserPos(pos) {
+		
+		var p = {x:pos.x, y:pos.y, floorId:pos.floorId}
+		
+		if (_currentPos && _currentPos.floorId === pos.floorId) {
+			
+			Positionfilter(_currentPos, p, 40)
+		}
+		
+		_currentPos = p
+		
+		if (pos.floorId !== _currentFloorId && self.autoChangeFloor) {
+			
+			changeFloor(p.floorId)
+		}
+		else  {
+			
+			setPos(p)
+		}
+	}
+	
+	function updateMarkerLocation(marker, pos) {
+		
+		_idrMap.updateMarkerLocation(marker, pos)
+	}
+	
+	function findUnitWithName(floorId, name) {
+		
+		var floor = self.regionEx.getFloorbyId(floorId)
+		
+		var results = null
+		
+		for (var i = 0; i < floor.unitList.length; ++i) {
+			
+			var unit = floor.unitList[i]
+			
+			var index = unit.name.indexOf(name)
+			
+			if (index !== -1 && index + name.length == unit.name.length) {
+				
+				if (!results) {
+					
+					results = []
+				}
+				
+				results.push(unit)
+			}
+		}
+		
+		return results
+	}
+	
+	function findNearUnit(pos, targetunits) {
+		
+		return self.regionEx.getNearUnit(pos, targetunits)
+	}
+	
+	function getNearUnit(pos) {
+		
+		var floor = self.regionEx.getFloorbyId(pos.floorId)
+		
+		return self.regionEx.getNearUnit(pos, floor.unitList)
+	}
+	
+	function findUnitsWithType(types) {
+		
+		var result = {}
+		
+		var floor = self.regionEx.getFloorbyId(_currentFloorId)
+		
+		for (var i = 0; i < floor.unitList.length; ++i) {
+			
+			var unit = floor.unitList[i]
+			
+			for (var j = 0; j < types.length; ++j) {
+				
+				if (unit.unitTypeId == types[j]) {
+					
+					if (unit.unitTypeId in result) {
+						
+						result[unit.unitTypeId].push(unit)
+					}
+					else  {
+						
+						result[unit.unitTypeId] = [unit]
+					}
+				}
+			}
+		}
+		
+		return result
+	}
+	
+	this.centerPos = centerPos
+	
+	this.resetMap = resetMap
+	
+	this.birdLook = birdLook
+	
+	this.getMapPos = getMapPos
+	
+	this.getScreenPos = getScreenPos
+	
+	this.zoom = zoom
+	
+	this.scroll = scroll
+	
+	this.rotate = rotate
+	
+	this.setCurrPos = setUserPos
+	
+	this.addMarker = addMarker
+	
+	this.removeMarker = removeMarker
+	
+	this.changeFloor = changeFloor
+	
+	this.showRootPath = showRoutePath
+	
+	this.addComposs = addComposs
+	
+	this.initMap = initMap
+	
+	this.addEventListener = addEventListener
+	
+	this.removeEventListener = removeEventListener
+	
+	this.fireEvent = fireEvent
+	
+	this.doRoute = doRoute
+	
+	this.doLocation = doLocation
+	
+	this.onUnitClick = onUnitClick
+	
+	this.onMapClick = onMapClick
+	
+	this.onMarkerClick = onMarkerClick
+	
+	this.getMarkers = getMarkers
+	
+	this.updateUnitsColor = updateUnitsColor
+	
+	this.clearUnitsColor = clearUnitsColor
+	
+	this.stopRoute = stopRoute
+	
+	this.updateDisplay = updateDisplay
+	
+	this.onLoadMapSuccess = onLoadMapSuccess
+	
+	this.getUserPos = function () {
+		
+		return _currentPos
+	}
+	
+	this.getRegionId = function() {
+		
+		return _regionId
+	}
+	
+	this.getFloorId = function() {
+		
+		return _currentFloorId
+	}
+	
+	this.findUnitsWithType = findUnitsWithType
+	
+	this.getRoutePath = getRoutePath
+	
+	this.onMapLongPress = onMapLongPress
+	
+	this.onMapScroll = onMapScroll
+	
+	this.findUnitWithName = findUnitWithName
+	
+	this.getNearUnit = getNearUnit
+	
+	this.updateMarkerLocation = updateMarkerLocation
+	
+	this.clearFloorUnitsColor = clearFloorUnitsColor
+	
+	this.findNearUnit = findNearUnit
 }
 
 export { idrMapView as default }

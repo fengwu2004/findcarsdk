@@ -294,7 +294,7 @@ idrNetworkManager.prototype.serverCallUnits = function(regionId, floorId, succes
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
     
-    var url = this.host + 'wx/getRegionInfo.html';
+    var url = this.host + 'wx/getRegionData';
     
     var data = {
         'regionId': regionId,

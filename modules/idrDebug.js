@@ -16,11 +16,11 @@ function DebugManager() {
 		
 		if (show) {
 		
-			this.label.style.visibale = 'visable'
+			this.label.style.visibale = 'visible'
 		}
 		else {
 			
-			this.label.style.visibale = 'hiden'
+			this.label.style.visibale = 'hidden'
 		}
 	}
 }

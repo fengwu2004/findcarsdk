@@ -6,11 +6,7 @@ import PathSearch from './pathRoute/PathSearch.js'
 
 import Position from './pathRoute/Position.js'
 
-import idrNetworkManager from './idrNetworkManager.js'
-
-function idrRouter(regionId, floorList, successFunc) {
-    
-    var _regionId = regionId
+function idrRouter(floorList, pathData) {
     
     var _floorList = floorList
     
@@ -19,8 +15,8 @@ function idrRouter(regionId, floorList, successFunc) {
     var _end = null
     
     var _car = false
-    
-    var _pathSearch = null
+	
+	  var _pathSearch = new PathSearch(pathData)
     
     function getFloorIndex(floorId) {
         
@@ -104,39 +100,6 @@ function idrRouter(regionId, floorList, successFunc) {
         
         return result
     }
-    
-    function unzipBlob(data, callback) {
-        
-        var new_zip = new JSZip()
-    
-        new_zip.loadAsync(data, {base64:true}).then(function(zip) {
-    
-            zip.forEach(function(name, file) {
-    
-                file.async('string').then(function(jsonStr) {
-    
-                    callback && callback(JSON.parse(jsonStr))
-                })
-            })
-        })
-    }
-    
-    (function(successFunc) {
-        
-        idrNetworkManager.serverCallRouteData(_regionId, function(res) {
-            
-            unzipBlob(res['data'], function(jobj) {
-                
-                _pathSearch = new PathSearch(jobj)
-                
-                if (successFunc) {
-                    
-                    successFunc()
-                }
-            })
-            
-        }, null);
-    })(successFunc)
     
     this.getRouterParm = getRouterParm
     
