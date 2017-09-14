@@ -375,6 +375,11 @@ function idrMapView() {
 	
 	function centerPos(mapPos, anim) {
 		
+		if (mapPos.floorId !== _currentFloorId) {
+			
+			changeFloor(mapPos.floorId)
+		}
+		
 		_idrMap.centerPos(mapPos, anim)
 	}
 	

@@ -5,405 +5,337 @@
 
 import coreManager from './idrCoreManager.js'
 
-var networkInstance = new idrNetworkManager();
+var networkInstance = new idrNetworkManager()
 
-// import $ from 'jquery'
-//
-// function doAjax(url, data, success, failed) {
-//
-//     $.post(url, JSON.stringify(data), function(res) {
-//
-//         success && success(res.response)
-//     })
-// }
+import $ from 'jquery'
+
+function doAjax_debug(url, data, success) {
+	
+	$.post(url, JSON.stringify(data), function(res) {
+		
+		success && success(res)
+	})
+}
 
 function ajax(options) {
-    //编码数据
-    function setData() {
-        var name, value;
-        if (data) {
-            if (typeof data === "string") {
-                data = data.split("&");
-                for (var i = 0, len = data.length; i < len; i++) {
-                    name = data[i].split("=")[0];
-                    value = data[i].split("=")[1];
-                    data[i] = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-                }
-                console.log(data)
-                console.log(typeof data)
-                data = data.replace("/%20/g", "+");
-            } else if (typeof data === "object") {
-                var arr = [];
-                for (var name in data) {
-                    if (typeof data[name] !== 'undefined') {
-                        var value = data[name].toString();
-                        name = encodeURIComponent(name);
-                        value = encodeURIComponent(value);
-                        arr.push(name + "=" + value);
-                    }
-                    
-                }
-                data = arr.join("&").replace("/%20/g", "+");
-            }
-            //若是使用get方法或JSONP，则手动添加到URL中
-            if (type === "get" || dataType === "jsonp") {
-                url += url.indexOf("?") > -1 ? (url.indexOf("=")>-1 ? "&"+data : data ): "?" + data;
-            }
-        }
-    }
-    // JSONP
-    function createJsonp() {
-        var script = document.createElement("script"),
-            timeName = new Date().getTime() + Math.round(Math.random() * 1000),
-            callback = "JSONP_" + timeName;
-        
-        window[callback] = function(data) {
-            clearTimeout(timeout_flag);
-            document.body.removeChild(script);
-            success(data);
-        }
-        script.src = url +  (url.indexOf("?") > -1 ? "&" : "?") + "callback=" + callback;
-        script.type = "text/javascript";
-        document.body.appendChild(script);
-        setTime(callback, script);
-    }
-    //设置请求超时
-    function setTime(callback, script) {
-        if (timeOut !== undefined) {
-            timeout_flag = setTimeout(function() {
-                if (dataType === "jsonp") {
-                    // delete window[callback];
-                    document.body.removeChild(script);
-                    
-                } else {
-                    timeout_bool = true;
-                    xhr && xhr.abort();
-                }
-                console.log("timeout");
-                error && error('请求超时!');
-                
-            }, timeOut);
-        }
-    }
-    // XHR
-    function createXHR() {
-        //由于IE6的XMLHttpRequest对象是通过MSXML库中的一个ActiveX对象实现的。
-        //所以创建XHR对象，需要在这里做兼容处理。
-        function getXHR() {
-            if (window.XMLHttpRequest) {
-                return new XMLHttpRequest();
-            } else {
-                //遍历IE中不同版本的ActiveX对象
-                var versions = ["Microsoft", "msxm3", "msxml2", "msxml1"];
-                for (var i = 0; i < versions.length; i++) {
-                    try {
-                        var version = versions[i] + ".XMLHTTP";
-                        return new ActiveXObject(version);
-                    } catch (e) {}
-                }
-            }
-        }
-        //创建对象。
-        xhr = getXHR();
-        xhr.open(type, url, async);
-        //设置请求头
-        if (type === "post" && !contentType) {
-            //若是post提交，则设置content-Type 为application/x-www-four-urlencoded
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-        } else if (contentType) {
-            xhr.setRequestHeader("Content-Type", contentType);
-        }
-        //添加监听
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (timeOut !== undefined) {
-                    //由于执行abort()方法后，有可能触发onreadystatechange事件，
-                    //所以设置一个timeout_bool标识，来忽略中止触发的事件。
-                    if (timeout_bool) {
-                        return;
-                    }
-                    clearTimeout(timeout_flag);
-                }
-                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
-                    
-                    success(xhr.responseText);
-                } else {
-                    error(xhr.status, xhr.statusText);
-                }
-            }
-        };
-        //发送请求
-        xhr.send(type === "get" ? null : data);
-        setTime(); //请求超时
-    }
-    
-    var url = options.url || "", //请求的链接
-        type = (options.type || "get").toLowerCase(), //请求的方法,默认为get
-        data = options.data || null, //请求的数据
-        contentType = options.contentType || "", //请求头
-        dataType = options.dataType || "", //请求的类型
-        async = options.async === undefined && true, //是否异步，默认为true.
-        timeOut = options.timeOut, //超时时间。
-        before = options.before || function() {}, //发送之前执行的函数
-        error = options.error || function() {}, //错误执行的函数
-        success = options.success || function() {}; //请求成功的回调函数
-    var timeout_bool = false, //是否请求超时
-        timeout_flag = null, //超时标识
-        xhr = null; //xhr对角
-    setData();
-    before();
-    if (dataType === "jsonp") {
-        createJsonp();
-    } else {
-        createXHR();
-    }
+	//编码数据
+	function setData() {
+		var name, value;
+		if (data) {
+			if (typeof data === "string") {
+				data = data.split("&");
+				for (var i = 0, len = data.length; i < len; i++) {
+					name = data[i].split("=")[0];
+					value = data[i].split("=")[1];
+					data[i] = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+				}
+				console.log(data)
+				console.log(typeof data)
+				data = data.replace("/%20/g", "+");
+			} else if (typeof data === "object") {
+				var arr = [];
+				for (var name in data) {
+					if (typeof data[name] !== 'undefined') {
+						var value = data[name].toString();
+						name = encodeURIComponent(name);
+						value = encodeURIComponent(value);
+						arr.push(name + "=" + value);
+					}
+					
+				}
+				data = arr.join("&").replace("/%20/g", "+");
+			}
+			//若是使用get方法或JSONP，则手动添加到URL中
+			if (type === "get" || dataType === "jsonp") {
+				url += url.indexOf("?") > -1 ? (url.indexOf("=")>-1 ? "&"+data : data ): "?" + data;
+			}
+		}
+	}
+	// JSONP
+	function createJsonp() {
+		var script = document.createElement("script"),
+			timeName = new Date().getTime() + Math.round(Math.random() * 1000),
+			callback = "JSONP_" + timeName;
+		
+		window[callback] = function(data) {
+			clearTimeout(timeout_flag);
+			document.body.removeChild(script);
+			success(data);
+		}
+		script.src = url +  (url.indexOf("?") > -1 ? "&" : "?") + "callback=" + callback;
+		script.type = "text/javascript";
+		document.body.appendChild(script);
+		setTime(callback, script);
+	}
+	//设置请求超时
+	function setTime(callback, script) {
+		if (timeOut !== undefined) {
+			timeout_flag = setTimeout(function() {
+				if (dataType === "jsonp") {
+					// delete window[callback];
+					document.body.removeChild(script);
+					
+				} else {
+					timeout_bool = true;
+					xhr && xhr.abort();
+				}
+				console.log("timeout");
+				error && error('请求超时!');
+				
+			}, timeOut);
+		}
+	}
+	// XHR
+	function createXHR() {
+		//由于IE6的XMLHttpRequest对象是通过MSXML库中的一个ActiveX对象实现的。
+		//所以创建XHR对象，需要在这里做兼容处理。
+		function getXHR() {
+			if (window.XMLHttpRequest) {
+				return new XMLHttpRequest();
+			} else {
+				//遍历IE中不同版本的ActiveX对象
+				var versions = ["Microsoft", "msxm3", "msxml2", "msxml1"];
+				for (var i = 0; i < versions.length; i++) {
+					try {
+						var version = versions[i] + ".XMLHTTP";
+						return new ActiveXObject(version);
+					} catch (e) {}
+				}
+			}
+		}
+		//创建对象。
+		xhr = getXHR();
+		xhr.open(type, url, async);
+		//设置请求头
+		if (type === "post" && !contentType) {
+			//若是post提交，则设置content-Type 为application/x-www-four-urlencoded
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+		} else if (contentType) {
+			xhr.setRequestHeader("Content-Type", contentType);
+		}
+		//添加监听
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4) {
+				if (timeOut !== undefined) {
+					//由于执行abort()方法后，有可能触发onreadystatechange事件，
+					//所以设置一个timeout_bool标识，来忽略中止触发的事件。
+					if (timeout_bool) {
+						return;
+					}
+					clearTimeout(timeout_flag);
+				}
+				if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+					
+					success(xhr.responseText);
+				} else {
+					error(xhr.status, xhr.statusText);
+				}
+			}
+		};
+		//发送请求
+		xhr.send(type === "get" ? null : data);
+		setTime(); //请求超时
+	}
+	
+	var url = options.url || "", //请求的链接
+		type = (options.type || "get").toLowerCase(), //请求的方法,默认为get
+		data = options.data || null, //请求的数据
+		contentType = options.contentType || "", //请求头
+		dataType = options.dataType || "", //请求的类型
+		async = options.async === undefined && true, //是否异步，默认为true.
+		timeOut = options.timeOut, //超时时间。
+		before = options.before || function() {}, //发送之前执行的函数
+		error = options.error || function() {}, //错误执行的函数
+		success = options.success || function() {}; //请求成功的回调函数
+	var timeout_bool = false, //是否请求超时
+		timeout_flag = null, //超时标识
+		xhr = null; //xhr对角
+	setData();
+	before();
+	if (dataType === "jsonp") {
+		createJsonp();
+	} else {
+		createXHR();
+	}
 };
 
 function doAjax(url, data, successFn, failedFn) {
-
-    if (data) {
-
-        ajax({
-
-            type: "get",
-
-            dataType: 'jsonp',
-
-            url: url, //添加自己的接口链接
-
-            data: data,
-
-            timeOut: 10000,
-
-            before:function () {
-
-            },
-
-            success:function (response) {
-
-                if (response != null && response.code == "success") {
-
-                    successFn && successFn(response)
-                }
-                else {
-
-                    failedFn && failedFn(response);
-                }
-            },
-
-            error:function (response) {
-
-                failedFn && failedFn(response);
-            }
-        });
-    }
-    else {
-
-        ajax({
-
-            type: "get",
-
-            dataType: 'jsonp',
-
-            url: url, //添加自己的接口链接
-
-            timeOut: 10000,
-
-            before:function () {
-
-            },
-
-            success:function (response) {
-
-                if (response != null && response.code == "success") {
-
-                    successFn && successFn(response)
-                }
-                else {
-
-                    failedFn && failedFn(response);
-                }
-            },
-
-            error:function (response) {
-
-                failedFn && failedFn(response);
-            }
-        });
-    }
+	
+	if (data) {
+		
+		ajax({
+			
+			type: "get",
+			
+			dataType: 'jsonp',
+			
+			url: url, //添加自己的接口链接
+			
+			data: data,
+			
+			timeOut: 10000,
+			
+			before:function () {
+			
+			},
+			
+			success:function (response) {
+				
+				if (response != null && response.code == "success") {
+					
+					successFn && successFn(response)
+				}
+				else {
+					
+					failedFn && failedFn(response);
+				}
+			},
+			
+			error:function (response) {
+				
+				failedFn && failedFn(response);
+			}
+		});
+	}
+	else {
+		
+		ajax({
+			
+			type: "get",
+			
+			dataType: 'jsonp',
+			
+			url: url, //添加自己的接口链接
+			
+			timeOut: 10000,
+			
+			before:function () {
+			
+			},
+			
+			success:function (response) {
+				
+				if (response != null && response.code == "success") {
+					
+					successFn && successFn(response)
+				}
+				else {
+					
+					failedFn && failedFn(response);
+				}
+			},
+			
+			error:function (response) {
+				
+				failedFn && failedFn(response);
+			}
+		});
+	}
 }
 
 function idrNetworkManager() {
-
-    this.host = 'http://wx.indoorun.com/'
+	
+	this.host = 'http://wx.indoorun.com/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
-
-    data.appId = coreManager.appId
-
-    data.sessionKey = coreManager.sessionKey
-
-    data.clientId = coreManager.clientId
-
-    doAjax(url, data, successFn, failedFn)
+	
+	data.appId = coreManager.appId
+	
+	data.sessionKey = coreManager.sessionKey
+	
+	data.clientId = coreManager.clientId
+	
+	doAjax(url, data, successFn, failedFn)
 }
 
 idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
-    
-    var url = this.host + 'wxauth/getAuthParas?reqUrl=' + window.location.href;
-    
-    doAjax(url, null, success, failed)
+	
+	var url = this.host + 'wxauth/getAuthParas?reqUrl=' + window.location.href;
+	
+	doAjax(url, null, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
-    
-    doAjax(url, {}, success, failed)
+	
+	url = 'http://192.168.0.104:8888/wx/initSession.html'
+	
+	doAjax_debug(url, {}, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
-    
-    var url = this.host + 'wx/getSign.html'
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallSvgMap = function (regionId, floorId, success, failed) {
-    
-    var url = this.host + 'wx/getSvg.html';
-    
-    var data = {
-        'regionId': regionId,
-        'floorId': floorId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallUnits = function(regionId, floorId, success, failed) {
-    
-    var data = {'regionId': regionId, 'floorId': floorId, 'appId': coreManager.appId, 'clientId': coreManager.clientId, 'sessionKey': coreManager.sessionKey};
-    
-    var url = this.host + 'wx/getUnitsOfFloor.html';
-    
-    doAjax(url, data, success, failed)
+	
+	var url = this.host + 'wx/getSign.html'
+	
+	doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
-    
-    var url = this.host + 'wx/getRegionData';
-    
-    var data = {
-        'regionId': regionId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
+	
+	var url = this.host + 'wx/getRegionData';
+	
+	var data = {
+		'regionId': regionId
+	};
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) {
-    
-    var url = this.host + 'chene/getCheLocation.html'
-    
-    var data = {
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
+	
+	// var url = this.host + 'chene/getCheLocation.html'
+	
+	var url = 'http://192.168.0.104:8888/' + 'chene/getCheLocation.html'
+	
+	var data = {
+	
+	}
+	
+	doAjax_debug(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.removeMarkedUnit = function(success, failed) {
-    
-    var url = this.host + 'chene/removeCheLocation.html'
-    
-    var data = {
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
+	
+	var url = this.host + 'chene/removeCheLocation.html'
+	
+	var data = {
+	
+	}
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, failed) {
-    
-    var pos = unit.getPos()
-    
-    var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:regionId})
-    
-    var url = this.host + 'chene/saveCheLocation.html'
-    
-    var data = {
-        'sName': unitInJson,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallLocating = function(beacons, regionId, floorId, success, failed) {
-    
-    var url = this.host + 'locate/locating';
-    
-    var data = {
-        'beacons': beacons,
-        'gzId': 'ewr2342342',
-        'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-        'OSType': 'iPhone',
-        'regionId': regionId,
-        'floorId': floorId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
+	
+	var pos = unit.getPos()
+	
+	var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:regionId})
+	
+	var url = this.host + 'chene/saveCheLocation.html'
+	
+	var data = {
+		'sName': unitInJson
+	};
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {
-    
-    var url = this.host + 'locate/locatingBin';
-    
-    var data = {
-        'version':1,
-        'beacons': beacons,
-        'gzId': 'ewr2342342',
-        'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-        'OSType': 'iPhone',
-        'regionId': regionId,
-        'floorId': floorId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey,
-        'beaconCount':count
-    };
-    
-    // alert(JSON.stringify(data))
-    
-    doAjax(url, data, success, failed)
-}
-
-idrNetworkManager.prototype.serverCallRouteData = function(regionId, success, failed) {
-    
-    var url = this.host + 'wx/getPathOfRegionZipBase64.html?'
-    
-    var data = {
-        'regionId': regionId,
-        'appId': coreManager.appId,
-        'clientId': coreManager.clientId,
-        'sessionKey': coreManager.sessionKey
-    };
-    
-    doAjax(url, data, success, failed)
+	
+	var url = this.host + 'locate/locatingBin';
+	
+	var data = {
+		'version':1,
+		'beacons': beacons,
+		'gzId': 'ewr2342342',
+		'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+		'OSType': 'iPhone',
+		'regionId': regionId,
+		'floorId': floorId,
+		'beaconCount':count
+	};
+	
+	this.doAjax(url, data, success, failed)
 }
 
 export { networkInstance as default }

@@ -83,7 +83,7 @@ function idrBeaconMgr() {
 				
 				complete:function(argv) {
 					
-					debugInfo(argv.errMsg)
+					// debugInfo(argv.errMsg)
 					
 					if (argv.errMsg == 'startSearchBeacons:bluetooth power off') {
 						
