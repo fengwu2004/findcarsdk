@@ -10,9 +10,9 @@ var networkInstance = new idrNetworkManager()
 import $ from 'jquery'
 
 function doAjax_debug(url, data, success) {
-	
+
 	$.post(url, JSON.stringify(data), function(res) {
-		
+
 		success && success(res)
 	})
 }
@@ -161,6 +161,8 @@ function ajax(options) {
 
 function doAjax(url, data, successFn, failedFn) {
 	
+	console.log('网络请求' + url)
+	
 	if (data) {
 		
 		ajax({
@@ -181,6 +183,8 @@ function doAjax(url, data, successFn, failedFn) {
 			
 			success:function (response) {
 				
+				console.log('请求成功' + url)
+				
 				if (response != null && response.code == "success") {
 					
 					successFn && successFn(response)
@@ -192,6 +196,12 @@ function doAjax(url, data, successFn, failedFn) {
 			},
 			
 			error:function (response) {
+				
+				console.log('网络错误----')
+				
+				console.log(url)
+				
+				console.log('网络错误++++++')
 				
 				failedFn && failedFn(response);
 			}
@@ -258,16 +268,18 @@ idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
 	
-	url = 'http://192.168.0.104:8888/wx/initSession.html'
+	// doAjax(url, {}, success, failed)
+	
+	var url = 'http://192.168.0.103:8888/' + 'wx/initSession.html'
 	
 	doAjax_debug(url, {}, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
 	
-	var url = this.host + 'wx/getSign.html'
+	var url = 'http://192.168.0.103:8888/' + 'wx/getSign.html'
 	
-	doAjax(url, data, success, failed)
+	doAjax_debug(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
@@ -285,7 +297,7 @@ idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) 
 	
 	// var url = this.host + 'chene/getCheLocation.html'
 	
-	var url = 'http://192.168.0.104:8888/' + 'chene/getCheLocation.html'
+	var url = 'http://192.168.0.103:8888/' + 'chene/getCheLocation.html'
 	
 	var data = {
 	
@@ -318,6 +330,20 @@ idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, f
 	};
 	
 	this.doAjax(url, data, success, failed)
+}
+
+idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionId, success, failed) {
+	
+	const url = 'http://192.168.0.103:8888' + '/chene/getParkingPlaceUnitByCarNo.html'
+	
+	// const url = this.host + '/chene/getParkingPlaceUnitByCarNo.html'
+	
+	var data = {
+		'regionId': regionId,
+		'carNo': carNo,
+	}
+	
+	doAjax_debug(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {

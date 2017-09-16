@@ -112,6 +112,28 @@ function IDRRegionEx(regionAllInfo) {
 		return result
 	}
 	
+	function getAllUnits(currnetFloorId) {
+		
+		var results = []
+		
+		for (let i = 0; i < this.floorList.length; ++i) {
+			
+			let units = this.floorList[i].unitList
+			
+			for (let j = 0; j < units.length; ++j) {
+				
+				if (units[j].unitTypeId != '0' && units[j].floorId != currnetFloorId) {
+					
+					continue
+				}
+				
+				results.push(units[j])
+			}
+		}
+		
+		return results
+	}
+	
 	this.getFloorbyId = getFloorbyId
 	
 	this.getUnitById = getUnitById
@@ -119,6 +141,8 @@ function IDRRegionEx(regionAllInfo) {
 	this.getFloorIndex = getFloorIndex
 	
 	this.getNearUnit = getNearUnit
+	
+	this.getAllUnits = getAllUnits
 }
 
 export { IDRRegionEx as default }

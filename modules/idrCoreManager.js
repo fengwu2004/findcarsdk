@@ -52,11 +52,19 @@ function idrCoreManager() {
         networkInstance.serverCallInitSession(url, function(data) {
     
             self.sessionKey = data.sessionKey;
+	
+						console.log('serverCallInitSession success')
+					
+						console.log(JSON.stringify(data))
+	
+						console.log('=======')
             
             data.code === 'failed' ? (errorFn && errorFn(data)) : succFn && succFn(data);
             
         }, function() {
-            
+          
+        		console.log('serverCallInitSession error')
+        	
             console.log(str);
             
             errorFn && errorFn();

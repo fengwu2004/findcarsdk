@@ -220,6 +220,8 @@ function idrMapView() {
 		
 		IDRCoreManager.init(appid, function() {
 			
+			console.log('begin loadRegionInfo')
+			
 			idrDataMgr.loadRegionInfo(regionId, function(res) {
 				
 				self.regionEx = new IDRRegionEx(res['data'])
@@ -480,7 +482,16 @@ function idrMapView() {
 		
 		var result = {}
 		
-		var floor = self.regionEx.getFloorbyId(_currentFloorId)
+		var floor = null
+		
+		if (_currentFloorId) {
+		
+			floor = self.regionEx.getFloorbyId(_currentFloorId)
+		}
+		else {
+			
+			floor = self.regionEx.floorList[0]
+		}
 		
 		for (var i = 0; i < floor.unitList.length; ++i) {
 			

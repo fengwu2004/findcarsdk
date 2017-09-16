@@ -342,7 +342,10 @@ function idrGlMap(mapView) {
 		
 		var floor = _regionEx.getFloorbyId(marker.position.floorId)
 		
-		marker.id = _region.insertTextureMarker(marker.className, floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 80)
+		if (floor) {
+			
+			marker.id = _region.insertTextureMarker(marker.className, floor.floorIndex, marker.position.x, marker.position.y, 0, 0, 80)
+		}
 	}
 	
 	function detach() {
