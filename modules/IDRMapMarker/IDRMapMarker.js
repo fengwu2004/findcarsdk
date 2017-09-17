@@ -45,12 +45,20 @@ function IDREndMarker(pos, icon) {
     this.className = 'IDREndMarker'
 }
 
+function IDRTempMarker(pos, icon) {
+	
+	IDRMapMarker.call(this, pos, icon)
+	
+	this.className = 'IDRTempMarker'
+}
+
 var IDRMarkers = {
     "IDRMapMarker":IDRMapMarker,
     "IDRCarMarker":IDRCarMarker,
     "IDRFacMarker":IDRFacMarker,
     "IDRStartMarker":IDRStartMarker,
-    "IDREndMarker":IDREndMarker
+    "IDREndMarker":IDREndMarker,
+		"IDRTempMarker":IDRTempMarker
 }
 
 export { IDRMarkers as default }

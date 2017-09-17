@@ -12,6 +12,8 @@ import IDRRegionEx from './idrRegionEx.js'
 
 import IDRUnit from './idrUnit.js'
 
+import idrDebug from './idrDebug'
+
 import IDRMapMarkers from './IDRMapMarker/IDRMapMarker.js'
 
 var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
@@ -226,8 +228,6 @@ function idrMapView() {
 				
 				self.regionEx = new IDRRegionEx(res['data'])
 				
-				_router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
-				
 				_regionId = regionId
 				
 				_mapEvent.fireEvent(self.eventTypes.onInitMapSuccess, self.regionEx)
@@ -256,6 +256,25 @@ function idrMapView() {
 		updateDisplay()
 		
 		_mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
+		
+		setTimeout(function() {
+		
+			if (!_router) {
+				
+				networkInstance.serverCallRegionPathData(_regionId, function(res) {
+					
+					var gmtime = new Date()
+					
+					self.regionEx.regionPath = res.data
+					
+					_router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
+					
+					idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
+					
+				}, null)
+				
+			}
+		}, 500)
 	}
 	
 	function addEventListener(type, fn) {

@@ -7,8 +7,9 @@ import coreManager from './idrCoreManager.js'
 
 var networkInstance = new idrNetworkManager()
 
+//-------------------------
+var networkdebug = false
 import $ from 'jquery'
-
 function doAjax_debug(url, data, success) {
 
 	$.post(url, JSON.stringify(data), function(res) {
@@ -16,6 +17,7 @@ function doAjax_debug(url, data, success) {
 		success && success(res)
 	})
 }
+//-------------------------
 
 function ajax(options) {
 	//编码数据
@@ -268,18 +270,43 @@ idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
 	
-	// doAjax(url, {}, success, failed)
-	
-	var url = 'http://192.168.0.103:8888/' + 'wx/initSession.html'
-	
-	doAjax_debug(url, {}, success, failed)
+	if (networkdebug) {
+		
+		var url = 'http://192.168.31.215:8888/' + 'wx/initSession.html'
+		
+		doAjax_debug(url, {}, success, failed)
+	}
+	else {
+		
+		doAjax(url, {}, success, failed)
+	}
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
 	
-	var url = 'http://192.168.0.103:8888/' + 'wx/getSign.html'
+	if (networkdebug) {
+		
+		var url = 'http://192.168.31.215:8888/' + 'wx/getSign.html'
+		
+		doAjax_debug(url, data, success, failed)
+	}
+	else {
+		
+		var url = this.host + 'wx/getSign.html'
+
+		this.doAjax(url, data, success, failed)
+	}
+}
+
+idrNetworkManager.prototype.serverCallRegionPathData = function (regionId, success, failed) {
 	
-	doAjax_debug(url, data, success, failed)
+	var url = this.host + 'wx/getRegionPathData';
+	
+	var data = {
+		'regionId': regionId
+	};
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, success, failed) {
@@ -295,15 +322,26 @@ idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, succes
 
 idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) {
 	
-	// var url = this.host + 'chene/getCheLocation.html'
-	
-	var url = 'http://192.168.0.103:8888/' + 'chene/getCheLocation.html'
-	
-	var data = {
-	
+	if (networkdebug) {
+		
+		var url = 'http://192.168.31.215:8888/' + 'chene/getCheLocation.html'
+		
+		var data = {
+		
+		}
+		
+		doAjax_debug(url, data, success, failed)
 	}
-	
-	doAjax_debug(url, data, success, failed)
+	else {
+		
+		var url = this.host + 'chene/getCheLocation.html'
+
+		var data = {
+
+		}
+
+		this.doAjax(url, data, success, failed)
+	}
 }
 
 idrNetworkManager.prototype.removeMarkedUnit = function(success, failed) {
@@ -334,16 +372,28 @@ idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, f
 
 idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionId, success, failed) {
 	
-	const url = 'http://192.168.0.103:8888' + '/chene/getParkingPlaceUnitByCarNo.html'
-	
-	// const url = this.host + '/chene/getParkingPlaceUnitByCarNo.html'
-	
-	var data = {
-		'regionId': regionId,
-		'carNo': carNo,
+	if (networkdebug) {
+		
+		var url = 'http://192.168.31.215:8888' + '/chene/getParkingPlaceUnitByCarNo.html'
+
+		var data = {
+			'regionId': regionId,
+			'carNo': carNo,
+		}
+
+		doAjax_debug(url, data, success, failed)
 	}
-	
-	doAjax_debug(url, data, success, failed)
+	else {
+		
+		var url = this.host + '/chene/getParkingPlaceUnitByCarNo.html'
+		
+		var data = {
+			'regionId': regionId,
+			'carNo': carNo,
+		}
+		
+		this.doAjax(url, data, success, failed)
+	}
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {

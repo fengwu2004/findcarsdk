@@ -116,11 +116,11 @@ function IDRRegionEx(regionAllInfo) {
 		
 		var results = []
 		
-		for (let i = 0; i < this.floorList.length; ++i) {
+		for (var i = 0; i < this.floorList.length; ++i) {
 			
-			let units = this.floorList[i].unitList
+			var units = this.floorList[i].unitList
 			
-			for (let j = 0; j < units.length; ++j) {
+			for (var j = 0; j < units.length; ++j) {
 				
 				if (units[j].unitTypeId != '0' && units[j].floorId != currnetFloorId) {
 					
