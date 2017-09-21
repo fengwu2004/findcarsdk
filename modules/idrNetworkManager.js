@@ -249,7 +249,7 @@ function idrNetworkManager() {
 	
 	this.host = 'http://wx.indoorun.com/'
 	
-	this.debug_host = 'http://192.168.0.101:8888/'
+	this.debug_host = 'http://192.168.0.117:8888/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
