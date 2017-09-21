@@ -4,34 +4,31 @@
  *
  */
 
-define(function (require, exports, module) {
+function PositionDistance() {
+    
+    this.position = null;
+    
+    this.distance = 0;
+}
 
-    function PositionDistance() {
+PositionDistance.prototype.getPosition = function() {
+    
+    return this.position;
+}
 
-        this.position = null;
+PositionDistance.prototype.setPosition = function(position) {
+    
+    this.position = position;
+}
 
-        this.distance = 0;
-    }
+PositionDistance.prototype.getDistance = function() {
+    
+    return this.distance;
+}
 
-    PositionDistance.prototype.getPosition = function() {
+PositionDistance.prototype.setDistance = function(distance) {
+    
+    this.distance = distance;
+}
 
-        return this.position;
-    }
-
-    PositionDistance.prototype.setPosition = function(position) {
-
-        this.position = position;
-    }
-
-    PositionDistance.prototype.getDistance = function() {
-
-        return this.distance;
-    }
-
-    PositionDistance.prototype.setDistance = function(distance) {
-
-        this.distance = distance;
-    }
-
-    module.exports = PositionDistance
-})
+export { PositionDistance as default }

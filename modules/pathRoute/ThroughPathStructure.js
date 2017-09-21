@@ -4,35 +4,31 @@
  *
  */
 
-define(function (require, exports, module) {
+function ThroughPathStructure() {
+    
+    this.positions = [];//节点集合
+    
+    this.matrix = null;//邻接矩阵
+}
 
-    function ThroughPathStructure() {
+ThroughPathStructure.prototype.getPositions = function() {
+    
+    return this.positions;
+}
 
-        this.positions = [];//节点集合
+ThroughPathStructure.prototype.setPositions = function(positions) {
+    
+    this.positions = positions;
+}
 
-        this.matrix = null;//邻接矩阵
-    }
+ThroughPathStructure.prototype.getMatrix = function() {
+    
+    return this.matrix;
+}
 
-    ThroughPathStructure.prototype.getPositions = function() {
+ThroughPathStructure.prototype.setMatrix = function(matrix) {
+    
+    this.matrix = matrix;
+}
 
-        return this.positions;
-    }
-
-    ThroughPathStructure.prototype.setPositions = function(positions) {
-
-        this.positions = positions;
-    }
-
-    ThroughPathStructure.prototype.getMatrix = function() {
-
-        return this.matrix;
-    }
-
-    ThroughPathStructure.prototype.setMatrix = function(matrix) {
-
-        this.matrix = matrix;
-    }
-
-    module.exports = ThroughPathStructure
-})
-
+export { ThroughPathStructure as default }
