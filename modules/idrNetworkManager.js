@@ -8,7 +8,7 @@ import coreManager from './idrCoreManager.js'
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = false
+var networkdebug = true
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
@@ -248,6 +248,8 @@ function doAjax(url, data, successFn, failedFn) {
 function idrNetworkManager() {
 	
 	this.host = 'http://wx.indoorun.com/'
+	
+	this.debug_host = 'http://192.168.0.101:8888/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
@@ -272,7 +274,7 @@ idrNetworkManager.prototype.serverCallInitSession = function(url, success, faile
 	
 	if (networkdebug) {
 		
-		var url = 'http://192.168.31.215:8888/' + 'wx/initSession.html'
+		var url = this.debug_host + 'wx/initSession.html'
 		
 		doAjax_debug(url, {}, success, failed)
 	}
@@ -286,7 +288,7 @@ idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
 	
 	if (networkdebug) {
 		
-		var url = 'http://192.168.31.215:8888/' + 'wx/getSign.html'
+		var url = this.debug_host + 'wx/getSign.html'
 		
 		doAjax_debug(url, data, success, failed)
 	}
@@ -324,7 +326,7 @@ idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) 
 	
 	if (networkdebug) {
 		
-		var url = 'http://192.168.31.215:8888/' + 'chene/getCheLocation.html'
+		var url = this.debug_host + 'chene/getCheLocation.html'
 		
 		var data = {
 		
@@ -374,7 +376,7 @@ idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionI
 	
 	if (networkdebug) {
 		
-		var url = 'http://192.168.31.215:8888' + '/chene/getParkingPlaceUnitByCarNo.html'
+		var url = this.debug_host + '/chene/getParkingPlaceUnitByCarNo.html'
 
 		var data = {
 			'regionId': regionId,

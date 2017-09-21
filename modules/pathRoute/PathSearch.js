@@ -72,9 +72,9 @@ function PathSearch(data) {
                     
                     b = matrix[a][b].proIndex;
                     
-                    if (positions[b].getFloorIndex() == positions[pro].getFloorIndex()) {
+                    if (positions[b].floorIndex == positions[pro].floorIndex) {
                         
-                        var fp = searchFloorPathSimple(searchBriefSame(positions[b].getFloorIndex(), positions[b].pos,
+                        var fp = searchFloorPathSimple(searchBriefSame(positions[b].floorIndex, positions[b].pos,
                             positions[pro].pos, type, true));
                         
                         fp.typeId = positions[pro].unitTypeId;

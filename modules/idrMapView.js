@@ -88,6 +88,16 @@ function idrMapView() {
 	
 	function doRoute(start, end) {
 		
+		if (!start) {
+			
+			start = _currentPos
+		}
+		
+		if (!start) {
+			
+			return
+		}
+		
 		_path = _router.routerPath(start, end, false)
 		
 		if (!_path) {
@@ -104,7 +114,7 @@ function idrMapView() {
 		
 		showRoutePath(_path)
 		
-		_mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path,end:end})
+		_mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path, end:end, start:start})
 		
 		_naviStatusUpdateTimer = setInterval(function() {
 			
@@ -294,6 +304,7 @@ function idrMapView() {
 	
 	function removeMarker(marker) {
 		
+		console.log('移除marker')
 		if (!marker) {
 			
 			return

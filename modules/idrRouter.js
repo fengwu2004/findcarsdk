@@ -83,7 +83,15 @@ function idrRouter(floorList, pathData) {
         e.x = end.x
         
         e.y = end.y
-        
+      
+				console.log('导航起始点')
+	
+				console.log(JSON.stringify(start))
+	
+				console.log(JSON.stringify(end))
+	
+				console.log('导航起始点--')
+			
         var result = _pathSearch.search(_sIndex, s, _eIndex, e, car, null)
         
         for (var i = 0; i < result.paths.length; ++i) {

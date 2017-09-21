@@ -71,7 +71,7 @@ function idrLocateServer() {
             var v1 = String.fromCharCode((accuracy & 0xff00) >> 8)
         
             var v2 = String.fromCharCode(rssi + 256)
-        
+         
             var v3 = String.fromCharCode(minor & 0x00ff)
         
             var v4 = String.fromCharCode((minor & 0xff00) >> 8)

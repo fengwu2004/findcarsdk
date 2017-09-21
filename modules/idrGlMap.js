@@ -261,7 +261,7 @@ function idrGlMap(mapView) {
 			
 			_region.removeMarker(marker.id)
 			
-			console.log('移除marker')
+			// console.log('移除marker')
 		}
 	}
 	
@@ -417,6 +417,13 @@ function idrGlMap(mapView) {
 		
 		var pathInfloor = getTargetFloorPoints(path, _currentFloorId)
 		
+		if (!pathInfloor) {
+			
+			_region.cleanRoute()
+			
+			return
+		}
+		
 		var data = []
 		
 		pathInfloor.forEach(function(p) {
@@ -497,17 +504,24 @@ function idrGlMap(mapView) {
 			return null
 		}
 		
+		var result = []
+		
 		for (var i = 0; i < path.paths.length; ++i) {
 			
 			var floorPath = path.paths[i]
 			
 			if (floorPath.floorId === floorId) {
 				
-				return floorPath.position
+				result = result.concat(floorPath.position)
 			}
 		}
 		
-		return null
+		if (result.length == 0) {
+			
+			return null
+		}
+		
+		return result
 	}
 	
 	function getMapScale() {
