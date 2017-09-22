@@ -4,6 +4,7 @@ import idrUnit from './modules/idrUnit'
 import idrMapMarker from './modules/IDRMapMarker/IDRMapMarker'
 import idrNetworkInstance from './modules/idrNetworkManager'
 import idrCoreManagerInstance from './modules/idrCoreManager'
+import idrLocationServerInstance from './modules/idrLocationServer'
 import idrDebug from './modules/idrDebug'
 
 var map = {

@@ -3,8 +3,9 @@
  */
 
 
-import BeaconMgr from './idrBeaconManager.js'
-
+import idrBeaconMgrInstance from './idrBeaconManager.js'
+import idrDebug from './idrDebug'
+import idrCoreManagerinstance from './idrCoreManager'
 import networkInstance from './idrNetworkManager.js'
 
 function idrLocateServer() {
@@ -28,11 +29,7 @@ function idrLocateServer() {
     var _onLocateFailed = null
     
     var _locateTimerId = null
-    
-    var _beaconsMgr = new BeaconMgr()
-    
-    _beaconsMgr.onBeaconReceiveFunc = onReceiveBeacons
-    
+
     function getValidBeacons(beacons) {
 
         var temp = []
@@ -46,6 +43,11 @@ function idrLocateServer() {
         }
 
         return temp
+    }
+    
+    this.test = function () {
+
+        console.log('test调用')
     }
     
     function filterbeacons(inBeacons) {
@@ -99,11 +101,6 @@ function idrLocateServer() {
     
     function onServerLocate() {
         
-        if (_count <= 0) {
-            
-            return
-        }
-        
         networkInstance.serverCallLocatingBin(_beacons, _count, _regionId, _floorId, function(res) {
             
             _x = res.x
@@ -135,8 +132,13 @@ function idrLocateServer() {
         _floorId = floorId
     
         _onLocateFailed = onLocateFailed
-        
-        _beaconsMgr.init(onLocateFailed);
+
+        if (!idrCoreManagerinstance.isAppEnd) {
+
+            idrBeaconMgrInstance.onBeaconReceiveFunc = onReceiveBeacons
+
+            idrBeaconMgrInstance.init(onLocateFailed);
+        }
         
         _onLocateSuccess = onLocateSuccess
         
@@ -156,6 +158,12 @@ function idrLocateServer() {
         
         return _started
     }
+
+    this.onReceiveBeacons = onReceiveBeacons
 }
 
-export { idrLocateServer as default }
+var idrLocateServerInstance = new idrLocateServer()
+
+window.locateServer = idrLocateServerInstance
+
+export { idrLocateServerInstance as default }

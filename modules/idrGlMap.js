@@ -603,6 +603,14 @@ function idrGlMap(mapView) {
 	this.clearUnitsColor = clearUnitsColor
 	
 	this.getNaviStatus = getNaviStatus
+
+    this.setDynamicNavi = function (value) {
+
+	    if (_region) {
+
+            _region.setNavigateProj(value)
+        }
+    }
 }
 
 export { idrGlMap as default }

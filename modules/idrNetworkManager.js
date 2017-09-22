@@ -4,11 +4,12 @@
 
 
 import coreManager from './idrCoreManager.js'
+import idrDebug from './idrDebug.js'
 
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = true
+var networkdebug = false
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
@@ -199,11 +200,15 @@ function doAjax(url, data, successFn, failedFn) {
 			
 			error:function (response) {
 				
-				console.log('网络错误----')
+				alert('网络错误----')
 				
 				console.log(url)
-				
-				console.log('网络错误++++++')
+
+                alert('网络错误++++++')
+
+                idrDebug.showDebugInfo(true)
+
+                idrDebug.debugInfo(JSON.stringify(response))
 				
 				failedFn && failedFn(response);
 			}
@@ -249,10 +254,12 @@ function idrNetworkManager() {
 	
 	this.host = 'http://wx.indoorun.com/'
 	
-	this.debug_host = 'http://192.168.0.117:8888/'
+	this.debug_host = 'http://192.168.0.104:8888/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
+
+    // idrDebug.showDebugInfo(true)
 	
 	data.appId = coreManager.appId
 	
@@ -374,9 +381,9 @@ idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, f
 
 idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionId, success, failed) {
 	
-	if (networkdebug) {
+	if (false) {
 		
-		var url = this.debug_host + '/chene/getParkingPlaceUnitByCarNo.html'
+		var url = this.debug_host + 'chene/getParkingPlaceUnitByCarNo.html'
 
 		var data = {
 			'regionId': regionId,
@@ -387,7 +394,7 @@ idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionI
 	}
 	else {
 		
-		var url = this.host + '/chene/getParkingPlaceUnitByCarNo.html'
+		var url = this.host + 'chene/getParkingPlaceUnitByCarNo.html'
 		
 		var data = {
 			'regionId': regionId,
@@ -399,21 +406,43 @@ idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionI
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {
-	
-	var url = this.host + 'locate/locatingBin';
-	
-	var data = {
-		'version':1,
-		'beacons': beacons,
-		'gzId': 'ewr2342342',
-		'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-		'OSType': 'iPhone',
-		'regionId': regionId,
-		'floorId': floorId,
-		'beaconCount':count
-	};
-	
-	this.doAjax(url, data, success, failed)
+
+    if (networkdebug) {
+
+        var url = this.debug_host + 'wx/locate/locating';
+
+        var data = {
+            'regionId': regionId
+        };
+
+        // idrDebug.debugInfo('请求定位')
+
+        doAjax_debug(url, data, success, failed)
+    }
+    else {
+
+        if (count <= 0) {
+
+            return
+        }
+
+        var url = this.host + 'locate/locatingBin';
+
+        var data = {
+            'version':1,
+            'beacons': beacons,
+            'gzId': 'ewr2342342',
+            'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+            'OSType': 'iPhone',
+            'regionId': regionId,
+            'floorId': floorId,
+            'beaconCount':count
+        };
+
+        // idrDebug.debugInfo('请求定位')
+
+        this.doAjax(url, data, success, failed)
+    }
 }
 
 export { networkInstance as default }

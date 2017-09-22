@@ -10,41 +10,57 @@ function idrCoreManager() {
     
     this.clientId = ''
     
-    this.time = ''
+    this.time = 'null'
     
-    this.sign = ''
+    this.sign = 'null'
     
     this.sessionKey = ''
+
+    this.isAppEnd = true
     
     var self = this
 
-    function init(appid, initSuccessFunc, initFailedFunc) {
+    function initWx(appid, initSuccessFunc, initFailedFunc) {
         
         self.appId = appid
     
         networkInstance.serverCallWXSign({'appId': appid}, function(data) {
-        
-            success(data, initSuccessFunc, initFailedFunc);
+
+            self.clientId = data.clientId
+
+            success(initSuccessFunc, initFailedFunc);
         
         }, function(str) {
         
             initFailedFunc && initFailedFunc(str)
         })
     }
+
+    function getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);
+        }
+        return null;
+    }
     
-    function success(obj, succFn, errorFn) {
+    function initApp(appid, initSuccessFunc, initFailedFunc) {
+
+        self.appId = appid
+
+        self.clientId = getQueryString('mac')
+
+        success(initSuccessFunc, initFailedFunc)
+    }
+    
+    function success(succFn, errorFn) {
         
-        if (typeof obj !== 'object' && typeof succFn !== 'function') {
+        if (typeof succFn !== 'function') {
             
             return
         }
-    
-        self.clientId = obj.clientId
-    
-        self.time = obj.time
-    
-        self.sign = obj.sign
-        
+
         var str = 'appId=' + self.appId + '&clientId=' + self.clientId + '&time=' + self.time + '&sign=' + self.sign
         
         var url = networkInstance.host + 'wx/initSession.html?' + str;
@@ -52,26 +68,24 @@ function idrCoreManager() {
         networkInstance.serverCallInitSession(url, function(data) {
     
             self.sessionKey = data.sessionKey;
-	
-						console.log('serverCallInitSession success')
-					
-						console.log(JSON.stringify(data))
-	
-						console.log('=======')
-            
+
             data.code === 'failed' ? (errorFn && errorFn(data)) : succFn && succFn(data);
             
         }, function() {
-          
-        		console.log('serverCallInitSession error')
-        	
-            console.log(str);
-            
+
             errorFn && errorFn();
         })
     }
-    
-    this.init = init
+
+    this.init = function (appid, initSuccessFunc, initFailedFunc) {
+
+        if (!this.isAppEnd) {
+
+            initWx(appid, initSuccessFunc, initFailedFunc)
+        }
+
+        initApp(appid, initSuccessFunc, initFailedFunc)
+    }
 }
 
 var idrCoreMgr = new idrCoreManager();

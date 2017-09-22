@@ -16,15 +16,13 @@ import idrDebug from './idrDebug'
 
 import IDRMapMarkers from './IDRMapMarker/IDRMapMarker.js'
 
-var IDRCarMarker = IDRMapMarkers['IDRCarMarker']
-
 import IDRComposs from './Composs/IDRComposs.js'
 
 import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
 
 import IDRCoreManager from './idrCoreManager.js'
 
-import IDRLocationServer from './idrLocationServer.js'
+import IDRLocationServerInstance from './idrLocationServer.js'
 
 import IdrMap from './idrGlMap.js'
 
@@ -36,7 +34,7 @@ function idrMapView() {
 	
 	this.autoChangeFloor = true
 	
-	var _locator = new IDRLocationServer()
+	var _locator = IDRLocationServerInstance
 	
 	var _router = null
 	
@@ -53,6 +51,8 @@ function idrMapView() {
 	var _mapRoot = null
 	
 	var _mapEvent = new idrMapEvent()
+
+    var _dynamicNavi = false
 	
 	var _markers = {}
 	
@@ -89,27 +89,33 @@ function idrMapView() {
 	function doRoute(start, end) {
 		
 		if (!start) {
+
+            _dynamicNavi = true
 			
 			start = _currentPos
 		}
+		else {
+
+            _dynamicNavi = false
+        }
 		
 		if (!start) {
 			
-			return
+			return false
 		}
 		
 		_path = _router.routerPath(start, end, false)
 		
 		if (!_path) {
-			
-			return
+
+            return false
 		}
 		
 		if (_path.distance < 120) {
 			
 			_mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
-			
-			return
+
+            return false
 		}
 		
 		showRoutePath(_path)
@@ -121,6 +127,8 @@ function idrMapView() {
 			_mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
 			
 		}, 1000)
+
+        return true
 	}
 	
 	function stopRoute() {
@@ -139,6 +147,8 @@ function idrMapView() {
 	function showRoutePath(paths) {
 		
 		_idrMap.showRoutePath(paths)
+
+        _idrMap.setDynamicNavi(_dynamicNavi)
 	}
 	
 	function onMapScroll(x, y) {
@@ -279,7 +289,7 @@ function idrMapView() {
 					
 					_router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
 					
-					idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
+					// idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
 					
 				}, null)
 				
@@ -406,6 +416,11 @@ function idrMapView() {
 	}
 	
 	function centerPos(mapPos, anim) {
+
+		if (!mapPos) {
+
+			return
+		}
 		
 		if (mapPos.floorId !== _currentFloorId) {
 			
@@ -636,6 +651,11 @@ function idrMapView() {
 	this.clearFloorUnitsColor = clearFloorUnitsColor
 	
 	this.findNearUnit = findNearUnit
+
+    this.isDynamicNavi = function () {
+
+	    return _dynamicNavi
+    }
 }
 
 export { idrMapView as default }
