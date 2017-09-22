@@ -91,11 +91,15 @@ function idrLocateServer() {
     }
     
     function onReceiveBeacons(beacons) {
+
+        idrDebug.showDebugInfo(true)
+
+        idrDebug.debugInfo(beacons)
         
-        var newBeacons = filterbeacons(beacons)
-    
+        var newBeacons = filterbeacons(JSON.parse(beacons))
+
         _beacons = window.btoa(newBeacons.beacons)
-    
+
         _count = newBeacons.count
     }
     

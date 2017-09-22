@@ -200,15 +200,15 @@ function doAjax(url, data, successFn, failedFn) {
 			
 			error:function (response) {
 				
-				alert('网络错误----')
+				// alert('网络错误----')
 				
 				console.log(url)
 
-                alert('网络错误++++++')
+                // alert('网络错误++++++')
 
-                idrDebug.showDebugInfo(true)
+                // idrDebug.showDebugInfo(true)
 
-                idrDebug.debugInfo(JSON.stringify(response))
+                // idrDebug.debugInfo(JSON.stringify(response))
 				
 				failedFn && failedFn(response);
 			}
