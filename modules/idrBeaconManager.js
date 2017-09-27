@@ -7,6 +7,7 @@
  */
 
 import networkInstance from './idrNetworkManager.js'
+import idrDebug from './idrDebug'
 
 var debugLabel = document.getElementById('debug')
 
@@ -96,7 +97,10 @@ function idrBeaconMgr() {
 
                     var beacons = argv.beacons;
 
-                    debugInfo('蓝牙数量：' + beacons.length.toString())
+                    idrDebug.debugInfo('蓝牙数量：' + beacons.length.toString())
+
+                    // idrDebug.showDebugInfo(true)
+                    // debugInfo()
 
                     self.onBeaconReceiveFunc && self.onBeaconReceiveFunc(beacons);
                 }

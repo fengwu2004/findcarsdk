@@ -92,11 +92,14 @@ function idrLocateServer() {
     
     function onReceiveBeacons(beacons) {
 
-        idrDebug.showDebugInfo(true)
+        var tempBeacons = beacons
 
-        idrDebug.debugInfo(beacons)
-        
-        var newBeacons = filterbeacons(JSON.parse(beacons))
+        if (idrCoreManagerinstance.isAndroid) {
+
+            tempBeacons = JSON.parse(beacons)
+        }
+
+        var newBeacons = filterbeacons(tempBeacons)
 
         _beacons = window.btoa(newBeacons.beacons)
 

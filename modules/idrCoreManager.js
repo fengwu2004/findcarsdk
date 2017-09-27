@@ -16,7 +16,9 @@ function idrCoreManager() {
     
     this.sessionKey = ''
 
-    this.isAppEnd = true
+    this.isAppEnd = false
+
+    this.isAndroid = false
     
     var self = this
 
@@ -51,6 +53,10 @@ function idrCoreManager() {
 
         self.clientId = getQueryString('mac')
 
+        var android = getQueryString('android')
+
+        self.isAndroid = (android != null)
+
         success(initSuccessFunc, initFailedFunc)
     }
     
@@ -83,8 +89,10 @@ function idrCoreManager() {
 
             initWx(appid, initSuccessFunc, initFailedFunc)
         }
+        else {
 
-        initApp(appid, initSuccessFunc, initFailedFunc)
+            initApp(appid, initSuccessFunc, initFailedFunc)
+        }
     }
 }
 

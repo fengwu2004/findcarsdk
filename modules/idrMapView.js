@@ -53,6 +53,8 @@ function idrMapView() {
 	var _mapEvent = new idrMapEvent()
 
     var _dynamicNavi = false
+
+    var _inNavi = false
 	
 	var _markers = {}
 	
@@ -87,6 +89,8 @@ function idrMapView() {
 	}
 	
 	function doRoute(start, end) {
+
+        _inNavi = false
 		
 		if (!start) {
 
@@ -117,6 +121,8 @@ function idrMapView() {
 
             return false
 		}
+
+        _inNavi = true
 		
 		showRoutePath(_path)
 		
@@ -134,6 +140,8 @@ function idrMapView() {
 	function stopRoute() {
 		
 		_path = null
+
+        _inNavi = false
 		
 		_idrMap.showRoutePath(null)
 		
@@ -655,6 +663,11 @@ function idrMapView() {
     this.isDynamicNavi = function () {
 
 	    return _dynamicNavi
+    }
+    
+    this.isInNavi = function () {
+
+	    return _inNavi
     }
 }
 

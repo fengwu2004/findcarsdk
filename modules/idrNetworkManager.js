@@ -209,6 +209,8 @@ function doAjax(url, data, successFn, failedFn) {
                 // idrDebug.showDebugInfo(true)
 
                 // idrDebug.debugInfo(JSON.stringify(response))
+
+                console.log(JSON.stringify(response))
 				
 				failedFn && failedFn(response);
 			}
@@ -439,7 +441,9 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, reg
             'beaconCount':count
         };
 
-        // idrDebug.debugInfo('请求定位')
+        // idrDebug.showDebugInfo(true)
+
+        idrDebug.debugInfo('请求定位')
 
         this.doAjax(url, data, success, failed)
     }
