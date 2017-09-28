@@ -154,7 +154,7 @@ function IDRRegionEx(regionAllInfo) {
 			
 			for (var j = 0; j < units.length; ++j) {
 				
-				if (units[j].unitTypeId != '0' && units[j].floorId != currnetFloorId) {
+				if (units[j].unitTypeId != '0') {
 					
 					continue
 				}

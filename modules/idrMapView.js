@@ -536,35 +536,31 @@ function idrMapView() {
 		var result = {}
 		
 		var floor = null
-		
-		if (_currentFloorId) {
-		
-			floor = self.regionEx.getFloorbyId(_currentFloorId)
-		}
-		else {
-			
-			floor = self.regionEx.floorList[0]
-		}
-		
-		for (var i = 0; i < floor.unitList.length; ++i) {
-			
-			var unit = floor.unitList[i]
-			
-			for (var j = 0; j < types.length; ++j) {
-				
-				if (unit.unitTypeId == types[j]) {
-					
-					if (unit.unitTypeId in result) {
-						
-						result[unit.unitTypeId].push(unit)
-					}
-					else  {
-						
-						result[unit.unitTypeId] = [unit]
-					}
-				}
-			}
-		}
+
+        for (var k = 0; k < self.regionEx.floorList.length; ++k) {
+
+            var floor = self.regionEx.floorList[k]
+
+            for (var i = 0; i < floor.unitList.length; ++i) {
+
+                var unit = floor.unitList[i]
+
+                for (var j = 0; j < types.length; ++j) {
+
+                    if (unit.unitTypeId == types[j]) {
+
+                        if (unit.unitTypeId in result) {
+
+                            result[unit.unitTypeId].push(unit)
+                        }
+                        else  {
+
+                            result[unit.unitTypeId] = [unit]
+                        }
+                    }
+                }
+            }
+        }
 		
 		return result
 	}
