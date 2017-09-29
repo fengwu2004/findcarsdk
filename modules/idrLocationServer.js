@@ -160,6 +160,11 @@ function idrLocateServer() {
         
         _beacons = null
     }
+
+    this.setStartFailed = function () {
+
+        _started = false
+    }
     
     this.isStart = function() {
         

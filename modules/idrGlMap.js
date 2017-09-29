@@ -97,7 +97,7 @@ function idrGlMap(mapView) {
 		
 		createCanvas(container)
 		
-		for (var i = 0; i < _regionEx.floorList.length; ++i) {
+		for (var i = _regionEx.floorList.length - 1; i >= 0; --i) {
 			
 			var data = {}
 			
@@ -131,9 +131,9 @@ function idrGlMap(mapView) {
 		_region.animPitch(0)//设置为 2d
 		
 		_region.setAlwaysDrawUnit(true)
-		
-		_region.set2DMarkerWaveColor(0x4f000088)
-	}
+
+        _region.set2DMarkerWaveColor(0x4f000088)
+    }
 	
 	function changeToFloor(floorId) {
 		
@@ -321,13 +321,24 @@ function idrGlMap(mapView) {
 		var units = _region.searchUnit(x, y)
 		
 		if (units.length > 0) {
-			
-			var unit = findUnit(units[0].x, units[0].y)
+
+            var unit = findUnit(units[0].x, units[0].y)
 			
 			_mapView.onUnitClick(unit)
 			
 			return
 		}
+
+		var icons = _region.searchIcon(x, y)
+
+        if (icons.length > 0) {
+
+            var unit = findUnit(icons[0].x, icons[0].y)
+
+            _mapView.onUnitClick(unit)
+
+            return
+        }
 		
 		var mapLoc = _region.getTouchPosMapLoc(x, y)
 		
@@ -393,12 +404,18 @@ function idrGlMap(mapView) {
 		
 		var dis = _region.getLookDistance()
 		
-		if (dis < 100 || dis > 3000) {
+		if (dis < 100 || dis > 4000) {
 			
 			return
 		}
-		
-		_region.animLookDistance(dis * scale)
+
+		var value = dis * scale
+
+        value = Math.min(value, 4000)
+
+        value = Math.max(100, value)
+
+		_region.animLookDistance(value)
 	}
 	
 	function birdLook() {

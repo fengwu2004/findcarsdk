@@ -200,15 +200,7 @@ function doAjax(url, data, successFn, failedFn) {
 			
 			error:function (response) {
 				
-				// alert('网络错误----')
-				
 				console.log(url)
-
-                // alert('网络错误++++++')
-
-                // idrDebug.showDebugInfo(true)
-
-                // idrDebug.debugInfo(JSON.stringify(response))
 
                 console.log(JSON.stringify(response))
 				
@@ -256,7 +248,7 @@ function idrNetworkManager() {
 	
 	this.host = 'http://wx.indoorun.com/'
 	
-	this.debug_host = 'http://192.168.0.104:8888/'
+	this.debug_host = 'http://192.168.1.146:8888/'
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
@@ -281,7 +273,7 @@ idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
 	
-	if (networkdebug) {
+	if (false && networkdebug) {
 		
 		var url = this.debug_host + 'wx/initSession.html'
 		
@@ -294,8 +286,8 @@ idrNetworkManager.prototype.serverCallInitSession = function(url, success, faile
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
-	
-	if (networkdebug) {
+
+    if (false && networkdebug) {
 		
 		var url = this.debug_host + 'wx/getSign.html'
 		
@@ -332,8 +324,8 @@ idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, succes
 }
 
 idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) {
-	
-	if (networkdebug) {
+
+    if (false && networkdebug) {
 		
 		var url = this.debug_host + 'chene/getCheLocation.html'
 		
@@ -366,11 +358,11 @@ idrNetworkManager.prototype.removeMarkedUnit = function(success, failed) {
 	this.doAjax(url, data, success, failed)
 }
 
-idrNetworkManager.prototype.saveMarkedUnit = function(unit, regionId, success, failed) {
+idrNetworkManager.prototype.saveMarkedUnit = function(unit, success, failed) {
 	
 	var pos = unit.getPos()
 	
-	var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:regionId})
+	var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:unit.regionId})
 	
 	var url = this.host + 'chene/saveCheLocation.html'
 	

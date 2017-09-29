@@ -29,6 +29,10 @@ function idrBeaconMgr() {
 
     var _signature = ''
 
+    this.beaconStart = false
+
+    this.beaconCount = 0
+
     this.onBeaconReceiveFunc = null
 
     var self = this
@@ -86,6 +90,8 @@ function idrBeaconMgr() {
 
                     if (argv.errMsg == 'startSearchBeacons:bluetooth power off') {
 
+                        self.beaconStart = false
+
                         failedCallback(0)
                     }
                 }
@@ -95,7 +101,11 @@ function idrBeaconMgr() {
 
                 complete: function (argv) {
 
+                    self.beaconStart = true
+
                     var beacons = argv.beacons;
+
+                    this.beaconCount = beacons.length
 
                     idrDebug.debugInfo('蓝牙数量：' + beacons.length.toString())
 

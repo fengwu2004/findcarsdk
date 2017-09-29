@@ -26,6 +26,8 @@ import IDRLocationServerInstance from './idrLocationServer.js'
 
 import IdrMap from './idrGlMap.js'
 
+import idrBeaconInstance from './idrBeaconManager'
+
 function idrMapView() {
 	
 	this.eventTypes = idrMapEventTypes
@@ -80,7 +82,16 @@ function idrMapView() {
 		if (!_locator.isStart()) {
 			
 			_locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+
+            return
 		}
+
+        if (!idrBeaconInstance.beaconStart) {
+
+            failedCallBack && failedCallBack(0)
+
+            return
+        }
 	}
 	
 	function getRoutePath(start, end) {

@@ -10,6 +10,8 @@ function IDRRegionEx(regionAllInfo) {
 		
 		this[key] = regionAllInfo[key]
 	}
+
+    this.floorList.reverse()
 	
 	var floorList = this.floorList
 
