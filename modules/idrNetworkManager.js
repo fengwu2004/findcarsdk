@@ -9,7 +9,7 @@ import idrDebug from './idrDebug.js'
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = false
+var networkdebug = true
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
@@ -249,6 +249,21 @@ function idrNetworkManager() {
 	this.host = 'http://wx.indoorun.com/'
 	
 	this.debug_host = 'http://192.168.1.146:8888/'
+
+    var ua = navigator.userAgent
+
+    if (ua.match(/iPhone|iPod/i) != null) {
+
+	    this.osType = 'iPhone'
+    }
+    else if (ua.match(/Android/i) != null) {
+
+	    this.osType = 'Android'
+    }
+    else {
+
+        this.osType = 'unknow'
+    }
 }
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
@@ -427,15 +442,11 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, reg
             'beacons': beacons,
             'gzId': 'ewr2342342',
             'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-            'OSType': 'iPhone',
+            'OSType': this.osType,
             'regionId': regionId,
             'floorId': floorId,
             'beaconCount':count
         };
-
-        // idrDebug.showDebugInfo(true)
-
-        idrDebug.debugInfo('请求定位')
 
         this.doAjax(url, data, success, failed)
     }
