@@ -132,7 +132,11 @@ function idrGlMap(mapView) {
 		
 		_region.setAlwaysDrawUnit(true)
 
-        _region.set2DMarkerWaveColor(0x4f000088)
+        _region.addTexture('locatepos', _mapView.publicPath + '/static/locatepos.png')
+
+        _region.setLocMarkerParam('locatepos', 0x70aa5a1e, 200, 75)
+
+        // _region.set2DMarkerWaveColor(0x4f000088)
     }
 	
 	function changeToFloor(floorId) {

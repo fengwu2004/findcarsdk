@@ -193,18 +193,28 @@ function doAjax(url, data, successFn, failedFn) {
 					successFn && successFn(response)
 				}
 				else {
-					
-					failedFn && failedFn(response);
+
+				    if (failedFn) {
+
+                        failedFn && failedFn(response);
+                    }
+                    else {
+
+                        console.log(JSON.stringify(response))
+                    }
 				}
 			},
 			
 			error:function (response) {
-				
-				console.log(url)
 
-                console.log(JSON.stringify(response))
-				
-				failedFn && failedFn(response);
+                if (failedFn) {
+
+                    failedFn && failedFn(response);
+                }
+                else {
+
+                    console.log(JSON.stringify(response))
+                }
 			}
 		});
 	}
@@ -231,14 +241,28 @@ function doAjax(url, data, successFn, failedFn) {
 					successFn && successFn(response)
 				}
 				else {
-					
-					failedFn && failedFn(response);
+
+                    if (failedFn) {
+
+                        failedFn && failedFn(response);
+                    }
+                    else {
+
+                        console.log(JSON.stringify(response))
+                    }
 				}
 			},
 			
 			error:function (response) {
-				
-				failedFn && failedFn(response);
+
+                if (failedFn) {
+
+                    failedFn && failedFn(response);
+                }
+                else {
+
+                    console.log(JSON.stringify(response))
+                }
 			}
 		});
 	}

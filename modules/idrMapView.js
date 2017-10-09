@@ -500,8 +500,14 @@ function idrMapView() {
 	}
 	
 	function updateMarkerLocation(marker, pos) {
-		
-		_idrMap.updateMarkerLocation(marker, pos)
+
+	    removeMarker(marker)
+
+        marker.position = pos
+
+        addMarker(marker)
+
+        return marker
 	}
 	
 	function findUnitWithName(floorId, name) {
