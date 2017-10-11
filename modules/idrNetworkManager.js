@@ -369,7 +369,8 @@ idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) 
 		var url = this.debug_host + 'chene/getCheLocation.html'
 		
 		var data = {
-		
+
+            regionId:regionId
 		}
 		
 		doAjax_debug(url, data, success, failed)
@@ -380,18 +381,20 @@ idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) 
 
 		var data = {
 
+            regionId:regionId
 		}
 
 		this.doAjax(url, data, success, failed)
 	}
 }
 
-idrNetworkManager.prototype.removeMarkedUnit = function(success, failed) {
+idrNetworkManager.prototype.removeMarkedUnit = function(regionId, success, failed) {
 	
 	var url = this.host + 'chene/removeCheLocation.html'
 	
 	var data = {
-	
+
+        regionId:regionId
 	}
 	
 	this.doAjax(url, data, success, failed)

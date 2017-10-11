@@ -99,7 +99,7 @@ function idrMapView() {
 		return _router.routerPath(start, end, false)
 	}
 	
-	function doRoute(start, end) {
+	function doRoute(start, end, car) {
 
         _inNavi = false
 		
@@ -118,8 +118,17 @@ function idrMapView() {
 			
 			return false
 		}
-		
-		_path = _router.routerPath(start, end, false)
+
+        _path = null
+
+		if (car === undefined) {
+
+            _path = _router.routerPath(start, end, false)
+        }
+        else {
+
+            _path = _router.routerPath(start, end, car)
+        }
 		
 		if (!_path) {
 

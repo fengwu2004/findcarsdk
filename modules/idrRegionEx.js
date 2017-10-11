@@ -132,6 +132,11 @@ function IDRRegionEx(regionAllInfo) {
 		for (var i = 0; i < unitList.length; ++i) {
 			
 			var unit = unitList[i]
+
+            if (unit.floorId !== pos.floorId) {
+
+			    continue
+            }
 			
 			var dis = getDistance(pos, unit.getPos())
 			
