@@ -171,16 +171,31 @@ function idrMapView() {
 	}
 	
 	function onMapScroll(x, y) {
+
+        if (_mapEvent.fireOnce(self.eventTypes.onMapScroll, {x:x, y:y})) {
+
+            return
+        }
 		
 		_mapEvent.fireEvent(self.eventTypes.onMapScroll, {x:x, y:y})
 	}
 	
 	function onMapLongPress(pos) {
+
+	    if (_mapEvent.fireOnce(type, pos)) {
+
+	        return
+        }
 		
 		_mapEvent.fireEvent(self.eventTypes.onMapLongPress, pos)
 	}
 	
 	function onUnitClick(unit) {
+
+        if (_mapEvent.fireOnce(self.eventTypes.onUnitClick, unit)) {
+
+            return
+        }
 		
 		_mapEvent.fireEvent(self.eventTypes.onUnitClick, unit)
 	}
@@ -320,6 +335,11 @@ function idrMapView() {
 		
 		return _mapEvent.addEvent(type, fn)
 	}
+
+    function addOnceEvent(type, fn) {
+
+        return _mapEvent.addOnce(type, fn)
+    }
 	
 	function removeEventListener(type) {
 		
@@ -405,7 +425,12 @@ function idrMapView() {
 	function onMarkerClick(floorId, markerId) {
 		
 		var marker = findMarker(floorId, markerId)
-		
+
+        if (_mapEvent.fireOnce(self.eventTypes.onMarkerClick, marker)) {
+
+		    return
+        }
+
 		_mapEvent.fireEvent(self.eventTypes.onMarkerClick, marker)
 	}
 	
@@ -613,6 +638,8 @@ function idrMapView() {
 	this.initMap = initMap
 	
 	this.addEventListener = addEventListener
+
+    this.addOnceEvent = addOnceEvent
 	
 	this.removeEventListener = removeEventListener
 	
