@@ -99,9 +99,10 @@ function idrMapEvent() {
             return false
         }
 
-        this.oncesEvents[type] = null
+        if (fn(data)) {
 
-        fn(data)
+            this.oncesEvents[type] = null
+        }
 
         return true
     }

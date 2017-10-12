@@ -78,8 +78,8 @@ function idrMapView() {
 	}
 	
 	function doLocation(locateCallback, failedCallBack) {
-		
-		if (!_locator.isStart()) {
+
+	    if (!_locator.isStart()) {
 			
 			_locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
 
