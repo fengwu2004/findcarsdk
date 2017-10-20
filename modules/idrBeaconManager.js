@@ -94,6 +94,10 @@ function idrBeaconMgr() {
 
                         failedCallback(0)
                     }
+                    else {
+
+                        self.beaconStart = true
+                    }
                 }
             });
 
@@ -101,7 +105,7 @@ function idrBeaconMgr() {
 
                 complete: function (argv) {
 
-                    self.beaconStart = true
+                    // self.beaconStart = true
 
                     var beacons = argv.beacons;
 

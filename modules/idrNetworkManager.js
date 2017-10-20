@@ -9,7 +9,7 @@ import idrDebug from './idrDebug.js'
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = true
+var networkdebug = false
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
@@ -457,12 +457,13 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, reg
     }
     else {
 
-        if (count <= 0) {
+        if (!coreManager.isAppEnd) {
 
-            return
+            if (count <= 0) {
+
+                return
+            }
         }
-
-        var url = this.host + 'locate/locatingBin';
 
         var data = {
             'version':1,
@@ -473,7 +474,39 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, reg
             'regionId': regionId,
             'floorId': floorId,
             'beaconCount':count
-        };
+        }
+
+        if (coreManager.isAppEnd) {
+
+            if (beacons && count) {
+
+                data = {
+                    'version':1,
+                    'beacons': beacons,
+                    'gzId': 'ewr2342342',
+                    'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+                    'OSType': this.osType,
+                    'regionId': regionId,
+                    'floorId': floorId,
+                    'beaconCount':count
+                }
+            }
+            else {
+
+                data = {
+                    'version':1,
+                    'beacons': '',
+                    'gzId': 'ewr2342342',
+                    'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+                    'OSType': this.osType,
+                    'regionId': regionId,
+                    'floorId': floorId,
+                    'beaconCount':count
+                }
+            }
+        }
+
+        var url = this.host + 'locate/locatingBin';
 
         this.doAjax(url, data, success, failed)
     }

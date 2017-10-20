@@ -89,8 +89,10 @@ function idrMapView() {
         if (!idrBeaconInstance.beaconStart) {
 
             failedCallBack && failedCallBack(0)
+        }
+        else {
 
-            return
+            failedCallBack && failedCallBack(1)
         }
 	}
 	
@@ -478,9 +480,16 @@ function idrMapView() {
 		if (mapPos.floorId !== _currentFloorId) {
 			
 			changeFloor(mapPos.floorId)
+
+            setTimeout(function () {
+
+                _idrMap.centerPos(mapPos, anim)
+            }, 500)
 		}
-		
-		_idrMap.centerPos(mapPos, anim)
+		else {
+
+            _idrMap.centerPos(mapPos, anim)
+        }
 	}
 	
 	function resetMap() {
