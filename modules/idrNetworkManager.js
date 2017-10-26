@@ -270,7 +270,7 @@ function doAjax(url, data, successFn, failedFn) {
 
 function idrNetworkManager() {
 	
-	this.host = 'http://wx.indoorun.com/'
+	this.host = 'https://wx.indoorun.com/'
 	
 	this.debug_host = 'http://192.168.1.146:8888/'
 

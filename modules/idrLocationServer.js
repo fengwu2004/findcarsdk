@@ -30,6 +30,10 @@ function idrLocateServer() {
     
     var _locateTimerId = null
 
+    this.onCheckSpeacialBeacons = null
+
+    var self = this
+
     function getValidBeacons(beacons) {
 
         var temp = []
@@ -100,6 +104,8 @@ function idrLocateServer() {
         }
 
         var newBeacons = filterbeacons(tempBeacons)
+
+        self.onCheckSpeacialBeacons && self.onCheckSpeacialBeacons(tempBeacons)
 
         _beacons = window.btoa(newBeacons.beacons)
 

@@ -310,6 +310,10 @@ function idrGlMap(mapView) {
 	function handleClick(x, y) {
 		
 		var markerId = _region.searchMarker(x, y)
+
+        var mapLoc = _region.getTouchPosMapLoc(x, y)
+
+        console.log(mapLoc.x, mapLoc.y)
 		
 		console.log(markerId)
 		
@@ -341,8 +345,6 @@ function idrGlMap(mapView) {
 
             return
         }
-		
-		var mapLoc = _region.getTouchPosMapLoc(x, y)
 		
 		_mapView.onMapClick({x:mapLoc.x, y:mapLoc.y, floorId:_currentFloorId})
 	}
@@ -396,6 +398,11 @@ function idrGlMap(mapView) {
 		
 		_region.animPitch(0)//设置为 2d
 	}
+
+	function set25dMap() {
+
+        _region.animPitch(45)
+    }
 	
 	function scroll(screenVec) {
 	
@@ -567,6 +574,154 @@ function idrGlMap(mapView) {
 		
 		marker.position = pos
 	}
+
+    function addObjModel(){
+
+        var baseUrl = _mapView.publicPath + "/static/model/";
+        var m;
+
+        m = new ObjModel(_region);
+        m.x = 877;
+        m.y = 1263;
+        m.loadURLDir(baseUrl, "js001",
+            function(model){
+                _region.insertModel(0, model, 50, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+        m = new ObjModel(_region);
+        m.x = 935;
+        m.y = 1263;
+        m.loadURLDir(baseUrl, "js001",
+            function(model){
+                _region.insertModel(0, model, -50, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+
+        m = new ObjModel(_region);
+        m.x = 877;
+        m.y = 1140;
+        m.loadURLDir(baseUrl, "js001",
+            function(model){
+                _region.insertModel(0, model, -50, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+        m = new ObjModel(_region);
+        m.x = 935;
+        m.y = 1140;
+        m.loadURLDir(baseUrl, "js001",
+            function(model){
+                _region.insertModel(0, model, 50, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 872;
+        m.y = 1182;
+        m.loadURLDir(baseUrl, "js002",
+            function(model){
+                _region.insertModel(0, model, 0, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 872;
+        m.y = 1220;
+        m.loadURLDir(baseUrl, "js003",
+            function(model){
+                _region.insertModel(0, model, 0, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 866;
+        m.y = 1148;
+        m.loadURLDir(baseUrl, "js004",
+            function(model){
+                _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 870;
+        m.y = 1162;
+        m.loadURLDir(baseUrl, "js005",
+            function(model){
+                _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 870;
+        m.y = 1240;
+        m.loadURLDir(baseUrl, "js006",
+            function(model){
+                _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 955;
+        m.y = 1267;
+        m.loadURLDir(baseUrl, "js007",
+            function(model){
+                _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 972;
+        m.y = 1269;
+        m.loadURLDir(baseUrl, "js002",
+            function(model){
+                _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 926;
+        m.y = 1203;
+        m.loadURLDir(baseUrl, "js008",
+            function(model){
+                _region.insertModel(0, model, -90, 1.2, model.x, model.y, 0);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js009",
+            function(model){
+                _region.insertModel(0, model, -90, 0.5, model.x, model.y, 0);
+            },
+            function(status){
+                console.log("load obj model faild:"+status);
+            });
+    }
 	
 	this.getMapScale = getMapScale
 	
@@ -630,6 +785,10 @@ function idrGlMap(mapView) {
             _region.setNavigateProj(value)
         }
     }
+
+    this.set25dMap = set25dMap
+
+    this.addObjModel = addObjModel
 }
 
 export { idrGlMap as default }

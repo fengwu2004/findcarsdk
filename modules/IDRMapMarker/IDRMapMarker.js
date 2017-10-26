@@ -52,13 +52,29 @@ function IDRTempMarker(pos, icon) {
 	this.className = 'IDRTempMarker'
 }
 
+function IDRTreasureboxMarker(pos, icon) {
+
+    IDRMapMarker.call(this, pos, icon)
+
+    this.className = 'IDRTreasureboxMarker'
+}
+
+function IDROpenedTreasureboxMarker(pos, icon) {
+
+    IDRMapMarker.call(this, pos, icon)
+
+    this.className = 'IDROpenedTreasureboxMarker'
+}
+
 var IDRMarkers = {
     "IDRMapMarker":IDRMapMarker,
     "IDRCarMarker":IDRCarMarker,
     "IDRFacMarker":IDRFacMarker,
     "IDRStartMarker":IDRStartMarker,
     "IDREndMarker":IDREndMarker,
-		"IDRTempMarker":IDRTempMarker
+    "IDRTempMarker":IDRTempMarker,
+    "IDRTreasureboxMarker":IDRTreasureboxMarker,
+    "IDROpenedTreasureboxMarker":IDROpenedTreasureboxMarker
 }
 
 export { IDRMarkers as default }

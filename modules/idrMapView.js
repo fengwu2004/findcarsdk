@@ -76,6 +76,16 @@ function idrMapView() {
 		
 		_mapEvent.fireEvent(self.eventTypes.onMapClick, pos)
 	}
+
+	function showComposs(show) {
+
+	    if (!_composs) {
+
+	        return
+        }
+
+        _composs.show(show)
+    }
 	
 	function doLocation(locateCallback, failedCallBack) {
 
@@ -480,16 +490,9 @@ function idrMapView() {
 		if (mapPos.floorId !== _currentFloorId) {
 			
 			changeFloor(mapPos.floorId)
-
-            setTimeout(function () {
-
-                _idrMap.centerPos(mapPos, anim)
-            }, 500)
 		}
-		else {
 
-            _idrMap.centerPos(mapPos, anim)
-        }
+        _idrMap.centerPos(mapPos, anim)
 	}
 	
 	function resetMap() {
@@ -552,6 +555,26 @@ function idrMapView() {
 
         return marker
 	}
+
+    function findUnitWithId(unitId) {
+
+        for (var i = 0; i < self.regionEx.floorList.length; ++i) {
+
+            var floor = self.regionEx.floorList[i]
+
+            for (var j = 0; j < floor.unitList.length; ++j) {
+
+                var unit = floor.unitList[j]
+
+                if (unit.id === unitId) {
+
+                    return unit
+                }
+            }
+        }
+
+        return null
+    }
 	
 	function findUnitWithName(floorId, name) {
 		
@@ -707,7 +730,9 @@ function idrMapView() {
 	this.onMapLongPress = onMapLongPress
 	
 	this.onMapScroll = onMapScroll
-	
+
+    this.findUnitWithId = findUnitWithId
+
 	this.findUnitWithName = findUnitWithName
 	
 	this.getNearUnit = getNearUnit
@@ -726,6 +751,18 @@ function idrMapView() {
     this.isInNavi = function () {
 
 	    return _inNavi
+    }
+
+    this.set25dMap = function () {
+
+	    _idrMap.set25dMap()
+    }
+
+    this.showComposs = showComposs
+
+    this.addObjModel = function () {
+
+	    _idrMap.addObjModel()
     }
 }
 
