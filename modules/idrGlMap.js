@@ -711,15 +711,62 @@ function idrGlMap(mapView) {
                 console.log("load obj model faild:"+status);
             });
 
+        /**
+         * 六角台子
+         */
         m = new ObjModel(_region);
         m.x = 908;
         m.y = 1201;
-        m.loadURLDir(baseUrl, "js009",
+        m.loadURLDir(baseUrl, "js010",
             function(model){
-                _region.insertModel(0, model, -90, 0.5, model.x, model.y, 0);
+                _region.insertModel(0, model, 0, 0.5, model.x, model.y, 0);
             },
             function(status){
-                console.log("load obj model faild:"+status);
+            });
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js010",
+            function(model){
+                _region.insertModel(0, model, 60, 0.5, model.x, model.y, 0);
+            },
+            function(status){
+            });
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js010",
+            function(model){
+                _region.insertModel(0, model, 120, 0.5, model.x, model.y, 0);
+            },
+            function(status){
+            });
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js010",
+            function(model){
+                _region.insertModel(0, model, 180, 0.5, model.x, model.y, 0);
+            },
+            function(status){
+            });
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js010",
+            function(model){
+                _region.insertModel(0, model, 240, 0.5, model.x, model.y, 0);
+            },
+            function(status){
+            });
+        m = new ObjModel(_region);
+        m.x = 908;
+        m.y = 1201;
+        m.loadURLDir(baseUrl, "js010",
+            function(model){
+                _region.insertModel(0, model, 300, 0.5, model.x, model.y, 0);
+            },
+            function(status){
             });
     }
 	

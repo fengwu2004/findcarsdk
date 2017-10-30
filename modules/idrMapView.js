@@ -67,7 +67,9 @@ function idrMapView() {
 	var _composs = null
 	
 	var self = this
-	
+
+    var _naviParm = null
+
 	var _displayAnimId = null
 	
 	var _naviStatusUpdateTimer = null
@@ -154,6 +156,13 @@ function idrMapView() {
             return false
 		}
 
+        _naviParm = {
+            start:start,
+            end:end,
+            car:car,
+            dynamic:_dynamicNavi
+        }
+
         _inNavi = true
 		
 		showRoutePath(_path)
@@ -173,6 +182,8 @@ function idrMapView() {
 		
 		_path = null
 
+        _naviParm = null
+
         _inNavi = false
 		
 		_idrMap.showRoutePath(null)
@@ -190,6 +201,25 @@ function idrMapView() {
 
         _idrMap.setDynamicNavi(_dynamicNavi)
 	}
+	
+	function reRoute() {
+
+	    if (!_naviParm || !_naviParm.dynamic) {
+
+	        return
+        }
+
+        if (_naviParm === undefined) {
+
+            _path = _router.routerPath(_currentPos, _naviParm.end, false)
+        }
+        else {
+
+            _path = _router.routerPath(_currentPos, _naviParm.end, _naviParm.car)
+        }
+
+        showRoutePath(_path)
+    }
 	
 	function onMapScroll(x, y) {
 
@@ -764,6 +794,8 @@ function idrMapView() {
 
 	    _idrMap.addObjModel()
     }
+
+    this.reRoute = reRoute
 }
 
 export { idrMapView as default }

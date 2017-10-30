@@ -272,7 +272,7 @@ function idrNetworkManager() {
 	
 	this.host = 'https://wx.indoorun.com/'
 	
-	this.debug_host = 'http://192.168.1.146:8888/'
+	this.debug_host = 'http://192.168.1.107:8888/'
 
     var ua = navigator.userAgent
 
