@@ -89,22 +89,22 @@ function idrMapView() {
         _composs.show(show)
     }
 	
-	function doLocation(locateCallback, failedCallBack) {
+	function doLocation(success, failed) {
 
 	    if (!_locator.isStart()) {
 			
-			_locator.start(_regionId, _currentFloorId, locateCallback, failedCallBack)
+			_locator.start(_regionId, _currentFloorId, success, failed)
 
             return
 		}
 
         if (!idrBeaconInstance.beaconStart) {
 
-            failedCallBack && failedCallBack(0)
+            failed && failed(0)
         }
         else {
 
-            failedCallBack && failedCallBack(1)
+            failed && failed(1)
         }
 	}
 	

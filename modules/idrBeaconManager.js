@@ -118,7 +118,6 @@ function idrBeaconMgr() {
 
         wx.error(function (res) {
 
-
         });
     }
 
