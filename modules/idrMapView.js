@@ -365,19 +365,25 @@ function idrMapView() {
 		setTimeout(function() {
 		
 			if (!_router) {
-				
-				networkInstance.serverCallRegionPathData(_regionId, function(res) {
-					
-					var gmtime = new Date()
-					
-					self.regionEx.regionPath = res.data
-					
-					_router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
-					
-					// idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
-					
-				}, null)
-				
+
+			  if ('regionPath' in self.regionEx) {
+
+          _router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
+        }
+        else {
+
+          networkInstance.serverCallRegionPathData(_regionId, function(res) {
+
+            var gmtime = new Date()
+
+            self.regionEx.regionPath = res.data
+
+            _router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
+
+            // idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
+
+          }, null)
+        }
 			}
 		}, 500)
 	}
