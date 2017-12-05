@@ -366,24 +366,13 @@ function idrMapView() {
 		
 			if (!_router) {
 
-			  if ('regionPath' in self.regionEx) {
+        networkInstance.serverCallRegionPathData(_regionId, function(res) {
+
+          self.regionEx.regionPath = res.data
 
           _router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
-        }
-        else {
 
-          networkInstance.serverCallRegionPathData(_regionId, function(res) {
-
-            var gmtime = new Date()
-
-            self.regionEx.regionPath = res.data
-
-            _router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
-
-            // idrDebug.debugInfo('加载时间RegionPathData:' + (new Date().getTime() - gmtime).toString())
-
-          }, null)
-        }
+        }, null)
 			}
 		}, 500)
 	}
