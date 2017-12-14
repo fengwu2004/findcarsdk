@@ -149,13 +149,6 @@ function idrMapView() {
       return false
     }
 
-    if (_path.distance < 120) {
-
-      _mapEvent.fireEvent(self.eventTypes.onRouterFailed, '您已在目的地附近')
-
-      return false
-    }
-
     _naviParm = {
       start:start,
       end:end,
@@ -169,11 +162,14 @@ function idrMapView() {
 
     _mapEvent.fireEvent(self.eventTypes.onRouterSuccess, {path:_path, end:end, start:start})
 
-    _naviStatusUpdateTimer = setInterval(function() {
+    if (_dynamicNavi) {
 
-      _mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
+      _naviStatusUpdateTimer = setInterval(function() {
 
-    }, 1000)
+        _mapEvent.fireEvent(self.eventTypes.onNaviStatusUpdate, _idrMap.getNaviStatus())
+
+      }, 1000)
+    }
 
     return true
   }
@@ -581,6 +577,28 @@ function idrMapView() {
     return marker
   }
 
+  function findUnitByPreciseName(name) {
+
+    var lowercase = name.toLowerCase()
+
+    for (var i = 0; i < self.regionEx.floorList.length; ++i) {
+
+      var floor = self.regionEx.floorList[i]
+
+      for (var j = 0; j < floor.unitList.length; ++j) {
+
+        var unit = floor.unitList[j]
+
+        if (lowercase === unit.name.toLowerCase()) {
+
+          return unit
+        }
+      }
+    }
+
+    return null
+  }
+
   function findUnitWithId(unitId) {
 
     for (var i = 0; i < self.regionEx.floorList.length; ++i) {
@@ -607,11 +625,13 @@ function idrMapView() {
 
     var results = null
 
+    var lowercase = name.toLowerCase()
+
     for (var i = 0; i < floor.unitList.length; ++i) {
 
       var unit = floor.unitList[i]
 
-      var index = unit.name.indexOf(name)
+      var index = unit.name.toLowerCase().indexOf(lowercase)
 
       if (index !== -1 && index + name.length == unit.name.length) {
 
@@ -791,6 +811,8 @@ function idrMapView() {
   }
 
   this.reRoute = reRoute
+
+  this.findUnitByPreciseName = findUnitByPreciseName
 }
 
 export { idrMapView as default }
