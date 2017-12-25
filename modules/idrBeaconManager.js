@@ -80,9 +80,9 @@ function idrBeaconMgr() {
             ]
         });
 
-                wx.startSearchBeacons({
+        wx.ready(function () {
 
-                    complete:function(argv){
+            wx.startSearchBeacons({
 
                 ticket:"",
 
@@ -101,11 +101,11 @@ function idrBeaconMgr() {
                 }
             });
 
-                    complete: function (argv) {
+            wx.onSearchBeacons({
 
-                        var beacons = argv.beacons;
+                complete: function (argv) {
 
-                        if (onBeaconReceiveFunc) {
+                    var beacons = argv.beacons;
 
                     // idrDebug.debugInfo('藍牙數量' + beacons.length.toString())
 
@@ -114,8 +114,9 @@ function idrBeaconMgr() {
                     self.onBeaconReceiveFunc && self.onBeaconReceiveFunc(beacons);
                 }
             });
+        });
 
-            wx.error(function (res) {
+        wx.error(function (res) {
 
         });
     }
