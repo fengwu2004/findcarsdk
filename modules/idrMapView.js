@@ -113,6 +113,26 @@ function idrMapView() {
     return _router.routerPath(start, end, false)
   }
 
+  function checkReachTargetFloor() {
+
+    if (!_inNavi) {
+
+      return false
+    }
+
+    if (!_currentPos) {
+
+      return false
+    }
+
+    if (_naviParm && _naviParm.end.floorId == _currentPos.floorId) {
+
+      return true
+    }
+
+    return false
+  }
+
   function doRoute(start, end, car) {
 
     _inNavi = false
@@ -813,6 +833,8 @@ function idrMapView() {
   this.reRoute = reRoute
 
   this.findUnitByPreciseName = findUnitByPreciseName
+
+  this.checkReachTargetFloor = checkReachTargetFloor
 }
 
 export { idrMapView as default }
