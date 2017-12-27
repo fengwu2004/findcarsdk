@@ -108,6 +108,11 @@ function idrMapView() {
     }
   }
 
+  function setStatus(type) {
+
+    _idrMap.setStatus(type)
+  }
+
   function getRoutePath(start, end) {
 
     return _router.routerPath(start, end, false)
@@ -155,14 +160,9 @@ function idrMapView() {
 
     _path = null
 
-    if (car === undefined) {
+    let carnavi = car === undefined?false : car
 
-      _path = _router.routerPath(start, end, false)
-    }
-    else {
-
-      _path = _router.routerPath(start, end, car)
-    }
+    _path = _router.routerPath(start, end, carnavi)
 
     if (!_path) {
 
@@ -172,7 +172,7 @@ function idrMapView() {
     _naviParm = {
       start:start,
       end:end,
-      car:car,
+      car:carnavi,
       dynamic:_dynamicNavi
     }
 
@@ -249,7 +249,7 @@ function idrMapView() {
 
   function onMapLongPress(pos) {
 
-    if (_mapEvent.fireOnce(type, pos)) {
+    if (_mapEvent.fireOnce(self.eventTypes.onMapLongPress, pos)) {
 
       return
     }
@@ -366,9 +366,11 @@ function idrMapView() {
 
     _mapRoot = _idrMap.root()
 
-    _idrMap.showRoutePath(_path)
+    // _idrMap.showRoutePath(_path)
 
     _idrMap.setPos(_currentPos)
+
+    console.log('加载地图完毕')
 
     var floor = self.regionEx.getFloorbyId(_currentFloorId)
 
@@ -835,6 +837,8 @@ function idrMapView() {
   this.findUnitByPreciseName = findUnitByPreciseName
 
   this.checkReachTargetFloor = checkReachTargetFloor
+
+  this.setStatus = setStatus
 }
 
 export { idrMapView as default }

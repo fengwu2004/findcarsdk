@@ -9,7 +9,7 @@ import idrDebug from './idrDebug.js'
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = false
+var networkdebug = true
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
@@ -272,7 +272,7 @@ function idrNetworkManager() {
 
   this.host = 'https://wx.indoorun.com/'
 
-  this.debug_host = 'http://192.168.1.71:8888/'
+  this.debug_host = 'http://192.168.1.86:8888/'
 
   var ua = navigator.userAgent
 
@@ -439,6 +439,20 @@ idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionI
 
     this.doAjax(url, data, success, failed)
   }
+}
+
+idrNetworkManager.prototype.testSaveRegionPos = function (allpos, regionId) {
+
+  var url = this.debug_host + 'wx/saveRegionPos'
+
+  var data = {
+    'regionId': regionId,
+    'pos':allpos
+  };
+
+  console.log('上传' + JSON.stringify(data))
+
+  doAjax_debug(url, data)
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {
