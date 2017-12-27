@@ -380,7 +380,7 @@ function idrMapView() {
 
     _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
 
-    setTimeout(function() {
+    setTimeout(() => {
 
       if (!_router) {
 

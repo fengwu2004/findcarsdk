@@ -9,7 +9,7 @@ import idrDebug from './idrDebug.js'
 var networkInstance = new idrNetworkManager()
 
 //-------------------------
-var networkdebug = true
+var networkdebug = false
 import $ from 'jquery'
 function doAjax_debug(url, data, success) {
 
