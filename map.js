@@ -8,13 +8,13 @@ import idrLocationServerInstance from './modules/idrLocationServer'
 import idrDebug from './modules/idrDebug'
 
 var map = {
-    'idrMapView':idrMapView,
-    'idrRegionEx':idrRegionEx,
-    'idrUnit':idrUnit,
-    'idrNetworkInstance':idrNetworkInstance,
-    'idrCoreManagerInstance':idrCoreManagerInstance,
-    'idrMapMarker':idrMapMarker,
-    'idrDebug':idrDebug
+	'idrMapView':idrMapView,
+	'idrRegionEx':idrRegionEx,
+	'idrUnit':idrUnit,
+	'idrNetworkInstance':idrNetworkInstance,
+	'idrCoreManagerInstance':idrCoreManagerInstance,
+	'idrMapMarker':idrMapMarker,
+	'idrDebug':idrDebug,
 }
 
 export { map as default }

@@ -345,7 +345,7 @@ function idrMapView() {
 
       console.log('begin loadRegionInfo')
 
-      idrDataMgr.loadRegionInfo(regionId, function(res) {
+      idrDataMgr.loadRegionInfo(regionId, res => {
 
         self.regionEx = new IDRRegionEx(res['data'])
 
