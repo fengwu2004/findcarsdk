@@ -372,8 +372,6 @@ function idrMapView() {
 
     updateDisplay()
 
-    _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
-
     setTimeout(() => {
 
       if (!_router) {
@@ -383,8 +381,14 @@ function idrMapView() {
           self.regionEx.regionPath = res.data
 
           _router = new IDRRouter(self.regionEx.floorList, self.regionEx.regionPath)
+	
+	        _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
 
         }, null)
+      }
+      else {
+       
+	      _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
       }
     }, 500)
   }
