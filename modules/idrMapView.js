@@ -10,12 +10,6 @@ import IDRRouter from './idrRouter.js'
 
 import IDRRegionEx from './idrRegionEx.js'
 
-import IDRUnit from './idrUnit.js'
-
-import idrDebug from './idrDebug'
-
-import IDRMapMarkers from './IDRMapMarker/IDRMapMarker.js'
-
 import IDRComposs from './Composs/IDRComposs.js'
 
 import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
