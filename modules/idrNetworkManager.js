@@ -4,7 +4,6 @@
 
 
 import coreManager from './idrCoreManager.js'
-import idrDebug from './idrDebug.js'
 
 var networkInstance = new idrNetworkManager()
 
@@ -292,8 +291,6 @@ function idrNetworkManager() {
 
 idrNetworkManager.prototype.doAjax = function(url, data, successFn, failedFn) {
 
-  // idrDebug.showDebugInfo(true)
-
   data.appId = coreManager.appId
 
   data.sessionKey = coreManager.sessionKey
@@ -464,8 +461,6 @@ idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, reg
     var data = {
       'regionId': regionId
     };
-
-    // idrDebug.debugInfo('请求定位')
 
     doAjax_debug(url, data, success, failed)
   }
