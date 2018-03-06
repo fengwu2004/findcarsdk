@@ -107,8 +107,6 @@ function idrBeaconMgr() {
 
                     var beacons = argv.beacons;
 
-                    // idrDebug.debugInfo('藍牙數量' + beacons.length.toString())
-
                     self.beaconCount = beacons.length
 
                     self.onBeaconReceiveFunc && self.onBeaconReceiveFunc(beacons);

@@ -16,8 +16,8 @@ function idrCoreManager() {
     
     this.sessionKey = ''
 
-    this.isAppEnd = false
-
+    this.isAppEnd = true
+  
     this.isAndroid = false
     
     var self = this

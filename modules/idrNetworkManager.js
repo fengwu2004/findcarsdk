@@ -453,72 +453,66 @@ idrNetworkManager.prototype.testSaveRegionPos = function (allpos, regionId) {
 }
 
 idrNetworkManager.prototype.serverCallLocatingBin = function(beacons, count, regionId, floorId, success, failed) {
-
-  if (networkdebug) {
-
-    var url = this.debug_host + 'wx/locate/locating';
-
-    var data = {
-      'regionId': regionId
-    };
-
-    doAjax_debug(url, data, success, failed)
+	
+	var data = {
+		'version':1,
+		'beacons': beacons,
+		'gzId': 'ewr2342342',
+		'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+		'OSType': this.osType,
+		'regionId': regionId,
+		'floorId': floorId,
+		'beaconCount':count
+	}
+	
+  if (!beacons) {
+	
+	  data = {
+		  'version':1,
+		  'beacons': '',
+		  'gzId': 'ewr2342342',
+		  'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+		  'OSType': this.osType,
+		  'regionId': regionId,
+		  'floorId': floorId,
+		  'beaconCount':count
+	  }
   }
-  else {
-
-    if (!coreManager.isAppEnd) {
-
-      if (count <= 0) {
-
-        return
-      }
-    }
-
-    var data = {
-      'version':1,
-      'beacons': beacons,
-      'gzId': 'ewr2342342',
-      'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-      'OSType': this.osType,
-      'regionId': regionId,
-      'floorId': floorId,
-      'beaconCount':count
-    }
-
-    if (coreManager.isAppEnd) {
-
-      if (beacons && count) {
-
-        data = {
-          'version':1,
-          'beacons': beacons,
-          'gzId': 'ewr2342342',
-          'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-          'OSType': this.osType,
-          'regionId': regionId,
-          'floorId': floorId,
-          'beaconCount':count
-        }
-      }
-      else {
-
-        data = {
-          'version':1,
-          'beacons': '',
-          'gzId': 'ewr2342342',
-          'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
-          'OSType': this.osType,
-          'regionId': regionId,
-          'floorId': floorId,
-          'beaconCount':count
-        }
-      }
-    }
-
-    var url = this.host + 'locate/locatingBin';
-
-    this.doAjax(url, data, success, failed)
-  }
+	
+	
+	if (coreManager.isAppEnd) {
+		
+		if (beacons && count) {
+			
+			data = {
+				'version':1,
+				'beacons': beacons,
+				'gzId': 'ewr2342342',
+				'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+				'OSType': this.osType,
+				'regionId': regionId,
+				'floorId': floorId,
+				'beaconCount':count
+			}
+		}
+		else {
+			
+			data = {
+				'version':1,
+				'beacons': '',
+				'gzId': 'ewr2342342',
+				'openId': 'wx_oBt8bt-1WMXu67NNZI-JUNQj6UAc',
+				'OSType': this.osType,
+				'regionId': regionId,
+				'floorId': floorId,
+				'beaconCount':count
+			}
+		}
+	}
+	
+	var url = this.host + 'locate/locatingBin';
+	
+	this.doAjax(url, data, success, failed)
 }
 
 export { networkInstance as default }
