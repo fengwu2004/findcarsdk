@@ -16,7 +16,7 @@ function idrCoreManager() {
     
     this.sessionKey = ''
 
-    this.isAppEnd = true
+    this.isAppEnd = false
   
     this.isAndroid = false
     
