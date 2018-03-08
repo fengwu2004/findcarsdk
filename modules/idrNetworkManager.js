@@ -185,7 +185,7 @@ function doAjax(url, data, successFn, failedFn) {
 
       success:function (response) {
 
-        console.log('请求成功' + url)
+        // console.log('请求成功' + url)
 
         if (response != null && response.code == "success") {
 
@@ -308,33 +308,15 @@ idrNetworkManager.prototype.serverCallWxAuth = function(success, failed) {
 }
 
 idrNetworkManager.prototype.serverCallInitSession = function(url, success, failed) {
-
-  if (false && networkdebug) {
-
-    var url = this.debug_host + 'wx/initSession.html'
-
-    doAjax_debug(url, {}, success, failed)
-  }
-  else {
-
-    doAjax(url, {}, success, failed)
-  }
+	
+	doAjax(url, {}, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallWXSign = function(data, success, failed) {
-
-  if (false && networkdebug) {
-
-    var url = this.debug_host + 'wx/getSign.html'
-
-    doAjax_debug(url, data, success, failed)
-  }
-  else {
-
-    var url = this.host + 'wx/getSign.html'
-
-    this.doAjax(url, data, success, failed)
-  }
+	
+	var url = this.host + 'wx/getSign.html'
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.serverCallRegionPathData = function (regionId, success, failed) {
@@ -360,29 +342,15 @@ idrNetworkManager.prototype.serverCallRegionAllInfo = function (regionId, succes
 }
 
 idrNetworkManager.prototype.getMarkedUnit = function(regionId, success, failed) {
-
-  if (false && networkdebug) {
-
-    var url = this.debug_host + 'chene/getCheLocation.html'
-
-    var data = {
-
-      regionId:regionId
-    }
-
-    doAjax_debug(url, data, success, failed)
-  }
-  else {
-
-    var url = this.host + 'chene/getCheLocation.html'
-
-    var data = {
-
-      regionId:regionId
-    }
-
-    this.doAjax(url, data, success, failed)
-  }
+	
+	var url = this.host + 'chene/getCheLocation.html'
+	
+	var data = {
+		
+		regionId:regionId
+	}
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.removeMarkedUnit = function(regionId, success, failed) {
@@ -413,29 +381,15 @@ idrNetworkManager.prototype.saveMarkedUnit = function(unit, success, failed) {
 }
 
 idrNetworkManager.prototype.getParkingPlaceUnitByCarNo = function(carNo, regionId, success, failed) {
-
-  if (false) {
-
-    var url = this.debug_host + 'chene/getParkingPlaceUnitByCarNo.html'
-
-    var data = {
-      'regionId': regionId,
-      'carNo': carNo,
-    }
-
-    doAjax_debug(url, data, success, failed)
-  }
-  else {
-
-    var url = this.host + 'chene/getParkingPlaceUnitByCarNo.html'
-
-    var data = {
-      'regionId': regionId,
-      'carNo': carNo,
-    }
-
-    this.doAjax(url, data, success, failed)
-  }
+	
+	var url = this.host + 'chene/getParkingPlaceUnitByCarNo.html'
+	
+	var data = {
+		'regionId': regionId,
+		'carNo': carNo,
+	}
+	
+	this.doAjax(url, data, success, failed)
 }
 
 idrNetworkManager.prototype.testSaveRegionPos = function (allpos, regionId) {

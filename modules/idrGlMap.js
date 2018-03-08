@@ -114,9 +114,11 @@ function idrGlMap(mapView) {
 
     _region.setUIScaleRate(0.38333333)
 
-    _region.addTexture("pubIcons", _mapView.publicPath + "/static/img_pub_icons.png");
+    _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
-    _region.addTexture("parking", _mapView.publicPath + "/static/img_parking.png");
+    _region.addTexture("parking", _mapView.publicPath + "/img_parking.png");
+	
+	  _region.addTextureMip("route_tex", _mapView.publicPath  + "/tex_route.png");
 
     _region.addFloorsSVG(_floorList);
 
@@ -132,7 +134,7 @@ function idrGlMap(mapView) {
 
     _region.setAlwaysDrawUnit(true)
 
-    _region.addTexture('locatepos', _mapView.publicPath + '/static/locatepos.png')
+    _region.addTexture('locatepos', _mapView.publicPath + '/locatepos.png')
 
     _region.setLocMarkerParam('locatepos', 0x70145082, 200, 75)
   }
@@ -580,201 +582,6 @@ function idrGlMap(mapView) {
     marker.position = pos
   }
 
-  function addObjModel(){
-
-    var baseUrl = _mapView.publicPath + "/static/model/";
-    var m;
-
-    m = new ObjModel(_region);
-    m.x = 877;
-    m.y = 1263;
-    m.loadURLDir(baseUrl, "js001",
-      function(model){
-        _region.insertModel(0, model, 50, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-    m = new ObjModel(_region);
-    m.x = 935;
-    m.y = 1263;
-    m.loadURLDir(baseUrl, "js001",
-      function(model){
-        _region.insertModel(0, model, -50, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-
-    m = new ObjModel(_region);
-    m.x = 877;
-    m.y = 1140;
-    m.loadURLDir(baseUrl, "js001",
-      function(model){
-        _region.insertModel(0, model, -50, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-    m = new ObjModel(_region);
-    m.x = 935;
-    m.y = 1140;
-    m.loadURLDir(baseUrl, "js001",
-      function(model){
-        _region.insertModel(0, model, 50, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 872;
-    m.y = 1182;
-    m.loadURLDir(baseUrl, "js002",
-      function(model){
-        _region.insertModel(0, model, 0, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 872;
-    m.y = 1220;
-    m.loadURLDir(baseUrl, "js003",
-      function(model){
-        _region.insertModel(0, model, 0, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 866;
-    m.y = 1148;
-    m.loadURLDir(baseUrl, "js004",
-      function(model){
-        _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 870;
-    m.y = 1162;
-    m.loadURLDir(baseUrl, "js005",
-      function(model){
-        _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 870;
-    m.y = 1240;
-    m.loadURLDir(baseUrl, "js006",
-      function(model){
-        _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 955;
-    m.y = 1267;
-    m.loadURLDir(baseUrl, "js007",
-      function(model){
-        _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 972;
-    m.y = 1269;
-    m.loadURLDir(baseUrl, "js002",
-      function(model){
-        _region.insertModel(0, model, -90, 0.24, model.x, model.y, 2);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    m = new ObjModel(_region);
-    m.x = 926;
-    m.y = 1203;
-    m.loadURLDir(baseUrl, "js008",
-      function(model){
-        _region.insertModel(0, model, -90, 1.2, model.x, model.y, 0);
-      },
-      function(status){
-        console.log("load obj model faild:"+status);
-      });
-
-    /**
-     * 六角台子
-     */
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 0, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 60, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 120, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 180, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 240, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-    m = new ObjModel(_region);
-    m.x = 908;
-    m.y = 1201;
-    m.loadURLDir(baseUrl, "js010",
-      function(model){
-        _region.insertModel(0, model, 300, 0.5, model.x, model.y, 0);
-      },
-      function(status){
-      });
-  }
-
   this.getMapScale = getMapScale
 
   this.getMapRotate = getMapRotate
@@ -839,8 +646,6 @@ function idrGlMap(mapView) {
   }
 
   this.set25dMap = set25dMap
-
-  this.addObjModel = addObjModel
 
   this.setStatus = setStatus
 }
