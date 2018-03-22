@@ -596,6 +596,28 @@ function idrMapView() {
 
     return marker
   }
+	
+	function findUnitWithNameAndFloor(name, floorId) {
+		
+		var lowercase = name.toLowerCase()
+		
+		for (var i = 0; i < self.regionEx.floorList.length; ++i) {
+			
+			var floor = self.regionEx.floorList[i]
+			
+			for (var j = 0; j < floor.unitList.length; ++j) {
+				
+				var unit = floor.unitList[j]
+				
+				if (lowercase === unit.name.toLowerCase() && floorId === unit.floorId) {
+					
+					return unit
+				}
+			}
+		}
+		
+		return null
+	}
 
   function findUnitByPreciseName(name) {
 
@@ -835,6 +857,8 @@ function idrMapView() {
   this.findUnitByPreciseName = findUnitByPreciseName
 
   this.checkReachTargetFloor = checkReachTargetFloor
+	
+	this.findUnitWithNameAndFloor = findUnitWithNameAndFloor
 
   this.setStatus = setStatus
 }

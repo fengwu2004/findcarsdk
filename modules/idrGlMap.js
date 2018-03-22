@@ -402,13 +402,17 @@ function idrGlMap(mapView) {
   function resetMap() {
 
     _region.overlookMap(_regionEx.getFloorIndex(_currentFloorId))
+	
+	  _region.displayFloor(_regionEx.getFloorIndex(_currentFloorId))
 
     _region.animPitch(0)//设置为 2d
   }
 
   function set25dMap() {
 
-    _region.animPitch(30)
+    _region.animPitch(180)
+	  
+	  _region.displayRegion()
   }
 
   function scroll(screenVec) {
@@ -435,8 +439,10 @@ function idrGlMap(mapView) {
   }
 
   function birdLook() {
-
-    _region.overlookRoute()
+	
+	  _region.displayRegion()
+	  
+  	_region.overlookRoute()
   }
 
   function showRoutePath(path) {
