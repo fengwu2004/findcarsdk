@@ -410,7 +410,7 @@ function idrGlMap(mapView) {
 
   function set25dMap() {
 
-    _region.animPitch(180)
+    _region.animPitch(70)
 	  
 	  _region.displayRegion()
   }
