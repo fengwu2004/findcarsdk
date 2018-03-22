@@ -390,7 +390,7 @@ function idrMapView() {
        
 	      _mapEvent.fireEvent(self.eventTypes.onFloorChangeSuccess, {floorId:_currentFloorId, regionId:_regionId})
       }
-    }, 500)
+    }, 0)
   }
 
   function addEventListener(type, fn) {

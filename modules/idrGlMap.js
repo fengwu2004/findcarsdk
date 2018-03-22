@@ -16,7 +16,7 @@ function idrGlMap(mapView) {
 
   var _floor = null
 
-  var _origScale = 0.5
+  var _origScale = 1
 
   var _mapRoot = null
 
@@ -112,7 +112,7 @@ function idrGlMap(mapView) {
 
     _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
 
-    _region.setUIScaleRate(0.38333333)
+    _region.setUIScaleRate(1)
 
     _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
@@ -127,10 +127,10 @@ function idrGlMap(mapView) {
     _region.setFontType('24px Arial')
 
     _region.startRender();
-
-    _region.displayFloor(_floor.floorIndex)
-
-    _region.animPitch(0)//设置为 2d
+	
+	  _region.displayFloor(_floor.floorIndex)
+	
+	  _region.animPitch(0)//设置为 2d
 
     _region.setAlwaysDrawUnit(true)
 
@@ -144,10 +144,10 @@ function idrGlMap(mapView) {
     _currentFloorId = floorId
 
     _floor = _regionEx.getFloorbyId(floorId)
-
-    _region.displayFloor(_floor.floorIndex)
-
-    onAllFloorLoaded()
+	
+	  _region.displayFloor(_floor.floorIndex)
+	
+	  onAllFloorLoaded()
   }
 
   function onAllFloorLoaded() {
@@ -408,7 +408,7 @@ function idrGlMap(mapView) {
 
   function set25dMap() {
 
-    _region.animPitch(45)
+    _region.animPitch(30)
   }
 
   function scroll(screenVec) {
