@@ -151,7 +151,7 @@ function IDRRegionEx(regionAllInfo) {
 		return result
 	}
 	
-	function getAllUnits(currnetFloorId) {
+	function getAllUnits() {
 		
 		var results = []
 		
