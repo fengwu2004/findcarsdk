@@ -16,7 +16,7 @@ function idrGlMap(mapView) {
 
   var _floor = null
 
-  var _origScale = 0.5
+  var _origScale = 1
 
   var _mapRoot = null
 
@@ -112,7 +112,7 @@ function idrGlMap(mapView) {
 
     _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
 
-    _region.setUIScaleRate(0.38333333)
+    _region.setUIScaleRate(1)
 
     _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
@@ -127,10 +127,10 @@ function idrGlMap(mapView) {
     _region.setFontType('24px Arial')
 
     _region.startRender();
-
-    _region.displayFloor(_floor.floorIndex)
-
-    _region.animPitch(0)//设置为 2d
+	
+	  _region.displayFloor(_floor.floorIndex)
+	
+	  _region.animPitch(0)//设置为 2d
 
     _region.setAlwaysDrawUnit(true)
 
@@ -144,10 +144,10 @@ function idrGlMap(mapView) {
     _currentFloorId = floorId
 
     _floor = _regionEx.getFloorbyId(floorId)
-
-    _region.displayFloor(_floor.floorIndex)
-
-    onAllFloorLoaded()
+	
+	  _region.displayFloor(_floor.floorIndex)
+	
+	  onAllFloorLoaded()
   }
 
   function onAllFloorLoaded() {
@@ -181,9 +181,9 @@ function idrGlMap(mapView) {
 
       _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
 
-      _canvas_gl.width = 1080
+      _canvas_gl.width = 972
 
-      _canvas_gl.height = 1920
+      _canvas_gl.height = 960
     }
 
     _mapRoot.appendChild(_canvas_gl)
@@ -194,9 +194,9 @@ function idrGlMap(mapView) {
 
       _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
 
-      _canvas_txt.width = 1080
+      _canvas_txt.width = 972
 
-      _canvas_txt.height = 1920
+      _canvas_txt.height = 960
     }
 
     _mapRoot.appendChild(_canvas_txt)
@@ -402,13 +402,17 @@ function idrGlMap(mapView) {
   function resetMap() {
 
     _region.overlookMap(_regionEx.getFloorIndex(_currentFloorId))
+	
+	  _region.displayFloor(_regionEx.getFloorIndex(_currentFloorId))
 
     _region.animPitch(0)//设置为 2d
   }
 
   function set25dMap() {
 
-    _region.animPitch(45)
+    _region.animPitch(180)
+	  
+	  _region.displayRegion()
   }
 
   function scroll(screenVec) {
@@ -435,8 +439,10 @@ function idrGlMap(mapView) {
   }
 
   function birdLook() {
-
-    _region.overlookRoute()
+	
+	  _region.displayRegion()
+	  
+  	_region.overlookRoute()
   }
 
   function showRoutePath(path) {
