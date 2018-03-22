@@ -829,13 +829,37 @@ function idrMapView() {
 
     _idrMap.addObjModel()
   }
-
-  this.reRoute = reRoute
+	
+	function findUnitWithNameAndFloor(name, floorId) {
+		
+		var lowercase = name.toLowerCase()
+		
+		for (var i = 0; i < self.regionEx.floorList.length; ++i) {
+			
+			var floor = self.regionEx.floorList[i]
+			
+			for (var j = 0; j < floor.unitList.length; ++j) {
+				
+				var unit = floor.unitList[j]
+				
+				if (lowercase === unit.name.toLowerCase() && floorId === unit.floorId) {
+					
+					return unit
+				}
+			}
+		}
+		
+		return null
+	}
+	
+	this.reRoute = reRoute
 
   this.findUnitByPreciseName = findUnitByPreciseName
 
   this.checkReachTargetFloor = checkReachTargetFloor
 
+	this.findUnitWithNameAndFloor = findUnitWithNameAndFloor
+	
   this.setStatus = setStatus
 }
 
