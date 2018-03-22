@@ -181,9 +181,9 @@ function idrGlMap(mapView) {
 
       _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
 
-      _canvas_gl.width = 1080
+      _canvas_gl.width = 972
 
-      _canvas_gl.height = 1920
+      _canvas_gl.height = 960
     }
 
     _mapRoot.appendChild(_canvas_gl)
@@ -194,9 +194,9 @@ function idrGlMap(mapView) {
 
       _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
 
-      _canvas_txt.width = 1080
+      _canvas_txt.width = 972
 
-      _canvas_txt.height = 1920
+      _canvas_txt.height = 960
     }
 
     _mapRoot.appendChild(_canvas_txt)
