@@ -3,10 +3,16 @@
  */
 
 function idrGlMap(mapView) {
-
-  var maxScale = 1.5
-
-  var minScale = 1
+	
+	var _csscale = 1/0.38
+	
+	var map = document.getElementById("map");
+	
+	var style = window.getComputedStyle(map, null);
+	
+	var screenwidth = parseFloat(style.getPropertyValue('width')) * _csscale
+	
+	var screenheight = parseFloat(style.getPropertyValue('height')) * _csscale
 
   var _mapScale = 1
 
@@ -15,8 +21,6 @@ function idrGlMap(mapView) {
   var _regionEx = null
 
   var _floor = null
-
-  var _origScale = 1
 
   var _mapRoot = null
 
@@ -49,6 +53,7 @@ function idrGlMap(mapView) {
 
     onStatusChange : function(status){
 
+    	console.log(status)
     },
 
     onAnimStart : function(anim){
@@ -112,7 +117,7 @@ function idrGlMap(mapView) {
 
     _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
 
-    _region.setUIScaleRate(0.38)
+    _region.setUIScaleRate(1/_csscale)
 
     _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
@@ -181,9 +186,9 @@ function idrGlMap(mapView) {
 
       _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
 
-      _canvas_gl.width = 1080
+      _canvas_gl.width = screenwidth
 
-      _canvas_gl.height = 1920
+      _canvas_gl.height = screenheight
     }
 
     _mapRoot.appendChild(_canvas_gl)
@@ -194,9 +199,9 @@ function idrGlMap(mapView) {
 
       _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
 
-      _canvas_txt.width = 1080
+      _canvas_txt.width = screenwidth
 
-      _canvas_txt.height = 1920
+      _canvas_txt.height = screenheight
     }
 
     _mapRoot.appendChild(_canvas_txt)
@@ -439,8 +444,6 @@ function idrGlMap(mapView) {
   }
 
   function birdLook() {
-	
-	  _region.displayRegion()
 	  
   	_region.overlookRoute()
   }
@@ -477,6 +480,8 @@ function idrGlMap(mapView) {
 
       data.push(pos)
     })
+	  
+	  console.log(data)
 
     _region.setRoute(data)
   }

@@ -571,7 +571,10 @@ function idrMapView() {
 
     if (_currentPos && _currentPos.floorId === pos.floorId) {
 
-      Positionfilter(_currentPos, p, 40)
+    	if (!window.debugtest) {
+		
+		    Positionfilter(_currentPos, p, 40)
+	    }
     }
 
     _currentPos = p
