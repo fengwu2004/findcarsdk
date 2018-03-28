@@ -4,17 +4,13 @@
 
 function idrGlMap(mapView) {
 	
-	var _csscale = 0.38
+	var _csscale = 2.5
 	
-	var map = document.getElementById("map");
+	var screenwidth = 0
 	
-	var style = window.getComputedStyle(map, null);
+	var screenheight = 0
 	
-	var screenwidth = 1080
-	
-	var screenheight = 1920
-
-  var _mapScale = 1
+	var _mapScale = 1
 
   var _mapView = mapView
 
@@ -117,7 +113,7 @@ function idrGlMap(mapView) {
 
     _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener, 0, 30, true);
 
-    _region.setUIScaleRate(_csscale)
+    _region.setUIScaleRate(1/_csscale)
 
     _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
@@ -175,38 +171,41 @@ function idrGlMap(mapView) {
 
     return ele
   }
+  
+  function getWidthAndHeightOfCancas() {
+	
+	  var canvas = document.getElementById("gl-canvas");
+	
+	  var style = window.getComputedStyle(canvas, null);
+	
+	  screenwidth = parseInt(style.getPropertyValue('width'))
+	
+	  screenheight = parseInt(style.getPropertyValue('height'))
+  }
 
   function createCanvas(containor) {
 
     _mapRoot = createEle('div', 'mapRoot', 'indoorunMap_map')
-
-    _canvas_gl = document.getElementById('gl-canvas')
-
-    if (!_canvas_gl) {
-
-      _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
-
-      _canvas_gl.width = screenwidth
-
-      _canvas_gl.height = screenheight
-    }
-
-    _mapRoot.appendChild(_canvas_gl)
-
-    _canvas_txt = document.getElementById('txt-canvas')
-
-    if (!_canvas_txt) {
-
-      _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
-
-      _canvas_txt.width = screenwidth
-
-      _canvas_txt.height = screenheight
-    }
-
-    _mapRoot.appendChild(_canvas_txt)
-
-    containor.appendChild(_mapRoot)
+	
+	  containor.appendChild(_mapRoot)
+	
+	  _canvas_gl = createEle('canvas', 'gl-canvas', 'canvas-frame')
+	
+	  _mapRoot.appendChild(_canvas_gl)
+	
+	  _canvas_txt = createEle('canvas', 'txt-canvas', 'canvas-frame')
+	
+	  _mapRoot.appendChild(_canvas_txt)
+	
+	  getWidthAndHeightOfCancas()
+	
+	  _canvas_gl.width = screenwidth * _csscale
+	
+	  _canvas_gl.height = screenheight * _csscale
+	
+	  _canvas_txt.width = screenwidth * _csscale
+	
+	  _canvas_txt.height = screenheight * _csscale
   }
 
   function updateUnitsColor(units, color) {
