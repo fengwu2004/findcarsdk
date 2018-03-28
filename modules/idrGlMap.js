@@ -4,15 +4,15 @@
 
 function idrGlMap(mapView) {
 	
-	var _csscale = 1/0.38
+	var _csscale = 0.38
 	
 	var map = document.getElementById("map");
 	
 	var style = window.getComputedStyle(map, null);
 	
-	var screenwidth = parseFloat(style.getPropertyValue('width')) * _csscale
+	var screenwidth = 1080
 	
-	var screenheight = parseFloat(style.getPropertyValue('height')) * _csscale
+	var screenheight = 1920
 
   var _mapScale = 1
 
@@ -115,9 +115,9 @@ function idrGlMap(mapView) {
       _floorList.push(data)
     }
 
-    _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
+    _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener, 0, 30, true);
 
-    _region.setUIScaleRate(1/_csscale)
+    _region.setUIScaleRate(_csscale)
 
     _region.addTexture("pubIcons", _mapView.publicPath + "/img_pub_icons.png");
 
@@ -258,14 +258,27 @@ function idrGlMap(mapView) {
       var unit = unitList[i]
 
       var unitMapObj = {}
-
-      unitMapObj.type = parseFloat(unit.unitTypeId)
-
-      unitMapObj.text = unit.name
-
-      var pos = unit.getPos()
-
-      _region.insertUnit(unitMapObj, _floor.floorIndex, pos.x, pos.y)
+      
+      let type = parseFloat(unit.unitTypeId)
+	    
+	    if (type == 0) {
+		
+		    unitMapObj.text = unit.name
+		
+		    unitMapObj.pts = unit.getPts()
+		
+		    unitMapObj.unitId = unit.id
+		
+		    unitMapObj.unitType = unit.unitTypeId
+		
+		    _region.insertUnit(unitMapObj, _floor.floorIndex)
+	    }
+	    else {
+		
+		    var pos = unit.getPos()
+		    
+		    _region.insertIcon({type:type, unitId:unit.id, unitType:unit.unitTypeId}, _floor.floorIndex, pos.x, pos.y)
+	    }
     }
   }
 
@@ -339,8 +352,8 @@ function idrGlMap(mapView) {
     var units = _region.searchUnit(x, y)
 
     if (units.length > 0) {
-
-      var unit = findUnit(units[0].x, units[0].y)
+    	
+    	let unit = _mapView.findUnitWithId(units[0].obj.unitId)
 
       _mapView.onUnitClick(unit)
 
@@ -350,8 +363,8 @@ function idrGlMap(mapView) {
     var icons = _region.searchIcon(x, y)
 
     if (icons.length > 0) {
-
-      var unit = findUnit(icons[0].x, icons[0].y)
+	
+	    let unit = _mapView.findUnitWithId(icons[0].obj.unitId)
 
       _mapView.onUnitClick(unit)
 
