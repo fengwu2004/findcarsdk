@@ -877,6 +877,12 @@ function idrMapView() {
 		return null
 	}
 	
+	//path:[{x,y,floorId}]
+	function setRoutePath(path) {
+		
+		showRoutePath(path)
+	}
+	
 	this.reRoute = reRoute
 
   this.findUnitByPreciseName = findUnitByPreciseName
@@ -886,6 +892,8 @@ function idrMapView() {
 	this.findUnitWithNameAndFloor = findUnitWithNameAndFloor
 
 	this.findUnitWithNameAndFloor = findUnitWithNameAndFloor
+	
+	this.setRoutePath = setRoutePath
 	
   this.setStatus = setStatus
 }
