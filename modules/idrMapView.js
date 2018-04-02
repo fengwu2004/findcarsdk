@@ -880,7 +880,7 @@ function idrMapView() {
 	//path:[{x,y,floorId}]
 	function setRoutePath(path) {
 		
-		showRoutePath(path)
+		_idrMap.setRoutePath(path)
 	}
 	
 	this.reRoute = reRoute

@@ -469,6 +469,11 @@ function idrGlMap(mapView) {
 
     _region.setRoute(data)
   }
+  
+  function setRoutePath(path) {
+	
+	  _region.setRoute(path)
+  }
 
   function getNaviStatus() {
 
@@ -643,6 +648,8 @@ function idrGlMap(mapView) {
   this.set25dMap = set25dMap
 
   this.setStatus = setStatus
+	
+	this.setRoutePath = setRoutePath
 }
 
 export { idrGlMap as default }
