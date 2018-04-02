@@ -1,0 +1,94 @@
+.pop_background {
+
+    float: left;
+    background-color: darkgrey;
+    position:fixed;
+    left:0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.pop_backview {
+
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    height: 40%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.pop_centerDiv {
+    position: relative;
+    top: 10%;
+    margin: auto;
+    text-align: center;
+}
+
+.pop_inputcontent {
+    border: 1px solid;
+    height: 80px;
+    border-radius: 10px;
+    width: 80%;
+    font-size: 200%;
+    color: #000!important
+}
+
+.pop_inputcontent::placeholder {
+
+    text-align: center;
+    font-size: 100%;
+}
+
+.pop_errormsg {
+    font-size: 150%;
+    color: red;
+    margin-left: -100px;
+}
+
+.pop_buttons {
+
+    height:150px;
+}
+
+
+.pop_floorBtn {
+
+    display: inline-block;
+    border: 1px solid;
+    width: 60px;
+    height: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 150%;
+    line-height: 60px;
+    text-align: center;
+
+    border-radius: 5px;
+}
+
+.pop_floorBtn-normal {
+
+    background-color: white;
+}
+
+.pop_flootBtn-Seelcted{
+
+    background-color: blue;
+}
+
+.pop_confirm {
+
+    font-size: 200%;
+    width: 80%;
+    background-color: #3b06ff;
+    border-radius: 10px;
+    height:80px;
+    border-width: 0px;
+    color: #FFFFFF;
+}
