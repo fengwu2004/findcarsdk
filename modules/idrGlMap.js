@@ -291,34 +291,6 @@ function idrGlMap(mapView) {
     }
   }
 
-  function getDistance(pos1, pos2) {
-
-    return Math.sqrt((pos2.y - pos1.y) * (pos2.y - pos1.y) + (pos2.x - pos1.x) * (pos2.x - pos1.x))
-  }
-
-  function findUnit(x, y) {
-
-    var minUnit = null
-
-    var minDistance = 10000
-
-    for (var i = 0; i < _floor.unitList.length; ++i) {
-
-      var unit = _floor.unitList[i]
-
-      var dis = getDistance({x:x, y:y}, unit.getPos())
-
-      if (dis < minDistance) {
-
-        minUnit = unit
-
-        minDistance = dis
-      }
-    }
-
-    return minUnit
-  }
-
   function handleMapScroll(x, y) {
 
     _mapView.onMapScroll(x, y)
