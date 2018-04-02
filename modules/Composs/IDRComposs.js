@@ -28,6 +28,18 @@ function Composs(id, defaultDegree, map) {
         
         _composs.style.transform = "rotate(" + _currentValue + "deg)";
     }
+
+    this.show = function (show) {
+
+        if (show) {
+
+            _composs.style.visibility = 'visible'
+        }
+        else {
+
+            _composs.style.visibility = 'hidden'
+        }
+    }
     
     this.rotateToDegree = rotateToDegree
 };

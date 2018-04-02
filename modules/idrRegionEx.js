@@ -10,24 +10,51 @@ function IDRRegionEx(regionAllInfo) {
 		
 		this[key] = regionAllInfo[key]
 	}
+
+    this.floorList.reverse()
 	
 	var floorList = this.floorList
-	
+
+    var t = new Date()
+
 	for (var i = 0; i < this.floorList.length; ++i) {
 		
 		var unitList = this.floorList[i].unitList
 		
 		var units = []
+
+        var floorName = this.floorList[i].name
 		
 		for (var j = 0; j < unitList.length; ++j) {
-			
-			units.push(new IDRUnit(unitList[j]))
+
+		    var idrunit = new IDRUnit(unitList[j])
+
+            idrunit.floorName = floorName
+
+			units.push(idrunit)
 		}
-		
+
 		delete this.floorList[i].unitList
 		
 		this.floorList[i].unitList = units
 	}
+
+	console.log('加载unit时间' + (new Date().getTime() - t.getTime()).toString())
+
+	function getFloorName(floorId) {
+
+        for (var i = 0; i < floorList.length; ++i) {
+
+            var floor = floorList[i]
+
+            if (floor.id === floorId) {
+
+                return floor.name
+            }
+        }
+
+        return ''
+    }
 	
 	function getFloorIndex(floorId) {
 		
@@ -92,12 +119,24 @@ function IDRRegionEx(regionAllInfo) {
 			
 			return null
 		}
-		
+
+		if (!unitList) {
+
+            var floor = getFloorbyId(pos.floorId)
+
+            unitList = floor.unitList
+        }
+
 		var result = null, mindis = 10000
 		
 		for (var i = 0; i < unitList.length; ++i) {
 			
 			var unit = unitList[i]
+
+            if (unit.floorId !== pos.floorId) {
+
+			    continue
+            }
 			
 			var dis = getDistance(pos, unit.getPos())
 			
@@ -112,7 +151,7 @@ function IDRRegionEx(regionAllInfo) {
 		return result
 	}
 	
-	function getAllUnits(currnetFloorId) {
+	function getAllUnits() {
 		
 		var results = []
 		
@@ -122,7 +161,7 @@ function IDRRegionEx(regionAllInfo) {
 			
 			for (var j = 0; j < units.length; ++j) {
 				
-				if (units[j].unitTypeId != '0' && units[j].floorId != currnetFloorId) {
+				if (units[j].unitTypeId != '0') {
 					
 					continue
 				}

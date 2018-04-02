@@ -32,6 +32,8 @@ var idrMapEventTypes = {
 function idrMapEvent() {
     
     this.events = {}
+
+    this.oncesEvents = {}
     
     this.checkEvent = function(type) {
         
@@ -81,6 +83,33 @@ function idrMapEvent() {
         this.events[type] = fn
         
         return true
+    }
+    
+    this.fireOnce = function (type, data) {
+
+        if (!idrMapEventTypes.hasOwnProperty(type)) {
+
+            return false
+        }
+
+        var fn = this.oncesEvents[type]
+
+        if (!fn) {
+
+            return false
+        }
+
+        if (fn(data)) {
+
+            this.oncesEvents[type] = null
+        }
+
+        return true
+    }
+    
+    this.addOnce = function(type, fn) {
+
+        this.oncesEvents[type] = fn
     }
 }
 
