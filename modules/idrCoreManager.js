@@ -53,10 +53,6 @@ function idrCoreManager() {
 	
 	function initApp(appid, initSuccessFunc, initFailedFunc) {
 		
-		self.appId = appid
-		
-		self.clientId = getQueryString('mac')
-		
 		success(initSuccessFunc, initFailedFunc)
 	}
 	
@@ -84,6 +80,21 @@ function idrCoreManager() {
 	}
 	
 	this.init = function (appid, initSuccessFunc, initFailedFunc) {
+		
+		self.appId = appid
+		
+		let mac = getQueryString('mac')
+		
+		if (mac != undefined) {
+			
+			self.isAppEnd = true
+			
+			self.clientId = mac
+		}
+		else {
+			
+			self.isAppEnd = false
+		}
 		
 		if (!this.isAppEnd) {
 			

@@ -98,7 +98,7 @@ function idrLocateServer() {
 		
 		var tempBeacons = beacons
 		
-		if (idrCoreManagerinstance.isAndroid) {
+		if (idrCoreManagerinstance.isAndroid && idrCoreManagerinstance.isAppEnd) {
 			
 			tempBeacons = JSON.parse(beacons)
 		}

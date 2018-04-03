@@ -4,6 +4,7 @@
 
 
 import coreManager from './idrCoreManager.js'
+import idrDebug from './idrDebug'
 
 var networkInstance = new idrNetworkManager()
 
