@@ -24,7 +24,7 @@ function Composs(id, defaultDegree, map) {
     
     function rotateToDegree(degree) {
         
-        _currentValue = degree
+        _currentValue = degree - defaultDegree
         
         _composs.style.transform = "rotate(" + _currentValue + "deg)";
     }

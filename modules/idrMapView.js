@@ -316,7 +316,7 @@ function idrMapView() {
 
     _container.appendChild(div)
 
-    _composs = new IDRComposs('composs', 0, self)
+    _composs = new IDRComposs('composs', self.regionEx.northDeflectionAngle, self)
   }
 
   function loadMap() {
