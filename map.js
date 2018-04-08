@@ -6,6 +6,7 @@ import idrNetworkInstance from './modules/idrNetworkManager'
 import idrCoreManagerInstance from './modules/idrCoreManager'
 import idrLocationServerInstance from './modules/idrLocationServer'
 import idrDebug from './modules/idrDebug'
+import idrWxManager from './modules/idrBeaconManager'
 
 var map = {
 	'idrMapView':idrMapView,
@@ -15,6 +16,7 @@ var map = {
 	'idrCoreManagerInstance':idrCoreManagerInstance,
 	'idrMapMarker':idrMapMarker,
 	'idrDebug':idrDebug,
+	'idrWxManager':idrWxManager
 }
 
 export { map as default }
