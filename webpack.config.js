@@ -3,16 +3,12 @@ const webpack = require('webpack')
 
 function resolve (dir) {
 	
-	var v = path.join(__dirname, dir)
-	
-	console.log(v)
-	
-	return v
+	return path.join(__dirname, dir)
 }
 
 module.exports = {
 	entry: {
-		indoorunMap:'./indoorunMap/map.js',
+		indoorunMap:'./map.js',
 	},
 	// devtool: "cheap-module-eval_source-map",
 	output: {
@@ -33,7 +29,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				include: [resolve('indoorunMap')],
+				include: [resolve('../indoorunMap')],
 				use:{
 					loader: 'babel-loader',
 					options: {
