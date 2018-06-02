@@ -29,7 +29,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				include: [resolve('../indoorunMap')],
+				include: [resolve('.'), ],
 				use:{
 					loader: 'babel-loader',
 					options: {
