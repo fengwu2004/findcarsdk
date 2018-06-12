@@ -8,7 +8,7 @@ import idrLocationServerInstance from './modules/idrLocationServer'
 import idrDebug from './modules/idrDebug'
 import idrWxManager from './modules/idrBeaconManager'
 
-export const map = {
+export const indoorun = {
 	'idrMapView':idrMapView,
 	'idrRegionEx':idrRegionEx,
 	'idrUnit':idrUnit,
