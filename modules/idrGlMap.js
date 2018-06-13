@@ -115,11 +115,11 @@ function idrGlMap(mapView) {
 
     _region.setUIScaleRate(1/_csscale)
 
-    _region.addTexture("pubIcons", _mapView.publicPath + "/static/img_pub_icons.png");
+    _region.addTexture("pubIcons", "./static/img_pub_icons.png");
 
-    _region.addTexture("parking", _mapView.publicPath + "/static/img_parking.png");
+    _region.addTexture("parking", "./static/img_parking.png");
 	
-	  _region.addTextureMip("route_tex", _mapView.publicPath  + "/static/tex_route.png");
+	  _region.addTextureMip("route_tex", "./static/tex_route.png");
 
     _region.addFloorsSVG(_floorList);
 
@@ -135,7 +135,7 @@ function idrGlMap(mapView) {
 
     _region.setAlwaysDrawUnit(true)
 
-    _region.addTexture('locatepos', _mapView.publicPath + '/static/locatepos.png')
+    _region.addTexture('locatepos', './static/locatepos.png')
 
     _region.setLocMarkerParam('locatepos', 0x70145082, 200, 75)
   }

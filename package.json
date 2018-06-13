@@ -8,7 +8,7 @@
     "buildIndoorunMap": "node buildIndoorunMap.js",
     "buildlibidrn": "node ./libidrn/compile.js",
     "buildsdk": "npm run buildlibidrn && npm run buildIndoorunMap && node compilesdk.js",
-    "build": "npm run buildIndoorunMap && node compilesdk.js"
+    "build": "npm run buildIndoorunMap"
   },
   "keywords": [],
   "author": "",
@@ -58,5 +58,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }

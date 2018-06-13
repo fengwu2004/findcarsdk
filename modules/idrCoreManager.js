@@ -83,7 +83,7 @@ function idrCoreManager() {
 		
 		self.appId = appid
 		
-		let mac = getQueryString('mac')
+		let mac = getQueryString('uuid')
 		
 		if (mac != undefined) {
 			

@@ -8,7 +8,7 @@ import idrLocationServerInstance from './modules/idrLocationServer'
 import idrDebug from './modules/idrDebug'
 import idrWxManager from './modules/idrBeaconManager'
 
-var map = {
+export const indoorun = {
 	'idrMapView':idrMapView,
 	'idrRegionEx':idrRegionEx,
 	'idrUnit':idrUnit,
@@ -19,4 +19,4 @@ var map = {
 	'idrWxManager':idrWxManager
 }
 
-export { map as default }
+// export { map as indoorunMap }
