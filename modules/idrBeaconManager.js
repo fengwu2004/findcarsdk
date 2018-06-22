@@ -7,17 +7,6 @@
  */
 
 import networkInstance from './idrNetworkManager.js'
-import idrDebug from './idrDebug'
-
-var debugLabel = document.getElementById('debug')
-
-function debugInfo(str) {
-	
-	if (debugLabel) {
-		
-		debugLabel.innerText = str
-	}
-}
 
 function idrBeaconMgr() {
 	

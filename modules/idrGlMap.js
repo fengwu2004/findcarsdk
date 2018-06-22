@@ -112,7 +112,7 @@ function idrGlMap(mapView) {
     }
 
     _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
-
+	  
     _region.setUIScaleRate(1/_csscale)
 
     _region.addTexture("pubIcons", "./static/img_pub_icons.png");
