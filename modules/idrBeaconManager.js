@@ -7,6 +7,7 @@
  */
 
 import networkInstance from './idrNetworkManager.js'
+import idrDebug from './idrDebug'
 
 function idrBeaconMgr() {
 	
