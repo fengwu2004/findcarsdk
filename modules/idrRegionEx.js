@@ -4,63 +4,99 @@
 
 import IDRUnit from './idrUnit'
 
-function IDRRegionEx(regionAllInfo) {
+export default class IDRRegionEx {
 	
-	for (var key in regionAllInfo) {
+	constructor(regionAllInfo) {
 		
-		this[key] = regionAllInfo[key]
+		const { floorList, defaultFloorId, address, telephone, latitude, longitude, name } = regionAllInfo
+		
+		this.floorList = floorList
+		
+		this.longitude = longitude
+		
+		this.latitude = latitude
+		
+		this.defaultFloorId = defaultFloorId
+		
+		this.telephone = telephone
+		
+		this.address = address
+		
+		this.name = name
+		
+		this._generateUnits()
 	}
-
-    this.floorList.reverse()
 	
-	var floorList = this.floorList
-
-    var t = new Date()
-
-	for (var i = 0; i < this.floorList.length; ++i) {
+	_generateUnits() {
 		
-		var unitList = this.floorList[i].unitList
-		
-		var units = []
-
-        var floorName = this.floorList[i].name
-		
-		for (var j = 0; j < unitList.length; ++j) {
-
-		    var idrunit = new IDRUnit(unitList[j])
-
-            idrunit.floorName = floorName
-
-			units.push(idrunit)
-		}
-
-		delete this.floorList[i].unitList
-		
-		this.floorList[i].unitList = units
-	}
-
-	console.log('加载unit时间' + (new Date().getTime() - t.getTime()).toString())
-
-	function getFloorName(floorId) {
-
-        for (var i = 0; i < floorList.length; ++i) {
-
-            var floor = floorList[i]
-
-            if (floor.id === floorId) {
-
-                return floor.name
-            }
-        }
-
-        return ''
-    }
-	
-	function getFloorIndex(floorId) {
-		
-		for (var i = 0; i < floorList.length; ++i) {
+		for (var i = 0; i < this.floorList.length; ++i) {
 			
-			var floor = floorList[i]
+			const { unitList } = this.floorList[i]
+			
+			delete this.floorList[i].unitList
+			
+			const {name:floorName, floorIndex, id:floorId} = this.floorList[i]
+			
+			this.floorList[i].unitList = unitList.map(unit => (
+				
+				new IDRUnit(unit, floorName, floorIndex, floorId)
+			))
+		}
+	}
+	
+	findUnitOfFloor(floorIndex, name) {
+		
+		var floor = this.floorList[floorIndex]
+		
+		var results = null
+		
+		var lowercase = name.toLowerCase()
+		
+		for (var i = 0; i < floor.unitList.length; ++i) {
+			
+			var unit = floor.unitList[i]
+			
+			var index = unit.name.toLowerCase().indexOf(lowercase)
+			
+			if (index !== -1 && index + name.length == unit.name.length) {
+				
+				if (!results) {
+					
+					results = []
+				}
+				
+				results.push(unit)
+			}
+		}
+		
+		if (results) {
+			
+			return results[0]
+		}
+		
+		return results
+	}
+	
+	getFloorName(floorIndex) {
+		
+		for (var i = 0; i < this.floorList.length; ++i) {
+			
+			var floor = this.floorList[i]
+			
+			if (floor.floorIndex === floorIndex) {
+				
+				return floor.name
+			}
+		}
+		
+		return ''
+	}
+	
+	getFloorIndex(floorId) {
+		
+		for (var i = 0; i < this.floorList.length; ++i) {
+			
+			var floor = this.floorList[i]
 			
 			if (floor.id === floorId) {
 				
@@ -71,11 +107,11 @@ function IDRRegionEx(regionAllInfo) {
 		return null
 	}
 	
-	function getFloorbyId(floorId) {
+	getFloorbyId(floorId) {
 		
-		for (var i = 0; i < floorList.length; ++i) {
+		for (var i = 0; i < this.floorList.length; ++i) {
 			
-			var floor = floorList[i]
+			var floor = this.floorList[i]
 			
 			if (floor.id === floorId) {
 				
@@ -86,9 +122,9 @@ function IDRRegionEx(regionAllInfo) {
 		return null
 	}
 	
-	function getUnitById(floorId, unitId) {
+	getUnitById(floorId, unitId) {
 		
-		var floor = getFloorbyId(floorId)
+		var floor = this.getFloorbyId(floorId)
 		
 		if (floor == null) {
 			
@@ -108,37 +144,57 @@ function IDRRegionEx(regionAllInfo) {
 		return null
 	}
 	
-	function getDistance(pos1, pos2) {
+	getUnitWithId(unitId) {
+		
+		for (let i = 0; i < this.floorList.length; ++i) {
+			
+			let floor = this.floorList[i]
+			
+			for (var j = 0; j < floor.unitList.length; ++j) {
+				
+				var unit = floor.unitList[j]
+				
+				if (unit.id === unitId) {
+					
+					return unit
+				}
+			}
+		}
+		
+		return null
+	}
+	
+	getDistance(pos1, pos2) {
 		
 		return Math.sqrt(Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2))
 	}
 	
-	function getNearUnit(pos, unitList) {
+	getNearUnit(pos, unitList) {
 		
 		if (!pos || !pos.floorId) {
 			
 			return null
 		}
-
+		
 		if (!unitList) {
-
-            var floor = getFloorbyId(pos.floorId)
-
-            unitList = floor.unitList
-        }
-
+			
+			var floor = this.getFloorbyId(pos.floorId)
+			
+			unitList = floor.unitList
+		}
+		
 		var result = null, mindis = 10000
 		
 		for (var i = 0; i < unitList.length; ++i) {
 			
 			var unit = unitList[i]
-
-            if (unit.floorId !== pos.floorId) {
-
-			    continue
-            }
 			
-			var dis = getDistance(pos, unit.getPos())
+			if (unit.floorId !== pos.floorId) {
+				
+				continue
+			}
+			
+			var dis = this.getDistance(pos, unit.getPos())
 			
 			if (dis < mindis) {
 				
@@ -151,7 +207,7 @@ function IDRRegionEx(regionAllInfo) {
 		return result
 	}
 	
-	function getAllUnits() {
+	getAllUnits() {
 		
 		var results = []
 		
@@ -172,16 +228,4 @@ function IDRRegionEx(regionAllInfo) {
 		
 		return results
 	}
-	
-	this.getFloorbyId = getFloorbyId
-	
-	this.getUnitById = getUnitById
-	
-	this.getFloorIndex = getFloorIndex
-	
-	this.getNearUnit = getNearUnit
-	
-	this.getAllUnits = getAllUnits
 }
-
-export { IDRRegionEx as default }
