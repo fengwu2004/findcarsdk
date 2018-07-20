@@ -449,6 +449,24 @@ class idrNetworkManager {
 		})
 	}
 	
+	parksOverview(regionId) {
+	
+		let data = {regionId}
+		
+		return new Promise((resolve, reject)=>{
+			
+			let url = this.host + 'thxz/pc/parksOverview'
+			
+			this.doAjax(url, data, res=>{
+			
+				resolve(res)
+			}, res=> {
+				
+				reject(res)
+			})
+		})
+	}
+	
 	serverCallLocatingBin({beacons, count, regionId, floorId}, success, failed) {
 		
 		var data = {

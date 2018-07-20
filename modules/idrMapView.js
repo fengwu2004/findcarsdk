@@ -255,9 +255,9 @@ class idrMapView {
 		this._mapEvent.fireEvent(this.eventTypes.onUnitClick, unit)
 	}
 	
-	updateUnitsColor(units, color) {
+	updateUnitsColor(units) {
 		
-		this._idrMap.updateUnitsColor(units, color)
+		this._idrMap.updateUnitsColor(units)
 	}
 	
 	clearUnitsColor(units) {
@@ -337,7 +337,7 @@ class idrMapView {
 		this._container = document.getElementById(containerId)
 		
 		idrCoreMgr.init(appId)
-			.then(res=>{
+			.then(()=>{
 				
 				return networkInstance.serverCallRegionAllInfo(regionId)
 			})
@@ -355,6 +355,11 @@ class idrMapView {
 			})
 	}
 	
+	addUnit(unitList) {
+	
+		this._idrMap.addUnits(unitList)
+	}
+	
 	onLoadMapSuccess() {
 		
 		this.addComposs()
@@ -365,7 +370,7 @@ class idrMapView {
 		
 		var floor = this.regionEx.getFloorbyId(this._currentFloorId)
 		
-		this._idrMap.addUnits(floor.unitList)
+		// this._idrMap.addUnits(floor.unitList)
 		
 		this.updateDisplay()
 		

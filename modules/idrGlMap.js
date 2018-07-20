@@ -208,11 +208,13 @@ function idrGlMap(mapView) {
 	  _canvas_txt.height = screenheight * _csscale
   }
 
-  function updateUnitsColor(units, color) {
+  function updateUnitsColor(units) {
 
-    units.forEach(function(unit) {
-
-      _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), color)
+    units.forEach(unit => {
+    	
+    	let color = unit.spaceStatus == 0 ? 0x5AAA0A : 0xDC1E1E
+	
+	    _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), color)
     })
 
     _region.buildQuickPolygonFloor(_floor.floorIndex)
@@ -220,7 +222,7 @@ function idrGlMap(mapView) {
 
   function clearUnitsColor(units) {
 
-    units.forEach(function(unit) {
+    units.forEach(unit => {
 
       unit.color = null
     })
@@ -261,8 +263,8 @@ function idrGlMap(mapView) {
       let type = parseFloat(unit.unitTypeId)
 	    
 	    if (type == 0) {
-		
-		    unitMapObj.text = unit.name
+      
+		    unitMapObj.text = unit.fakeName? unit.fakeName:unit.name
 		
 		    unitMapObj.pts = unit.getPts()
 		
