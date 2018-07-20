@@ -3,12 +3,12 @@
  */
 
 function idrPosition(x, y, floorId) {
-    
-    this.x = x
-    
-    this.y = y
-    
-    this.floorId = floorId
+	
+	this.x = x
+	
+	this.y = y
+	
+	this.floorId = floorId
 }
 
 export { idrPosition as default }

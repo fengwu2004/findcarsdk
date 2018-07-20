@@ -3,38 +3,39 @@
  */
 
 
-import idrBeaconMgrInstance from './idrBeaconManager.js'
+import idrWxManagerInstance from './idrWxManager.js'
 import idrDebug from './idrDebug'
-import idrCoreManagerinstance from './idrCoreManager'
-import networkInstance from './idrNetworkManager.js'
+import { idrCoreMgr } from './idrCoreManager'
+import { networkInstance } from "./idrNetworkManager";
 
-function idrLocateServer() {
+class idrLocateServer {
 	
-	var _floorId = ''
+	constructor() {
+		
+		this._floorId = ''
+		
+		this._beacons = null
+		
+		this._count = 0
+		
+		this._regionId = ''
+		
+		this._x = 0
+		
+		this._y = 0
+		
+		this._started = false
+		
+		this._onLocateSuccess = null
+		
+		this._onLocateFailed = null
+		
+		this._locateTimerId = null
+		
+		this.onCheckSpeacialBeacons = null
+	}
 	
-	var _beacons = null
-	
-	var _count = 0
-	
-	var _regionId = ''
-	
-	var _x = 0
-	
-	var _y = 0
-	
-	var _started = false
-	
-	var _onLocateSuccess = null
-	
-	var _onLocateFailed = null
-	
-	var _locateTimerId = null
-	
-	this.onCheckSpeacialBeacons = null
-	
-	var self = this
-	
-	function getValidBeacons(beacons) {
+	_getValidBeacons(beacons) {
 		
 		var temp = []
 		
@@ -49,26 +50,17 @@ function idrLocateServer() {
 		return temp
 	}
 	
-	this.test = function () {
+	filterbeacons(inBeacons) {
 		
-		console.log('test调用')
-	}
-	
-	function filterbeacons(inBeacons) {
-		
-		var beacons = getValidBeacons(inBeacons)
+		var beacons = this._getValidBeacons(inBeacons)
 		
 		var newBeacons = ''
 		
 		for (var i = 0; i < beacons.length; ++i) {
 			
-			var beacon = beacons[i];
+			const beacon = beacons[i];
 			
-			var major = parseInt(beacon.major)
-			
-			var minor = parseInt(beacon.minor)
-			
-			var rssi = parseInt(beacon.rssi)
+			const { major, minor, rssi } = beacon
 			
 			var accuracy = parseInt(beacon.accuracy * 100)
 			
@@ -94,90 +86,91 @@ function idrLocateServer() {
 		return {beacons:newBeacons, count:beacons.length};
 	}
 	
-	function onReceiveBeacons(beacons) {
+	onReceiveBeacons(beacons) {
 		
 		var tempBeacons = beacons
 		
-		if (idrCoreManagerinstance.isAndroid && idrCoreManagerinstance.isAppEnd) {
-			
-			tempBeacons = JSON.parse(beacons)
-		}
+		var newBeacons = this.filterbeacons(tempBeacons)
 		
-		var newBeacons = filterbeacons(tempBeacons)
+		this.onCheckSpeacialBeacons && this.onCheckSpeacialBeacons(tempBeacons)
 		
-		self.onCheckSpeacialBeacons && self.onCheckSpeacialBeacons(tempBeacons)
+		this._beacons = window.btoa(newBeacons.beacons)
 		
-		_beacons = window.btoa(newBeacons.beacons)
-		
-		_count = newBeacons.count
+		this._count = newBeacons.count
 	}
 	
-	function onServerLocate() {
+	onServerLocate() {
 		
-		networkInstance.serverCallLocatingBin(_beacons, _count, _regionId, _floorId, function(res) {
+		networkInstance.serverCallLocatingBin({beacons:this._beacons, count:this._count, regionId:this._regionId, floorId:this._floorId}, res => {
 			
-			_x = res.x
+			this._x = res.x
 			
-			_y = res.y
+			this._y = res.y
 			
-			_floorId = res.floorId
+			this._floorId = res.floorId
 			
-			if (typeof _onLocateSuccess === 'function') {
+			if (typeof this._onLocateSuccess === 'function') {
 				
-				_onLocateSuccess({x:_x, y:_y, floorId:_floorId, regionId:_regionId});
+				this._onLocateSuccess({x:this._x, y:this._y, floorId:this._floorId, regionId:this._regionId});
 			}
+		}, res => {
 			
-		}, function (str) {
-			
-			if (typeof _onLocateFailed === 'function') {
+			if (typeof this._onLocateFailed === 'function') {
 				
-				_onLocateFailed(str)
+				this._onLocateFailed(res)
 			}
 		})
 	}
 	
-	this.start = function (regionId, floorId, onLocateSuccess, onLocateFailed) {
+	setLocateDelegate(success, failed) {
 		
-		_regionId = regionId
+		this._onLocateSuccess = success
 		
-		_started = true
+		this._onLocateFailed = failed
 		
-		_floorId = floorId
+		idrWxManagerInstance.onBeaconReceiveFunc = this.onReceiveBeacons
+	}
+	
+	async start(regionId, floorId) {
 		
-		_onLocateFailed = onLocateFailed
+		this._regionId = regionId
 		
-		if (!idrCoreManagerinstance.isAppEnd) {
+		this._floorId = floorId
+		
+		return new Promise((resolve, reject)=>{
 			
-			idrBeaconMgrInstance.onBeaconReceiveFunc = onReceiveBeacons
-			
-			idrBeaconMgrInstance.init(onLocateFailed);
-		}
-		
-		_onLocateSuccess = onLocateSuccess
-		
-		_locateTimerId = setInterval(onServerLocate, 1000)
+			idrWxManagerInstance.init()
+				.then(res=>{
+					
+					this._locateTimerId = setInterval(this.onServerLocate, 1000)
+					
+					resolve()
+				})
+				.catch(res=>{
+					
+					reject(res)
+				})
+		})
 	}
 	
-	this.stop = function () {
+	stop() {
 		
-		clearInterval(_locateTimerId)
+		clearInterval(this._locateTimerId)
 		
-		_started = false
+		this._started = false
 		
-		_beacons = null
+		this._beacons = null
 	}
 	
-	this.setStartFailed = function () {
+	setStartFailed() {
 		
-		_started = false
+		this._started = false
 	}
 	
-	this.isStart = function() {
+	isStart() {
 		
-		return _started
+		return this._started
 	}
-	
-	this.onReceiveBeacons = onReceiveBeacons
 }
 
 var idrLocateServerInstance = new idrLocateServer()

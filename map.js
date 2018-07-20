@@ -1,22 +1,14 @@
 import idrMapView from './modules/idrMapView'
 import idrRegionEx from './modules/idrRegionEx'
 import idrUnit from './modules/idrUnit'
-import idrMapMarker from './modules/IDRMapMarker/IDRMapMarker'
-import idrNetworkInstance from './modules/idrNetworkManager'
-import idrCoreManagerInstance from './modules/idrCoreManager'
-import idrLocationServerInstance from './modules/idrLocationServer'
+import {idrMarkers} from './modules/IDRMapMarker'
+import {networkInstance} from './modules/idrNetworkManager'
+import {idrCoreMgr} from './modules/idrCoreManager'
 import idrDebug from './modules/idrDebug'
-import idrWxManager from './modules/idrBeaconManager'
+import idrWxManager from './modules/idrWxManager'
+import { idrMapEventTypes } from "./modules/idrMapEvent";
 
-export const indoorun = {
-	'idrMapView':idrMapView,
-	'idrRegionEx':idrRegionEx,
-	'idrUnit':idrUnit,
-	'idrNetworkInstance':idrNetworkInstance,
-	'idrCoreManagerInstance':idrCoreManagerInstance,
-	'idrMapMarker':idrMapMarker,
-	'idrDebug':idrDebug,
-	'idrWxManager':idrWxManager
-}
+
+export { idrMapView , idrRegionEx, idrUnit, networkInstance, idrCoreMgr, idrMarkers, idrDebug, idrWxManager, idrMapEventTypes}
 
 // export { map as indoorunMap }
