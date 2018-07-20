@@ -299,7 +299,7 @@ class idrNetworkManager {
 	
 	serverCallWxAuth() {
 		
-		var url = 'http://cqshidai.indoorun.com/cqshidai/wxauth/getAuthParas?reqUrl=' + window.location.href;
+		var url = this.host + 'wxauth/getAuthParas?reqUrl=' + window.location.href;
 		
 		return new Promise((resolve, reject)=>{
 			
@@ -458,7 +458,7 @@ class idrNetworkManager {
 			let url = this.host + 'thxz/pc/parksOverview'
 			
 			this.doAjax(url, data, res=>{
-			
+				
 				resolve(res)
 			}, res=> {
 				

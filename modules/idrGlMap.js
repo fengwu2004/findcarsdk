@@ -212,6 +212,11 @@ function idrGlMap(mapView) {
 
     units.forEach(unit => {
     	
+    	if (unit.spaceStatus == undefined) {
+    		
+    		return
+	    }
+	    
     	let color = unit.spaceStatus == 0 ? 0x5AAA0A : 0xDC1E1E
 	
 	    _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), color)
@@ -388,6 +393,11 @@ function idrGlMap(mapView) {
 
       _region.locateLaunch()
     }
+  }
+  
+  function setUserDirection(angle) {
+	 
+		_region.setAzimuth(angle)
   }
 
   function resetMap() {
@@ -652,6 +662,8 @@ function idrGlMap(mapView) {
   this.setStatus = setStatus
 	
 	this.setRoutePath = setRoutePath
+	
+	this.setUserDirection = setUserDirection
 }
 
 export { idrGlMap as default }

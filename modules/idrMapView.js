@@ -827,14 +827,9 @@ class idrMapView {
 		this._idrMap.release()
 	}
 	
-	setUnitReserved(units) {
+	setUserDirection(angle) {
 		
-		this._idrMap.setUnitsReserved(units)
-	}
-	
-	addBlueCarToMap(unit) {
-		
-		this._idrMap.updateOwnerUnitsColor(unit)
+		this._idrMap.setUserDirection(angle)
 	}
 }
 
