@@ -675,18 +675,16 @@ function idrMapView() {
     for (var i = 0; i < floor.unitList.length; ++i) {
 
       var unit = floor.unitList[i]
-
-      var index = unit.name.toLowerCase().indexOf(lowercase)
-
-      if (index !== -1 && index + name.length == unit.name.length) {
-
-        if (!results) {
-
-          results = []
-        }
-
-        results.push(unit)
-      }
+	    
+	    if (unit.name.toLowerCase() == lowercase) {
+		
+		    if (!results) {
+			
+			    results = []
+		    }
+		
+		    results.push(unit)
+	    }
     }
 
     return results
