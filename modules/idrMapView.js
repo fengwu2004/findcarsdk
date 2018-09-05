@@ -370,7 +370,7 @@ class idrMapView {
 		
 		var floor = this.regionEx.getFloorbyId(this._currentFloorId)
 		
-		// this._idrMap.addUnits(floor.unitList)
+		this._idrMap.addUnits(floor.unitList)
 		
 		this.updateDisplay()
 		
@@ -702,9 +702,7 @@ class idrMapView {
 			
 			var unit = floor.unitList[i]
 			
-			var index = unit.name.toLowerCase().indexOf(lowercase)
-			
-			if (index !== -1 && index + name.length == unit.name.length) {
+			if (lowercase == unit.name.toLowerCase()) {
 				
 				if (!results) {
 					

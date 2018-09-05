@@ -2,8 +2,6 @@
  * Created by yan on 01/03/2017.
  */
 
-import idrDebug from './idrDebug'
-
 function ajax(options) {
 	//编码数据
 	function setData() {
