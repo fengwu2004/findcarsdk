@@ -676,9 +676,7 @@ class idrMapView {
 			
 			var unit = floor.unitList[i]
 			
-			var index = unit.name.toLowerCase().indexOf(lowercase)
-			
-			if (index !== -1 && index + name.length == unit.name.length) {
+			if (unit.name.toLowerCase() == lowercase) {
 				
 				if (!results) {
 					
