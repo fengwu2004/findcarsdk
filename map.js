@@ -9,6 +9,6 @@ import idrWxManager from './modules/idrWxManager'
 import { idrMapEventTypes } from "./modules/idrMapEvent";
 
 
-export { idrMapView , idrRegionEx, idrUnit, networkInstance, idrCoreMgr, idrMarkers, idrDebug, idrWxManager, idrMapEventTypes}
+export { idrMapView , idrRegionEx, idrUnit, networkInstance as idrNetworkInstance, idrCoreMgr, idrMarkers, idrDebug, idrWxManager, idrMapEventTypes}
 
 // export { map as indoorunMap }
