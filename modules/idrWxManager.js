@@ -10,7 +10,7 @@ import {networkInstance} from "./idrNetworkManager";
 
 import idrDebug from './idrDebug'
 
-idrDebug.showDebugInfo(true)
+// idrDebug.showDebugInfo(true)
 
 export const Bluetooth_poweroff = 'Bluetooth_poweroff'
 
@@ -25,7 +25,7 @@ class idrWxManager {
 		this.onBeaconReceiveFunc = null
 	}
 	
-	async init() {
+	init() {
 		
 		return new Promise((resolve, reject)=>{
 			
@@ -55,7 +55,7 @@ class idrWxManager {
 		})
 	}
 	
-	async startBeacon() {
+	startBeacon() {
 		
 		return new Promise((resolve, reject)=>{
 			
@@ -82,7 +82,7 @@ class idrWxManager {
 		})
 	}
 	
-	async stopBeacon() {
+	stopBeacon() {
 		
 		return new Promise((resolve, reject)=>{
 			

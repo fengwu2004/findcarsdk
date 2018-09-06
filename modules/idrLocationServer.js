@@ -68,15 +68,15 @@ class idrLocateServer {
 			
 			var v1 = String.fromCharCode((accuracy & 0xff00) >> 8)
 			
-			var v2 = String.fromCharCode(rssi + 256)
+			var v2 = String.fromCharCode(parseInt(rssi) + 256)
 			
-			var v3 = String.fromCharCode(minor & 0x00ff)
+			var v3 = String.fromCharCode(parseInt(minor) & 0x00ff)
 			
-			var v4 = String.fromCharCode((minor & 0xff00) >> 8)
+			var v4 = String.fromCharCode((parseInt(minor) & 0xff00) >> 8)
 			
-			var v5 = String.fromCharCode(major & 0x00ff)
+			var v5 = String.fromCharCode(parseInt(major) & 0x00ff)
 			
-			var v6 = String.fromCharCode((major & 0xff00) >> 8)
+			var v6 = String.fromCharCode((parseInt(major) & 0xff00) >> 8)
 			
 			var value = v6 + v5 + v4 + v3 + v2 + v1 + v0
 			
@@ -100,6 +100,10 @@ class idrLocateServer {
 	}
 	
 	onServerLocate() {
+		
+		// idrDebug.showDebugInfo(true)
+		
+		// idrDebug.debugInfo(this._count)
 		
 		networkInstance.serverCallLocatingBin({beacons:this._beacons, count:this._count, regionId:this._regionId, floorId:this._floorId}, res => {
 			
@@ -128,10 +132,10 @@ class idrLocateServer {
 		
 		this._onLocateFailed = failed
 		
-		idrWxManagerInstance.onBeaconReceiveFunc = this.onReceiveBeacons
+		idrWxManagerInstance.onBeaconReceiveFunc = (beacons) => this.onReceiveBeacons(beacons)
 	}
 	
-	async start(regionId, floorId) {
+	start(regionId, floorId) {
 		
 		this._regionId = regionId
 		
@@ -142,7 +146,9 @@ class idrLocateServer {
 			idrWxManagerInstance.init()
 				.then(res=>{
 					
-					this._locateTimerId = setInterval(this.onServerLocate, 1000)
+					clearInterval(this._locateTimerId)
+					
+					this._locateTimerId = setInterval(() => this.onServerLocate(), 1000)
 					
 					resolve()
 				})

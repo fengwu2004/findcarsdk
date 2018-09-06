@@ -9,17 +9,17 @@ class idrCoreManager {
 		this.sign = 'null'
 	}
 	
-	async _initWx(appId) {
+	_initWx(appId) {
 		
 		return networkInstance.serverCallWXSign(appId)
 	}
 	
-	async _initSession() {
+	_initSession() {
 		
 		return networkInstance.serverCallInitSession()
 	}
 	
-	async init(appId) {
+	init(appId) {
 		
 		return new Promise((resolve, reject)=>{
 			

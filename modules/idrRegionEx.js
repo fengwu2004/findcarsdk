@@ -8,7 +8,7 @@ export default class IDRRegionEx {
 	
 	constructor(regionAllInfo) {
 		
-		const { floorList, defaultFloorId, address, telephone, latitude, longitude, name } = regionAllInfo
+		const { floorList, defaultFloorId, address, telephone, latitude, longitude, name, northDeflectionAngle } = regionAllInfo
 		
 		this.floorList = floorList
 		
@@ -23,6 +23,8 @@ export default class IDRRegionEx {
 		this.address = address
 		
 		this.name = name
+		
+		this.northDeflectionAngle = northDeflectionAngle
 		
 		this._generateUnits()
 	}
