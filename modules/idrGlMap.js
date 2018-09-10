@@ -111,7 +111,7 @@ function idrGlMap(mapView) {
       _floorList.push(data)
     }
 
-    _region = new Region("testRegion", _canvas_gl, _canvas_txt, listener);
+    _region = new YFM.Map.Region("testRegion", _canvas_gl, _canvas_txt, listener);
 	  
     _region.setUIScaleRate(1/_csscale)
 

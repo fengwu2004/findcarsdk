@@ -10,7 +10,10 @@ export default class IDRRegionEx {
 		
 		const { floorList, defaultFloorId, address, telephone, latitude, longitude, name, northDeflectionAngle } = regionAllInfo
 		
-		this.floorList = floorList
+		this.floorList = floorList.sort((a, b) => {
+			
+			return a.floorIndex < b.floorIndex
+		})
 		
 		this.longitude = longitude
 		
