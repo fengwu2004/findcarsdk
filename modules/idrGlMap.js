@@ -98,7 +98,7 @@ function idrGlMap(mapView) {
 
     createCanvas(container)
 
-    for (var i = _regionEx.floorList.length - 1; i >= 0; --i) {
+    for (var i = 0; i < _regionEx.floorList.length; ++i) {
 
       var data = {}
 

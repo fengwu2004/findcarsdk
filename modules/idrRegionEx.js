@@ -8,11 +8,21 @@ export default class IDRRegionEx {
 	
 	constructor(regionAllInfo) {
 		
-		const { floorList, defaultFloorId, address, telephone, latitude, longitude, name, northDeflectionAngle } = regionAllInfo
+		let { floorList, defaultFloorId, address, telephone, latitude, longitude, name, northDeflectionAngle } = regionAllInfo
 		
-		this.floorList = floorList.sort((a, b) => {
+		this.floorList = floorList.sort((a, b)=>{
 			
-			return a.floorIndex < b.floorIndex
+			if (a.floorIndex > b.floorIndex) {
+				
+				return 1
+			}
+			
+			if (a.floorIndex < b.floorIndex) {
+				
+				return -1
+			}
+			
+			return 0
 		})
 		
 		this.longitude = longitude
