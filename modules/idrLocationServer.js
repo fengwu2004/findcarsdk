@@ -35,6 +35,20 @@ class idrLocateServer {
 		this.onCheckSpeacialBeacons = null
 	}
 	
+	getQueryString(name) {
+		
+		var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+		
+		var r = window.location.search.substr(1).match(reg);
+		
+		if (r != null) {
+			
+			return decodeURI(r[2]);
+		}
+		
+		return null;
+	}
+	
 	_getValidBeacons(beacons) {
 		
 		var temp = []
@@ -90,6 +104,11 @@ class idrLocateServer {
 		
 		var tempBeacons = beacons
 		
+		if (idrCoreMgr.isAndroid && idrCoreMgr.isApp) {
+			
+			tempBeacons = JSON.parse(beacons)
+		}
+		
 		var newBeacons = this.filterbeacons(tempBeacons)
 		
 		this.onCheckSpeacialBeacons && this.onCheckSpeacialBeacons(tempBeacons)
@@ -100,10 +119,6 @@ class idrLocateServer {
 	}
 	
 	onServerLocate() {
-		
-		// idrDebug.showDebugInfo(true)
-		
-		// idrDebug.debugInfo(this._count)
 		
 		networkInstance.serverCallLocatingBin({beacons:this._beacons, count:this._count, regionId:this._regionId, floorId:this._floorId}, res => {
 			
@@ -140,6 +155,18 @@ class idrLocateServer {
 		this._regionId = regionId
 		
 		this._floorId = floorId
+		
+		if (idrCoreMgr.isApp) {
+		
+			return new Promise((resolve, reject)=>{
+				
+				clearInterval(this._locateTimerId)
+				
+				this._locateTimerId = setInterval(() => this.onServerLocate(), 1000)
+				
+				resolve()
+			})
+		}
 		
 		return new Promise((resolve, reject)=>{
 			
