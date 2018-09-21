@@ -255,9 +255,9 @@ class idrMapView {
 		this._mapEvent.fireEvent(this.eventTypes.onUnitClick, unit)
 	}
 	
-	updateUnitsColor(units) {
+	updateUnitsColor(units, color) {
 		
-		this._idrMap.updateUnitsColor(units)
+		this._idrMap.updateUnitsColor(units, color)
 	}
 	
 	clearUnitsColor(units) {

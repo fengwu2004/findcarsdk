@@ -1,9 +1,9 @@
 
 export default class idrUnit {
 	
-	constructor(unitInfo, floorName, floorIndex, floorId) {
+	constructor(unitInfo) {
 		
-		const {boundLeft, boundRight, boundTop, boundBottom, unitTypeId, id, name, points} = unitInfo
+		const {boundLeft, boundRight, boundTop, boundBottom, unitTypeId, id, name, points, floorName, floorIndex, floorId} = unitInfo
 		
 		this.id = id
 		

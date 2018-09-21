@@ -208,17 +208,10 @@ function idrGlMap(mapView) {
 	  _canvas_txt.height = screenheight * _csscale
   }
 
-  function updateUnitsColor(units) {
+  function updateUnitsColor(units, color) {
 
     units.forEach(unit => {
     	
-    	if (unit.spaceStatus == undefined) {
-    		
-    		return
-	    }
-	    
-    	let color = unit.spaceStatus == 0 ? 0x5AAA0A : 0xDC1E1E
-	
 	    _region.addQuickPolygon(_floor.floorIndex, unit.getPts(), color)
     })
 
