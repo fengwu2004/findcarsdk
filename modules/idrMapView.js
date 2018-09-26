@@ -111,7 +111,7 @@ class idrMapView {
 			
 			this.deviceAlphaTimer = setInterval(()=>{
 				
-				this.setUserDirection()
+				this.setUserDirection(this.deviceAlphaDeg)
 				
 			}, 120)
 		}

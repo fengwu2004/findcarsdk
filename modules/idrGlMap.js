@@ -135,7 +135,7 @@ function idrGlMap(mapView) {
 
     _region.setAlwaysDrawUnit(true)
 
-    _region.addTexture('locatepos', './static/locatepos.png')
+    _region.addTexture('locatepos', "./static/locatepos.png")
 
     _region.setLocMarkerParam('locatepos', 0x70145082, 200, 75)
   }
