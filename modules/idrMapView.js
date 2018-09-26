@@ -2,7 +2,7 @@
  * Created by yan on 09/02/2017.
  */
 
-import {networkInstance} from "./idrNetworkManager";
+import {idrNetworkInstance} from "./idrNetworkManager";
 
 import IDRRouter from './idrRouter.js'
 
@@ -14,7 +14,7 @@ import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
 
 import { idrCoreMgr } from "./idrCoreManager";
 
-import IDRLocationServerInstance from './idrLocationServer.js'
+import idrLocateServerInstance from './idrLocationServer.js'
 
 import IdrMap from './idrGlMap.js'
 
@@ -28,7 +28,7 @@ class idrMapView {
 		
 		this.autoChangeFloor = true
 		
-		this._locator = IDRLocationServerInstance
+		this._locator = idrLocateServerInstance
 		
 		this._router = null
 		
@@ -63,6 +63,16 @@ class idrMapView {
 		this._displayAnimId = null
 		
 		this._naviStatusUpdateTimer = null
+		
+		this.deviceAlphaDeg = 0
+		
+		this.deviceAlphaDegStart = false
+		
+		this.deviceAlphaTimer = null
+		
+		var userAgent = navigator.userAgent.toLowerCase();
+		
+		this.isAndroid = userAgent.match(/android/i) == "android";
 	}
 	
 	onMapClick(pos) {
@@ -80,7 +90,36 @@ class idrMapView {
 		this._composs.show(show)
 	}
 	
-	async doLocation(success, failed) {
+	startUpdateDeviceOrientation() {
+		
+		if (this.isAndroid) {
+			
+			return
+		}
+		
+		if (!this.deviceAlphaDegStart) {
+			
+			window.addEventListener('deviceorientation', e => {
+				
+				if ('webkitCompassHeading' in event) {
+					
+					this.deviceAlphaDeg = e.webkitCompassHeading
+				}
+			});
+			
+			this.deviceAlphaDegStart = true
+			
+			this.deviceAlphaTimer = setInterval(()=>{
+				
+				this.setUserDirection()
+				
+			}, 120)
+		}
+	}
+	
+	doLocation(success, failed) {
+		
+		this.startUpdateDeviceOrientation()
 		
 		return new Promise((resolve, reject)=>{
 			
@@ -339,7 +378,7 @@ class idrMapView {
 		idrCoreMgr.init(appId)
 			.then(()=>{
 				
-				return networkInstance.serverCallRegionAllInfo(regionId)
+				return idrNetworkInstance.serverCallRegionAllInfo(regionId)
 			})
 			.then(({data})=>{
 				
@@ -378,7 +417,7 @@ class idrMapView {
 			
 			if (!this._router) {
 				
-				networkInstance.serverCallRegionPathData(this._regionId)
+				idrNetworkInstance.serverCallRegionPathData(this._regionId)
 					.then(res=>{
 						
 						this.regionEx.regionPath = res.data
@@ -823,9 +862,12 @@ class idrMapView {
 		this._idrMap.release()
 	}
 	
-	setUserDirection(angle) {
+	setUserDirection(alpha) {
 		
-		this._idrMap.setUserDirection(angle)
+		if (this.getUserPos()) {
+			
+			this._idrMap.setUserDirection(alpha)
+		}
 	}
 }
 

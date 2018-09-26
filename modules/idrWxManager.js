@@ -6,7 +6,7 @@
  * beacons.js  蓝牙功能模块
  */
 
-import {networkInstance} from "./idrNetworkManager";
+import {idrNetworkInstance} from "./idrNetworkManager";
 
 import idrDebug from './idrDebug'
 
@@ -23,13 +23,17 @@ class idrWxManager {
 		this._configSuccess = false
 		
 		this.onBeaconReceiveFunc = null
+		
+		var u = navigator.userAgent;
+		
+		this.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
 	}
 	
 	init() {
 		
 		return new Promise((resolve, reject)=>{
 			
-			networkInstance.serverCallWxAuth()
+			idrNetworkInstance.serverCallWxAuth()
 				.then((res)=>{
 					
 					return this.configWx(res)
@@ -109,7 +113,7 @@ class idrWxManager {
 		});
 	}
 	
-	async configWx({appId, timestamp, nonceStr, signature}) {
+	configWx({appId, timestamp, nonceStr, signature}) {
 		
 		if (this._configSuccess) {
 			

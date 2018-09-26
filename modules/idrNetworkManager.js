@@ -498,4 +498,4 @@ class idrNetworkManager {
 	}
 }
 
-export const networkInstance = new idrNetworkManager()
+export const idrNetworkInstance = new idrNetworkManager()

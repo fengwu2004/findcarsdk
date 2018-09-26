@@ -6,7 +6,7 @@
 import idrWxManagerInstance from './idrWxManager.js'
 import idrDebug from './idrDebug'
 import { idrCoreMgr } from './idrCoreManager'
-import { networkInstance } from "./idrNetworkManager";
+import { idrNetworkInstance } from "./idrNetworkManager";
 
 class idrLocateServer {
 	
@@ -33,6 +33,12 @@ class idrLocateServer {
 		this._locateTimerId = null
 		
 		this.onCheckSpeacialBeacons = null
+		
+		this.debug = true
+		
+		this.debugPos = null
+		
+		this.result = null
 	}
 	
 	getQueryString(name) {
@@ -52,6 +58,11 @@ class idrLocateServer {
 	_getValidBeacons(beacons) {
 		
 		var temp = []
+	
+		if (!beacons) {
+			
+			return []
+		}
 		
 		for (var i = 0; i < beacons.length; ++i) {
 			
@@ -107,6 +118,8 @@ class idrLocateServer {
 		if (idrCoreMgr.isAndroid && idrCoreMgr.isApp) {
 			
 			tempBeacons = JSON.parse(beacons)
+			
+			idrDebug.showDebugInfo(true)
 		}
 		
 		var newBeacons = this.filterbeacons(tempBeacons)
@@ -116,11 +129,31 @@ class idrLocateServer {
 		this._beacons = window.btoa(newBeacons.beacons)
 		
 		this._count = newBeacons.count
+		
+		idrDebug.debugInfo('蓝牙数量' + this._count)
+	}
+	
+	
+	onServerLocate_Debug() {
+		
+		if (this.debugPos != null) {
+			
+			this.result = this.debugPos
+		}
+		else {
+			
+			this.result = {x: 2964, y: 1600, floorId: "15369152223023649", regionId: "15365719167017237"}
+		}
+		
+		if (typeof this._onLocateSuccess === 'function') {
+			
+			this._onLocateSuccess(this.result)
+		}
 	}
 	
 	onServerLocate() {
 		
-		networkInstance.serverCallLocatingBin({beacons:this._beacons, count:this._count, regionId:this._regionId, floorId:this._floorId}, res => {
+		idrNetworkInstance.serverCallLocatingBin({beacons:this._beacons, count:this._count, regionId:this._regionId, floorId:this._floorId}, res => {
 			
 			this._x = res.x
 			
@@ -168,6 +201,18 @@ class idrLocateServer {
 			})
 		}
 		
+		if (this.debug) {
+			
+			return new Promise((resolve, reject)=>{
+				
+				clearInterval(this._locateTimerId)
+				
+				this._locateTimerId = setInterval(() => this.onServerLocate_Debug(), 1000)
+				
+				resolve()
+			})
+		}
+		
 		return new Promise((resolve, reject)=>{
 			
 			idrWxManagerInstance.init()
@@ -193,16 +238,6 @@ class idrLocateServer {
 		this._started = false
 		
 		this._beacons = null
-	}
-	
-	setStartFailed() {
-		
-		this._started = false
-	}
-	
-	isStart() {
-		
-		return this._started
 	}
 }
 

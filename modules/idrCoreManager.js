@@ -1,4 +1,4 @@
-import { networkInstance } from "./idrNetworkManager";
+import { idrNetworkInstance } from "./idrNetworkManager";
 
 class idrCoreManager {
 	
@@ -21,7 +21,7 @@ class idrCoreManager {
 	
 	_initWx(appId) {
 		
-		return networkInstance.serverCallWXSign(appId)
+		return idrNetworkInstance.serverCallWXSign(appId)
 	}
 	
 	getQueryString(name) {
@@ -40,16 +40,16 @@ class idrCoreManager {
 	
 	_initSession() {
 		
-		return networkInstance.serverCallInitSession()
+		return idrNetworkInstance.serverCallInitSession()
 	}
 	
 	init(appId) {
 		
 		if (this.isApp) {
 			
-			networkInstance.appId = appId
+			idrNetworkInstance.appId = appId
 			
-			networkInstance.clientId = this.clientId
+			idrNetworkInstance.clientId = this.clientId
 		
 			return new Promise((resolve) => {
 				
