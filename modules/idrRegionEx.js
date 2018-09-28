@@ -56,6 +56,13 @@ export default class IDRRegionEx {
 				
 				new IDRUnit(unit, floorName, floorIndex, floorId)
 			))
+			
+			this.floorList[i].unitsMap = new Map()
+			
+			for (let j = 0; j < this.floorList[i].unitList.length; ++j) {
+				
+				this.floorList[i].unitsMap.set(this.floorList[i].unitList[j].id, this.floorList[i].unitList[j])
+			}
 		}
 	}
 	
@@ -146,17 +153,7 @@ export default class IDRRegionEx {
 			return null
 		}
 		
-		for (var i = 0; i < floor.unitList.length; ++i) {
-			
-			var unit = floor.unitList[i]
-			
-			if (unit.id === unitId) {
-				
-				return unit
-			}
-		}
-		
-		return null
+		return floor.unitsMap.get(unitId)
 	}
 	
 	getUnitWithId(unitId) {
@@ -165,14 +162,11 @@ export default class IDRRegionEx {
 			
 			let floor = this.floorList[i]
 			
-			for (var j = 0; j < floor.unitList.length; ++j) {
+			let unit = floor.unitsMap.get(unitId)
+			
+			if (unit != null) {
 				
-				var unit = floor.unitList[j]
-				
-				if (unit.id === unitId) {
-					
-					return unit
-				}
+				return unit
 			}
 		}
 		
@@ -220,32 +214,5 @@ export default class IDRRegionEx {
 		}
 		
 		return result
-	}
-	
-	getAllUnits() {
-		
-		var results = []
-		
-		for (var i = 0; i < this.floorList.length; ++i) {
-			
-			var units = this.floorList[i].unitList
-			
-			for (var j = 0; j < units.length; ++j) {
-				
-				if (units[j].unitTypeId != '0') {
-					
-					continue
-				}
-				
-				results.push(units[j])
-			}
-		}
-		
-		return results
-	}
-	
-	updateUnit() {
-	
-	
 	}
 }

@@ -121,6 +121,18 @@ var PathUtil = (function() {
      * @param y2线段端点2纵坐标
      * @return 最短距离及其端点
      */
+
+    function getPositionDistance(x, y, px, py) {
+	
+	    var result = new PositionDistance();
+	    var p = new Position();
+	    p.x = px;
+	    p.y = py;
+	    result.setPosition(p);
+	    result.setDistance(Math.sqrt((x - px) * (x - px) + (y - py) * (y - py)));
+	    return result;
+    }
+    
     function dop2lDes(x, y, x1, y1, x2, y2) {
         
         var cross = (x2 - x1) * (x - x1) + (y2 - y1) * (y - y1);
@@ -133,17 +145,6 @@ var PathUtil = (function() {
         var px = x1 + (x2 - x1) * r;
         var py = y1 + (y2 - y1) * r;
         return getPositionDistance(x, y, px, py);
-    }
-    
-    function getPositionDistance(x, y, px, py) {
-        
-        var result = new PositionDistance();
-        var p = new Position();
-        p.x = px;
-        p.y = py;
-        result.setPosition(p);
-        result.setDistance(Math.sqrt((x - px) * (x - px) + (y - py) * (y - py)));
-        return result;
     }
     
     return {

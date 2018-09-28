@@ -4,6 +4,10 @@
 
 function idrGlMap(mapView) {
 	
+	var userAgent = navigator.userAgent.toLowerCase();
+	
+	var isAndroid = userAgent.match(/android/i) == "android";
+	
 	var _csscale = 2.5
 	
 	var screenwidth = 0
@@ -76,8 +80,8 @@ function idrGlMap(mapView) {
     },
 
     onLongPressUp : function(x, y){
-
-      handleLongPressUp(x, y)
+	
+	    handleClick(x, y)
     },
 
     onScroll: function(x, y) {
@@ -134,8 +138,15 @@ function idrGlMap(mapView) {
 	  _region.animPitch(0)//设置为 2d
 
     _region.setAlwaysDrawUnit(true)
-
-    _region.addTexture('locatepos', "./static/locatepos.png")
+	
+	  if (isAndroid) {
+		
+		  _region.addTexture('locatepos', './static/locatepos_noheading.png')
+	  }
+	  else {
+		
+		  _region.addTexture('locatepos', './static/locatepos.png')
+	  }
 
     _region.setLocMarkerParam('locatepos', 0x70145082, 200, 75)
   }
@@ -294,13 +305,6 @@ function idrGlMap(mapView) {
   function handleMapScroll(x, y) {
 
     _mapView.onMapScroll(x, y)
-  }
-
-  function handleLongPressUp(x, y) {
-
-    var mapLoc = _region.getTouchPosMapLoc(x, y)
-
-    _mapView.onMapLongPress({x:mapLoc.x, y:mapLoc.y, floorId:_currentFloorId})
   }
 
   function handleClick(x, y) {

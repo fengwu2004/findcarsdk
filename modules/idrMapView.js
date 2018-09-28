@@ -236,6 +236,8 @@ class idrMapView {
 		clearInterval(this._naviStatusUpdateTimer)
 		
 		this._naviStatusUpdateTimer = null
+		
+		this.setStatus(YFM.Map.STATUS_TOUCH)
 	}
 	
 	showRoutePath(paths) {

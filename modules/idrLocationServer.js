@@ -34,7 +34,7 @@ class idrLocateServer {
 		
 		this.onCheckSpeacialBeacons = null
 		
-		this.debug = true
+		this.debug = false
 		
 		this.debugPos = null
 		
