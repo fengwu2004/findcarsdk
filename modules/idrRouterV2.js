@@ -2,11 +2,11 @@
  * Created by yan on 15/03/2017.
  */
 
-import PathSearch from './pathRoute/PathSearch.js'
+import PathSearchV2 from './pathRouteV2/PathSearchV2.js'
 
 import Position from './pathRoute/Position.js'
 
-function idrRouter(floorList, pathData) {
+function idrRouterV2(floorList, pathData) {
 	
 	var _floorList = floorList
 	
@@ -16,7 +16,7 @@ function idrRouter(floorList, pathData) {
 	
 	var _car = false
 	
-	var _pathSearch = new PathSearch(pathData)
+	var _pathSearch = new PathSearchV2(pathData)
 	
 	function getFloorIndex(floorId) {
 		
@@ -92,31 +92,22 @@ function idrRouter(floorList, pathData) {
 		
 		console.log('导航起始点--')
 		
-		var result = _pathSearch.search(_sIndex, s, _eIndex, e, car, null)
+		var result = _pathSearch.search(_sIndex, s, _eIndex, e, null, car)
 		
-		var path = []
+		let {floorType} = result
 		
-		var floorType = []
+		floorType.push(0)
 		
-		for (var i = 0; i < result.paths.length; ++i) {
+		var floorPass = []
+		
+		for (let i = 0; i < floorType.length; ) {
 			
-			var floorId = getFloorId(result.paths[i].floorIndex)
+			floorPass.push({floor:floorType[0], type:floorType[1]})
 			
-			floorType.push({floor:result.paths[i].floorIndex, type:result.paths[i].typeId})
-			
-			result.paths[i].floorId = floorId
-			
-			for (var j = 0; j < result.paths[i].position.length; ++j) {
-				
-				path.push({x:result.paths[i].position[j].x, y:result.paths[i].position[j].y, floor:result.paths[i].floorIndex})
-				
-				result.paths[i].position[j].floorId = floorId
-			}
+			i += 2
 		}
 		
-		result.path = path
-		
-		result.floorType = floorType
+		result.floorType = floorPass
 		
 		return result
 	}
@@ -126,4 +117,4 @@ function idrRouter(floorList, pathData) {
 	this.routerPath = routerPath
 }
 
-export { idrRouter as default }
+export { idrRouterV2 as default }

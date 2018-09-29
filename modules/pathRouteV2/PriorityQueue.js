@@ -1,29 +1,36 @@
-export function PriorityQueue() {
+function QueEle(ele, priority){ //封装我们的元素为一个对象
 	
-	var items = [];
+	this.ele = ele; //元素
 	
-	function QueEle(ele, priority){ //封装我们的元素为一个对象
-		this.ele = ele; //元素
-		this.priority = priority; //优先级
+	this.priority = priority; //优先级
+}
+
+export class PriorityQueue {
+	
+	constructor() {
+		
+		this.items = [];
 	}
 	
-	this.enqueue = function (ele, priority) {
+	enqueue(ele, priority) {
+		
+		console.log(JSON.stringify(ele))
 		
 		var queObj = new QueEle(ele, priority); //创建队列元素对象
 		
 		if(this.isEmpty()){ //如果队列是空的，直接插入
 			
-			this.push(queObj);
+			this.items.push(queObj);
 		}
 		else{
 			
 			var bAdded = false;
 			
-			for(var i = 0, len = items.length; i < len; i++){
+			for(var i = 0, len = this.items.length; i < len; i++){
 				
-				if(priority < items[i].priority){
+				if(priority < this.items[i].priority){
 					
-					items.splice(i, 0, queObj); // 循环队列，如果优先级小于这个位置元素的优先级，插入
+					this.items.splice(i, 0, queObj); // 循环队列，如果优先级小于这个位置元素的优先级，插入
 					
 					bAdded = true;
 					
@@ -33,39 +40,39 @@ export function PriorityQueue() {
 			
 			if(!bAdded){
 				
-				items.push(queObj); // 如果循环一圈都没有找到能插队的位置，直接插入队列尾部
+				this.items.push(queObj); // 如果循环一圈都没有找到能插队的位置，直接插入队列尾部
 			}
 		}
 	};
 	
-	this.dequeue = function () {
+	dequeue() {
 		
-		return items.shift();
+		return this.items.shift();
 	};
 	
-	this.front = function () {
+	front() {
 		
-		return items[0];
+		return this.items[0];
 	};
 	
-	this.isEmpty = function () {
+	isEmpty() {
 		
-		return items.length === 0;
+		return this.items.length === 0;
 	};
 	
-	this.size = function () {
-		return items.length;
+	size() {
+		return this.items.length;
 	};
 	
-	this.clear = function () {
-		items = [];
+	clear() {
+		this.items= [];
 	};
 	
-	this.print = function () {
+	print() {
 		//这个地方稍微修改一下下
 		var temp = [];
-		for(var i = 0, len = items.length; i < len; i++){
-			temp.push(items[i].ele);
+		for(var i = 0, len = this.items.length; i < len; i++){
+			temp.push(this.items[i].ele);
 		}
 		console.log(temp.toString());
 	};

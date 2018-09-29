@@ -15,19 +15,23 @@ import {FPosition} from "./FPosition";
 
 class QueueNode {
 	
-	constructor() {
+	constructor(floor, pos, dis) {
 		
-		this.floor = null
+		this.floor = floor
 		
-		this.pos = null
+		this.pos = pos
 		
-		this.dis = null
+		this.dis = dis
 	}
 }
 
 class PathSearchV2 {
 	
 	constructor(data) {
+		
+		this.pa = null
+		
+		this.pb = null
 		
 		this.floorPath = []
 		
@@ -42,6 +46,8 @@ class PathSearchV2 {
 		this.pre = [[[]]]
 		
 		this.queue = new PriorityQueue()
+		
+		this.index1 = -1
 		
 		this.setData(data)
 	}
@@ -66,11 +72,24 @@ class PathSearchV2 {
 			
 			var size2 = this.floorPath[i].positions.length;
 			
+			this.vis[i] = []
+			
 			this.vis[i].length = size2
+			
+			this.dis[i] = []
 			
 			this.dis[i].length = size2
 			
+			this.pre[i] = []
+			
 			this.pre[i].length = size2
+			
+			for (let j = 0; j < size2; ++j) {
+				
+				this.pre[i][j] = []
+				
+				this.pre[i][j].length = 2
+			}
 		}
 	}
 	
@@ -102,7 +121,7 @@ class PathSearchV2 {
 		
 		let floorType = []
 		
-		floorType.add(f2);
+		floorType.push(f2);
 		
 		let path = []
 		
@@ -110,7 +129,7 @@ class PathSearchV2 {
 		
 		let distance = 0, minDes = Number.MAX_VALUE
 		
-		let lastf=f2,lastp=-1,linkp=-1;
+		let lastf=f2,lastp=-1,linkp=-1,index2 = -1;
 		
 		let plink=null,pend=null;
 		
@@ -136,9 +155,11 @@ class PathSearchV2 {
 				
 				let s2 = PathUtilV2.p2pDes(pe, this.floorPath[f2].positions[linkp2]);
 				
-				if(this.dis[f2][linkp1]+s1+comDes<minDes){
+				if(this.vis[f2][linkp1] && this.dis[f2][linkp1]+s1+comDes<minDes){
 					
 					minDes = this.dis[f2][linkp1]+s1+comDes;
+					
+					index2=linkp;
 					
 					lastp = linkp1;
 					
@@ -147,9 +168,11 @@ class PathSearchV2 {
 					pend = pe;
 				}
 				
-				if(this.dis[f2][linkp2]+s2+comDes<minDes){
+				if(this.vis[f2][linkp2] && this.dis[f2][linkp2]+s2+comDes<minDes){
 					
 					minDes = this.dis[f2][linkp2]+s2+comDes;
+					
+					index2=linkp;
 					
 					lastp = linkp2;
 					
@@ -170,7 +193,7 @@ class PathSearchV2 {
 		}
 		else{
 			
-			let index2 = PathUtilV2.findNearestLine(p2, this.floorPath[f2].positions, this.floorPath[f2].lines);
+			index2 = PathUtilV2.findNearestLine(p2, this.floorPath[f2].positions, this.floorPath[f2].lines);
 			
 			let pc = this.floorPath[f2].lines[index2];
 			
@@ -183,7 +206,7 @@ class PathSearchV2 {
 			//判断是否需要忽略最终节点距离
 			if(pd2.getDistance()>IGNORE_DES){
 				
-				path.add(new FPosition(f2,p2));
+				path.push(new FPosition(f2,p2));
 				
 				distance=pd2.getDistance();
 			}
@@ -192,11 +215,15 @@ class PathSearchV2 {
 			
 			let sd = PathUtilV2.p2pDes(pend, this.floorPath[f2].positions[pd]);
 			
-			lastp = pc;
+			if (this.vis[f2][pc]) {
+				
+				lastp = pc;
+				
+				distance += this.dis[f2][pc]+sc;
+			}
 			
-			distance += this.dis[f2][pc]+sc;
 			
-			if(this.dis[f2][pd]+sd<distance){
+			if(this.vis[f2][pd] && this.dis[f2][pd]+sd<distance){
 				
 				lastp=pd;
 				
@@ -205,30 +232,36 @@ class PathSearchV2 {
 		}
 
 //封装路径
+		if(lastp<0)return null;
+		
 		let sameFloor=false;
 		
 		path.push(new FPosition(f2,pend));
 		
+		if(lastf!=f1||index2!=this.index1)path.push(new FPosition(lastf,this.floorPath[lastf].positions[lastp]));
+		
 		while(lastf>=0){
-			
-			path.push(new FPosition(lastf, this.floorPath[lastf].positions[lastp]))
 			
 			let temp = this.pre[lastf][lastp]
 			
-			sameFloor= temp[0]==lastf;
+			sameFloor = temp[0] == lastf;
 			
-			lastf=temp[0];
+			lastf = temp[0];
 			
-			lastp=temp[1];
+			lastp = temp[1];
 			
-			if(lastf<0)break;
+			if(lastf < 0) {
+				
+				break;
+			}
+			
+			path.push(new FPosition(lastf, this.floorPath[lastf].positions[lastp]))
 			
 			if(!sameFloor){
 				
-				//添加跨楼层节点类型(电梯、楼梯等)
-				floorType.add(this.floorPath[lastf].adjacency[lastp][2]);
+				floorType.push(this.floorPath[lastf].adjacency[lastp][2]);
 				
-				floorType.add(lastf);
+				floorType.push(lastf);
 			}
 		}
 		
@@ -257,11 +290,11 @@ class PathSearchV2 {
 		//清除前次残余数据
 		this.clearData();
 		//初始化起始点
-		let index1=PathUtilV2.findNearestLine(p1, this.floorPath[f1].positions, this.floorPath[f1].lines);
+		this.index1=PathUtilV2.findNearestLine(p1, this.floorPath[f1].positions, this.floorPath[f1].lines);
 		
-		let pa = this.floorPath[f1].lines[index1];
+		let pa = this.floorPath[f1].lines[this.index1];
 		
-		let pb = this.floorPath[f1].lines[index1+1];
+		let pb = this.floorPath[f1].lines[this.index1+1];
 		
 		let pd1 = PathUtilV2.p2lDes(p1, this.floorPath[f1].positions[pa], this.floorPath[f1].positions[pb]);
 		
@@ -294,6 +327,13 @@ class PathSearchV2 {
 		
 		this.dis[f][p]=distance;
 		
+		if (this.pre[f][p] == undefined) {
+			
+			this.pre[f][p] = []
+			
+			this.pre[f][p].length = 2
+		}
+		
 		this.pre[f][p][0]=pref;
 		
 		this.pre[f][p][1]=prep;
@@ -303,31 +343,34 @@ class PathSearchV2 {
 	
 	dijkstra(type){
 		
-		let node = this.queue.dequeue();
+		let node = this.queue.dequeue()
 		
-		let f=node.floor;
+		let f = node.ele.floor
 		
-		let p=node.pos;
+		let p = node.ele.pos
 		
-		if(this.vis[f][p])return;
+		if (this.vis[f][p]) {
+			
+			return
+		}
 		
-		let d = node.dis;
+		let d = node.ele.dis
 		
-		let ad = this.floorPath[f].adjacency[p];
+		let ad = this.floorPath[f].adjacency[p]
 		
 		//遍历可行路径，下标从3开始，前3位是标示跨楼层的
 		for(let i=3;i<ad.length;i+=2){
 			
-			let nextp=ad[i];
+			let nextp=ad[i]
 			
 			//跳过已访问完的节点
-			if(!this.vis[f][nextp]){
+			if (!this.vis[f][nextp]){
 				
-				let nextd = ad[i+1]+d;
+				let nextd = ad[i + 1] + d
 				
-				if(nextd < this.dis[f][nextp]){
+				if (nextd < this.dis[f][nextp]){
 					
-					this.addNode(f, nextp, nextd, f, p);
+					this.addNode(f, nextp, nextd, f, p)
 				}
 			}
 		}

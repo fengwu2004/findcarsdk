@@ -97,20 +97,20 @@ var PathUtilV2 = (function() {
 	
 	function p2pDes(a, b) {
 		
-		return Math.sqrt(Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2));
+		return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 	}
 	
 
 	function p2lDes(p, l) {
 		
-		return p2lDes(p.getX(), p.getY(), l.getEndPointOne().getX(), l.getEndPointOne().getY(),
-			l.getEndPointTwo().getX(), l.getEndPointTwo().getY());
+		return p2lDes(p.x, p.y, l.getEndPointOne().x, l.getEndPointOne().y,
+			l.getEndPointTwo().x, l.getEndPointTwo().y);
 	}
 	
 	function p2lDes(p, p1, p2){
 		
-		return p2lDes(p.getX(), p.getY(), p1.getX(), p1.getY(),
-			p2.getX(), p2.getY());
+		return dop2lDes(p.x, p.y, p1.x, p1.y,
+			p2.x, p2.y);
 	}
 	
 	function getPositionDistance(x, y, px, py) {

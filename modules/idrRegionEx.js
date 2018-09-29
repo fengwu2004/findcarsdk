@@ -129,6 +129,21 @@ export default class IDRRegionEx {
 		return null
 	}
 	
+	getFloorByIndex(floorIndex) {
+		
+		for (var i = 0; i < this.floorList.length; ++i) {
+			
+			var floor = this.floorList[i]
+			
+			if (floor.floorIndex === floorIndex) {
+				
+				return floor
+			}
+		}
+		
+		return null
+	}
+	
 	getFloorbyId(floorId) {
 		
 		for (var i = 0; i < this.floorList.length; ++i) {

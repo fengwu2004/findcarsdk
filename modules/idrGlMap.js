@@ -440,6 +440,18 @@ function idrGlMap(mapView) {
 	  
   	_region.overlookRoute()
   }
+	
+	function showRoutePathV2(path) {
+		
+		if (!path) {
+			
+			_region.cleanRoute()
+			
+			return
+		}
+		
+		_region.setRoute(path.path)
+	}
 
   function showRoutePath(path) {
 
@@ -539,7 +551,7 @@ function idrGlMap(mapView) {
 
   }
 
-  function getTargetFloorPoints(path, floorId) {
+  function getTargetFloorPoints(path) {
 
     if (!path) {
 
@@ -549,13 +561,8 @@ function idrGlMap(mapView) {
     var result = []
 
     for (var i = 0; i < path.paths.length; ++i) {
-
-      var floorPath = path.paths[i]
-
-      // if (floorPath.floorId === floorId) {
-
-        result = result.concat(floorPath.position)
-      // }
+	
+	    result = result.concat(floorPath.position)
     }
 
     if (result.length == 0) {
@@ -607,7 +614,7 @@ function idrGlMap(mapView) {
 
   this.birdLook = birdLook
 
-  this.showRoutePath = showRoutePath
+  this.showRoutePath = showRoutePathV2
 
   this.getScreenPos = getScreenPos
 

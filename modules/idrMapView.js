@@ -5,6 +5,7 @@
 import {idrNetworkInstance} from "./idrNetworkManager";
 
 import IDRRouter from './idrRouter.js'
+import IDRRouterV2 from './idrRouterV2'
 
 import IDRRegionEx from './idrRegionEx.js'
 
@@ -421,10 +422,19 @@ class idrMapView {
 				
 				idrNetworkInstance.serverCallRegionPathData(this._regionId)
 					.then(res=>{
+				
+						console.log(res.data)
 						
 						this.regionEx.regionPath = res.data
 						
-						this._router = new IDRRouter(this.regionEx.floorList, this.regionEx.regionPath)
+						if (res.data.version != undefined) {
+							
+							this._router = new IDRRouterV2(this.regionEx.floorList, this.regionEx.regionPath)
+						}
+						else {
+							
+							this._router = new IDRRouter(this.regionEx.floorList, this.regionEx.regionPath)
+						}
 						
 						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorId, regionId:this._regionId})
 					})
