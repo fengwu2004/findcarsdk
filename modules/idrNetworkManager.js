@@ -386,7 +386,7 @@ class idrNetworkManager {
 		})
 	}
 	
-	getMarkedUnit(regionId, success, failed) {
+	getMarkedUnit(regionId) {
 		
 		var url = this.host + 'chene/getCheLocation.html'
 		
@@ -395,7 +395,17 @@ class idrNetworkManager {
 			regionId
 		}
 		
-		this.doAjax(url, data, success, failed)
+		return new Promise(((resolve, reject) => {
+			
+			this.doAjax(url, data, (res=>{
+				
+				resolve(res)
+				
+			}), (error)=>{
+				
+				reject(error)
+			})
+		}))
 	}
 	
 	removeMarkedUnit(regionId, success, failed) {

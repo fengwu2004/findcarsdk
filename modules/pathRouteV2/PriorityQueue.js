@@ -14,7 +14,7 @@ export class PriorityQueue {
 	
 	enqueue(ele, priority) {
 		
-		console.log(JSON.stringify(ele))
+		// console.log(JSON.stringify(ele))
 		
 		var queObj = new QueEle(ele, priority); //创建队列元素对象
 		

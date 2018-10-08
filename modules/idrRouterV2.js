@@ -102,7 +102,7 @@ function idrRouterV2(floorList, pathData) {
 		
 		for (let i = 0; i < floorType.length; ) {
 			
-			floorPass.push({floor:floorType[0], type:floorType[1]})
+			floorPass.push({floor:floorType[i], type:floorType[i + 1]})
 			
 			i += 2
 		}
