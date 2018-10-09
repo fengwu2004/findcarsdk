@@ -36,16 +36,6 @@ function idrGlMap(mapView) {
 
   var listener = {
 
-    onLoadFinish : function(floorId, floorIndex){
-
-      console.log('onLoadFinish')
-    },
-
-    onLoadFailed : function(floorId, floorIndex){
-
-      console.log('onLoadFailed')
-    },
-
     onAllFloorLoadFinish : function(){
 
       onAllFloorLoaded()

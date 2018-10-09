@@ -9,7 +9,7 @@ import IDRRouterV2 from './idrRouterV2'
 
 import IDRRegionEx from './idrRegionEx.js'
 
-import IDRComposs from './IDRComposs.js'
+import IDRComposs from './idrComposs.js'
 
 import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
 

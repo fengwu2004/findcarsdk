@@ -34,7 +34,7 @@ class idrLocateServer {
 		
 		this.onCheckSpeacialBeacons = null
 		
-		this.debug = false
+		this.debug = true
 		
 		this.debugPos = null
 		
@@ -142,7 +142,7 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 2000, y: 1500, floorId: "15379343028623799", regionId: "15365719167017237"}
+			this.result = {x: 2000, y: 1500, floorId: "15216201616573389", regionId: "15208407076393939"}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {
