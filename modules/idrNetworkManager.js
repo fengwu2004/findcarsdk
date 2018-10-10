@@ -146,8 +146,6 @@ function ajax(options) {
 
 function doAjax(url, data, successFn, failedFn) {
 	
-	console.log('网络请求' + url)
-	
 	if (data) {
 		
 		ajax({

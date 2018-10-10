@@ -18,35 +18,9 @@ function idrRouterV2(floorList, pathData) {
 	
 	var _pathSearch = new PathSearchV2(pathData)
 	
-	function getFloorIndex(floorId) {
-		
-		for (var i = 0; i < _floorList.length; ++i) {
-			
-			if (_floorList[i].id === floorId) {
-				
-				return _floorList[i].floorIndex
-			}
-		}
-		
-		return -1
-	}
-	
 	function getRouterParm() {
 		
 		return {start:_start, end:_end, car:_car}
-	}
-	
-	function getFloorId(floorIndex) {
-		
-		for (var i = 0; i < _floorList.length; ++i) {
-			
-			if (_floorList[i].floorIndex === floorIndex) {
-				
-				return _floorList[i].id
-			}
-		}
-		
-		return null
 	}
 	
 	/**
@@ -68,9 +42,9 @@ function idrRouterV2(floorList, pathData) {
 	
 	function doRouter(start, end, car) {
 		
-		var _sIndex = getFloorIndex(start.floorId)
+		var _sIndex = start.floorIndex
 		
-		var _eIndex = getFloorIndex(end.floorId)
+		var _eIndex = end.floorIndex
 		
 		var s = new Position
 		

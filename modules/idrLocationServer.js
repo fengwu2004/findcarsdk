@@ -34,6 +34,8 @@ class idrLocateServer {
 		
 		this.onCheckSpeacialBeacons = null
 		
+		this.regionEx = null
+		
 		this.debug = true
 		
 		this.debugPos = null
@@ -133,7 +135,6 @@ class idrLocateServer {
 		idrDebug.debugInfo('蓝牙数量' + this._count)
 	}
 	
-	
 	onServerLocate_Debug() {
 		
 		if (this.debugPos != null) {
@@ -142,7 +143,7 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 2000, y: 1500, floorId: "15216201616573389", regionId: "15208407076393939"}
+			this.result = {x: 1000, y: 480, floorIndex: 0, regionId: "15208407076393939"}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {
@@ -161,9 +162,11 @@ class idrLocateServer {
 			
 			this._floorId = res.floorId
 			
+			let floorIndex = this.regionEx.getFloorIndex(res.floorId)
+			
 			if (typeof this._onLocateSuccess === 'function') {
 				
-				this._onLocateSuccess({x:this._x, y:this._y, floorId:this._floorId, regionId:this._regionId});
+				this._onLocateSuccess({x:this._x, y:this._y, floorId:this._floorId, regionId:this._regionId, floorIndex});
 			}
 		}, res => {
 			

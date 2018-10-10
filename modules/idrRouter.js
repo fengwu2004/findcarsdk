@@ -68,9 +68,9 @@ function idrRouter(floorList, pathData) {
 	
 	function doRouter(start, end, car) {
 		
-		var _sIndex = getFloorIndex(start.floorId)
+		var _sIndex = start.floorIndex
 		
-		var _eIndex = getFloorIndex(end.floorId)
+		var _eIndex = end.floorIndex
 		
 		var s = new Position
 		

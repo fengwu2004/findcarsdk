@@ -1,7 +1,7 @@
 
 export class idrMarker {
 	
-	constructor({pos, exinfo, callback}, icon) {
+	constructor({pos, exinfo, callback}, image) {
 	
 		this.position = pos
 		
@@ -9,8 +9,8 @@ export class idrMarker {
 		
 		this.clickfn = callback
 		
-		this.icon = icon
+		this.image = image
 		
-		this.typename = icon ? icon : 'idrMarker'
+		this.typename = image? image : 'idrMarker'
 	}
 }

@@ -39,7 +39,9 @@ class idrMapView {
 		
 		this._regionId = null
 		
-		this._currentFloorId = null
+		this._floor = null
+		
+		this._currentFloorIndex = 0
 		
 		this._units = []
 		
@@ -81,16 +83,6 @@ class idrMapView {
 		this._mapEvent.fireEvent(this.eventTypes.onMapClick, pos)
 	}
 	
-	showComposs(show) {
-		
-		if (!this._composs) {
-			
-			return
-		}
-		
-		this._composs.show(show)
-	}
-	
 	startUpdateDeviceOrientation() {
 		
 		if (this.isAndroid) {
@@ -122,9 +114,11 @@ class idrMapView {
 		
 		this.startUpdateDeviceOrientation()
 		
+		this._locator.regionEx = this.regionEx
+		
 		return new Promise((resolve, reject)=>{
 			
-			this._locator.start(this._regionId, this._currentFloorId)
+			this._locator.start(this._regionId, this._currentFloorIndex)
 				.then(res=>{
 					
 					this._locator.setLocateDelegate(success, failed)
@@ -139,11 +133,6 @@ class idrMapView {
 	setStatus(type) {
 		
 		this._idrMap.setStatus(type)
-	}
-	
-	getRoutePath(start, end) {
-		
-		return this._router.routerPath(start, end, false)
 	}
 	
 	checkReachTargetFloor() {
@@ -318,11 +307,11 @@ class idrMapView {
 			
 			this._idrMap = new IdrMap(this)
 			
-			this._idrMap.init(this.regionEx, this._currentFloorId, this._container)
+			this._idrMap.init(this.regionEx, this._currentFloorIndex, this._container)
 		}
 		else  {
 			
-			this._idrMap.changeToFloor(this._currentFloorId)
+			this._idrMap.changeToFloor(this._currentFloorIndex)
 		}
 	}
 	
@@ -357,19 +346,14 @@ class idrMapView {
 	
 	loadMap() {
 		
-		this.createMap(this._regionId, this._currentFloorId)
+		this.createMap(this._regionId, this._currentFloorIndex)
 	}
 	
-	changeFloorByIndex(floorIndex) {
+	changeFloor(floorIndex) {
 		
-		this._currentFloorId = this.regionEx.floorList[floorIndex].id
+		this._currentFloorIndex = floorIndex
 		
-		this.loadMap()
-	}
-	
-	changeFloor(floorId) {
-		
-		this._currentFloorId = floorId
+		this._floor = this.regionEx.getFloorByIndex(floorIndex)
 		
 		this.loadMap()
 	}
@@ -410,9 +394,7 @@ class idrMapView {
 		
 		this._idrMap.setPos(this._currentPos)
 		
-		var floor = this.regionEx.getFloorbyId(this._currentFloorId)
-		
-		this._idrMap.addUnits(floor.unitList)
+		this._idrMap.addUnits(this._floor.unitList)
 		
 		this.updateDisplay()
 		
@@ -423,8 +405,6 @@ class idrMapView {
 				idrNetworkInstance.serverCallRegionPathData(this._regionId)
 					.then(res=>{
 				
-						console.log(res.data)
-						
 						this.regionEx.regionPath = res.data
 						
 						if (res.data.version != undefined) {
@@ -436,7 +416,7 @@ class idrMapView {
 							this._router = new IDRRouter(this.regionEx.floorList, this.regionEx.regionPath)
 						}
 						
-						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorId, regionId:this._regionId})
+						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorIndex, regionId:this._regionId})
 					})
 					.catch(e=>{
 						
@@ -445,7 +425,7 @@ class idrMapView {
 			}
 			else {
 				
-				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorId, regionId:this._regionId})
+				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorIndex, regionId:this._regionId})
 			}
 		}, 0)
 	}
@@ -479,9 +459,9 @@ class idrMapView {
 		
 		var temp = []
 		
-		for (var i = 0; i < this._markers[marker.position.floorId].length; ++i) {
+		for (var i = 0; i < this._markers[marker.position.floorIndex].length; ++i) {
 			
-			var tempMarker = this._markers[marker.position.floorId][i]
+			var tempMarker = this._markers[marker.position.floorIndex][i]
 			
 			if (tempMarker.id !== marker.id) {
 				
@@ -489,43 +469,33 @@ class idrMapView {
 			}
 		}
 		
-		this._markers[marker.position.floorId] = temp
+		this._markers[marker.position.floorIndex] = temp
 		
 		this._idrMap.removeMarker(marker)
 	}
 	
-	getMarkers(floorId) {
-		
-		if (floorId in this._markers) {
-			
-			return this._markers[floorId]
-		}
-		
-		return null
-	}
-	
 	addMarker(marker) {
 		
-		if (!this._markers.hasOwnProperty(marker.position.floorId)) {
+		if (!this._markers.hasOwnProperty(marker.position.floorIndex)) {
 			
-			this._markers[marker.position.floorId] = new Array()
+			this._markers[marker.position.floorIndex] = new Array()
 		}
 		
-		this._markers[marker.position.floorId].push(marker)
+		this._markers[marker.position.floorIndex].push(marker)
 		
 		this._idrMap.addMarker(marker)
 		
 		return marker
 	}
 	
-	findMarker(floorId, markerId) {
+	findMarker(floorIndex, markerId) {
 		
-		if (!this._markers.hasOwnProperty(floorId)) {
+		if (!this._markers.hasOwnProperty(floorIndex)) {
 			
 			return null
 		}
 		
-		var markersArray = this._markers[floorId]
+		var markersArray = this._markers[floorIndex]
 		
 		for (var i = 0; i < markersArray.length; ++i) {
 			
@@ -538,9 +508,9 @@ class idrMapView {
 		return null
 	}
 	
-	onMarkerClick(floorId, markerId) {
+	onMarkerClick(floorIndex, markerId) {
 		
-		var marker = this.findMarker(floorId, markerId)
+		var marker = this.findMarker(floorIndex, markerId)
 		
 		if (this._mapEvent.fireOnce(this.eventTypes.onMarkerClick, marker)) {
 			
@@ -582,9 +552,9 @@ class idrMapView {
 			return
 		}
 		
-		if (mapPos.floorId !== this._currentFloorId) {
+		if (mapPos.floorIndex !== this._currentFloorIndex) {
 			
-			this.changeFloor(mapPos.floorId)
+			this.changeFloor(mapPos.floorIndex)
 		}
 		
 		this._idrMap.centerPos(mapPos, anim)
@@ -619,24 +589,24 @@ class idrMapView {
 		}
 	}
 	
-	setUserPos(pos) {
+	setUserPos({x, y, floorIndex}) {
 		
-		var p = {x:pos.x, y:pos.y, floorId:pos.floorId}
+		let p = {x, y, floorIndex}
 		
-		if (this._currentPos && this._currentPos.floorId === pos.floorId) {
+		if (this._currentPos && this._currentPos.floorIndex === floorIndex) {
 			
 			this.Positionfilter(this._currentPos, p, 40)
 		}
 		
 		this._currentPos = p
 		
-		if (pos.floorId !== this._currentFloorId && this.autoChangeFloor) {
+		if (floorIndex !== this._currentFloorIndex && this.autoChangeFloor) {
 			
-			this.changeFloor(p.floorId)
+			this.changeFloor(floorIndex)
 		}
 		else  {
 			
-			this.setPos(p)
+			this.setPos(this._currentPos)
 		}
 	}
 	
@@ -649,50 +619,6 @@ class idrMapView {
 		this.addMarker(marker)
 		
 		return marker
-	}
-	
-	findUnitWithNameAndFloor(name, floorId) {
-		
-		var lowercase = name.toLowerCase()
-		
-		for (var i = 0; i < this.regionEx.floorList.length; ++i) {
-			
-			var floor = this.regionEx.floorList[i]
-			
-			for (var j = 0; j < floor.unitList.length; ++j) {
-				
-				var unit = floor.unitList[j]
-				
-				if (lowercase === unit.name.toLowerCase() && floorId === unit.floorId) {
-					
-					return unit
-				}
-			}
-		}
-		
-		return null
-	}
-	
-	findUnitByPreciseName(name) {
-		
-		var lowercase = name.toLowerCase()
-		
-		for (var i = 0; i < this.regionEx.floorList.length; ++i) {
-			
-			var floor = this.regionEx.floorList[i]
-			
-			for (var j = 0; j < floor.unitList.length; ++j) {
-				
-				var unit = floor.unitList[j]
-				
-				if (lowercase === unit.name.toLowerCase()) {
-					
-					return unit
-				}
-			}
-		}
-		
-		return null
 	}
 	
 	findUnitWithId(unitId) {
@@ -713,32 +639,6 @@ class idrMapView {
 		}
 		
 		return null
-	}
-	
-	findUnitOfFloor(floorIndex, name) {
-		
-		var floor = this.regionEx.floorList[floorIndex]
-		
-		var results = null
-		
-		var lowercase = name.toLowerCase()
-		
-		for (var i = 0; i < floor.unitList.length; ++i) {
-			
-			var unit = floor.unitList[i]
-			
-			if (unit.name.toLowerCase() == lowercase) {
-				
-				if (!results) {
-					
-					results = []
-				}
-				
-				results.push(unit)
-			}
-		}
-		
-		return results
 	}
 	
 	findUnitWithName(floorId, name) {
@@ -821,11 +721,6 @@ class idrMapView {
 		return this._regionId
 	}
 	
-	getFloorId() {
-		
-		return this._currentFloorId
-	}
-	
 	isDynamicNavi() {
 		
 		return this._dynamicNavi
@@ -839,28 +734,6 @@ class idrMapView {
 	set2DMap(value) {
 		
 		this._idrMap.set2DMap(value)
-	}
-	
-	findUnitWithNameAndFloor(name, floorId) {
-		
-		var lowercase = name.toLowerCase()
-		
-		for (var i = 0; i < this.regionEx.floorList.length; ++i) {
-			
-			var floor = this.regionEx.floorList[i]
-			
-			for (var j = 0; j < floor.unitList.length; ++j) {
-				
-				var unit = floor.unitList[j]
-				
-				if (lowercase === unit.name.toLowerCase() && floorId === unit.floorId) {
-					
-					return unit
-				}
-			}
-		}
-		
-		return null
 	}
 	
 	//path:[{x,y,floorId}]
@@ -880,6 +753,16 @@ class idrMapView {
 			
 			this._idrMap.setUserDirection(alpha)
 		}
+	}
+	
+	getFloorId() {
+		
+		if (!this._floor) {
+			
+			return null
+		}
+		
+		return this._floor.id
 	}
 }
 
