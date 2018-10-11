@@ -4,12 +4,12 @@
 
 import {idrNetworkInstance} from "./idrNetworkManager";
 
-import IDRRouter from './idrRouter.js'
-import IDRRouterV2 from './idrRouterV2'
+import idrRouter from './idrRouter.js'
+import idrRouterV2 from './idrRouterV2'
 
-import IDRRegionEx from './idrRegionEx.js'
+import { idrRegionEx } from './idrRegionEx.js'
 
-import IDRComposs from './idrComposs.js'
+import idrComposs from './idrComposs.js'
 
 import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
 
@@ -19,7 +19,7 @@ import idrLocateServerInstance from './idrLocationServer.js'
 
 import IdrMap from './idrGlMap.js'
 
-class idrMapView {
+export class idrMapView {
 	
 	constructor() {
 		
@@ -341,7 +341,7 @@ class idrMapView {
 		
 		this._container.appendChild(div)
 		
-		this._composs = new IDRComposs('composs', this.regionEx.northDeflectionAngle, this)
+		this._composs = new idrComposs('composs', this.regionEx.northDeflectionAngle, this)
 	}
 	
 	loadMap() {
@@ -369,7 +369,7 @@ class idrMapView {
 			})
 			.then(({data})=>{
 				
-				this.regionEx = new IDRRegionEx(data)
+				this.regionEx = new idrRegionEx(data)
 				
 				this._regionId = regionId
 				
@@ -409,14 +409,14 @@ class idrMapView {
 						
 						if (res.data.version != undefined) {
 							
-							this._router = new IDRRouterV2(this.regionEx.floorList, this.regionEx.regionPath)
+							this._router = new idrRouterV2(this.regionEx.floorList, this.regionEx.regionPath)
 						}
 						else {
 							
-							this._router = new IDRRouter(this.regionEx.floorList, this.regionEx.regionPath)
+							this._router = new idrRouter(this.regionEx.floorList, this.regionEx.regionPath)
 						}
 						
-						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorIndex, regionId:this._regionId})
+						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._regionId})
 					})
 					.catch(e=>{
 						
@@ -425,7 +425,7 @@ class idrMapView {
 			}
 			else {
 				
-				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorId:this._currentFloorIndex, regionId:this._regionId})
+				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._regionId})
 			}
 		}, 0)
 	}
@@ -765,5 +765,3 @@ class idrMapView {
 		return this._floor.id
 	}
 }
-
-export { idrMapView as default }

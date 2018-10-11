@@ -1,5 +1,5 @@
 
-export default class idrUnit {
+export class idrUnit {
 	
 	constructor(unitInfo, floorName, floorIndex, floorId) {
 		

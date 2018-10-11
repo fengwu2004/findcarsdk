@@ -2,9 +2,9 @@
  * Created by ky on 17-4-21.
  */
 
-import IDRUnit from './idrUnit'
+import {idrUnit} from './idrUnit'
 
-export default class IDRRegionEx {
+export class idrRegionEx {
 	
 	constructor(regionAllInfo) {
 		
@@ -54,7 +54,7 @@ export default class IDRRegionEx {
 			
 			this.floorList[i].unitList = unitList.map(unit => (
 				
-				new IDRUnit(unit, floorName, floorIndex, floorId)
+				new idrUnit(unit, floorName, floorIndex, floorId)
 			))
 			
 			this.floorList[i].unitsMap = new Map()
