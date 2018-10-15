@@ -195,14 +195,14 @@ export class idrRegionEx {
 	
 	getNearUnit(pos, unitList) {
 		
-		if (!pos || !pos.floorId) {
+		if (!pos) {
 			
 			return null
 		}
 		
 		if (!unitList) {
 			
-			var floor = this.getFloorbyId(pos.floorId)
+			var floor = this.getFloorByIndex(pos.floorIndex)
 			
 			unitList = floor.unitList
 		}
@@ -213,7 +213,7 @@ export class idrRegionEx {
 			
 			var unit = unitList[i]
 			
-			if (unit.floorId !== pos.floorId) {
+			if (unit.floorIndex !== pos.floorIndex) {
 				
 				continue
 			}

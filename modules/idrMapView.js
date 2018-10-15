@@ -147,7 +147,7 @@ export class idrMapView {
 			return false
 		}
 		
-		if (this._naviParm && this._naviParm.end.floorId == this._currentPos.floorId) {
+		if (this._naviParm && this._naviParm.end.floorIndex == this._currentPos.floorIndex) {
 			
 			return true
 		}
@@ -179,7 +179,7 @@ export class idrMapView {
 		
 		let carnavi = car === undefined?false : car
 		
-		this._path = this._router.routerPath(start, end, carnavi)
+		this._path = this._router.routerPath(start, end.position, carnavi, end.junctions)
 		
 		if (!this._path) {
 			
@@ -674,7 +674,7 @@ export class idrMapView {
 	
 	getNearUnit(pos) {
 		
-		var floor = this.regionEx.getFloorbyId(pos.floorId)
+		var floor = this.regionEx.getFloorByIndex(pos.floorIndex)
 		
 		return this.regionEx.getNearUnit(pos, floor.unitList)
 	}
