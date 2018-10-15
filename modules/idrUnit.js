@@ -3,7 +3,7 @@ export class idrUnit {
 	
 	constructor(unitInfo, floorName, floorIndex, floorId) {
 		
-		const {boundLeft, boundRight, boundTop, boundBottom, unitTypeId, id, name, points} = unitInfo
+		const {boundLeft, boundRight, boundTop, boundBottom, unitTypeId, id, name, points, extInfo} = unitInfo
 		
 		this.id = id
 		
@@ -28,6 +28,20 @@ export class idrUnit {
 		if (points) {
 			
 			this.points = points.split(' ')
+		}
+		
+		this.extInfo = extInfo
+		
+		if (this.extInfo && this.extInfo.linkPoints) {
+			
+			this.junctions = this.extInfo.linkPoints.map(p=>{
+				
+				return Object.assign({}, p, {floorId:this.floorId})
+			})
+		}
+		else {
+			
+			this.junctions = null
 		}
 		
 		this._pts = null

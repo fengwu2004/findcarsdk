@@ -23,13 +23,7 @@ function idrRouterV2(floorList, pathData) {
 		return {start:_start, end:_end, car:_car}
 	}
 	
-	/**
-	 * @param start 起点
-	 * @param end 终点
-	 * @param car 是否车行
-	 * @return PathResult
-	 */
-	function routerPath(start, end, car) {
+	function routerPath(start, end, car, linkPoints) {
 		
 		_start = start
 		
@@ -37,10 +31,10 @@ function idrRouterV2(floorList, pathData) {
 		
 		_car = car
 		
-		return doRouter(start, end, car)
+		return doRouter(start, end, car, linkPoints)
 	}
 	
-	function doRouter(start, end, car) {
+	function doRouter(start, end, car, linkPoints) {
 		
 		var _sIndex = start.floorIndex
 		
@@ -66,7 +60,7 @@ function idrRouterV2(floorList, pathData) {
 		
 		console.log('导航起始点--')
 		
-		var result = _pathSearch.search(_sIndex, s, _eIndex, e, null, car)
+		var result = _pathSearch.search(_sIndex, s, _eIndex, e, linkPoints, car)
 		
 		let {floorType} = result
 		
