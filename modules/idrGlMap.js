@@ -391,7 +391,7 @@ class idrGlMap {
 	  this._region.overlookRoute()
   }
 	
-	showRoutePathV2(path) {
+	showRoutePath(path) {
 		
 		if (!path) {
 			
@@ -403,41 +403,41 @@ class idrGlMap {
 		this._region.setRoute(path.path)
 	}
 
-  showRoutePath(path) {
-
-    if (!path) {
-	
-	    this._region.cleanRoute()
-
-      return
-    }
-
-    var pathInfloor = this.getTargetFloorPoints(path)
-
-    if (!pathInfloor) {
-	
-	    this._region.cleanRoute()
-
-      return
-    }
-
-    var data = []
-
-    pathInfloor.forEach((p) => {
-      "use strict";
-      var pos = {}
-
-      pos.floor = this._regionEx.getFloorIndex(p.floorId)
-
-      pos.x = p.x
-
-      pos.y = p.y
-
-      data.push(pos)
-    })
-	
-	  this._region.setRoute(data)
-  }
+  // showRoutePath(path) {
+  //
+  //   if (!path) {
+  //
+	 //    this._region.cleanRoute()
+  //
+  //     return
+  //   }
+  //
+  //   var pathInfloor = this.getTargetFloorPoints(path)
+  //
+  //   if (!pathInfloor) {
+  //
+	 //    this._region.cleanRoute()
+  //
+  //     return
+  //   }
+  //
+  //   var data = []
+  //
+  //   pathInfloor.forEach((p) => {
+  //     "use strict";
+  //     var pos = {}
+  //
+  //     pos.floor = this._regionEx.getFloorIndex(p.floorId)
+  //
+  //     pos.x = p.x
+  //
+  //     pos.y = p.y
+  //
+  //     data.push(pos)
+  //   })
+  //
+	 //  this._region.setRoute(data)
+  // }
   
   setRoutePath(path) {
 	
