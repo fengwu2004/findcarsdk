@@ -34,6 +34,8 @@ class idrGlMap {
 		
 		this._region = null
 		
+		this._currentFloorIndex = -1
+		
 		this._unitAddFloor = {}
 		
 		this.listener = {
@@ -402,42 +404,6 @@ class idrGlMap {
 		
 		this._region.setRoute(path.path)
 	}
-
-  // showRoutePath(path) {
-  //
-  //   if (!path) {
-  //
-	 //    this._region.cleanRoute()
-  //
-  //     return
-  //   }
-  //
-  //   var pathInfloor = this.getTargetFloorPoints(path)
-  //
-  //   if (!pathInfloor) {
-  //
-	 //    this._region.cleanRoute()
-  //
-  //     return
-  //   }
-  //
-  //   var data = []
-  //
-  //   pathInfloor.forEach((p) => {
-  //     "use strict";
-  //     var pos = {}
-  //
-  //     pos.floor = this._regionEx.getFloorIndex(p.floorId)
-  //
-  //     pos.x = p.x
-  //
-  //     pos.y = p.y
-  //
-  //     data.push(pos)
-  //   })
-  //
-	 //  this._region.setRoute(data)
-  // }
   
   setRoutePath(path) {
 	
@@ -477,28 +443,6 @@ class idrGlMap {
     }
 
   }
-  
-  getTargetFloorPoints(path) {
-
-    if (!path) {
-
-      return null
-    }
-
-    var result = []
-
-    for (var i = 0; i < path.paths.length; ++i) {
-    	
-	    result = result.concat(path.paths[i].position)
-    }
-
-    if (result.length == 0) {
-
-      return null
-    }
-
-    return result
-  }
 
   getMapScale() {
 
@@ -507,9 +451,7 @@ class idrGlMap {
 
   getMapRotate() {
 
-    var val = this._region.getFloorAngle(this._floor.floorIndex)
-
-    return val
+    return this._region.getFloorAngle(this._floor.floorIndex)
   }
 
   updateMarkerLocation(marker, {x,y,floorIndex}) {

@@ -301,7 +301,7 @@ export class idrMapView {
 		this._idrMap.clearFloorUnitsColor(allfloor)
 	}
 	
-	createMap() {
+	_createMap() {
 		
 		if (!this._idrMap) {
 			
@@ -315,7 +315,7 @@ export class idrMapView {
 		}
 	}
 	
-	updateDisplay() {
+	_updateDisplay() {
 		
 		this._displayAnimId = requestAnimationFrame(() => {
 			
@@ -324,11 +324,11 @@ export class idrMapView {
 				this._composs.rotateToDegree(this._idrMap.getMapRotate())
 			}
 			
-			this.updateDisplay()
+			this._updateDisplay()
 		})
 	}
 	
-	addComposs() {
+	_addComposs() {
 		
 		if (this._composs) {
 			
@@ -344,9 +344,9 @@ export class idrMapView {
 		this._composs = new idrComposs('composs', this.regionEx.northDeflectionAngle, this)
 	}
 	
-	loadMap() {
+	_loadMap() {
 		
-		this.createMap(this._regionId, this._currentFloorIndex)
+		this._createMap(this._regionId, this._currentFloorIndex)
 	}
 	
 	changeFloor(floorIndex) {
@@ -355,7 +355,7 @@ export class idrMapView {
 		
 		this._floor = this.regionEx.getFloorByIndex(floorIndex)
 		
-		this.loadMap()
+		this._loadMap()
 	}
 	
 	initMap(appId, containerId, regionId) {
@@ -388,7 +388,7 @@ export class idrMapView {
 	
 	onLoadMapSuccess() {
 		
-		this.addComposs()
+		this._addComposs()
 		
 		this._mapRoot = this._idrMap.root()
 		
@@ -396,7 +396,7 @@ export class idrMapView {
 		
 		this._idrMap.addUnits(this._floor.unitList)
 		
-		this.updateDisplay()
+		this._updateDisplay()
 		
 		setTimeout(() => {
 			
@@ -488,7 +488,7 @@ export class idrMapView {
 		return marker
 	}
 	
-	findMarker(floorIndex, markerId) {
+	_findMarker(floorIndex, markerId) {
 		
 		if (!this._markers.hasOwnProperty(floorIndex)) {
 			
@@ -510,7 +510,7 @@ export class idrMapView {
 	
 	onMarkerClick(floorIndex, markerId) {
 		
-		var marker = this.findMarker(floorIndex, markerId)
+		var marker = this._findMarker(floorIndex, markerId)
 		
 		if (this._mapEvent.fireOnce(this.eventTypes.onMarkerClick, marker)) {
 			
@@ -570,12 +570,12 @@ export class idrMapView {
 		this._idrMap.birdLook()
 	}
 	
-	setPos(pos) {
+	_setPos(pos) {
 		
 		this._idrMap.setPos(pos)
 	}
 	
-	Positionfilter(ps, pe, v) {
+	_Positionfilter(ps, pe, v) {
 		
 		if (ps == null) return;
 		
@@ -589,13 +589,18 @@ export class idrMapView {
 		}
 	}
 	
+	getUserPos() {
+		
+		return this._currentPos
+	}
+	
 	setUserPos({x, y, floorIndex}) {
 		
 		let p = {x, y, floorIndex}
 		
 		if (this._currentPos && this._currentPos.floorIndex === floorIndex) {
 			
-			this.Positionfilter(this._currentPos, p, 40)
+			this._Positionfilter(this._currentPos, p, 40)
 		}
 		
 		this._currentPos = p
@@ -606,7 +611,7 @@ export class idrMapView {
 		}
 		else  {
 			
-			this.setPos(this._currentPos)
+			this._setPos(this._currentPos)
 		}
 	}
 	
@@ -711,11 +716,6 @@ export class idrMapView {
 		return result
 	}
 	
-	getUserPos() {
-		
-		return this._currentPos
-	}
-	
 	getRegionId() {
 		
 		return this._regionId
@@ -736,12 +736,6 @@ export class idrMapView {
 		this._idrMap.set2DMap(value)
 	}
 	
-	//path:[{x,y,floorId}]
-	setRoutePath(path) {
-		
-		this._idrMap.setRoutePath(path)
-	}
-	
 	release() {
 		
 		this._idrMap.release()
@@ -749,7 +743,7 @@ export class idrMapView {
 	
 	setUserDirection(alpha) {
 		
-		if (this.getUserPos()) {
+		if (this._currentPos) {
 			
 			this._idrMap.setUserDirection(alpha)
 		}
