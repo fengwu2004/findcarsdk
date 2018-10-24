@@ -2,40 +2,47 @@
  * Created by ky on 17-5-4.
  */
 
-var idrMapEventTypes = {
-	
-	onInitMapSuccess:'onInitMapSuccess',
-	
-	onFloorChangeSuccess:'onFloorChangeSuccess',
-	
-	onMapClick:'onMapClick',
-	
-	onMarkerClick:'onMarkerClick',
-	
-	onUnitClick:'onUnitClick',
-	
-	onRouterSuccess:'onRouterSuccess',
-	
-	onRouterFinish:'onRouterFinish',
-	
-	onMapLongPress:'onMapLongPress',
-	
-	onMapScroll:'onMapScroll',
-	
-	onRouterFailed:'onRouterFailed',
-	
-	onRouterPathUpdate:'onRouterPathUpdate',
-	
-	onNaviStatusUpdate:'onNaviStatusUpdate'
-}
 
-function idrMapEvent() {
+export class idrMapEvent {
 	
-	this.events = {}
+	static get types() {
+		
+		return {
+			
+			onInitMapSuccess:'onInitMapSuccess',
+			
+			onFloorChangeSuccess:'onFloorChangeSuccess',
+			
+			onMapClick:'onMapClick',
+			
+			onMarkerClick:'onMarkerClick',
+			
+			onUnitClick:'onUnitClick',
+			
+			onRouterSuccess:'onRouterSuccess',
+			
+			onRouterFinish:'onRouterFinish',
+			
+			onMapLongPress:'onMapLongPress',
+			
+			onMapScroll:'onMapScroll',
+			
+			onRouterFailed:'onRouterFailed',
+			
+			onRouterPathUpdate:'onRouterPathUpdate',
+			
+			onNaviStatusUpdate:'onNaviStatusUpdate'
+		}
+	}
 	
-	this.oncesEvents = {}
+	constructor() {
+		
+		this.events = {}
+		
+		this.oncesEvents = {}
+	}
 	
-	this.checkEvent = function(type) {
+	checkEvent(type) {
 		
 		if (this.events.hasOwnProperty(type)) {
 			
@@ -47,9 +54,9 @@ function idrMapEvent() {
 		return false
 	}
 	
-	this.removeEvent = function(type) {
+	removeEvent(type) {
 		
-		if (!idrMapEventTypes.hasOwnProperty(type)) {
+		if (!idrMapEvent.types.hasOwnProperty(type)) {
 			
 			return false
 		}
@@ -59,9 +66,9 @@ function idrMapEvent() {
 		return true
 	}
 	
-	this.fireEvent = function(type, data) {
+	fireEvent(type, data) {
 		
-		if (!idrMapEventTypes.hasOwnProperty(type)) {
+		if (!idrMapEvent.types.hasOwnProperty(type)) {
 			
 			return false
 		}
@@ -73,9 +80,9 @@ function idrMapEvent() {
 		return true
 	}
 	
-	this.addEvent = function(type, fn) {
+	addEvent(type, fn) {
 		
-		if (!idrMapEventTypes.hasOwnProperty(type)) {
+		if (!idrMapEvent.types.hasOwnProperty(type)) {
 			
 			return false
 		}
@@ -85,9 +92,9 @@ function idrMapEvent() {
 		return true
 	}
 	
-	this.fireOnce = function (type, data) {
+	fireOnce(type, data) {
 		
-		if (!idrMapEventTypes.hasOwnProperty(type)) {
+		if (!idrMapEvent.types.hasOwnProperty(type)) {
 			
 			return false
 		}
@@ -107,10 +114,8 @@ function idrMapEvent() {
 		return true
 	}
 	
-	this.addOnce = function(type, fn) {
+	addOnce(type, fn) {
 		
 		this.oncesEvents[type] = fn
 	}
 }
-
-export {idrMapEvent as idrMapEvent, idrMapEventTypes as idrMapEventTypes}

@@ -2,13 +2,14 @@
  * Created by yan on 15/03/2017.
  */
 
-function idrPosition(x, y, floorId) {
+export class idrPosition {
 	
-	this.x = x
-	
-	this.y = y
-	
-	this.floorId = floorId
+	constructor(x, y, floorIndex) {
+		
+		this.x = x
+		
+		this.y = y
+		
+		this.floorIndex = floorIndex
+	}
 }
-
-export { idrPosition as default }

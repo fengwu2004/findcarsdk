@@ -1,8 +1,7 @@
-
 export class idrMarker {
 	
 	constructor({pos, exinfo, callback}, image) {
-	
+		
 		this.position = pos
 		
 		this.exinfo = exinfo

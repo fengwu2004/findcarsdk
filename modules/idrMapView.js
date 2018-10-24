@@ -5,13 +5,14 @@
 import {idrNetworkInstance} from "./idrNetworkManager";
 
 import idrRouter from './idrRouter.js'
+
 import idrRouterV2 from './idrRouterV2'
 
-import { idrRegionEx } from './idrRegionEx.js'
+import { idrMapInfo } from './idrMapInfo.js'
 
 import idrComposs from './idrComposs.js'
 
-import {idrMapEvent, idrMapEventTypes} from './idrMapEvent.js'
+import {idrMapEvent} from './idrMapEvent.js'
 
 import { idrCoreMgr } from "./idrCoreManager";
 
@@ -23,9 +24,9 @@ export class idrMapView {
 	
 	constructor() {
 		
-		this.eventTypes = idrMapEventTypes
+		this.eventTypes = idrMapEvent.types
 		
-		this.regionEx = null
+		this.mapInfo = null
 		
 		this.autoChangeFloor = true
 		
@@ -37,7 +38,7 @@ export class idrMapView {
 		
 		this._currentPos = null
 		
-		this._regionId = null
+		this._mapId = null
 		
 		this._floor = null
 		
@@ -114,11 +115,11 @@ export class idrMapView {
 		
 		this.startUpdateDeviceOrientation()
 		
-		this._locator.regionEx = this.regionEx
+		this._locator.mapInfo = this.mapInfo
 		
 		return new Promise((resolve, reject)=>{
 			
-			this._locator.start(this._regionId, this._currentFloorIndex)
+			this._locator.start(this._mapId, this._currentFloorIndex)
 				.then(res=>{
 					
 					this._locator.setLocateDelegate(success, failed)
@@ -155,51 +156,33 @@ export class idrMapView {
 		return false
 	}
 	
-	doRoute(start, end, car) {
+	doRoute({start, end, car}) {
 		
 		this._inNavi = false
 		
-		if (!start) {
+		if (!start && !this._currentPos) {
 			
-			this._dynamicNavi = true
-			
-			start = this._currentPos
-		}
-		else {
-			
-			this._dynamicNavi = false
+			return Promise.reject('定位失败')
 		}
 		
-		if (!start) {
+		const routerData = this._router.routerPath(start ? start : this._currentPos, end.position, car, end.junctions)
+		
+		if (!routerData.path) {
 			
-			return false
+			return Promise.reject('路径规划失败')
 		}
 		
-		this._path = null
+		const points = routerData.path
 		
-		let carnavi = car === undefined?false : car
-		
-		this._path = this._router.routerPath(start, end.position, carnavi, end.junctions)
-		
-		if (!this._path) {
-			
-			return false
-		}
-		
-		this._naviParm = {
-			start:start,
-			end:end,
-			car:carnavi,
-			dynamic:this._dynamicNavi
-		}
+		this._naviParm = {start, end:routerData.end, car, points}
 		
 		this._inNavi = true
 		
-		this.showRoutePath(this._path)
+		this.showRoutePath(points)
 		
-		this._mapEvent.fireEvent(this.eventTypes.onRouterSuccess, {path:this._path, end:end, start:start})
-		
-		if (this._dynamicNavi) {
+		if (!start) {
+			
+			this.autoChangeFloor = true
 			
 			this._naviStatusUpdateTimer = setInterval(()=> {
 				
@@ -208,9 +191,12 @@ export class idrMapView {
 			}, 1000)
 		}
 		
-		return true
+		return Promise.resolve({start:start ? start : this._currentPos, end:routerData.end, path:routerData})
 	}
 	
+	/**
+	 * 停止导航
+	 */
 	stopRoute() {
 		
 		this._path = null
@@ -307,7 +293,7 @@ export class idrMapView {
 			
 			this._idrMap = new IdrMap(this)
 			
-			this._idrMap.init(this.regionEx, this._currentFloorIndex, this._container)
+			this._idrMap.init(this.mapInfo, this._currentFloorIndex, this._container)
 		}
 		else  {
 			
@@ -341,39 +327,49 @@ export class idrMapView {
 		
 		this._container.appendChild(div)
 		
-		this._composs = new idrComposs('composs', this.regionEx.northDeflectionAngle, this)
+		this._composs = new idrComposs('composs', this.mapInfo.northDeflectionAngle, this)
 	}
 	
 	_loadMap() {
 		
-		this._createMap(this._regionId, this._currentFloorIndex)
+		this._createMap(this._mapId, this._currentFloorIndex)
 	}
 	
+	/**
+	 * 切换楼层
+	 * @param {number} floorIndex - 楼层index
+	 */
 	changeFloor(floorIndex) {
 		
 		this._currentFloorIndex = floorIndex
 		
-		this._floor = this.regionEx.getFloorByIndex(floorIndex)
+		this._floor = this.mapInfo.getFloorByIndex(floorIndex)
 		
 		this._loadMap()
 	}
 	
-	initMap(appId, containerId, regionId) {
+	/**
+	 * 初始化地图
+	 * @param {string} appId - 当前默认值为"yf1248331604"
+	 * @param {string} containerId - 地图容器的id
+	 * @param {string} mapId - 地图的id
+	 */
+	initMap(appId, containerId, mapId) {
 		
 		this._container = document.getElementById(containerId)
 		
 		idrCoreMgr.init(appId)
 			.then(()=>{
 				
-				return idrNetworkInstance.serverCallRegionAllInfo(regionId)
+				return idrNetworkInstance.serverCallMapInfo(mapId)
 			})
 			.then(({data})=>{
 				
-				this.regionEx = new idrRegionEx(data)
+				this.mapInfo = new idrMapInfo(data)
 				
-				this._regionId = regionId
+				this._mapId = mapId
 				
-				this._mapEvent.fireEvent(this.eventTypes.onInitMapSuccess, this.regionEx)
+				this._mapEvent.fireEvent(this.eventTypes.onInitMapSuccess, this.mapInfo)
 			})
 			.catch(e=>{
 				
@@ -402,21 +398,21 @@ export class idrMapView {
 			
 			if (!this._router) {
 				
-				idrNetworkInstance.serverCallRegionPathData(this._regionId)
+				idrNetworkInstance.serverCallRegionPathData(this._mapId)
 					.then(res=>{
 				
-						this.regionEx.regionPath = res.data
+						this.mapInfo.regionPath = res.data
 						
 						if (res.data.version != undefined) {
 							
-							this._router = new idrRouterV2(this.regionEx.floorList, this.regionEx.regionPath)
+							this._router = new idrRouterV2(this.mapInfo.floorList, this.mapInfo.regionPath)
 						}
 						else {
 							
-							this._router = new idrRouter(this.regionEx.floorList, this.regionEx.regionPath)
+							this._router = new idrRouter(this.mapInfo.floorList, this.mapInfo.regionPath)
 						}
 						
-						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._regionId})
+						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._mapId})
 					})
 					.catch(e=>{
 						
@@ -425,7 +421,7 @@ export class idrMapView {
 			}
 			else {
 				
-				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._regionId})
+				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._mapId})
 			}
 		}, 0)
 	}
@@ -626,11 +622,16 @@ export class idrMapView {
 		return marker
 	}
 	
+	/**
+	 *
+	 * @param unitId
+	 * @returns {*}
+	 */
 	findUnitWithId(unitId) {
 		
-		for (var i = 0; i < this.regionEx.floorList.length; ++i) {
+		for (var i = 0; i < this.mapInfo.floorList.length; ++i) {
 			
-			var floor = this.regionEx.floorList[i]
+			var floor = this.mapInfo.floorList[i]
 			
 			for (var j = 0; j < floor.unitList.length; ++j) {
 				
@@ -646,9 +647,15 @@ export class idrMapView {
 		return null
 	}
 	
+	/**
+	 *
+	 * @param floorId
+	 * @param name
+	 * @returns {*}
+	 */
 	findUnitWithName(floorId, name) {
 		
-		var floor = this.regionEx.getFloorbyId(floorId)
+		var floor = this.mapInfo.getFloorbyId(floorId)
 		
 		var results = null
 		
@@ -674,23 +681,23 @@ export class idrMapView {
 	
 	findNearUnit(pos, targetunits) {
 		
-		return this.regionEx.getNearUnit(pos, targetunits)
+		return this.mapInfo.getNearUnit(pos, targetunits)
 	}
 	
 	getNearUnit(pos) {
 		
-		var floor = this.regionEx.getFloorByIndex(pos.floorIndex)
+		var floor = this.mapInfo.getFloorByIndex(pos.floorIndex)
 		
-		return this.regionEx.getNearUnit(pos, floor.unitList)
+		return this.mapInfo.getNearUnit(pos, floor.unitList)
 	}
 	
 	findUnitsWithType(types) {
 		
 		var result = {}
 		
-		for (var k = 0; k < this.regionEx.floorList.length; ++k) {
+		for (var k = 0; k < this.mapInfo.floorList.length; ++k) {
 			
-			var floor = this.regionEx.floorList[k]
+			var floor = this.mapInfo.floorList[k]
 			
 			for (var i = 0; i < floor.unitList.length; ++i) {
 				
@@ -718,7 +725,7 @@ export class idrMapView {
 	
 	getRegionId() {
 		
-		return this._regionId
+		return this._mapId
 	}
 	
 	isDynamicNavi() {

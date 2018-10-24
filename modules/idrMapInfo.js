@@ -4,7 +4,7 @@
 
 import {idrUnit} from './idrUnit'
 
-export class idrRegionEx {
+export class idrMapInfo {
 	
 	constructor(regionAllInfo) {
 		
@@ -218,7 +218,7 @@ export class idrRegionEx {
 				continue
 			}
 			
-			var dis = this.getDistance(pos, unit.getPos())
+			var dis = this.getDistance(pos, unit.position)
 			
 			if (dis < mindis) {
 				

@@ -367,7 +367,7 @@ class idrNetworkManager {
 		})
 	}
 	
-	serverCallRegionAllInfo(regionId) {
+	serverCallMapInfo(regionId) {
 		
 		var url = this.host + 'wx/getRegionData';
 		
@@ -420,7 +420,7 @@ class idrNetworkManager {
 	
 	saveMarkedUnit(unit, success, failed) {
 		
-		var pos = unit.getPos()
+		var pos = unit.position
 		
 		var unitInJson = JSON.stringify({svgX:pos.x, svgY:pos.y, floorId:unit.floorId, regionId:unit.regionId})
 		

@@ -265,7 +265,7 @@ class idrGlMap {
 	    }
 	    else {
 		
-		    var pos = unit.getPos()
+		    var pos = unit.position
 		
 		    this._region.insertIcon({type:type, unitId:unit.id, unitType:unit.unitTypeId}, this._floor.floorIndex, pos.x, pos.y)
 	    }
@@ -393,22 +393,17 @@ class idrGlMap {
 	  this._region.overlookRoute()
   }
 	
-	showRoutePath(path) {
+	showRoutePath(points) {
 		
-		if (!path) {
+		if (!points) {
 			
 			this._region.cleanRoute()
 			
 			return
 		}
 		
-		this._region.setRoute(path.path)
+		this._region.setRoute(points)
 	}
-  
-  setRoutePath(path) {
-	
-	  this._region.setRoute(path)
-  }
 
   getNaviStatus() {
 
@@ -422,9 +417,7 @@ class idrGlMap {
 	
 	getScreenPos(mapPos) {
 
-    var floorIndex = this._regionEx.getFloorbyId(mapPos.floorId).floorIndex
-
-    var v = this._region.floorPos2RegionPos(floorIndex, mapPos.x, mapPos.y)
+    var v = this._region.floorPos2RegionPos(mapPos.floorIndex, mapPos.x, mapPos.y)
 
     var p = this._region.regionPos2Screen(v)
 
