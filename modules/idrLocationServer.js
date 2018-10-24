@@ -36,7 +36,7 @@ class idrLocateServer {
 		
 		this.regionEx = null
 		
-		this.debug = false
+		this.debug = true
 		
 		this.debugPos = null
 		

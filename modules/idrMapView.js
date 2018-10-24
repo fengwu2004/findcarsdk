@@ -541,6 +541,11 @@ export class idrMapView {
 		this._idrMap.rotate(rad, anchor)
 	}
 	
+	/**
+	 * 居中地图上某一点到屏幕中心
+	 * @param {Object(x, y, floorIndex)}mapPos - 地图上某一点
+	 * @param {Boolean}anim - 是否带动画
+	 */
 	centerPos(mapPos, anim) {
 		
 		if (!mapPos) {
@@ -556,11 +561,17 @@ export class idrMapView {
 		this._idrMap.centerPos(mapPos, anim)
 	}
 	
+	/**
+	 * 重置地图的大小和方向
+	 */
 	resetMap() {
 		
 		this._idrMap.resetMap()
 	}
 	
+	/**
+	 * 鸟瞰地图
+	 */
 	birdLook() {
 		
 		this._idrMap.birdLook()

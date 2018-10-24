@@ -421,7 +421,7 @@ class idrGlMap {
 
     var p = this._region.regionPos2Screen(v)
 
-    return {x:p[0] * 0.3833333, y:p[1] * 0.3833333}
+    return {x:p[0] / this._csscale, y:p[1] / this._csscale}
   }
 
   centerPos(mapPos, anim) {
