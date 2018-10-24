@@ -36,7 +36,7 @@ class idrLocateServer {
 		
 		this.regionEx = null
 		
-		this.debug = true
+		this.debug = false
 		
 		this.debugPos = null
 		
@@ -129,7 +129,7 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 1000, y: 480, floorIndex: 1, regionId: "15208407076393939"}
+			this.result = {x: 1000, y: 480, floorIndex: 0, regionId: "15208407076393939"}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {

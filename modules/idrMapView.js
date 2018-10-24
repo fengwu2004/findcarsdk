@@ -174,7 +174,7 @@ export class idrMapView {
 		
 		const points = routerData.path
 		
-		this._naviParm = {start, end:routerData.end, car, points}
+		this._naviParm = {start, end:end, car, points}
 		
 		this._inNavi = true
 		
@@ -191,7 +191,7 @@ export class idrMapView {
 			}, 1000)
 		}
 		
-		return Promise.resolve({start:start ? start : this._currentPos, end:routerData.end, path:routerData})
+		return Promise.resolve({start:start ? start : this._currentPos, end:end, path:routerData})
 	}
 	
 	/**
