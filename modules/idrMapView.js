@@ -165,7 +165,7 @@ export class idrMapView {
 			return Promise.reject('定位失败')
 		}
 		
-		const routerData = this._router.routerPath(start ? start : this._currentPos, end.position, car, end.junctions)
+		const routerData = this._router.routerPath(start ? start : this._currentPos, end.position, car ? 1 : 0, end.junctions)
 		
 		if (!routerData.path) {
 			
@@ -677,6 +677,34 @@ export class idrMapView {
 			var unit = floor.unitList[i]
 			
 			if (lowercase == unit.name.toLowerCase()) {
+				
+				if (!results) {
+					
+					results = []
+				}
+				
+				results.push(unit)
+			}
+		}
+		
+		return results
+	}
+	
+	findUnitWithApproximatelyName(floorId, name) {
+		
+		var floor = this.mapInfo.getFloorbyId(floorId)
+		
+		var results = null
+		
+		var lowercase = name.toLowerCase()
+		
+		for (var i = 0; i < floor.unitList.length; ++i) {
+			
+			var unit = floor.unitList[i]
+			
+			let index = unit.name.indexOf(lowercase)
+			
+			if (index != -1 && index + name.length == unit.name.length) {
 				
 				if (!results) {
 					

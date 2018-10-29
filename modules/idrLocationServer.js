@@ -34,7 +34,7 @@ class idrLocateServer {
 		
 		this.onCheckSpeacialBeacons = null
 		
-		this.regionEx = null
+		this.mapInfo = null
 		
 		this.debug = true
 		
@@ -148,7 +148,7 @@ class idrLocateServer {
 			
 			this._floorId = res.floorId
 			
-			let floorIndex = this.regionEx.getFloorIndex(res.floorId)
+			let floorIndex = this.mapInfo.getFloorIndex(res.floorId)
 			
 			if (typeof this._onLocateSuccess === 'function') {
 				
