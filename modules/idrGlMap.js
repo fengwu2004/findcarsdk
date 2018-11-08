@@ -144,7 +144,7 @@ class idrGlMap {
 
   onAllFloorLoaded() {
 
-    this._mapView.onLoadMapSuccess()
+    this._mapView._onLoadMapSuccess()
   }
 
   setStatus(type) {
@@ -219,14 +219,7 @@ class idrGlMap {
 	  this._region.cleanQuickPolygonFloor(this._floor.floorIndex)
   }
 
-  clearFloorUnitsColor(allFloor) {
-
-    if (!allFloor) {
-	
-	    this._region.cleanQuickPolygonFloor(this._floor.floorIndex)
-
-      return
-    }
+  clearFloorUnitsColor() {
 
     for (var i = 0; i < this._regionEx.floorList.length; ++i) {
 	
@@ -282,7 +275,7 @@ class idrGlMap {
 
   handleMapScroll(x, y) {
 	
-	  this._mapView.onMapScroll(x, y)
+	  this._mapView._onMapScroll(x, y)
   }
 
   handleClick(x, y) {
@@ -293,7 +286,7 @@ class idrGlMap {
 	  
     if (markerId !== -1) {
 	
-	    this._mapView.onMarkerClick(this._currentFloorIndex, markerId)
+	    this._mapView._onMarkerClick(this._currentFloorIndex, markerId)
 
       return
     }
@@ -304,7 +297,7 @@ class idrGlMap {
     	
     	let unit = this._mapView.findUnitWithId(units[0].obj.unitId)
 	
-	    this._mapView.onUnitClick(unit)
+	    this._mapView._onUnitClick(unit)
 
       return
     }
@@ -315,12 +308,12 @@ class idrGlMap {
 	
 	    let unit = this._mapView.findUnitWithId(icons[0].obj.unitId)
 	
-	    this._mapView.onUnitClick(unit)
+	    this._mapView._onUnitClick(unit)
 
       return
     }
 	
-	  this._mapView.onMapClick({x:mapLoc.x, y:mapLoc.y, floorIndex:this._currentFloorIndex})
+	  this._mapView._onMapClick({x:mapLoc.x, y:mapLoc.y, floorIndex:this._currentFloorIndex})
   }
 
   addMarker(marker) {
@@ -466,6 +459,32 @@ class idrGlMap {
 		
 		return this._mapRoot
   }
+	
+	addUnitsOverlay(units, imgfile) {
+		
+		this._region.addTexture(imgfile, imgfile)
+		
+		let type = this._region.addTRLType(imgfile)
+		
+		units.forEach(unit => {
+			
+			if (unit.floorIndex == this._floor.floorIndex) {
+				
+				this._region.addTRLRect(this._floor.floorIndex, type, unit.getPts())
+			}
+		})
+		
+		this._region.buildTRLRect(this._floor.floorIndex, type)
+	}
+	
+	setThumbnailVisibility(value) {
+		
+		let matrixvalue = {"projMat":[0.0007320644216691069,0,0,0,0,0.0013020833333333333,0,0,0,0,-0.000018181818181818182,0,0,0,-0.8181818181818182,1],"viewMat":[1,0,0,0,0,0.3583679495453004,-0.9335804264972017,0,0,0.9335804264972017,0.3583679495453004,0,157.99999999999994,-655.826655056641,-923.8556402774992,1],"regionMat":[0.0069809625749133524,-0.5,0,0,0.5,0.0069809625749133524,0,0,0,0,0.40000000000000013,0,-3500,2000,0,3]}
+		
+		this._region.setThumbnailVisibility(value)
+		
+		this._region.setThumbnailParam(matrixvalue)
+	}
 }
 
 export { idrGlMap as default }

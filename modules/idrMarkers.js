@@ -1,10 +1,10 @@
 export class idrMarker {
 	
-	constructor({pos, exinfo, callback}, image) {
+	constructor({pos, image, callback, extInfo}) {
 		
 		this.position = pos
 		
-		this.exinfo = exinfo
+		this.extInfo = extInfo
 		
 		this.clickfn = callback
 		
