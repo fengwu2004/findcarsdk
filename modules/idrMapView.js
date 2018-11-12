@@ -409,7 +409,7 @@ export class idrMapView {
 		
 		this._inNavi = false
 		
-		this._idrMap._showRoutePath(null)
+		this._idrMap.showRoutePath(null)
 		
 		this._mapEvent.fireEvent(this.eventTypes.onRouterFinish, null)
 		
