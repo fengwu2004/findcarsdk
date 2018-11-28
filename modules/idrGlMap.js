@@ -38,6 +38,8 @@ class idrGlMap {
 		
 		this._unitAddFloor = {}
 		
+		let self = this
+		
 		this.listener = {
 			
 			onAllFloorLoadFinish : () => {
@@ -47,7 +49,9 @@ class idrGlMap {
 			
 			onStatusChange : function(status){
 				
-				// console.log(status)
+				console.log('地图状态改变', status)
+				
+				self._mapView.onMapStatusChange(status)
 			},
 			
 			onAnimStart : function(anim){
@@ -113,7 +117,7 @@ class idrGlMap {
 		
 		this._region.startRender();
 		
-		this._region.displayFloor(this._floor.floorIndex)
+		// this._region.displayFloor(this._floor.floorIndex)
 		
 		this._region.animPitch(0)//设置为 2d
 		
@@ -137,7 +141,7 @@ class idrGlMap {
 	
 	  this._floor = this._regionEx.getFloorByIndex(floorIndex)
 	
-	  this._region.displayFloor(this._floor.floorIndex)
+	  // this._region.displayFloor(this._floor.floorIndex)
 	
 	  this.onAllFloorLoaded()
   }
@@ -350,12 +354,32 @@ class idrGlMap {
 	
 	  this._region.animPitch(0)//设置为 2d
   }
-
-  set25dMap() {
+	
+	set2DMap(value) {
+	
+		if (value) {
+			
+			this._region.displayFloor(this._currentFloorIndex)
+			
+			this._region.animPitch(0)//设置为 2d
+			
+			this._region.animLookDistance(1000)
+		}
+		else {
+			
+			this._region.displayRegion()
+			
+			this._region.animPitch(70)
+		}
+  }
+  
+  showAllFloor() {
+	
+	  this._region.displayRegion()
 	
 	  this._region.animPitch(70)
 	
-	  this._region.displayRegion()
+	  this._region.animLookDistance(2500)
   }
 
   scroll(screenVec) {

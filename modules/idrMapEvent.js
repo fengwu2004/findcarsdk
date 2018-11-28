@@ -31,7 +31,9 @@ export class idrMapEvent {
 			
 			onRouterPathUpdate:'onRouterPathUpdate',
 			
-			onNaviStatusUpdate:'onNaviStatusUpdate'
+			onNaviStatusUpdate:'onNaviStatusUpdate',
+			
+			onMapStatusChange:'onMapStatusChange'
 		}
 	}
 	

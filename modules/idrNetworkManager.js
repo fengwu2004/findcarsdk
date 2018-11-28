@@ -502,7 +502,14 @@ class idrNetworkManager {
 		
 		var url = this.host + 'locate/locatingBin';
 		
-		this.doAjax(url, data, success, failed)
+		if (!this.clientId) {
+		
+			failed({msg:"定位失败, 请连接本地wifi后再进行尝试"})
+		}
+		else {
+			
+			this.doAjax(url, data, success, failed)
+		}
 	}
 }
 

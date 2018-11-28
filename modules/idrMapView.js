@@ -223,7 +223,7 @@ export class idrMapView {
 	
 	_onLoadMapSuccess() {
 		
-		this._addComposs()
+		// this._addComposs()
 		
 		this._mapRoot = this._idrMap.root()
 		
@@ -353,7 +353,7 @@ export class idrMapView {
 	
 	/**
 	 * 功能：规划路径，进入导航
-	 * @param start - position or null, null表明使用当前定位点作为起点（动态导航），否则为静态导航
+	 * @param start - position or null, null或者不填表明使用当前定位点作为起点（动态导航），否则为静态导航
 	 * @param end - obj, 具有position属性，导航终点
 	 * @param car - bool, 是否车行导航（车行与人行导航路径略有不同）
 	 * @returns {*} - promise
@@ -640,6 +640,8 @@ export class idrMapView {
 	resetMap() {
 		
 		this._idrMap.resetMap()
+		
+		this.set2DMap(false)
 	}
 	
 	/**
@@ -935,5 +937,19 @@ export class idrMapView {
 	setThumbnailVisibility(value) {
 		
 		this._idrMap.setThumbnailVisibility(value)
+	}
+	
+	showAllFloor() {
+		
+		this._idrMap.showAllFloor()
+	}
+	
+	/**
+	 * 地图状态改变
+	 * @param status(0:普通，2：导航跟随)
+	 */
+	onMapStatusChange(status) {
+		
+		this._mapEvent.fireEvent(this.eventTypes.onMapStatusChange, {status})
 	}
 }
