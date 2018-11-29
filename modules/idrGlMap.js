@@ -363,9 +363,13 @@ class idrGlMap {
 			
 			this._region.animPitch(0)//设置为 2d
 			
+			this._region.setAlwaysDrawUnit(true)
+			
 			this._region.animLookDistance(1000)
 		}
 		else {
+			
+			this._region.setAlwaysDrawUnit(false)
 			
 			this._region.displayRegion()
 			
@@ -379,10 +383,14 @@ class idrGlMap {
 	
 	  this._region.animPitch(70)
 	
+	  this._region.setAlwaysDrawUnit(false)
+	
 	  this._region.animLookDistance(2500)
   }
   
   showCurrFloor() {
+	
+	  this._region.setAlwaysDrawUnit(true)
 	
 	  this._region.displayFloor(this._currentFloorIndex)
   }
@@ -513,6 +521,11 @@ class idrGlMap {
 		this._region.setThumbnailVisibility(value)
 		
 		this._region.setThumbnailParam(matrixvalue)
+	}
+	
+	insertPaopao(obj, floor, x, y, offsetX, offsetY) {
+		
+		this._region.insertCallout(obj, floor, x, y, offsetX, offsetY)
 	}
 }
 

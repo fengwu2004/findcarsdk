@@ -957,4 +957,18 @@ export class idrMapView {
 		
 		this._mapEvent.fireEvent(this.eventTypes.onMapStatusChange, {status})
 	}
+	
+	/**
+	 * 添加泡泡
+	 * @param obj
+	 * @param floor
+	 * @param x
+	 * @param y
+	 * @param offsetx
+	 * @param offsety
+	 */
+	insertPaopao(obj, floor, x, y, offsetx, offsety) {
+		
+		this._idrMap.insertPaopao(obj, floor, x, y, offsetx, offsety)
+	}
 }
