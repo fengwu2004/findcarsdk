@@ -944,6 +944,11 @@ export class idrMapView {
 		this._idrMap.showAllFloor()
 	}
 	
+	showCurrFloor() {
+		
+		this._idrMap.showCurrFloor()
+	}
+	
 	/**
 	 * 地图状态改变
 	 * @param status(0:普通，2：导航跟随)

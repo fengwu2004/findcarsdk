@@ -381,6 +381,11 @@ class idrGlMap {
 	
 	  this._region.animLookDistance(2500)
   }
+  
+  showCurrFloor() {
+	
+	  this._region.displayFloor(this._currentFloorIndex)
+  }
 
   scroll(screenVec) {
 
