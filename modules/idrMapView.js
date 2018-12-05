@@ -223,7 +223,7 @@ export class idrMapView {
 	
 	_onLoadMapSuccess() {
 		
-		// this._addComposs()
+		this._addComposs()
 		
 		this._mapRoot = this._idrMap.root()
 		
@@ -640,8 +640,6 @@ export class idrMapView {
 	resetMap() {
 		
 		this._idrMap.resetMap()
-		
-		this.set2DMap(false)
 	}
 	
 	/**
