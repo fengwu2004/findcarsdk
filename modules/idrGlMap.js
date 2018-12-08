@@ -122,8 +122,10 @@ class idrGlMap {
 		this._region.animPitch(0)//设置为 2d
 		
 		this._region.setAlwaysDrawUnit(true)
-	
-	  if (this.isAndroid) {
+		
+		this._region.setZoomConstraint(100, 1500)
+		
+		if (this.isAndroid) {
 		
 		  this._region.addTexture('locatepos', './static/locatepos_noheading.png')
 	  }
@@ -404,14 +406,14 @@ class idrGlMap {
 
     var dis = this._region.getLookDistance()
 
-    if (dis < 100 || dis > 4000) {
+    if (dis < 100 || dis > 1000) {
 
       return
     }
 
     var value = dis * scale
 
-    value = Math.min(value, 4000)
+    value = Math.min(value, 1000)
 
     value = Math.max(100, value)
 	
