@@ -36,7 +36,7 @@ class idrLocateServer {
 		
 		this.mapInfo = null
 		
-		this.debug = true
+		this.debug = false
 		
 		this.debugPos = null
 		

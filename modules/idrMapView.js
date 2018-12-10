@@ -98,12 +98,12 @@ export class idrMapView {
 	
 	_onMapScroll(x, y) {
 		
-		if (this._mapEvent.fireOnce(this.eventTypes._onMapScroll, {x:x, y:y})) {
+		if (this._mapEvent.fireOnce(this.eventTypes.onMapScroll, {x:x, y:y})) {
 			
 			return
 		}
 		
-		this._mapEvent.fireEvent(this.eventTypes._onMapScroll, {x:x, y:y})
+		this._mapEvent.fireEvent(this.eventTypes.onMapScroll, {x:x, y:y})
 	}
 	
 	_onMapLongPress(pos) {
