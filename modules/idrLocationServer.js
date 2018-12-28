@@ -129,7 +129,7 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 348, y: 623, floorIndex: 5, regionId: "15208407076393939"}
+			this.result = {x: 348, y: 423, floorIndex: 5, regionId: "15208407076393939"}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {
