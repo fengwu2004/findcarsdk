@@ -40,7 +40,7 @@ export class idrUnit {
 			
 			this.junctions = this.extInfo.linkPoints.map(p=>{
 				
-				return Object.assign({}, p, {floorId:this.floorId})
+				return Object.assign({}, p, {floorId:this.floorId, floorIndex:this.floorIndex, floor:this.floorIndex})
 			})
 		}
 		else {

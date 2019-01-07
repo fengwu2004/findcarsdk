@@ -55,7 +55,7 @@ function idrRouter(floorList, pathData) {
 	 * @param car 是否车行
 	 * @return PathResult
 	 */
-	function routerPath(start, end, car) {
+	function routerPath(start, end, car, linkPoints) {
 		
 		_start = start
 		
@@ -63,7 +63,33 @@ function idrRouter(floorList, pathData) {
 		
 		_car = car
 		
-		return doRouter(start, end, car)
+		let result = null
+		
+		let minLength = 1000000000
+		
+		if (!linkPoints || linkPoints.length == 0) {
+			
+			return doRouter(start, end, car)
+		}
+		
+		for (let i = 0; i < linkPoints.length; ++i) {
+			
+			let temp = doRouter(start, linkPoints[i], car)
+			
+			if (result == null) {
+				
+				result = temp
+			}
+			else {
+				
+				if (temp.distance < minLength) {
+					
+					result = temp
+				}
+			}
+		}
+		
+		return result
 	}
 	
 	function doRouter(start, end, car) {
