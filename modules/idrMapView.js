@@ -892,6 +892,16 @@ export class idrMapView {
 	 * 功能：释放地图对应的资源
 	 */
 	release() {
+	
+		if (this._naviStatusUpdateTimer != null) {
+			
+			clearInterval(this._naviStatusUpdateTimer)
+		}
+		
+		if (this.deviceAlphaTimer != null) {
+		
+			clearInterval(this.deviceAlphaTimer)
+		}
 		
 		this._idrMap.release()
 	}
