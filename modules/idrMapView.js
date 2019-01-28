@@ -223,7 +223,7 @@ export class idrMapView {
 	
 	_onLoadMapSuccess() {
 		
-		this._addComposs()
+		// this._addComposs()
 		
 		this._mapRoot = this._idrMap.root()
 		
