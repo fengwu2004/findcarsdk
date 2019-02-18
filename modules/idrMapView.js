@@ -628,6 +628,8 @@ export class idrMapView {
 		
 		if (mapPos.floorIndex !== this._currentFloorIndex) {
 			
+			this.autoChangeFloor = false
+			
 			this.changeFloor(mapPos.floorIndex)
 		}
 		
