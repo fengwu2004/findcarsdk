@@ -221,6 +221,22 @@ export class idrMapView {
 		this._createMap(this._mapId, this._currentFloorIndex)
 	}
 	
+	_initPathData(str) {
+		
+		let res = JSON.parse(str)
+		
+		this.mapInfo.regionPath = res.data
+		
+		if (res.data.version != undefined) {
+			
+			this._router = new idrRouterV2(this.mapInfo.floorList, this.mapInfo.regionPath)
+		}
+		else {
+			
+			this._router = new idrRouter(this.mapInfo.floorList, this.mapInfo.regionPath)
+		}
+	}
+	
 	_onLoadMapSuccess() {
 		
 		// this._addComposs()
@@ -237,32 +253,36 @@ export class idrMapView {
 			
 			if (!this._router) {
 				
-				idrNetworkInstance.serverCallRegionPathData(this._mapId)
-					.then(res=>{
+				if (true && window.Worker) {
+					
+					let myWorker = new Worker('./static/retrivePathData.js')
+					
+					myWorker.postMessage({mapId: this._mapId, idrNetworkInstance: idrNetworkInstance})
+					
+					myWorker.onmessage = (e) => {
 						
-						this.mapInfo.regionPath = res.data
+						this._initPathData(e.data)
 						
-						if (res.data.version != undefined) {
+						myWorker.terminate()
+					}
+				}
+				else
+				{
+					
+					idrNetworkInstance.serverCallRegionPathData(this._mapId)
+						.then(res => {
 							
-							this._router = new idrRouterV2(this.mapInfo.floorList, this.mapInfo.regionPath)
-						}
-						else {
+							this._initPathData(res)
+						})
+						.catch(e => {
 							
-							this._router = new idrRouter(this.mapInfo.floorList, this.mapInfo.regionPath)
-						}
-						
-						this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._mapId})
-					})
-					.catch(e=>{
-						
-						console.log(e)
-					})
-			}
-			else {
-				
-				this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex:this._currentFloorIndex, regionId:this._mapId})
+							console.log(e)
+						})
+				}
 			}
 		}, 0)
+		
+		this._mapEvent.fireEvent(this.eventTypes.onFloorChangeSuccess, {floorIndex: this._currentFloorIndex, regionId: this._mapId})
 	}
 	
 	_setPos(pos) {
