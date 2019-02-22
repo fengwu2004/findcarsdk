@@ -408,14 +408,47 @@ export class idrMapView {
 			
 			this.autoChangeFloor = true
 			
+			clearInterval(this._naviStatusUpdateTimer)
+			
 			this._naviStatusUpdateTimer = setInterval(()=> {
 				
-				this._mapEvent.fireEvent(this.eventTypes.onNaviStatusUpdate, this._idrMap.getNaviStatus())
+				let value = this._idrMap.getNaviStatus()
+				
+				this._mapEvent.fireEvent(this.eventTypes.onNaviStatusUpdate, value)
 				
 			}, 1000)
 		}
 		
 		return Promise.resolve({start:start ? start : this._currentPos, end:end, path:routerData})
+	}
+	
+	reRoute() {
+		
+		const routerData = this._router.routerPath(this._currentPos, this._naviParm.end.position, this._naviParm.car ? 1 : 0, this._naviParm.end.junctions)
+		
+		if (!routerData.path) {
+			
+			return Promise.reject('路径规划失败')
+		}
+		
+		const points = routerData.path
+		
+		this._showRoutePath(points)
+	}
+	
+	checkInTargetFloor() {
+		
+		if (!this._inNavi || !this._naviParm.end) {
+			
+			return false
+		}
+		
+		if (!this._currentPos) {
+			
+			return false
+		}
+		
+		return this._currentPos.floorIndex == this._naviParm.end.position.floorIndex
 	}
 	
 	/**

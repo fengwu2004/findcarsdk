@@ -111,7 +111,7 @@ class idrGlMap {
 		
 		this._region.addFloorsSVG(this._floorList);
 		
-		this._region.setFontColor('#825537')
+		this._region.setFontColor('#346574')
 		
 		this._region.setFontType('24px Arial')
 		
