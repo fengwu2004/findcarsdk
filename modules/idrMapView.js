@@ -396,6 +396,8 @@ export class idrMapView {
 		
 		const points = routerData.path
 		
+		console.log(points)
+		
 		this._naviParm = {start, end:end, car, points}
 		
 		this._inNavi = true
@@ -432,6 +434,8 @@ export class idrMapView {
 		}
 		
 		const points = routerData.path
+		
+		console.log(points)
 		
 		this._showRoutePath(points)
 	}

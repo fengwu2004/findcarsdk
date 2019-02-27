@@ -6,7 +6,7 @@
  */
 
 
-const IGNORE_DES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
+const IGNORE_DES = 40;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
 
 import {PriorityQueue} from './PriorityQueue'
 import {PathResultV2} from "./PathResultV2"

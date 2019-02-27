@@ -17,7 +17,7 @@ import Position from './Position.js'
 
 function PathSearch(data) {
     
-    var IGNOREDES = 10;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
+    var IGNOREDES = 40;// 忽略距离，到路线投影点距离小于这一值的起始结束点将被忽略
     
     var floorPath = data.floorPath;// 楼层路径数据
     

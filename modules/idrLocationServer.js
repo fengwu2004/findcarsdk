@@ -118,7 +118,7 @@ class idrLocateServer {
 		
 		this._count = newBeacons.count
 		
-		idrDebug.debugInfo('蓝牙数量' + this._count)
+		// idrDebug.debugInfo('蓝牙数量' + this._count)
 	}
 	
 	onServerLocate_Debug() {
@@ -129,7 +129,7 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 348, y: 423, floorIndex: 1, regionId: "15208407076393939"}
+			this.result = {x: 441, y: 445, floorIndex: 3, regionId: "15208407076393939"}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {
@@ -178,18 +178,6 @@ class idrLocateServer {
 		
 		this._floorId = floorId
 		
-		if (idrCoreMgr.isApp) {
-		
-			return new Promise((resolve, reject)=>{
-				
-				clearInterval(this._locateTimerId)
-				
-				this._locateTimerId = setInterval(() => this.onServerLocate(), 1000)
-				
-				resolve()
-			})
-		}
-		
 		if (this.debug) {
 			
 			return new Promise((resolve, reject)=>{
@@ -197,6 +185,18 @@ class idrLocateServer {
 				clearInterval(this._locateTimerId)
 				
 				this._locateTimerId = setInterval(() => this.onServerLocate_Debug(), 1000)
+				
+				resolve()
+			})
+		}
+		
+		if (idrCoreMgr.isApp) {
+		
+			return new Promise((resolve, reject)=>{
+				
+				clearInterval(this._locateTimerId)
+				
+				this._locateTimerId = setInterval(() => this.onServerLocate(), 1000)
 				
 				resolve()
 			})
