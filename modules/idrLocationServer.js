@@ -107,7 +107,7 @@ class idrLocateServer {
 			
 			tempBeacons = JSON.parse(beacons)
 			
-			idrDebug.showDebugInfo(false)
+			// idrDebug.showDebugInfo(false)
 		}
 		
 		var newBeacons = this.filterbeacons(tempBeacons)

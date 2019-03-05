@@ -8,7 +8,7 @@ class idrCoreManager {
 		
 		this.sign = 'null'
 		
-		var u = navigator.userAgent;
+		var u = navigator.userAgent
 		
 		this.isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
 		
