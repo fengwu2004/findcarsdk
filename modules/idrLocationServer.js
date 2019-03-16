@@ -38,6 +38,8 @@ class idrLocateServer {
 		
 		this.debug = false
 		
+		this.debugCount = 0
+		
 		this.debugPos = null
 		
 		this.result = null
@@ -129,7 +131,16 @@ class idrLocateServer {
 		}
 		else {
 			
-			this.result = {x: 441, y: 445, floorIndex: 3, regionId: "15208407076393939"}
+			this.debugCount += 1
+			
+			if (this.debugCount > 10) {
+				
+				this.result = {x: 441, y: 445, floorIndex: 3, regionId: "15208407076393939"}
+			}
+			else {
+				
+				this.result = {x: 441, y: 445, floorIndex: 2, regionId: "15208407076393939"}
+			}
 		}
 		
 		if (typeof this._onLocateSuccess === 'function') {
